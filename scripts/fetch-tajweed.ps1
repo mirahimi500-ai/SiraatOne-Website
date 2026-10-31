@@ -1,32 +1,28 @@
-# Builds assets/data/tajweed/1..114.json from Quran Foundation API v4 (text_uthmani_tajweed).
-# Validates: verse counts, 6236 total, only <tajweed class=...> tags, and that the text with tags removed
-# is IDENTICAL to the already-verified Uthmani text in assets/data/sura (so colouring never changes a letter).
+# Builds assets/data/tajweed/1..114.json = Quran Foundation text_uthmani_tajweed markup (the RULE source only).
+# This markup is never shown as Quran text: the browser projects its rules onto the selected Mushaf text
+# (same fail-closed method as the SiraatOne Quran app). Validates verse counts, 6236 total and that only
+# <tajweed class=..>, <rule class=..> and <span class=end> tags occur. Partial output deleted on failure.
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 $ch   = (Get-Content (Join-Path $root 'assets\data\chapters.json') -Raw -Encoding UTF8 | ConvertFrom-Json).chapters
 $tmp  = Join-Path $root 'assets\data\tajweed.tmp'; $dir = Join-Path $root 'assets\data\tajweed'
 $enc  = New-Object Text.UTF8Encoding $false
 function Get-Json($u) { $r = Invoke-WebRequest $u -UseBasicParsing; [Text.Encoding]::UTF8.GetString($r.RawContentStream.ToArray()) | ConvertFrom-Json }
-function Norm($x) { ($x -replace '\s+', ' ').Trim() }
+$ok = '^<\s*/?\s*(tajweed|rule|span)\b[^>]*>$'
 if (Test-Path $tmp) { Remove-Item $tmp -Recurse -Force }
 New-Item -ItemType Directory $tmp | Out-Null
 try {
-  $total = 0; $fix = 0
+  $total = 0; $tags = 0
   foreach ($c in $ch) {
     $n = [int]$c.id
-    $base = (Get-Content (Join-Path $root "assets\data\sura\$n.json") -Raw -Encoding UTF8 | ConvertFrom-Json).ar
     $v = (Get-Json "https://api.quran.com/api/v4/quran/verses/uthmani_tajweed?chapter_number=$n").verses
     if ($v.Count -ne $c.verses) { throw "Sura ${n}: $($v.Count) verses, expected $($c.verses)" }
     $out = New-Object System.Collections.ArrayList
     for ($i = 0; $i -lt $v.Count; $i++) {
-      $t = $v[$i].text_uthmani_tajweed -replace '<span class=["'']?end["'']?>[^<]*</span>', ''
-      # QF tajweed text writes the small (dagger) alef as U+0672; the verified Uthmani text uses U+0670.
-      # Use the verified character so the displayed letters stay identical; any OTHER difference still fails.
-      $fix += ([regex]::Matches($t, [string][char]0x672)).Count; $t = $t.Replace([string][char]0x672, [string][char]0x670)
-      $bad = [regex]::Matches($t, '<[^>]+>') | ? { $_.Value -notmatch '^</?tajweed( class=["'']?[a-z_]+["'']?)?>$' }
-      if ($bad) { throw "${n}:$($i+1) unexpected tag $($bad[0].Value)" }
-      if ((Norm ($t -replace '<[^>]+>', '')) -ne (Norm $base[$i])) { throw "${n}:$($i+1) letters differ from verified Uthmani text" }
-      [void]$out.Add((Norm $t))
+      $t = [string]$v[$i].text_uthmani_tajweed
+      if ($t -notmatch '[\u0600-\u06FF]') { throw "${n}:$($i+1) empty" }
+      foreach ($m in [regex]::Matches($t, '<[^>]+>')) { $tags++; if ($m.Value -notmatch $ok) { throw "${n}:$($i+1) unsupported tag $($m.Value)" } }
+      [void]$out.Add($t)
     }
     [IO.File]::WriteAllText((Join-Path $tmp "$n.json"), (ConvertTo-Json @{ n=$n; ar=$out.ToArray() } -Compress -Depth 3), $enc)
     $total += $v.Count
@@ -34,7 +30,7 @@ try {
   if ($total -ne 6236) { throw "total $total, expected 6236" }
   if (Test-Path $dir) { Remove-Item $dir -Recurse -Force }
   Rename-Item $tmp 'tajweed'
-  Write-Host "PASS: Tajweed 114 suras, $total verses; every verse matches the verified Uthmani text letter-for-letter ($fix small-alef U+0672 -> U+0670 normalised)"
+  Write-Host "PASS: Tajweed rule markup 114 suras, $total verses, $tags tags (all allowed types)"
 } catch {
   if (Test-Path $tmp) { Remove-Item $tmp -Recurse -Force }
   Write-Host "FAIL: $($_.Exception.Message) (partial files deleted)"; exit 1

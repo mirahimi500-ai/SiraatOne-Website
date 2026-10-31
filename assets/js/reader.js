@@ -12,14 +12,18 @@
   function hl(k) { var c = SO.get('so.hl', {})[k]; return c && HL[c] ? ' style="--hl:' + HL[c] + '" data-hl="' + c + '"' : ''; }
   var ch, sura, idx, wbw = null, bism = null, AR = null, BI = null, CACHE = {};
   var pageMode = false;
-  // Tajweed (Quran Foundation text_uthmani_tajweed): only <tajweed class=x> tags are turned into coloured spans; all text is escaped.
-  function tj(s) {
-    var out = '', re = /<tajweed class=["']?([a-z_]+)["']?>([^<]*)<\/tajweed>/g, last = 0, m, strip = function (x) { return esc(x.replace(/<[^>]*>/g, '')); };
-    while ((m = re.exec(s))) { out += strip(s.slice(last, m.index)) + '<span class="tj-' + m[1] + '">' + esc(m[2]) + '</span>'; last = re.lastIndex; }
-    return out + strip(s.slice(last));
+  // Tajweed: rules projected onto the SELECTED Mushaf text (TJ = port of the app's projector). Fail-closed per verse.
+  var TJD = {};
+  function getTj(s) {
+    if (!S.tajweed) return Promise.resolve(null);
+    if (TJD[s] !== undefined) return Promise.resolve(TJD[s]);
+    return SO.j('../assets/data/tajweed/' + s + '.json').then(function (d) { return (TJD[s] = d.ar); }).catch(function () { return (TJD[s] = null); });
   }
-  function fmt(a) { return S.tajweed && document.body.dataset.tj === '1' ? tj(a) : esc(a); }
-  function dirFor() { return S.tajweed ? 'tajweed' : S.script === 'uthmani' ? 'qpc' : S.script === 'indopak' ? 'indopak' : null; }
+  function fmt(a, s, i) {
+    var m = S.tajweed && TJD[s] && TJD[s][i];
+    return (m && TJ.html(m, a, esc)) || esc(a);
+  }
+  function dirFor() { return S.script === 'uthmani' ? 'qpc' : S.script === 'indopak' ? 'indopak' : null; }
   // one sura in the chosen script: { ar, en, base }
   function getSura(s) {
     var d = dirFor(), key = s + '|' + d;
@@ -30,10 +34,10 @@
   function elFor(k) { var p = k.split(':'); return document.getElementById(pageMode ? 'a' + p[0] + '_' + p[1] : p[1]); }
   // Quran script: naskh = Uthmani text in Amiri Quran; uthmani = QPC Hafs (KFGQPC); indopak = IndoPak Nastaleeq
   function loadScript() {
-    return Promise.all([getSura(n), bism ? getSura(1) : null]).then(function (x) {
+    return Promise.all([getSura(n), bism ? getSura(1) : null, getTj(n), bism ? getTj(1) : null]).then(function (x) {
       AR = x[0].ar; BI = x[1] ? x[1].ar[0] : null;
-      document.body.dataset.tj = S.tajweed && x[0].styled ? '1' : '0';
-      document.body.dataset.script = S.tajweed || !x[0].styled ? 'naskh' : S.script;
+      document.body.dataset.tj = S.tajweed && x[2] ? '1' : '0';
+      document.body.dataset.script = !x[0].styled ? 'naskh' : S.script;
     });
   }
   function save() { SO.set('so.rs', S); }
@@ -96,7 +100,7 @@
     })
     .catch(function (e) { if (e !== 'redirect') $('s-en').textContent = 'This sura could not be loaded. Please refresh.'; });
 
-  var LEG = [['madda_normal', 'Madd — Normal'], ['qalaqah', 'Qalqalah'], ['ikhafa', 'Ikhfa'], ['idgham_ghunnah', 'Idgham with Ghunnah'], ['iqlab', 'Iqlab'], ['ghunnah', 'Ghunnah']]; // labels from the app
+  var LEG = [['maddNormal', 'Madd — Normal'], ['qalqalah', 'Qalqalah'], ['ikhfa', 'Ikhfa'], ['idghamWithGhunnah', 'Idgham with Ghunnah'], ['iqlab', 'Iqlab'], ['ghunnah', 'Ghunnah']]; // labels from the app
   function legend() { return S.tajweed && S.legend && document.body.dataset.tj === '1' ? '<div class="tj-legend">' + LEG.map(function (l) { return '<span class="tj-' + l[0] + '">' + l[1] + '</span>'; }).join('') + '</div>' : ''; }
   function renderPage() {
     var st = idx.page[P - 1], en = idx.page[P] || null, segs = [];
@@ -104,13 +108,14 @@
       var a1 = s === st[0] ? st[1] : 1, a2 = en && s === en[0] ? en[1] - 1 : ch[s - 1].verses;
       if (a2 >= a1) segs.push([s, a1, a2]);
     }
-    Promise.all(segs.map(function (g) { return getSura(g[0]); }).concat([getSura(1)])).then(function (all) {
+    Promise.all(segs.map(function (g) { return getSura(g[0]); }).concat([getSura(1)]).concat(segs.map(function (g) { return getTj(g[0]); })).concat([getTj(1)])).then(function (all) {
+      all = all.slice(0, segs.length + 1); document.body.dataset.tj = S.tajweed && TJD[segs[0][0]] ? '1' : '0';
       var b1 = all[all.length - 1].ar[0], h = legend();
       segs.forEach(function (g, i) {
         var s = g[0], d = all[i];
-        if (g[1] === 1) h += '<div class="pg-title">' + SO.sname(s, 'سورة ' + ch[s - 1].name_arabic) + '</div>' + (s !== 1 && s !== 9 ? '<p class="bismillah" lang="ar" dir="rtl">' + fmt(b1) + '</p>' : '');
+        if (g[1] === 1) h += '<div class="pg-title">' + SO.sname(s, 'سورة ' + ch[s - 1].name_arabic) + '</div>' + (s !== 1 && s !== 9 ? '<p class="bismillah" lang="ar" dir="rtl">' + fmt(b1, 1, 0) + '</p>' : '');
         h += '<p class="flow" lang="ar" dir="rtl">';
-        for (var a = g[1]; a <= g[2]; a++) h += '<span class="aya" id="a' + s + '_' + a + '" data-s="' + s + '" data-a="' + a + '"' + hl(s + ':' + a) + '>' + fmt(d.ar[a - 1]) + (S.nums ? ' ' + end(a) : '') + '</span> ';
+        for (var a = g[1]; a <= g[2]; a++) h += '<span class="aya" id="a' + s + '_' + a + '" data-s="' + s + '" data-a="' + a + '"' + hl(s + ':' + a) + '>' + fmt(d.ar[a - 1], s, a - 1) + (S.nums ? ' ' + end(a) : '') + '</span> ';
         h += '</p>';
       });
       $('body').innerHTML = '<div class="mpage">' + h + '<div class="pg-num">' + arNum(P) + '</div></div>';
@@ -127,11 +132,11 @@
     var go = S.mode === 'plus' && !wbw ? SO.j('../assets/data/wbw/' + n + '.json').then(function (d) { wbw = d.w; }).catch(function () { wbw = false; }) : Promise.resolve();
     go.then(function () {
       var c = ch[n - 1], h = '', mode = S.mode === 'plus' && !wbw ? 'verse' : S.mode;
-      $('s-bism').innerHTML = BI ? fmt(BI) : '';
+      $('s-bism').innerHTML = BI ? fmt(BI, 1, 0) : '';
       document.body.dataset.mode = mode;
       if (mode === 'clean') {
         h = '<p class="flow" lang="ar" dir="rtl">' + AR.map(function (a, i) {
-          return '<span class="aya" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(n + ':' + (i + 1)) + '>' + fmt(a) + (S.nums ? ' ' + end(i + 1) : '') + '</span>';
+          return '<span class="aya" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(n + ':' + (i + 1)) + '>' + fmt(a, n, i) + (S.nums ? ' ' + end(i + 1) : '') + '</span>';
         }).join(' ') + '</p>';
       } else {
         var showAr = S.showAr || !S.showTr, showTr = S.showTr && mode !== 'clean';
@@ -139,7 +144,7 @@
           var k = n + ':' + (i + 1), top = '<div class="c-top">' + (S.nums ? '<span class="c-num">' + (i + 1) + '</span>' : '') + marks(k) + '<button type="button" class="more" data-a="' + (i + 1) + '" aria-label="Ayah ' + k + ' actions">•••</button></div>';
           var ar = mode === 'plus'
             ? '<div class="words" lang="ar" dir="rtl">' + wbw[i].map(function (w) { return '<span class="w"><span class="wa">' + esc(w[0]) + '</span><span class="wt" dir="ltr">' + esc(w[1] || '') + '</span></span>'; }).join('') + end(i + 1) + '</div>'
-            : '<p class="ar" lang="ar" dir="rtl">' + fmt(a) + (S.nums ? ' ' + end(i + 1) : '') + '</p>';
+            : '<p class="ar" lang="ar" dir="rtl">' + fmt(a, n, i) + (S.nums ? ' ' + end(i + 1) : '') + '</p>';
           return '<li class="card-a" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(k) + '>' + top + (showAr ? ar : '') + (showTr ? '<p class="tr">' + esc(sura.en[i]) + '</p>' : '') + '</li>';
         }).join('') + '</ol>';
       }
@@ -222,7 +227,7 @@
     cur = null;
   }
 
-  function reloadText() { CACHE = {}; loadScript().then(function () { apply(false); render(); }); }
+  function reloadText() { CACHE = {}; TJD = {}; loadScript().then(function () { apply(false); render(); }); }
   // switch between page-by-page and scrolling (different URLs)
   function route() {
     var want = S.mode === 'clean' && S.paging === 'page';

@@ -1,0 +1,10 @@
+<!doctype html><meta charset="utf-8"><title>Tajweed check (temporary)</title>
+<body style="font:15px system-ui;padding:20px"><h3>Tajweed projection check</h3><pre id="o">Running…</pre>
+<script src="../assets/js/tajweed.js"></script><script>
+(async function(){ try { const j=u=>fetch(u).then(r=>r.json()); const o=document.getElementById('o'); const res={naskh:[0,0],qpc:[0,0],indopak:[0,0]}; const fails={naskh:[],qpc:[],indopak:[]};
+ for(let s=1;s<=114;s++){ const tj=(await j('../assets/data/tajweed/'+s+'.json')).ar;
+  const txt={naskh:(await j('../assets/data/sura/'+s+'.json')).ar, qpc:(await j('../assets/data/qpc/'+s+'.json')).ar, indopak:(await j('../assets/data/indopak/'+s+'.json')).ar};
+  for(const k in txt) txt[k].forEach((a,i)=>{ const ok=!!TJ.project(tj[i],a); res[k][ok?0:1]++; if(!ok&&fails[k].length<3) fails[k].push(s+':'+(i+1)); });
+  o.textContent='Sura '+s+'/114...'; }
+ o.textContent=Object.keys(res).map(k=>k+': coloured '+res[k][0]+' / plain (safe fallback) '+res[k][1]+(fails[k].length?'  e.g. '+fails[k].join(' '):'')).join(String.fromCharCode(10)); } catch(e){ document.getElementById('o').textContent='ERROR: '+e; } })();
+</script>
