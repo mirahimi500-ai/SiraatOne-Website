@@ -95,7 +95,10 @@ assets/data/duas.json generated from the app's catalog (duas_adhkar_catalog.dart
 QPC Hafs / IndoPak texts already end with their own ayah-number glyph; reader no longer adds a second marker (hasNum). Bismillah above suras shows 1:1 without its number glyph (noNum). Version 20261031q. Status: PASS (4a1279d)
 
 ## Fix — dark block before frame loads (2026-10-31)
-On sura change the masked frame div showed as a solid text-colour box until the PNG mask loaded. Frame now hidden until the image has loaded (space kept). r: still flashed on first paint (CSS showed box before JS) -> s: .fimg hidden by CSS until .ready. Version 20261031s. Status: PENDING
+On sura change the masked frame div showed as a solid text-colour box until the PNG mask loaded. Frame now hidden until the image has loaded (space kept). r: still flashed on first paint (CSS showed box before JS) -> s: .fimg hidden by CSS until .ready. Version 20261031s. Status: PASS (707f74c)
+
+## Fix — IndoPak double ayah numbers (2026-10-31)
+IndoPak text ends with a font-specific ayah-number glyph in the Private Use Area (e.g. U+F500, U+F61E); hasNum/noNum now recognise it. Version 20261031t. Status: PENDING
 
 ## Next
 Stage 6: CNAME + GoDaddy DNS switch (verify /privacy first).

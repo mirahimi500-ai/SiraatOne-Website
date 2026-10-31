@@ -44,10 +44,10 @@
   (function () { var d = new Date(), k = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2), L = SO.get('so.days', []);
     if (L.indexOf(k) < 0) { L.push(k); SO.set('so.days', L.slice(-400)); } })(); // reading streak (this browser only)
   function arNum(i) { return Number(i).toLocaleString('ar-EG'); }
-  // QPC Hafs / IndoPak texts already end with their own ayah-number glyph: never add a second one
+  // QPC Hafs (Arabic-Indic digits) / IndoPak (font glyph in Private Use Area U+E000-F8FF) texts already end with their own ayah-number glyph: never add a second one
   // Bismillah above a sura = text of 1:1 without its ayah-number glyph (it is not an ayah of that sura)
-  function noNum(a) { return (a || '').replace(/\s*[\u06DD]?[\u0660-\u0669\u06F0-\u06F9]+\s*$/, ''); }
-  function hasNum(a) { return /[\u0660-\u0669\u06F0-\u06F9]\s*$/.test(a || ''); }
+  function noNum(a) { return (a || '').replace(/\s*([\u06DD]?[\u0660-\u0669\u06F0-\u06F9]+|[\uE000-\uF8FF]+)\s*$/, ''); }
+  function hasNum(a) { return /([\u0660-\u0669\u06F0-\u06F9]|[\uE000-\uF8FF])\s*$/.test(a || ''); }
   function end(i) { return '<span class="end">﴿' + arNum(i) + '﴾</span>'; }
 
   // ---------- apply settings ----------
