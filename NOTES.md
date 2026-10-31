@@ -94,3 +94,6 @@ assets/data/duas.json generated from the app's catalog (duas_adhkar_catalog.dart
 ## Next
 Stage 6: CNAME + GoDaddy DNS switch (verify /privacy first).
 Rule: delete temp/draft/unneeded files after each step and after any failure.
+
+## Stage 8 - Final check (2026-10-31)
+Live check: 42 pages/files, 0 problems. Status: PASS (manual phone/PC check PENDING)
