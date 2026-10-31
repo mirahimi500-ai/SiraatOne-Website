@@ -1,8 +1,8 @@
-/* SiraatOne — shared styles. Mobile-first. TODO: replace brand colors with exact app hex values. */
+/* SiraatOne â€” shared styles. Mobile-first. TODO: replace brand colors with exact app hex values. */
 :root{
-  --brand:#0F6B4F;      /* TODO app primary */
-  --accent:#C9A227;     /* TODO app accent */
-  --bg:#FAFAF7; --surface:#FFFFFF; --text:#1B1F1D; --muted:#5B6560; --border:#E3E6E2;
+  --brand:#2E7D32;      /* TODO app primary */
+  --accent:#C58A37;     /* TODO app accent */
+  --bg:#F7F7F4; --surface:#FFFFFF; --text:#1B1F1D; --muted:#5B6560; --border:#E3E6E2;
   --brand-ink:#FFFFFF; --link:var(--brand);
   --radius:14px; --max:1080px;
   color-scheme:light;
@@ -10,12 +10,12 @@
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --bg:#0E1412; --surface:#16201C; --text:#E8ECEA; --muted:#A3AEA8; --border:#26332D;
-    --brand:#3FB58A; --brand-ink:#0E1412; --link:#6FD3AC; color-scheme:dark;
+    --brand:#66BB6A; --brand-ink:#0E1412; --link:#81C784; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#0E1412; --surface:#16201C; --text:#E8ECEA; --muted:#A3AEA8; --border:#26332D;
-  --brand:#3FB58A; --brand-ink:#0E1412; --link:#6FD3AC; color-scheme:dark;
+  --brand:#66BB6A; --brand-ink:#0E1412; --link:#81C784; color-scheme:dark;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
