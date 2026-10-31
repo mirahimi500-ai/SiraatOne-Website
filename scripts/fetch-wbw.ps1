@@ -16,7 +16,7 @@ try {
       $r = Get-Json "https://api.quran.com/api/v4/verses/by_chapter/${n}?words=true&word_fields=text_uthmani&language=en&per_page=50&page=$p"
       foreach ($v in $r.verses) {
         $w = @($v.words | ? { $_.char_type_name -eq 'word' } | % { ,@($_.text_uthmani, $_.translation.text) })
-        if (-not $w.Count -or ($w | ? { $_[0] -notmatch '[؀-ۿ]' })) { throw "${n}:$($v.verse_number) bad words" }
+        if (-not $w.Count -or ($w | ? { $_[0] -notmatch '[\u0600-\u06FF]' })) { throw "${n}:$($v.verse_number) bad words" }
         [void]$verses.Add($w)
       }
       $p = $r.pagination.next_page
