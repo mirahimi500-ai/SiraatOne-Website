@@ -502,3 +502,5 @@ body[data-dfont="naskh"] .d-ar{font-family:"Amiri Quran","Amiri",serif}
 .hd{max-width:none}.h-ar{font-family:"Amiri Quran","Amiri",serif;font-size:calc(1.6rem * var(--h-size,1));line-height:2.1;text-align:right;margin:10px 0}
 .h-en{font-size:calc(1.05rem * var(--h-size,1));line-height:1.8}.hd h4{margin:14px 0 4px;color:var(--brand)}
 .pager2{display:flex;gap:12px;align-items:center;justify-content:center;margin:14px 0}.pager2 button{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:99px;padding:6px 14px;cursor:pointer;font:inherit}
+/* frame is invisible from the first paint until its image has loaded (no dark block) */
+.fimg{visibility:hidden}.fimg.ready{visibility:visible}

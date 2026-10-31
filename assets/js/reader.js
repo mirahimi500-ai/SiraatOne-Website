@@ -63,10 +63,11 @@
       var u = 'url(../assets/img/' + (withB ? 'frame-bism.png' : 'frame.png') + ')';
       var canMask = window.CSS && (CSS.supports('mask-image', u) || CSS.supports('-webkit-mask-image', u));
       // Show the frame only after its image has loaded; before that the coloured box would show as a dark block.
-      if (canMask) { im.classList.remove('raw'); im.style.visibility = 'hidden'; var pre = new Image();
-        pre.onload = function () { im.style.webkitMaskImage = u; im.style.maskImage = u; im.style.visibility = ''; };
+      im.classList.remove('ready');
+      if (canMask) { im.classList.remove('raw'); var pre = new Image();
+        pre.onload = function () { im.style.webkitMaskImage = u; im.style.maskImage = u; im.classList.add('ready'); };
         pre.src = u.slice(4, -1); }
-      else { im.style.backgroundImage = u; im.classList.add('raw'); } // old browsers: original colours
+      else { im.style.backgroundImage = u; im.classList.add('raw', 'ready'); } // old browsers: original colours
     }
     $('s-bism').hidden = !bism || withB;
     $('status').hidden = !S.compact; document.body.classList.toggle('has-status', S.compact);
