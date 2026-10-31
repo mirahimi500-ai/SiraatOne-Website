@@ -33,6 +33,12 @@ Files: sura/index.html, assets/js/reader.js, assets/css/style.css, scripts/fetch
 Source: Quran Foundation API v4 - Uthmani text + translation 20 (Saheeh International). Validated per-sura counts + 6236 total + Arabic chars. Bismillah taken from 1:1 data (not shown for 1 and 9).
 Open: Saheeh International usage terms to confirm for website use. Status: PENDING
 
+## Stage 5a — App-style website layout (2026-10-31)
+Home dashboard (greeting, search, Last Read, Quick access tiles), Quran index /read/ (quick suras 67,32,18,36,55 as in app; tabs Surah/Juz/Hizb/Page/Search/Bookmarks/Favorites/Notes), reader actions (bookmark/favorite/note, last read). Data stays in browser (localStorage).
+Files: index.html, read/index.html, sura/index.html, assets/js/lib.js, home.js, quran-index.js, reader.js, style.css, scripts/fetch-index.ps1, assets/data/index.json (generated); nav/footer on all pages. Removed: assets/js/suras.js.
+Status: PENDING
+
 ## Next
-Stage 3: GitHub repo + Pages preview on github.io.
-Stage 4: CNAME + GoDaddy DNS switch (verify /privacy first).
+Stage 5b: 99 Names page (reuse app's reviewed names_of_allah_99.json + sourced meanings).
+Stage 6: CNAME + GoDaddy DNS switch (verify /privacy first).
+Rule: delete temp/draft/unneeded files after each step and after any failure.

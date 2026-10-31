@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quran — SiraatOne</title>
+<meta name="description" content="Browse the Holy Quran by Surah, Juz, Hizb or Page. Search, bookmarks, favorites and notes.">
+<meta name="theme-color" content="#2E7D32">
+<link rel="icon" href="../assets/img/logo.png">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap">
+    <div class="bar">
+      <a class="logo" href="../"><img src="../assets/img/logo.png" alt="" width="36" height="36">SiraatOne</a>
+      <div class="bar-actions">
+        <button id="theme-toggle" class="icon-btn" type="button" aria-label="Switch theme">☾</button>
+        <button id="menu-btn" class="icon-btn menu-btn" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Menu">☰</button>
+      </div>
+    </div>
+    <nav id="site-nav" class="nav" aria-label="Main">
+      <a href="../">Home</a>
+      <a href="../read/" aria-current="page">Quran</a>
+      <a href="../names/">99 Names</a>
+      <a href="../quran/">Quran app</a>
+      <a href="../azan/">Azan app</a>
+      <a href="../support/">Support</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap qx">
+  <div class="qx-head">
+    <div><h1>The Holy Quran</h1><p class="sub">114 Surahs · 6236 Ayahs</p></div>
+    <div class="quick" aria-label="Popular suras" id="quick"></div>
+  </div>
+  <div class="tabs" role="tablist" aria-label="Browse by"><button type="button" role="tab" data-tab="surah">Surah</button><button type="button" role="tab" data-tab="juz">Juz</button><button type="button" role="tab" data-tab="hizb">Hizb</button><button type="button" role="tab" data-tab="page">Page</button><button type="button" role="tab" data-tab="search">Search</button><button type="button" role="tab" data-tab="bookmarks">Bookmarks</button><button type="button" role="tab" data-tab="favorites">Favorites</button><button type="button" role="tab" data-tab="notes">Notes</button></div>
+  <div class="qx-tools" id="tools"></div>
+  <div id="panel" class="panel" aria-live="polite"></div>
+  <p class="source">Text and divisions: Quran Foundation (api.quran.com). English: Saheeh International.</p>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>© <span id="year">2026</span> SiraatOne · <a href="mailto:siraatone1@gmail.com">siraatone1@gmail.com</a></span>
+    <nav aria-label="Footer"><a href="../testers/">Become a Tester</a><a href="../support/">Support</a><a href="../privacy/">Privacy</a></nav>
+  </div>
+</footer>
+<script src="../assets/js/site.js" defer></script>
+<script src="../assets/js/lib.js" defer></script>
+<script src="../assets/js/quran-index.js" defer></script>
+</body>
+</html>

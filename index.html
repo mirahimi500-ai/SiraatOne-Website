@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SiraatOne — The Holy Quran</title>
-<meta name="description" content="SiraatOne makes Islamic apps for Android: SiraatOne Quran for phone and tablet, and SiraatOne Azan for TV and tablet. No accounts, no ads, no tracking.">
+<title>SiraatOne — Read the Quran</title>
+<meta name="description" content="Read the Holy Quran online with translation. Save your place, bookmarks and notes. From the makers of the SiraatOne apps.">
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="assets/img/logo.png">
 <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
@@ -15,63 +15,71 @@
 <header class="site-header">
   <div class="wrap">
     <div class="bar">
-      <a class="logo" href="./"><img src="assets/img/logo.png" alt="" width="36" height="36">SiraatOne</a>
+      <a class="logo" href=""><img src="assets/img/logo.png" alt="" width="36" height="36">SiraatOne</a>
       <div class="bar-actions">
         <button id="theme-toggle" class="icon-btn" type="button" aria-label="Switch theme">☾</button>
         <button id="menu-btn" class="icon-btn menu-btn" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Menu">☰</button>
       </div>
     </div>
     <nav id="site-nav" class="nav" aria-label="Main">
-      <a href="./" aria-current="page">Quran</a>
+      <a href="" aria-current="page">Home</a>
+      <a href="read/">Quran</a>
+      <a href="names/">99 Names</a>
       <a href="quran/">Quran app</a>
       <a href="azan/">Azan app</a>
-      <a href="testers/">Become a Tester</a>
       <a href="support/">Support</a>
-      <a href="privacy/">Privacy</a>
     </nav>
   </div>
 </header>
 
-<main id="main" class="wrap mushaf">
-  <section class="index-head">
-    <p class="ar-title" lang="ar" dir="rtl">القرآن الكريم</p>
-    <h1>The Holy Quran</h1>
-    <p class="sub">114 suras · choose one to begin</p>
-    <div class="index-tools">
-      <label class="sr" for="sura-search">Search sura</label>
-      <input id="sura-search" class="search" type="search" placeholder="Search by name, meaning or number" autocomplete="off">
-      <div class="chips" role="group" aria-label="Filter">
-        <button type="button" class="chip on" data-f="all">All</button>
-        <button type="button" class="chip" data-f="makkah">Makki</button>
-        <button type="button" class="chip" data-f="madinah">Madani</button>
-      </div>
+<main id="main" class="wrap dash">
+  <section class="welcome">
+    <div>
+      <h1>Assalamu Alaikum</h1>
+      <p class="sub">Welcome to SiraatOne. Read the Quran, save your place, and keep your notes — private, in your browser.</p>
     </div>
-    <div class="rule" aria-hidden="true"><span></span></div>
+    <form class="search-big" action="read/" role="search">
+      <svg class="ico s-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+      <label class="sr" for="home-q">Search the Quran</label>
+      <input id="home-q" name="q" type="search" placeholder="Search a sura or words in the Quran" autocomplete="off">
+      <input type="hidden" name="tab" value="search">
+    </form>
   </section>
 
-  <section aria-label="Sura list">
-    <ol id="sura-list" class="sura-list"><li class="muted">Loading suras…</li></ol>
-    <p class="source">Sura names and verse counts: Quran Foundation (api.quran.com)</p>
+  <section class="last-read" id="last-read" aria-label="Last read">
+    <span class="lr-ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5.5 4 8.5 4 12 6c3.5-2 6.5-2 9-.5V19c-2.5-1.5-5.5-1.5-9 .5-3.5-2-6.5-2-9-.5z"/><path d="M12 6v13.5"/></svg></span>
+    <div class="lr-txt"><small>Last read</small><b id="lr-title">Start with Al-Fatihah</b><span id="lr-meta">Surah 1 · Ayah 1</span></div>
+    <a class="btn btn-primary" id="lr-go" href="sura/?n=1">Start reading</a>
   </section>
 
-  <section class="apps-strip" aria-labelledby="apps-h">
-    <div class="rule" aria-hidden="true"><span></span></div>
-    <h2 id="apps-h">SiraatOne apps</h2>
-    <p class="muted">No accounts, no ads, no tracking.</p>
-    <div class="apps-links">
-      <a href="quran/"><b>SiraatOne Quran</b><span>Phone &amp; tablet</span></a>
-      <a href="azan/"><b>SiraatOne Azan</b><span>TV &amp; tablet</span></a>
+  <section aria-labelledby="qa-h">
+    <h2 id="qa-h" class="sec-h">Quick access</h2>
+    <div class="tiles">
+      <a class="tile" href="read/" ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5.5 4 8.5 4 12 6c3.5-2 6.5-2 9-.5V19c-2.5-1.5-5.5-1.5-9 .5-3.5-2-6.5-2-9-.5z"/><path d="M12 6v13.5"/></svg><b>Read Quran</b><span>114 suras with translation</span></a>
+      <a class="tile" href="" data-continue><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5 3.5-5 3.5z"/></svg><b>Continue</b><span>Pick up where you left</span></a>
+      <a class="tile" href="read/#favorites" ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><b>Favorites</b><span>Ayahs you love</span></a>
+      <a class="tile" href="read/#bookmarks" ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h10v17l-5-4-5 4z"/></svg><b>Bookmarks</b><span>Saved places</span></a>
+      <a class="tile" href="read/#notes" ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="4" width="15" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><b>Notes</b><span>Your reflections</span></a>
+      <a class="tile" href="names/" ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6z"/><path d="M18.5 15.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></svg><b>99 Names of Allah</b><span>With sourced meanings</span></a>
+      <a class="tile" href="quran/" data-app><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20c-3.5 0-6-2.2-6-5.5V8.5a1.5 1.5 0 0 1 3 0V13"/><path d="M12 20c3.5 0 6-2.2 6-5.5V8.5a1.5 1.5 0 0 0-3 0V13"/><path d="M9 13V5.5a1.5 1.5 0 0 1 3 0V12M12 12V5.5a1.5 1.5 0 0 1 3 0V13"/></svg><b>Duas & Adhkar</b><span>In the SiraatOne Quran app</span><em>App</em></a>
+      <a class="tile" href="azan/" data-app><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><b>Prayer times & Azan</b><span>In the SiraatOne Azan app</span><em>App</em></a>
     </div>
+  </section>
+
+  <section class="apps-band" aria-label="SiraatOne apps">
+    <div><b>SiraatOne apps for Android</b><span>Full Quran, Duas, Adhkar, calendar and Azan — no accounts, no ads, no tracking.</span></div>
+    <div class="apps-btns"><a class="btn btn-ghost" href="quran/">SiraatOne Quran</a><a class="btn btn-ghost" href="azan/">SiraatOne Azan</a></div>
   </section>
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <span>© <span id="year">2026</span> SiraatOne · <a href="mailto:siraatone1@gmail.com">siraatone1@gmail.com</a></span>
-    <nav aria-label="Footer"><a href="support/">Support</a><a href="privacy/">Privacy</a></nav>
+    <nav aria-label="Footer"><a href="testers/">Become a Tester</a><a href="support/">Support</a><a href="privacy/">Privacy</a></nav>
   </div>
 </footer>
 <script src="assets/js/site.js" defer></script>
-<script src="assets/js/suras.js" defer></script>
+<script src="assets/js/lib.js" defer></script>
+<script src="assets/js/home.js" defer></script>
 </body>
 </html>
