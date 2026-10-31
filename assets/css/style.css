@@ -345,3 +345,7 @@ body[data-bg="night"]{--frame-c:var(--gold)}
 .frame-name{color:var(--frame-c,var(--brand))}
 .frame-name .g{font-size:2.9em}
 .frame-name .t{font-size:1.4em}
+/* Frame = text colour (opposite of background, always visible) */
+body{--frame-c:var(--text)!important}
+.fimg{background-color:var(--frame-c);-webkit-mask-position:center;mask-position:center;-webkit-mask-mode:alpha;mask-mode:alpha}
+.fimg.raw{background-color:transparent;background-size:100% 100%;background-repeat:no-repeat}

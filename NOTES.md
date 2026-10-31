@@ -60,7 +60,10 @@ Home quick access: plain icons, no boxes. scripts/prep-frames.ps1 copies app hea
 Font: QUL "Surah name font v2" (qul.tarteel.ai/resources/font/455), ligature surahNNN; file copied from app (assets/fonts/arabic_fonts/Surah Name V2 - TTF.ttf) -> assets/fonts/surah-name-v2.ttf. Used in frame, bottom bar, sura list; falls back to Arabic text if font fails. License: check QUL Licence tab (user-chosen). Real gear icon in reader bottom bar. Version 20261031d. Status: PASS (5c31bb1; app uses same surahNNN ligature)
 
 ## Stage 6a-7 — 3 Quran fonts + theme-coloured frame + bigger name (2026-10-31)
-Fonts (same as app, SHA-256 verified): Uthmani = KFGQPC UthmanicHafs1Ver18 + text_qpc_hafs; IndoPak = indopak-nastaleeq-waqf-lazim-v4.2.1 + text_indopak_nastaleeq; Naskh = Amiri Quran + text_uthmani. Script: scripts/fetch-scripts.ps1 -> assets/data/qpc, assets/data/indopak. Mushaf+ word-by-word stays Naskh. Frame PNGs used as CSS mask -> colour follows theme (green light, gold dark/night). Mushaf al-Madina QCF V4 (604 page fonts) deferred to 6b with page-by-page. Version 20261031e. Status: PENDING
+Fonts (same as app, SHA-256 verified): Uthmani = KFGQPC UthmanicHafs1Ver18 + text_qpc_hafs; IndoPak = indopak-nastaleeq-waqf-lazim-v4.2.1 + text_indopak_nastaleeq; Naskh = Amiri Quran + text_uthmani. Script: scripts/fetch-scripts.ps1 -> assets/data/qpc, assets/data/indopak. Mushaf+ word-by-word stays Naskh. Frame PNGs used as CSS mask -> colour follows theme (green light, gold dark/night). Mushaf al-Madina QCF V4 (604 page fonts) deferred to 6b with page-by-page. Version 20261031e. Status: PASS (721f531; qpc/indopak 114 each, fonts SHA = app)
+
+## Stage 6a-8 — Frame colour = text colour (2026-10-31)
+Frame + Bismillah image follow the text colour (dark on light themes, light on dark). PNGs confirmed transparent (corner alpha 0). Fallback to original-colour image if browser lacks CSS mask. Version 20261031f. Status: PENDING
 
 ## Next
 Stage 6: CNAME + GoDaddy DNS switch (verify /privacy first).

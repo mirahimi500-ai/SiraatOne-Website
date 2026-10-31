@@ -27,7 +27,12 @@
     var useImg = S.header && S.deco, withB = useImg && !!bism;
     $('frame').classList.toggle('plain', !useImg); $('frame').classList.toggle('bism', withB);
     var im = $('frame-img'); im.hidden = !useImg;
-    if (useImg) { var u = 'url(../assets/img/' + (withB ? 'frame-bism.png' : 'frame.png') + ')'; im.style.webkitMaskImage = u; im.style.maskImage = u; }
+    if (useImg) {
+      var u = 'url(../assets/img/' + (withB ? 'frame-bism.png' : 'frame.png') + ')';
+      var canMask = window.CSS && (CSS.supports('mask-image', u) || CSS.supports('-webkit-mask-image', u));
+      if (canMask) { im.style.webkitMaskImage = u; im.style.maskImage = u; im.classList.remove('raw'); }
+      else { im.style.backgroundImage = u; im.classList.add('raw'); } // old browsers: original colours
+    }
     $('s-bism').hidden = !bism || withB;
     $('status').hidden = !S.compact; document.body.classList.toggle('has-status', S.compact);
     wake(); autoScroll();
