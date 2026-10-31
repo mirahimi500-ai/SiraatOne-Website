@@ -32,25 +32,92 @@
   </div>
 </header>
 
-<main id="main" class="wrap reader">
-  <nav class="reader-nav" aria-label="Sura navigation">
-    <a href="../read/">← All suras</a>
-    <div class="tools">
-      <button type="button" class="chip" id="tr-toggle" aria-pressed="true">English</button>
-      <button type="button" class="chip" id="fs-down" aria-label="Smaller Arabic text">A−</button>
-      <button type="button" class="chip" id="fs-up" aria-label="Larger Arabic text">A+</button>
-    </div>
-  </nav>
-  <header class="sura-head">
-    <p class="ar-title" id="s-ar" lang="ar" dir="rtl"></p>
-    <h1 id="s-en">Loading…</h1>
-    <p class="sub" id="s-meta"></p>
-    <div class="rule" aria-hidden="true"><span></span></div>
+<main id="main" class="reader2">
+  <div class="status" id="status"><span id="st-en"></span><span id="st-ar" lang="ar" dir="rtl"></span></div>
+  <div class="wrap rd-wrap">
+    <header class="sura-head" id="head">
+      <div class="frame" id="frame" aria-hidden="true">
+        <svg viewBox="0 0 600 140" preserveAspectRatio="xMidYMid meet">
+          <g fill="none" stroke="currentColor" stroke-linejoin="round">
+            <path stroke-width="3" d="M70 20H530L580 70L530 120H70L20 70Z"/>
+            <path stroke-width="1.2" d="M80 30H520L560 70L520 110H80L40 70Z"/>
+            <path stroke-width="1" d="M95 38H505L537 70L505 102H95L63 70Z" opacity=".6"/>
+          </g>
+          <g fill="currentColor">
+            <g transform="translate(20 70)"><rect x="-9" y="-9" width="18" height="18" transform="rotate(45)"/></g>
+            <g transform="translate(580 70)"><rect x="-9" y="-9" width="18" height="18" transform="rotate(45)"/></g>
+            <circle cx="300" cy="20" r="5"/><circle cx="300" cy="120" r="5"/>
+            <circle cx="70" cy="20" r="3"/><circle cx="530" cy="20" r="3"/><circle cx="70" cy="120" r="3"/><circle cx="530" cy="120" r="3"/>
+          </g>
+        </svg>
+        <span class="frame-name" id="s-ar" lang="ar" dir="rtl"></span>
+      </div>
+      <h1 id="s-en">Loading…</h1>
+      <p class="sub" id="s-meta"></p>
+    </header>
     <p class="bismillah" id="s-bism" lang="ar" dir="rtl" hidden></p>
-  </header>
-  <ol id="ayat" class="ayat"></ol>
-  <nav class="pager" aria-label="Previous and next sura"><a id="prev" hidden></a><a id="next" hidden></a></nav>
-  <p class="source">Arabic text (Uthmani): Quran Foundation. English translation: Saheeh International, via Quran Foundation.</p>
+    <div id="body"></div>
+    <p class="source">Arabic (Uthmani) and word-by-word: Quran Foundation. English: Saheeh International.</p>
+  </div>
+  <nav class="bottombar" id="bar" aria-label="Reader">
+    <a class="bb-btn" href="../read/" aria-label="All suras"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></a>
+    <div class="bb-mid"><a id="prev" class="bb-btn" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></a>
+      <span id="bb-name" lang="ar" dir="rtl"></span>
+      <a id="next" class="bb-btn" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></a></div>
+    <button class="bb-btn" id="open-set" type="button" aria-label="Reader settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/></svg></button>
+  </nav>
+  <div class="sheet" id="sheet" hidden>
+    <div class="sheet-card" role="dialog" aria-label="Ayah actions">
+      <div class="sheet-top"><b id="sh-key"></b><button type="button" class="x" data-close aria-label="Close">×</button></div>
+      <div class="sheet-acts">
+        <button type="button" data-a="bm"><svg viewBox="0 0 24 24"><path d="M7 3.5h10v17l-5-4-5 4z"/></svg><span>Bookmark</span></button>
+        <button type="button" data-a="fav"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span>Favorite</span></button>
+        <button type="button" data-a="copy"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg><span>Copy</span></button>
+      </div>
+      <textarea id="sh-note" class="note" placeholder="Your note (saved in this browser)"></textarea>
+    </div>
+  </div>
+  <div class="modal" id="settings" hidden>
+    <div class="modal-card" role="dialog" aria-label="Quran settings">
+      <div class="modal-top"><div><b>Quran Settings</b><small>Customize your reading</small></div><button type="button" class="x" data-close aria-label="Close">×</button></div>
+      <div class="modal-body">
+        <div class="mtabs" role="tablist">
+          <button type="button" data-p="reading" aria-selected="true">Reading<small>Layout &amp; content</small></button>
+          <button type="button" data-p="text">Text<small>Sizes</small></button>
+          <button type="button" data-p="look">Appearance<small>Display &amp; theme</small></button>
+          <button type="button" data-p="behave">Behavior<small>Navigation &amp; controls</small></button>
+        </div>
+        <div class="mpanes">
+          <section data-pane="reading">
+            <h3>Reading mode</h3>
+            <div class="seg" data-set="mode"><button data-v="clean">Clean Mushaf</button><button data-v="plus">Mushaf+</button><button data-v="verse">Verse List</button></div>
+            <p class="hint">Clean Mushaf: Arabic only · Mushaf+: word-by-word + translation · Verse List: Arabic + translation</p>
+          </section>
+          <section data-pane="text" hidden>
+            <label class="sl">Quran text size <b data-out="ar"></b><input type="range" min="1.3" max="3.4" step="0.1" data-set="ar"></label>
+            <label class="sl">Translation text size <b data-out="tr"></b><input type="range" min="0.85" max="1.5" step="0.05" data-set="tr"></label>
+          </section>
+          <section data-pane="look" hidden>
+            <label class="tg">Show Surah title header<input type="checkbox" data-set="header"></label>
+            <label class="tg">Show Surah meaning<input type="checkbox" data-set="meaning"></label>
+            <label class="tg">Show title decoration<input type="checkbox" data-set="deco"></label>
+            <h3>Page background</h3>
+            <div class="seg" data-set="bg"><button data-v="app">App theme</button><button data-v="cream">Cream</button><button data-v="sepia">Sepia</button><button data-v="night">Night</button></div>
+          </section>
+          <section data-pane="behave" hidden>
+            <h3>Next / previous buttons</h3>
+            <div class="seg" data-set="nav"><button data-v="surah">Surah</button><button data-v="juz">Juz</button></div>
+            <label class="tg">Hide toolbar when scrolling<input type="checkbox" data-set="hide"></label>
+            <label class="tg">Show compact reading status<input type="checkbox" data-set="compact"></label>
+            <label class="tg">Keep screen awake<input type="checkbox" data-set="awake"></label>
+            <label class="tg">Auto scroll<input type="checkbox" data-set="auto"></label>
+            <label class="sl">Auto scroll speed <b data-out="speed"></b><input type="range" min="1" max="10" step="1" data-set="speed"></label>
+            <button type="button" class="btn btn-ghost" id="reset">Reset settings</button>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
 </main>
 
 <footer class="site-footer">

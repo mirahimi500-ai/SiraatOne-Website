@@ -40,7 +40,12 @@ Files: index.html, read/index.html, sura/index.html, assets/js/lib.js, home.js, 
 Status: PASS (data); live look PENDING user check
 
 ## Stage 5b — 99 Names (2026-10-31)
-Files: names/index.html, assets/js/names.js, style.css, assets/data/names99.json (copied unchanged from C:\SiraatOne-Quran\assets\names_of_allah\data\names_of_allah_99.json; validated 99, ids 1..99). Sources shown from the file's own references. Status: PENDING
+Files: names/index.html, assets/js/names.js, style.css, assets/data/names99.json (copied unchanged from C:\SiraatOne-Quran\assets\names_of_allah\data\names_of_allah_99.json; validated 99, ids 1..99). Sources shown from the file's own references. Status: PASS (45da770, hash = app)
+
+## Stage 6a — Reader v2, app-style (2026-10-31)
+Modes: Clean Mushaf (flowing Arabic), Mushaf+ (word-by-word + translation), Verse List. Settings modal (Reading/Text/Appearance/Behavior): sizes, header/meaning/decoration, background (app/cream/sepia/night), prev/next by Surah or Juz, hide toolbar on scroll, compact status, keep screen awake, auto scroll. Ayah action sheet (bookmark/favorite/copy/note). Original SVG header frame (app frame + Surah Name font not reused: source/license unknown).
+Files: sura/index.html, assets/js/reader.js, style.css, scripts/fetch-wbw.ps1, assets/data/wbw/*.json (generated). Headless test: no JS errors, bookmark saved. Status: PENDING
+Later (6b): Page-by-page layout, side quick panel, Tajweed/IndoPak scripts. Printed version skipped.
 
 ## Next
 Stage 6: CNAME + GoDaddy DNS switch (verify /privacy first).
