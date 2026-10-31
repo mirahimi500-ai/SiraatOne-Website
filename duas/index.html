@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Duas &amp; Adhkar — SiraatOne</title>
+<meta name="description" content="Morning and evening adhkar, Prophetic, Quranic and prayer duas with Arabic, transliteration, meaning and sources.">
+<meta name="theme-color" content="#2E7D32">
+<link rel="icon" href="../assets/img/logo.png">
+<script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
+<link rel="stylesheet" href="../assets/css/style.css?v=20261031o">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap">
+    <div class="bar">
+      <a class="logo" href="../"><img src="../assets/img/logo.png" alt="" width="36" height="36">SiraatOne</a>
+      <div class="bar-actions">
+        <button id="theme-toggle" class="icon-btn" type="button" aria-label="Switch theme">☾</button>
+        <button id="menu-btn" class="icon-btn menu-btn" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Menu">☰</button>
+      </div>
+    </div>
+    <nav id="site-nav" class="nav" aria-label="Main">
+      <a href="../">Home</a>
+      <a href="../read/">Quran</a>
+      <a href="../names/">99 Names</a>
+      <a href="../quran/">Quran app</a>
+      <a href="../azan/">Azan app</a>
+      <a href="../support/">Support</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap tool duas">
+  <header class="tool-head"><h1>Duas &amp; Adhkar</h1><p class="sub">From the SiraatOne Quran app's sourced catalog. Saved items stay in this browser.</p></header>
+  <div class="tabs" role="tablist" id="d-tabs">
+    <button type="button" data-t="morning">Morning</button><button type="button" data-t="evening">Evening</button>
+    <button type="button" data-t="prophetic">Prophetic</button><button type="button" data-t="quranic">Quranic</button>
+    <button type="button" data-t="prayer">Prayer &amp; Salah</button><button type="button" data-t="saved">Saved</button>
+  </div>
+  <div class="qx-tools d-tools">
+    <input class="search" id="d-q" type="search" placeholder="Search duas (title, meaning)" autocomplete="off">
+    <div class="sl-opts" id="d-opts">
+      <select id="d-cat" aria-label="Category" hidden></select>
+      <select id="d-font" aria-label="Arabic font"><option value="uthmani">Uthmani</option><option value="indopak">IndoPak</option><option value="naskh">Naskh</option></select>
+      <select id="d-size" aria-label="Text size"><option value="0.9">Small</option><option value="1">Normal</option><option value="1.2">Large</option><option value="1.45">Extra large</option></select>
+      <label><input type="checkbox" id="d-tr"> Transliteration</label><label><input type="checkbox" id="d-mean"> Meaning</label><label><input type="checkbox" id="d-num"> Numbers</label>
+    </div>
+  </div>
+  <ol class="dua-list" id="d-list"><li class="empty">Loading…</li></ol>
+  <p class="hint d-note" id="d-note"></p>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>© <span id="year">2026</span> SiraatOne · <a href="mailto:siraatone1@gmail.com">siraatone1@gmail.com</a></span>
+    <nav aria-label="Footer"><a href="../testers/">Become a Tester</a><a href="../support/">Support</a><a href="../privacy/">Privacy</a></nav>
+  </div>
+</footer>
+<script src="../assets/js/site.js?v=20261031o" defer></script>
+<script src="../assets/js/lib.js?v=20261031o" defer></script>
+<script src="../assets/js/duas.js?v=20261031o" defer></script>
+</body>
+</html>

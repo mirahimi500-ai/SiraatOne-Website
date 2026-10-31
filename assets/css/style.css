@@ -446,3 +446,53 @@ body[data-bg="classic"],body[data-bg="ivory"],body[data-bg="fiber"],body[data-bg
 .w-ar{font-family:var(--quran,"Amiri Quran",serif);font-size:1.7rem;line-height:2.1;margin:8px 0 4px;text-align:right}
 .w-tr{color:var(--muted);margin:0 0 8px}
 .w-big{font-size:2.2rem;font-weight:700;margin:6px 0 0;color:var(--brand)}
+/* ===== Stage D1: Tasbih, Calendar, 99 Names options ===== */
+.tool{padding-bottom:30px}
+.tool-head{text-align:center;padding:30px 0 6px}.tool-head h1{margin:0;font-size:clamp(1.6rem,4vw,2.2rem)}.tool-head .sub{color:var(--muted);margin:4px 0}
+.tb-profiles{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:10px 0 18px}
+.tb-profiles .chip[aria-pressed="true"]{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.tb-ring{display:flex;flex-direction:column;align-items:center;justify-content:center;width:min(70vw,260px);aspect-ratio:1;margin:0 auto;border-radius:50%;border:6px solid var(--brand);background:var(--surface);color:var(--text);cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;transition:transform .08s}
+.tb-ring:active{transform:scale(.97)}
+.tb-ring span{font-size:clamp(3rem,12vw,4.5rem);font-weight:700;line-height:1}.tb-ring small{color:var(--muted);margin-top:8px;font-size:.85rem;padding:0 16px;text-align:center}
+.tb-row,.tb-opts{display:flex;flex-wrap:wrap;gap:10px 16px;justify-content:center;align-items:center;margin-top:18px}
+.tb-row select{padding:6px 10px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font:inherit}
+.tb-opts label{display:flex;gap:6px;align-items:center;color:var(--muted);font-size:.92rem}
+.tb-stats{text-align:center;color:var(--muted)}
+.cal-bar{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:10px 0}
+.cal-bar h2{margin:0;font-size:1.1rem;text-align:center;min-width:240px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;max-width:900px;margin:0 auto}
+.cal-grid .dow{text-align:center;font-size:.8rem;color:var(--muted);padding:4px 0}
+.day{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px;min-height:74px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);cursor:pointer;font:inherit}
+.day .g{font-weight:700}.day .h{font-family:var(--serif);color:var(--brand);font-size:1.05rem}.day small{color:var(--muted);font-size:.68rem;text-align:center;line-height:1.2}
+.day.today{border:2px solid var(--brand)}.day.newm{background:color-mix(in srgb,var(--brand) 8%,var(--surface))}
+.day.fasted{background:color-mix(in srgb,var(--gold) 22%,var(--surface))}.day i{font-style:normal;font-size:.62rem;color:var(--gold);font-weight:700}
+.cal-opts{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:16px;text-align:center}
+.cal-opts select{padding:4px 8px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text)}
+.nm-opts{justify-content:center}
+.name-grid.no-mean .nm,.name-grid.no-num .nn{display:none}
+.name-grid.nf-uthmani .na{font-family:"UthmanicHafs","Amiri Quran",serif}.name-grid.nf-indopak .na{font-family:"IndoPakNastaleeq","Amiri Quran",serif}
+.name-grid.nv-small{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))!important}.name-grid.nv-small .name-card{padding:14px 6px 10px}.name-grid.nv-small .na{font-size:1.4rem}.name-grid.nv-small .nm{font-size:.75rem}
+.name-grid.nv-list{grid-template-columns:1fr!important;gap:0}.name-grid.nv-list .name-card{flex-direction:row;justify-content:space-between;text-align:left;border-radius:0;border-width:0 0 1px;background:none;padding:12px 8px}
+.name-grid.nv-list .nn{position:static;min-width:28px}.name-grid.nv-list .nm{flex:1;padding:0 12px}.name-grid.nv-list .na{order:3}
+.name-card{cursor:pointer}
+/* ===== Stage D2: Duas & Adhkar ===== */
+.duas .tabs{position:static}
+.d-tools .sl-opts{margin-top:10px}
+.dua-list{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:14px}
+@media (min-width:1100px){.dua-list{grid-template-columns:1fr 1fr}}
+.dua{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 18px}
+.d-top{display:flex;align-items:center;gap:10px}.d-top b{flex:1}
+.d-fav[aria-pressed="true"]{color:#C2410C}.d-fav[aria-pressed="true"] svg{fill:currentColor}
+.d-ar{font-size:calc(1.6rem * var(--d-size,1));line-height:2.1;margin:8px 0;text-align:right;font-family:"UthmanicHafs","Amiri Quran",serif}
+body[data-dfont="indopak"] .d-ar{font-family:"IndoPakNastaleeq","Amiri Quran",serif;line-height:2.5}
+body[data-dfont="naskh"] .d-ar{font-family:"Amiri Quran","Amiri",serif}
+.d-tl{font-style:italic;color:var(--muted);margin:4px 0;font-size:calc(.95rem * var(--d-size,1))}
+.d-me{margin:6px 0;font-size:calc(1rem * var(--d-size,1));line-height:1.7}
+.d-meta{margin:4px 0;font-size:.88rem;color:var(--muted)}
+.d-count{margin:8px 0 2px;border:1px solid var(--brand);color:var(--brand);background:none;border-radius:99px;padding:6px 14px;cursor:pointer;font:inherit;font-size:.88rem}
+.d-count.done{background:var(--brand);color:var(--brand-ink)}
+.d-src{margin-top:8px;font-size:.85rem;color:var(--muted)}.d-src summary{cursor:pointer;color:var(--brand)}
+.d-note{text-align:center;margin-top:18px}
+.act{width:34px;height:34px;display:grid;place-items:center;border:0;border-radius:8px;background:none;color:var(--muted);cursor:pointer}
+.act:hover{background:var(--bg);color:var(--brand)}
+.act svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linejoin:round}
