@@ -35,10 +35,13 @@ Open: Saheeh International usage terms to confirm for website use. Status: PENDI
 
 ## Stage 5a — App-style website layout (2026-10-31)
 Home dashboard (greeting, search, Last Read, Quick access tiles), Quran index /read/ (quick suras 67,32,18,36,55 as in app; tabs Surah/Juz/Hizb/Page/Search/Bookmarks/Favorites/Notes), reader actions (bookmark/favorite/note, last read). Data stays in browser (localStorage).
+index.json checks: juz2=2:142, juz30=78:1, page604=112:1. Commit 2c9560c.
 Files: index.html, read/index.html, sura/index.html, assets/js/lib.js, home.js, quran-index.js, reader.js, style.css, scripts/fetch-index.ps1, assets/data/index.json (generated); nav/footer on all pages. Removed: assets/js/suras.js.
-Status: PENDING
+Status: PASS (data); live look PENDING user check
+
+## Stage 5b — 99 Names (2026-10-31)
+Files: names/index.html, assets/js/names.js, style.css, assets/data/names99.json (copied unchanged from C:\SiraatOne-Quran\assets\names_of_allah\data\names_of_allah_99.json; validated 99, ids 1..99). Sources shown from the file's own references. Status: PENDING
 
 ## Next
-Stage 5b: 99 Names page (reuse app's reviewed names_of_allah_99.json + sourced meanings).
 Stage 6: CNAME + GoDaddy DNS switch (verify /privacy first).
 Rule: delete temp/draft/unneeded files after each step and after any failure.

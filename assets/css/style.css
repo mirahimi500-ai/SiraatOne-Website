@@ -221,3 +221,18 @@ body.no-tr .ayat .tr{display:none}
 .act[aria-pressed="true"] svg{fill:color-mix(in srgb,var(--brand) 25%,transparent)}
 .act[data-act="fav"][aria-pressed="true"]{color:#C2410C}
 .note{width:100%;min-height:70px;margin-top:8px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font:inherit;resize:vertical}
+/* 99 Names */
+.names-head{text-align:center;padding:34px 0 10px}
+.names-head h1{font-family:var(--serif);font-weight:400;font-size:clamp(1.4rem,4vw,1.9rem);margin:2px 0 0}
+.names-head .search{max-width:420px;border-radius:999px;padding:11px 18px;margin-top:10px}
+.name-grid{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:12px;grid-template-columns:repeat(2,1fr)}
+@media (min-width:700px){.name-grid{grid-template-columns:repeat(3,1fr)}}
+@media (min-width:1000px){.name-grid{grid-template-columns:repeat(4,1fr)}}
+.name-grid .empty{grid-column:1/-1}
+.name-card{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:22px 12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:16px}
+.name-card .nn{position:absolute;top:10px;left:12px;font-size:.72rem;color:var(--gold);font-weight:700}
+.name-card .na{font-family:var(--serif);font-size:1.9rem;line-height:1.5;color:var(--brand)}
+.name-card .nm{color:var(--muted);font-size:.88rem}
+.refs{max-width:760px;margin:26px auto 0;padding:18px 20px;border:1px solid var(--border);border-radius:14px;background:var(--surface);font-size:.92rem}
+.refs:empty{display:none}
+.refs p{margin:6px 0;color:var(--text)}
