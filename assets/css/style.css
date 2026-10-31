@@ -504,3 +504,7 @@ body[data-dfont="naskh"] .d-ar{font-family:"Amiri Quran","Amiri",serif}
 .pager2{display:flex;gap:12px;align-items:center;justify-content:center;margin:14px 0}.pager2 button{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:99px;padding:6px 14px;cursor:pointer;font:inherit}
 /* frame is invisible from the first paint until its image has loaded (no dark block) */
 .fimg{visibility:hidden}.fimg.ready{visibility:visible}
+/* Tajweed: more vivid / brighter palette (user request) */
+:root,body[data-bg="classic"],body[data-bg="ivory"],body[data-bg="fiber"],body[data-bg="green"],body[data-bg="sand"],body[data-bg="charcoal"]{--tj-grey:#8E8E8E;--tj-blue:#0A84FF;--tj-indigo:#5856D6;--tj-red:#FF1744;--tj-purple:#D500F9;--tj-green:#00C853;--tj-cyan:#00B8D4;--tj-orange:#FF6D00}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--tj-grey:#C7C7C7;--tj-blue:#40C4FF;--tj-indigo:#8C9EFF;--tj-red:#FF5252;--tj-purple:#EA80FC;--tj-green:#69F0AE;--tj-cyan:#18FFFF;--tj-orange:#FFAB40}}
+:root[data-theme="dark"],body[data-bg="blue"],body[data-bg="forest"],body[data-bg="warmdark"],body[data-bg="royal"]{--tj-grey:#C7C7C7;--tj-blue:#40C4FF;--tj-indigo:#8C9EFF;--tj-red:#FF5252;--tj-purple:#EA80FC;--tj-green:#69F0AE;--tj-cyan:#18FFFF;--tj-orange:#FFAB40}

@@ -101,7 +101,10 @@ On sura change the masked frame div showed as a solid text-colour box until the 
 IndoPak text ends with a font-specific ayah-number glyph in the Private Use Area (e.g. U+F500, U+F61E); hasNum/noNum now recognise it. Version 20261031t. Status: PASS (9c7d0d0)
 
 ## Tajweed v3 = exact app method (2026-10-31)
-Read app quran_unicode_tajweed_text.dart (read-only): with Tajweed ON the app renders QF text_uthmani_tajweed segments in the selected font (Uthmani/IndoPak/Naskh); Uthmani KFGQPC only: U+0672->U+0670, U+06DF->U+06E0 (1:1 presentation mapping); ayah marker = the source end segment. Website now does the same (IndoPak Tajweed enabled, no projection). Version 20261031u. Status: PENDING
+Read app quran_unicode_tajweed_text.dart (read-only): with Tajweed ON the app renders QF text_uthmani_tajweed segments in the selected font (Uthmani/IndoPak/Naskh); Uthmani KFGQPC only: U+0672->U+0670, U+06DF->U+06E0 (1:1 presentation mapping); ayah marker = the source end segment. Website now does the same (IndoPak Tajweed enabled, no projection). Version 20261031u. Status: PASS (777461d)
+
+## Tajweed colours brighter (2026-10-31)
+Vivid palette (light: #0A84FF blue, #FF1744 red, #D500F9 purple, #00C853 green, #00B8D4 cyan, #FF6D00 orange, #5856D6 indigo; brighter variants on dark themes). Same rule-to-colour mapping as app. Version 20261031v. Status: PENDING
 
 ## Next
 Stage 6: CNAME + GoDaddy DNS switch (verify /privacy first).
