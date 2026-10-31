@@ -4,8 +4,11 @@
   var n = parseInt(new URLSearchParams(location.search).get('n'), 10);
   var $ = function (id) { return document.getElementById(id); }, esc = SO.esc, root = document.documentElement;
   if (!(n >= 1 && n <= 114)) { location.replace('../read/'); return; }
-  var DEF = { mode: 'verse', script: 'uthmani', ar: 1.9, tr: 1, header: true, meaning: true, deco: true, bg: 'app', nav: 'surah', hide: true, compact: true, awake: false, auto: false, speed: 3 };
+  var DEF = { mode: 'verse', script: 'uthmani', ar: 1.9, tr: 1, header: true, meaning: true, deco: true, bg: 'app', nav: 'surah', hide: true, compact: true, awake: false, auto: false, speed: 3, lh: 2.3, pad: 48, tlay: 'ayah', nums: true, numsRight: false, showAr: true, showTr: true, showWbw: true };
   var S = Object.assign({}, DEF, SO.get('so.rs', {}));
+  S.bg = { cream: 'classic', sepia: 'sand', night: 'forest' }[S.bg] || S.bg; // old values -> app backgrounds
+  var HL = { yellow: '#FDE047', amber: '#FBBF24', orange: '#FB923C', red: '#F87171', pink: '#F472B6', purple: '#C084FC', indigo: '#818CF8', blue: '#60A5FA', teal: '#2DD4BF', green: '#4ADE80' };
+  function hl(k) { var c = SO.get('so.hl', {})[k]; return c && HL[c] ? ' style="--hl:' + HL[c] + '" data-hl="' + c + '"' : ''; }
   var ch, sura, idx, wbw = null, bism = null, AR = null, BI = null;
   // Quran script: naskh = Uthmani text in Amiri Quran; uthmani = QPC Hafs (KFGQPC); indopak = IndoPak Nastaleeq
   function loadScript() {
@@ -21,7 +24,8 @@
 
   // ---------- apply settings ----------
   function apply(rerender) {
-    root.style.setProperty('--ar-size', S.ar + 'rem'); root.style.setProperty('--tr-size', S.tr + 'rem');
+    root.style.setProperty('--ar-size', S.ar + 'rem'); root.style.setProperty('--tr-size', S.tr + 'rem'); root.style.setProperty('--lh', S.lh); root.style.setProperty('--pad', S.pad + 'px');
+    document.body.classList.toggle('nums-right', !!S.numsRight); document.body.classList.toggle('no-wbw', !S.showWbw);
     document.body.dataset.bg = S.bg;
     $('head').hidden = !S.header; $('s-meta').hidden = !S.meaning;
     var useImg = S.header && S.deco, withB = useImg && !!bism;
@@ -42,7 +46,7 @@
       else if (el.type === 'checkbox') el.checked = !!S[k];
       else el.value = S[k];
     });
-    document.querySelectorAll('[data-out]').forEach(function (o) { var k = o.getAttribute('data-out'); o.textContent = k === 'speed' ? S.speed : Math.round(S[k] * 16); });
+    document.querySelectorAll('[data-out]').forEach(function (o) { var k = o.getAttribute('data-out'); o.textContent = k === 'speed' ? S.speed : k === 'lh' ? (+S.lh).toFixed(1) : k === 'pad' ? S.pad + 'px' : Math.round(S[k] * 16); });
     if (ch) navLinks();
     if (rerender && sura) render();
   }
@@ -73,15 +77,16 @@
       document.body.dataset.mode = mode;
       if (mode === 'clean') {
         h = '<p class="flow" lang="ar" dir="rtl">' + AR.map(function (a, i) {
-          return '<span class="aya" id="' + (i + 1) + '" data-a="' + (i + 1) + '">' + esc(a) + ' ' + end(i + 1) + '</span>';
+          return '<span class="aya" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(n + ':' + (i + 1)) + '>' + esc(a) + (S.nums ? ' ' + end(i + 1) : '') + '</span>';
         }).join(' ') + '</p>';
       } else {
-        h = '<ol class="cards">' + AR.map(function (a, i) {
-          var k = n + ':' + (i + 1), top = '<div class="c-top"><span class="c-num">' + (i + 1) + '</span>' + marks(k) + '<button type="button" class="more" data-a="' + (i + 1) + '" aria-label="Ayah ' + k + ' actions">•••</button></div>';
+        var showAr = S.showAr || !S.showTr, showTr = S.showTr && mode !== 'clean';
+        h = '<ol class="cards tl-' + (mode === 'plus' ? 'ayah' : S.tlay) + '">' + AR.map(function (a, i) {
+          var k = n + ':' + (i + 1), top = '<div class="c-top">' + (S.nums ? '<span class="c-num">' + (i + 1) + '</span>' : '') + marks(k) + '<button type="button" class="more" data-a="' + (i + 1) + '" aria-label="Ayah ' + k + ' actions">•••</button></div>';
           var ar = mode === 'plus'
             ? '<div class="words" lang="ar" dir="rtl">' + wbw[i].map(function (w) { return '<span class="w"><span class="wa">' + esc(w[0]) + '</span><span class="wt" dir="ltr">' + esc(w[1] || '') + '</span></span>'; }).join('') + end(i + 1) + '</div>'
-            : '<p class="ar" lang="ar" dir="rtl">' + esc(a) + ' ' + end(i + 1) + '</p>';
-          return '<li class="card-a" id="' + (i + 1) + '" data-a="' + (i + 1) + '">' + top + ar + '<p class="tr">' + esc(sura.en[i]) + '</p></li>';
+            : '<p class="ar" lang="ar" dir="rtl">' + esc(a) + (S.nums ? ' ' + end(i + 1) : '') + '</p>';
+          return '<li class="card-a" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(k) + '>' + top + (showAr ? ar : '') + (showTr ? '<p class="tr">' + esc(sura.en[i]) + '</p>' : '') + '</li>';
         }).join('') + '</ol>';
       }
       if (S.mode === 'plus' && wbw === false) h = '<p class="empty">Word-by-word is not available yet. Showing Verse List.</p>' + h;
@@ -134,10 +139,16 @@
     $('sheet').querySelector('[data-a="bm"]').setAttribute('aria-pressed', SO.has('so.bm', cur));
     $('sheet').querySelector('[data-a="fav"]').setAttribute('aria-pressed', SO.has('so.fav', cur));
     $('sh-note').value = SO.get('so.notes', {})[cur] || '';
+    var hc = SO.get('so.hl', {})[cur] || ''; document.querySelectorAll('#sh-hl button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-c') === hc); });
     $('sheet').hidden = false;
   });
   $('sheet').addEventListener('click', function (e) {
     if (e.target === $('sheet') || e.target.closest('[data-close]')) { closeSheet(); return; }
+    var sw = e.target.closest('#sh-hl button');
+    if (sw) { var all = SO.get('so.hl', {}), c = sw.getAttribute('data-c');
+      if (!c || all[cur] === c) delete all[cur]; else all[cur] = c; SO.set('so.hl', all);
+      var el = $(cur.split(':')[1]); if (el) { if (all[cur]) { el.style.setProperty('--hl', HL[all[cur]]); el.setAttribute('data-hl', all[cur]); } else { el.style.removeProperty('--hl'); el.removeAttribute('data-hl'); } }
+      document.querySelectorAll('#sh-hl button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-c') === (all[cur] || '')); }); return; }
     var b = e.target.closest('[data-a]'); if (!b) return;
     var a = b.getAttribute('data-a');
     if (a === 'copy') {
@@ -164,12 +175,12 @@
       document.querySelectorAll('.mtabs button').forEach(function (b) { b.setAttribute('aria-selected', b === tab); });
       document.querySelectorAll('[data-pane]').forEach(function (s) { s.hidden = s.getAttribute('data-pane') !== p; }); return; }
     var seg = e.target.closest('.seg button');
-    if (seg) { var k = seg.parentNode.getAttribute('data-set'); S[k] = seg.getAttribute('data-v'); save(); if (k === 'script') loadScript().then(function () { apply(false); render(); }); else apply(k === 'mode'); return; }
+    if (seg) { var k = seg.parentNode.getAttribute('data-set'); S[k] = seg.getAttribute('data-v'); save(); if (k === 'script') loadScript().then(function () { apply(false); render(); }); else apply(k === 'mode' || k === 'tlay'); return; }
     if (e.target.id === 'reset') { S = Object.assign({}, DEF); save(); apply(true); }
   });
   $('settings').addEventListener('input', function (e) {
     var k = e.target.getAttribute('data-set'); if (!k) return;
-    S[k] = e.target.type === 'checkbox' ? e.target.checked : parseFloat(e.target.value); save(); apply(false);
+    S[k] = e.target.type === 'checkbox' ? e.target.checked : parseFloat(e.target.value); save(); apply(['nums', 'showAr', 'showTr'].indexOf(k) > -1);
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { if (!$('sheet').hidden) closeSheet(); $('settings').hidden = true; } });
 

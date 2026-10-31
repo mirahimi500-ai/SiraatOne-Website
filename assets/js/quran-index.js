@@ -3,16 +3,17 @@
   var QUICK = [67, 32, 18, 36, 55]; // same shortcuts as the SiraatOne Quran app
   var panel = document.getElementById('panel'), tools = document.getElementById('tools'), esc = SO.esc;
   var params = new URLSearchParams(location.search), ch, idx;
+  var SL = Object.assign({ view: 'list', fs: 'current', meaning: true, nums: true }, SO.get('so.sl', {})); // sura list view (as in the app)
   function link(s, a) { return '../sura/?n=' + s + (a > 1 ? '#' + a : ''); }
   function name(s) { return ch[s - 1].name_simple; }
   function row(href, num, title, sub, right) {
-    return '<li><a class="row" href="' + href + '"><span class="num"><span>' + num + '</span></span><span class="en"><b>' + title + '</b><span>' + sub + '</span></span>' + (right || '') + '</a></li>';
+    return '<li><a class="row" href="' + href + '">' + (num === '' ? '' : '<span class="num"><span>' + num + '</span></span>') + '<span class="en"><b>' + title + '</b><span>' + sub + '</span></span>' + (right || '') + '</a></li>';
   }
   function surahs(f) {
     var v = (f || '').trim(), n = v.toLowerCase().replace(/[-'’ ]/g, '');
     var items = ch.filter(function (c) { return !v || String(c.id) === v || c.name_simple.toLowerCase().replace(/[-'’ ]/g, '').indexOf(n) > -1 || c.meaning.toLowerCase().indexOf(n) > -1 || c.name_arabic.indexOf(v) > -1; });
-    return items.length ? '<ol class="list two">' + items.map(function (c) {
-      return row(link(c.id, 1), c.id, esc(c.name_simple), esc(c.meaning) + ' · ' + c.verses + ' ayahs · ' + (c.place === 'makkah' ? 'Makki' : 'Madani'),
+    return items.length ? '<ol class="list two sv-' + SL.view + ' fs-' + SL.fs + '">' + items.map(function (c) {
+      return row(link(c.id, 1), SL.nums ? c.id : '', esc(c.name_simple), (SL.meaning ? esc(c.meaning) + ' · ' : '') + c.verses + ' ayahs · ' + (c.place === 'makkah' ? 'Makki' : 'Madani'),
         '<span class="ar" lang="ar" dir="rtl">' + SO.sname(c.id, c.name_arabic) + '</span>');
     }).join('') + '</ol>' : empty('No sura found.');
   }
@@ -64,7 +65,17 @@
     tools.innerHTML = ''; var out;
     if (t === 'surah' || t === 'search') {
       tools.innerHTML = '<input class="search" id="f" type="search" autocomplete="off" placeholder="' + (t === 'surah' ? 'Filter by name, meaning or number' : 'Search the Quran (English or Arabic)') + '">';
+      if (t === 'surah') tools.innerHTML += '<div class="sl-opts">' +
+        '<select id="sl-view" aria-label="View"><option value="list">List</option><option value="small">Small icons</option><option value="cards">Large cards</option></select>' +
+        '<select id="sl-fs" aria-label="Font size"><option value="small">Small</option><option value="current">Normal</option><option value="large">Large</option><option value="xl">Extra large</option></select>' +
+        '<label><input type="checkbox" id="sl-meaning"> Meaning</label><label><input type="checkbox" id="sl-nums"> Numbers</label></div>';
       var f = document.getElementById('f'); if (t === 'search' && params.get('q')) f.value = params.get('q');
+      if (t === 'surah') {
+        var v = document.getElementById('sl-view'), z = document.getElementById('sl-fs'), m = document.getElementById('sl-meaning'), u = document.getElementById('sl-nums');
+        v.value = SL.view; z.value = SL.fs; m.checked = SL.meaning; u.checked = SL.nums;
+        var upd = function () { SL = { view: v.value, fs: z.value, meaning: m.checked, nums: u.checked }; SO.set('so.sl', SL); panel.innerHTML = surahs(f.value); };
+        [v, z, m, u].forEach(function (x) { x.addEventListener('change', upd); });
+      }
       var run = function () { var r = t === 'surah' ? surahs(f.value) : search(f.value); Promise.resolve(r).then(function (h) { if (tab === t) panel.innerHTML = h; }); };
       var tm; f.addEventListener('input', function () { clearTimeout(tm); tm = setTimeout(run, t === 'search' ? 300 : 0); });
       run(); if (t === 'search') f.focus(); return;
@@ -74,6 +85,7 @@
     else if (t === 'page') out = pages();
     else if (t === 'bookmarks') out = ayahList(SO.get('so.bm', []));
     else if (t === 'favorites') out = ayahList(SO.get('so.fav', []));
+    else if (t === 'highlights') out = ayahList(Object.keys(SO.get('so.hl', {})));
     else if (t === 'notes') { var n = SO.get('so.notes', {}); out = ayahList(Object.keys(n), n); }
     Promise.resolve(out).then(function (h) { if (tab === t) panel.innerHTML = h; });
   }

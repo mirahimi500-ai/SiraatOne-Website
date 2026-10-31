@@ -1,0 +1,313 @@
+# SiraatOne Quran - app audit (2026-10-31 11:08)
+dart files: 205
+
+## 1. Screens
+- app/welcome_language_screen.dart
+- features/duas_adhkar/presentation/duas_adhkar_screen.dart
+- features/duas_adhkar/settings/duas_adhkar_landing_view_dialog.dart
+- features/duas_adhkar/settings/duas_adhkar_settings_dialog.dart
+- features/favorites/presentation/favorites_screen.dart
+- features/global_search/presentation/global_search_screen.dart
+- features/hadith/presentation/hadeethenc_hadith_screen.dart
+- features/hadith/presentation/hadeethenc_source_screen.dart
+- features/hadith/presentation/hadith_collection_screen.dart
+- features/hadith/presentation/hadith_library_screen.dart
+- features/hadith/presentation/hadith_note_dialog.dart
+- features/hadith/presentation/hadith_reader_screen.dart
+- features/hadith/settings/hadith_settings_dialog.dart
+- features/home/presentation/customize_home_screen.dart
+- features/home/presentation/home_screen.dart
+- features/home/presentation/home_shortcut_picker_dialog.dart
+- features/home/presentation/home_widget_screen.dart
+- features/islamic_calendar/presentation/islamic_calendar_screen.dart
+- features/islamic_calendar/settings/islamic_calendar_settings_dialog.dart
+- features/more/presentation/more_screen.dart
+- features/names_of_allah/presentation/names_of_allah_screen.dart
+- features/names_of_allah/settings/names_of_allah_settings_dialog.dart
+- features/personal_notes/presentation/personal_note_editor_screen.dart
+- features/quran/audio/quran_audio_player_dialog.dart
+- features/quran/presentation/quran_screen.dart
+- features/quran/presentation/widgets/quran_downloaded_mushaf_page.dart
+- features/quran/presentation/widgets/quran_word_by_word_dialog.dart
+- features/quran/resources/quran_resource_download_dialog.dart
+- features/quran/settings/quran_settings_screen.dart
+- features/quran/study/quran_study_resource_dialog.dart
+- features/ramadan/presentation/ramadan_tools_screen.dart
+- features/tasbih/presentation/tasbih_screen.dart
+- features/tasbih/presentation/widgets/tasbih_dhikr_panel.dart
+- features/tasbih/settings/tasbih_settings_dialog.dart
+
+## 2. Saved settings keys (SharedPreferences)
+- $_perPrayerDeviceNamePrefix$suffix  (String  prayer_settings_controller.dart)
+- $_perPrayerDeviceUriPrefix$suffix  (String  prayer_settings_controller.dart)
+- $_perPrayerSoundModePrefix$suffix  (String  prayer_settings_controller.dart)
+- needsReview  (const  duas_adhkar_section_strings.dart)
+- needs-review  (const  duas_adhkar_topic_layout.dart)
+- prayer_adjustment_asr  (const  prayer_settings_controller.dart)
+- prayer_adjustment_dhuhr  (const  prayer_settings_controller.dart)
+- prayer_adjustment_fajr  (const  prayer_settings_controller.dart)
+- prayer_adjustment_isha  (const  prayer_settings_controller.dart)
+- prayer_adjustment_maghrib  (const  prayer_settings_controller.dart)
+- prayer_adjustment_sunrise  (const  prayer_settings_controller.dart)
+- prayer_calculation_method  (const  prayer_settings_controller.dart)
+- prayer_high_latitude_rule  (const  prayer_settings_controller.dart)
+- prayer_madhab  (const  prayer_settings_controller.dart)
+- quran.annotations.bookmarks.v1  (const  quran_annotation_controller.dart)
+- quran.annotations.bookmarks.v2  (const  quran_annotation_controller.dart)
+- quran.annotations.notes.v1  (const  quran_annotation_controller.dart)
+- quran.annotations.notes.v2  (const  quran_annotation_controller.dart)
+- quran.annotations.text_highlights.v2  (const  quran_annotation_controller.dart)
+- quran.annotations.text_highlights.v3  (const  quran_annotation_controller.dart)
+- quran.annotations.text_highlights.v4  (const  quran_annotation_controller.dart)
+- quran.annotations.word_bookmarks.v1  (const  quran_annotation_controller.dart)
+- quran.printed_mushaf.last_book_page.v1  (const  quran_printed_mushaf_manager.dart)
+- quran.reading_progress.remember_last_position.v1  (const  quran_reading_progress_controller.dart)
+- quran.reading_progress.v1  (const  quran_reading_progress_controller.dart)
+- quran.settings.auto_scroll_enabled.v1  (const  quran_settings_controller.dart)
+- quran.settings.auto_scroll_interval_seconds.v1  (const  quran_settings_controller.dart)
+- quran.settings.ayah_numbers_on_right.v1  (const  quran_settings_controller.dart)
+- quran.settings.clean_mushaf_layout.v1  (const  quran_settings_controller.dart)
+- quran.settings.hide_toolbar_scroll_up.v1  (const  quran_settings_controller.dart)
+- quran.settings.keep_screen_awake.v1  (const  quran_settings_controller.dart)
+- quran.settings.line_height.v1  (const  quran_settings_controller.dart)
+- quran.settings.mushaf_layout.v1  (const  quran_settings_controller.dart)
+- quran.settings.page_background.v1  (const  quran_settings_controller.dart)
+- quran.settings.printed_style.v1  (const  quran_settings_controller.dart)
+- quran.settings.reader_padding.v1  (const  quran_settings_controller.dart)
+- quran.settings.script_style.v1  (const  quran_settings_controller.dart)
+- quran.settings.show_arabic_in_translation.v1  (const  quran_settings_controller.dart)
+- quran.settings.show_ayah_numbers.v1  (const  quran_settings_controller.dart)
+- quran.settings.show_ayah_translation.v1  (const  quran_settings_controller.dart)
+- quran.settings.show_compact_status.v1  (const  quran_settings_controller.dart)
+- quran.settings.show_surah_header.v1  (const  quran_settings_controller.dart)
+- quran.settings.show_surah_header_decoration.v1  (const  quran_settings_controller.dart)
+- quran.settings.show_surah_meaning.v1  (const  quran_settings_controller.dart)
+- quran.settings.show_tafsir_translation.v1  (const  quran_settings_controller.dart)
+- quran.settings.show_tajweed_legend.v1  (const  quran_settings_controller.dart)
+- quran.settings.show_word_by_word_translation.v1  (const  quran_settings_controller.dart)
+- quran.settings.tajweed_enabled.v1  (const  quran_settings_controller.dart)
+- quran.settings.tap_to_pronounce.v1  (const  quran_settings_controller.dart)
+- quran.settings.text_size.v1  (const  quran_settings_controller.dart)
+- quran.settings.toolbar_navigation_mode.v1  (const  quran_settings_controller.dart)
+- quran.settings.translation_layout.v1  (const  quran_settings_controller.dart)
+- quran.settings.translation_text_size.v1  (const  quran_settings_controller.dart)
+- quran_surah_selection_font_size_v1  (const  quran_screen.dart)
+- quran_surah_selection_view_v1  (const  quran_screen.dart)
+- quran_surah_show_meaning_v1  (const  quran_screen.dart)
+- quran_surah_show_numbers_v1  (const  quran_screen.dart)
+- s1_resume_state_v1  (const  s1_resume_state.dart)
+- siraatone.app.bottom_taskbar.order.v1  (const  app_controller.dart)
+- siraatone.app.bottom_taskbar.shortcuts.v1  (const  app_controller.dart)
+- siraatone.app.bottom_taskbar.targets.v2  (const  app_controller.dart)
+- siraatone.app.reduce_motion.v1  (const  app_controller.dart)
+- siraatone.app.theme_preference.v1  (const  app_controller.dart)
+- siraatone.app.ui_language.v1  (String  hadeethenc_language_controller.dart)
+- siraatone.app.welcome_complete.v1  (const  app_controller.dart)
+- siraatone.app.welcome_setup_step.v1  (const  app_controller.dart)
+- siraatone.app_library.view_mode.v1  (const  app_library_view_mode.dart)
+- siraatone.duas_adhkar.annotations.v1  (const  duas_adhkar_annotation_controller.dart)
+- siraatone.duas_adhkar.arabic_font.v1  (const  duas_adhkar_settings_controller.dart)
+- siraatone.duas_adhkar.dua_text_size.v1  (const  duas_adhkar_settings_controller.dart)
+- siraatone.duas_adhkar.landing_view.v1  (const  duas_adhkar_landing_view_controller.dart)
+- siraatone.duas_adhkar.line_spacing_factor.v1  (const  duas_adhkar_settings_controller.dart)
+- siraatone.duas_adhkar.reader_side_margins.v1  (const  duas_adhkar_settings_controller.dart)
+- siraatone.duas_adhkar.show_annotation_indicators.v1  (const  duas_adhkar_settings_controller.dart)
+- siraatone.duas_adhkar.show_dua_numbers.v1  (const  duas_adhkar_settings_controller.dart)
+- siraatone.duas_adhkar.show_dua_numbers.v2  (const  duas_adhkar_settings_controller.dart)
+- siraatone.duas_adhkar.show_dua_titles.v1  (const  duas_adhkar_settings_controller.dart)
+- siraatone.duas_adhkar.show_highlight_background.v1  (const  duas_adhkar_settings_controller.dart)
+- siraatone.duas_adhkar.show_meaning.v1  (const  duas_adhkar_settings_controller.dart)
+- siraatone.duas_adhkar.show_transliteration.v1  (const  duas_adhkar_settings_controller.dart)
+- siraatone.duas_adhkar.tap_to_pronounce.v1  (const  duas_adhkar_settings_controller.dart)
+- siraatone.duas_adhkar.translation_language.v1  (const  duas_adhkar_settings_controller.dart)
+- siraatone.duas_adhkar.view.v1  (const  duas_adhkar_settings_controller.dart)
+- siraatone.favorites.v1  (const  favorites_controller.dart)
+- siraatone.hadith.arabic_size.v1  (const  hadith_settings_controller.dart)
+- siraatone.hadith.hadeethenc.translation_language.v1  (const  hadeethenc_language_controller.dart)
+- siraatone.hadith.installed.v1  (const  hadith_resource_manager.dart)
+- siraatone.hadith.saved.v1  (const  hadith_annotation_controller.dart)
+- siraatone.hadith.show_arabic.v1  (const  hadith_settings_controller.dart)
+- siraatone.hadith.show_metadata.v1  (const  hadith_settings_controller.dart)
+- siraatone.hadith.show_translation.v1  (const  hadith_settings_controller.dart)
+- siraatone.hadith.translation_size.v1  (const  hadith_settings_controller.dart)
+- siraatone.home.quick_access.favorites_migration.v1  (const  app_controller.dart)
+- siraatone.home.quick_access.notes_migration.v1  (const  app_controller.dart)
+- siraatone.home.quick_access.targets.v2  (const  app_controller.dart)
+- siraatone.home.quick_access.tips_migration.v1  (const  app_controller.dart)
+- siraatone.home.quick_access.v1  (const  app_controller.dart)
+- siraatone.home_widgets.enabled.v1  (const  home_widget_catalog.dart)
+- siraatone.home_widgets.reading_checkins.v1  (const  home_widget_reading_streak.dart)
+- siraatone.home_widgets.size.v1  (const  home_widget_size_preference.dart)
+- siraatone.home_widgets.words.learned.v1  (const  home_widget_quran_discovery.dart)
+- siraatone.islamic_calendar.adjustment_days.v1  (const  islamic_calendar_settings_controller.dart)
+- siraatone.islamic_calendar.fasted_dates.v1  (const  islamic_calendar_fast_marks_controller.dart)
+- siraatone.names_of_allah.arabic_font.v1  (const  names_of_allah_settings_controller.dart)
+- siraatone.names_of_allah.show_meaning.v1  (const  names_of_allah_settings_controller.dart)
+- siraatone.names_of_allah.show_numbers.v1  (const  names_of_allah_settings_controller.dart)
+- siraatone.names_of_allah.tap_to_pronounce.v1  (const  names_of_allah_settings_controller.dart)
+- siraatone.names_of_allah.view.v1  (const  names_of_allah_settings_controller.dart)
+- siraatone.prayer.auto_detect_location.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.auto_override.adjustment.asr.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.auto_override.adjustment.dhuhr.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.auto_override.adjustment.fajr.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.auto_override.adjustment.isha.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.auto_override.adjustment.maghrib.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.auto_override.adjustment.sunrise.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.auto_override.asr_method.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.auto_override.calculation_method.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.auto_override.daylight_saving.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.auto_override.high_latitude_method.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.auto_override.imsak_lead.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.auto_override.imsak_visibility.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.automatic_settings.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.dashboard_view.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.daylight_saving_mode.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.highlight_next.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.imsak_lead_minutes.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.location.city.v1  (const  prayer_location_controller.dart)
+- siraatone.prayer.location.country.v1  (const  prayer_location_controller.dart)
+- siraatone.prayer.location.latitude.v1  (const  prayer_location_controller.dart)
+- siraatone.prayer.location.longitude.v1  (const  prayer_location_controller.dart)
+- siraatone.prayer.location.source.v1  (const  prayer_location_controller.dart)
+- siraatone.prayer.location.timezone.v1  (const  prayer_location_controller.dart)
+- siraatone.prayer.location.utc_offset.v1  (const  prayer_location_controller.dart)
+- siraatone.prayer.location.zone_resolved.v1  (const  prayer_location_controller.dart)
+- siraatone.prayer.notifications.asr.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.notifications.dhuhr.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.notifications.enabled.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.notifications.fajr.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.notifications.isha.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.notifications.maghrib.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.notifications.pre_minutes.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.notifications.pre_reminder.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.notifications.sound.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.notifications.sound_mode.v2  (const  prayer_settings_controller.dart)
+- siraatone.prayer.notifications.vibration.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.show_awabeen.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.show_countdown.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.show_imsak.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.show_ishraq.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.show_location.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.show_method.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.show_qiyam.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.show_sunrise.v1  (const  prayer_settings_controller.dart)
+- siraatone.prayer.use_24_hour.v1  (const  prayer_settings_controller.dart)
+- siraatone.quran.active_audio.v1  (const  quran_resource_manager.dart)
+- siraatone.quran.active_tafsir.v1  (const  quran_resource_manager.dart)
+- siraatone.quran.active_translation.v1  (const  quran_resource_manager.dart)
+- siraatone.quran.audio.auto_next.v1  (const  quran_audio_player_controller.dart)
+- siraatone.quran.audio.repeat_surah.v1  (const  quran_audio_player_controller.dart)
+- siraatone.quran.audio.speed.v1  (const  quran_audio_player_controller.dart)
+- siraatone.quran.audio.volume.v1  (const  quran_audio_player_controller.dart)
+- siraatone.quran.basic_translation_language.v1  (const  app_controller.dart)
+- siraatone.quran.downloaded_resources.v1  (const  quran_resource_manager.dart)
+- siraatone.quran.script_packs.installed.v1  (const  quran_script_pack_manager.dart)
+- siraatone.quran.script_packs.installed.v2  (const  quran_script_pack_manager.dart)
+- siraatone.quran.script_packs.storage_schema.v2  (const  quran_script_pack_manager.dart)
+- siraatone.tasbih.confirm_reset.v1  (const  tasbih_settings_controller.dart)
+- siraatone.tasbih.goal_sound.v1  (const  tasbih_settings_controller.dart)
+- siraatone.tasbih.haptics.v1  (const  tasbih_settings_controller.dart)
+- siraatone.tasbih.named_dhikr.v1  (const  tasbih_dhikr_controller.dart)
+- siraatone.tasbih.show_statistics.v1  (const  tasbih_settings_controller.dart)
+- siraatone.tasbih.state.v1  (const  tasbih_controller.dart)
+
+## 3. Enums (options)
+- S1ThemePreference: system, light, dark, oled   [app_controller.dart]
+- QuickAccessShortcut: continueQuran, favorites, bookmarks, highlights, notes, generalSettings, namesOfAllah, duasAdhkar, duasHome, adhkarHome, duas, azkar, prayer, qibla, islamicCalendar, tasbih, hadith, downloads, readingProgress, audio, translations, tafsir, themeSettings, languageSettings, ramadanTools, tips   [app_controller.dart]
+- TaskbarDropResult: done, full, unsupported, failed   [app_controller.dart]
+- HomeShortcutKind: builtIn, surah, dua, settings, duaCategory, duaCollection   [home_shortcut_target.dart]
+- HomeSettingsDestination: home, theme, language, quran, prayer, qibla, islamicCalendar, duasAdhkar, namesOfAllah, tasbih, hadith   [home_shortcut_target.dart]
+- ResourceDelivery: bundledCore, downloadable, streamOrDownload   [resource_delivery.dart]
+- ResourceKind: canonicalQuran, quranMetadata, primaryQuranFont, exactMushafPack, optionalQuranFontPack, tajweedData, translation, tafsir, wordByWord, transliteration, recitationAudio, recitationTiming, islamicContent, visualAsset   [resource_kind.dart]
+- PrayerDisplayKind: fajr, sunrise, dhuhr, asr, maghrib, isha, qiyam   [prayer_day_schedule.dart]
+- PrayerNotificationSound: completeAzan, shortAzan, beepBeep, silent   [prayer_settings_controller.dart]
+- PrayerDashboardView: vertical, horizontal   [prayer_settings_controller.dart]
+- PrayerDaylightSavingMode: automatic, standardTime, daylightSaving   [prayer_settings_controller.dart]
+- PrayerLocationSource: detected, manual   [shared_location.dart]
+- DuaHighlight: gold, green, blue, rose   [duas_adhkar_annotation_controller.dart]
+- DuasAdhkarPronunciationResult: spoken, unavailable, failed   [duas_adhkar_pronunciation_controller.dart]
+- DuasAdhkarBrowseCategory: faithTawhidRelianceHereafter, praiseDhikrGratitude, forgivenessRepentanceMercy, guidanceKnowledgeSteadfastness, protectionFromEvilSpiritualHarm, distressFearTrialsCalamity, provisionDebtWorldlyNeeds, dailyRoutineSleepHomeClothing, purificationMasjidAdhan, foodDrinkFastingHospitality, familyMarriageChildrenParents, sicknessHealingDeathBereavement, travelHajjUmrahSacredRites, natureWeatherTime, mannersGatheringsBrotherhood   [duas_adhkar_browse_categories.dart]
+- DuaTextSourceKind: app, hadeethEnc, quranEnc   [duas_adhkar_content_translations.dart]
+- DuaReadingTopic: praise, mercy, guidance, blessings, steadfastness, remembrance, protection, family, forgiveness, repentance, hereafter, paradise, hellfire, comprehensive   [duas_adhkar_topic_layout.dart]
+- DuasAdhkarCollection: morningEvening, prophetic, quranic, prayerSalah   [duas_adhkar_models.dart]
+- AdhkarPeriod: morning, evening   [duas_adhkar_models.dart]
+- DuasAdhkarLandingViewMode: list, mediumIcons, largeIcons   [duas_adhkar_landing_view_controller.dart]
+- _DuasSettingsCategory: reading, textTranslation, appearance, audio   [duas_adhkar_settings_dialog.dart]
+- FavoriteItemKind: quranAyah, dua   [favorites_controller.dart]
+- GlobalSearchTarget: quran, prayer, qibla, islamicCalendar, namesOfAllah, duasAdhkar, tasbih, hadith, favorites, bookmarks, highlights, notes, settings, dua   [global_search_index.dart]
+- _HadithLibraryMode: collections, saved   [hadith_library_screen.dart]
+- HadithResourceState: idle, downloading, failed   [hadith_resource_manager.dart]
+- AppLibraryViewMode: list, largeIcons, smallIcons   [app_library_view_mode.dart]
+- _ShortcutGridAction: moveEarlier, moveLater, hide   [customize_home_screen.dart]
+- HomeWidgetId: islamicCalendar, tasbih, qibla, quranAudio, ayahDaily, lockScreenAyah, quranWords, readingStreak, hadithDaily, reflections, prayerTimes, namesOfAllah   [home_widget_catalog.dart]
+- HomeWidgetSize: small, medium, large   [home_widget_size_preference.dart]
+- _CalendarMoreAction: pickGregorianDate, aboutHijriDates   [islamic_calendar_screen.dart]
+- IslamicCalendarFastAction: fasted, clearFast   [islamic_calendar_fast_action_popup.dart]
+- _StorageArea: support, documents, cache   [main_settings_support_screens.dart]
+- NamesOfAllahPronunciationResult: spoken, unavailable, failed   [names_of_allah_pronunciation_controller.dart]
+- NamesOfAllahNameSurface: list, smallIcons, largeCards, homeWidget   [names_of_allah_name_typography.dart]
+- NamesOfAllahFontStatus: checking, notInstalled, downloading, ready, failed   [names_of_allah_font_manager.dart]
+- NamesOfAllahViewMode: list, smallIcons, largeCards   [names_of_allah_settings_controller.dart]
+- NamesOfAllahArabicFont: uthmani, indoPak   [names_of_allah_settings_controller.dart]
+- QuranAnnotationColor: yellow, amber, orange, red, pink, purple, indigo, blue, teal, green   [quran_annotation_controller.dart]
+- QuranTextScriptId: normal, uthmaniTajweed, wordByWord   [quran_annotation_controller.dart]
+- QuranWordTokenKind: word, verseEnd, pause, sajdah, rubElHizb, unknown   [quran_word_data_contract.dart]
+- QuranInitialBrowseSection: surah, bookmarks, highlights, notes   [quran_screen.dart]
+- _QuranBrowseMode: surah, page, juz, hizb, search, bookmarks, highlights, notes   [quran_screen.dart]
+- _SurahSelectionView: current, largeIcon   [quran_screen.dart]
+- _SurahMainView: list, smallIcons, largeCards   [quran_screen.dart]
+- _SurahSelectionFontSize: small, current, large, extraLarge   [quran_screen.dart]
+- _SurahSelectionMenuAction: viewCurrent, viewLargeIcon, fontSmall, fontCurrent, fontLarge, fontExtraLarge   [quran_screen.dart]
+- _SavedDuaAnnotationKind: bookmark, highlight, note   [quran_screen.dart]
+- _AyahQuickAction: play, favorite, translation, wordByWord, tafsir   [quran_screen.dart]
+- _AyahDisplayOption: ayahTranslation, wordByWord, tafsirThisAyah, tafsirAllAyahs   [quran_screen.dart]
+- QuranQuickAccessSection: surahs, bookmarks, highlights, notes, favorites   [quran_quick_access_overlay.dart]
+- QuranPrintedMushafInstallState: notDownloaded, downloading, downloaded, error   [quran_printed_mushaf_manager.dart]
+- QuranDownloadResourceKind: translation, tafsir, audio   [quran_resource_models.dart]
+- QuranResourceInstallState: notDownloaded, downloading, downloaded, updateAvailable, error   [quran_resource_models.dart]
+- QuranScriptPackId: indopak, uthmani, madina   [quran_script_pack_models.dart]
+- QuranScriptPackState: notInstalled, downloading, installed, error   [quran_script_pack_models.dart]
+- QuranScriptPackTajweedEngine: unicodeOverlay, qcfV4Embedded   [quran_script_pack_models.dart]
+- QuranSearchMatchKind: verseKey, surahName, quranText, translation   [quran_search_repository.dart]
+- QuranMushafLayout: clean, translation, printed   [quran_settings_controller.dart]
+- QuranCleanMushafLayout: pageByPage, noPaging   [quran_settings_controller.dart]
+- QuranTranslationLayout: columns, ayahByAyah, verseList   [quran_settings_controller.dart]
+- QuranPrintedStyle: indopak, uthmani, madina   [quran_settings_controller.dart]
+- QuranScriptStyle: indopak, uthmani, madina   [quran_settings_controller.dart]
+- QuranToolbarNavigationMode: surah, juz   [quran_settings_controller.dart]
+- QuranPageBackground: appTheme, classicPaper, geometricIvory, naturalFiber, subtleGreen, warmSand, nightCharcoal, deepBlue, forestDark, warmDark, royalNight   [quran_settings_controller.dart]
+- _QuranSettingsCategory: reading, textTranslation, appearance, audio, readingProgress, readingBehavior   [quran_settings_screen.dart]
+- _ReadingLayoutPreviewType: pageByPage, noPaging, columns, ayahByAyah   [quran_settings_screen.dart]
+- QuranStudyDialogMode: translation, tafsir   [quran_study_resource_dialog.dart]
+- QuranTajweedRuleKind: hamzatWasl, lamShamsiyyah, silent, maddNormal, maddPermissible, maddNecessary, maddObligatory, qalqalah, ikhfa, ikhfaShafawi, idghamShafawi, iqlab, idghamWithGhunnah, idghamWithoutGhunnah, idghamMutajanisayn, idghamMutaqaribayn, ghunnah, endMarker, unknown   [quran_tajweed_contract.dart]
+- RamadanCountdownPhase: beforeRamadan, beforeFajr, beforeIftar, afterIftar, finalIftarPassed   [ramadan_fasting_timeline.dart]
+- SavedItemsView: list, smallIcons, largeIcons   [saved_items_view_controller.dart]
+- TasbihIncrementResult: incremented, targetReached   [tasbih_controller.dart]
+- _ProfileAction: rename, delete   [tasbih_screen.dart]
+
+## 4. Settings / reader UI labels (Quran + settings + home files)
+- **features/duas_adhkar/settings/duas_adhkar_settings_dialog.dart**: IndoPak | Uthmani
+- **features/more/presentation/main_settings_support_screens.dart**: SiraatOne-Quran
+- **features/names_of_allah/settings/names_of_allah_settings_dialog.dart**: IndoPak | Uthmani
+- **features/quran/presentation/quran_reader_background_theme.dart**: App Theme | Classic Paper | Deep Blue | Forest Dark | Geometric Ivory | Natural Fiber | Night Charcoal | Royal Night | Subtle Green | Warm Dark | Warm Sand
+- **features/quran/printed/quran_printed_mushaf_catalog.dart**: Medina Mushaf
+- **features/quran/printed/quran_printed_mushaf_manager.dart**: Medina1 provenance manifest
+- **features/quran/resources/quran_resource_catalog_service.dart**: Mahmoud Khalil Al-Hussary | Mishary Rashid Alafasy
+- **features/quran/script_packs/quran_script_pack_catalog.dart**: Downloadable Nastaleeq • Tajweed ON/OFF | Downloadable QCF V4 • embedded Tajweed | Downloadable QPC Hafs • Tajweed ON/OFF | IndoPak | Mushaf al-Madina | Uthmanic
+
+## 5. Colours and themes
+- **app/theme/app_theme.dart**
+  colours: _seed=#166A4B
+- **features/quran/presentation/quran_reader_background_theme.dart**
+  names: App Theme | Classic Paper | Geometric Ivory | Natural Fiber | Subtle Green | Warm Sand | Night Charcoal | Deep Blue | Forest Dark | Warm Dark | Royal Night
+  colours: backgroundColor=#F7F7F4 inkColor=#1F2823 secondaryTextColor=#646C67 accentColor=#356B54 headerAccentColor=#356B54 menuSurfaceColor=#F7F7F4 menuSurfaceVariantColor=#EFEFEB recitationColor=#DCE9E1 dividerColor=#AAB1AD surfaceColor=#F7F7F4 selectionColor=#356B54 backgroundColor=#F6F0E2 overlayColor=#FFFDF8 inkColor=#1E2A22 secondaryTextColor=#5D655F accentColor=#2F6B53 headerAccentColor=#4C5852 menuSurfaceColor=#EEEFEA menuSurfaceVariantColor=#E1E5DF recitationColor=#DDE8DC dividerColor=#9AA79F surfaceColor=#F9F5EB selectionColor=#2F6B53 backgroundColor=#F3EFDE overlayColor=#FFFFFB inkColor=#212820 secondaryTextColor=#62685E accentColor=#47664D headerAccentColor=#4B5D78 menuSurfaceColor=#D8DCE4 menuSurfaceVariantColor=#C9CFDA recitationColor=#DCE6D8 dividerColor=#A0A493 surfaceColor=#F8F4E6 selectionColor=#47664D backgroundColor=#ECE0C5 overlayColor=#FFF8E8 inkColor=#312B22 secondaryTextColor=#6B604F accentColor=#6D5B3F headerAccentColor=#4B6654 menuSurfaceColor=#ECEFE9 menuSurfaceVariantColor=#DFE5DD recitationColor=#E4D9BE dividerColor=#A99573 surfaceColor=#F2E7D0 selectionColor=#6D5B3F backgroundColor=#F0F2E4 overlayColor=#F8FFF7 inkColor=#203128 secondaryTextColor=#5D6D64 accentColor=#3C6A53 headerAccentColor=#70663A menuSurfaceColor=#EDE8D0 menuSurfaceVariantColor=#DFD6B3 recitationColor=#D7E7DB dividerColor=#91A396 surfaceColor=#F3F6EA selectionColor=#3C6A53 backgroundColor=#E5CC9F
+
+## 6. Fonts (pubspec + catalogs)
+- - family: SurahNameV2
+- **features/names_of_allah/resources/names_of_allah_font_manager.dart**: UthmanicHafs1Ver18.ttf | indopak-nastaleeq-waqf-lazim-v4.2.1.ttf
+- **features/quran/script_packs/quran_script_pack_catalog.dart**: IndoPak | Downloadable Nastaleeq • Tajweed ON/OFF | S1PackIndopakNastaleeq | Uthmanic | Downloadable QPC Hafs • Tajweed ON/OFF | S1PackUthmanicHafs | Mushaf al-Madina | Downloadable QCF V4 • embedded Tajweed | QCFV4
+
+## 7. Default values (settings controllers)
+- **core/islamic_time/prayer_settings_controller.dart**: defaultCalculationMethod='North America (ISNA)'
+- **features/duas_adhkar/settings/duas_adhkar_settings_controller.dart**: defaultDuaTextSize=22 | defaultLineSpacingFactor=1.0 | defaultReaderSideMargins=14
+- **features/quran/settings/quran_settings_controller.dart**: defaultQuranTextSize=31 | defaultQuranLineHeight=2.0 | defaultReaderHorizontalPadding=16 | defaultTranslationTextSize=16 | defaultAutoScrollIntervalSeconds=3.0

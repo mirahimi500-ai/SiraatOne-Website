@@ -63,7 +63,14 @@ Font: QUL "Surah name font v2" (qul.tarteel.ai/resources/font/455), ligature sur
 Fonts (same as app, SHA-256 verified): Uthmani = KFGQPC UthmanicHafs1Ver18 + text_qpc_hafs; IndoPak = indopak-nastaleeq-waqf-lazim-v4.2.1 + text_indopak_nastaleeq; Naskh = Amiri Quran + text_uthmani. Script: scripts/fetch-scripts.ps1 -> assets/data/qpc, assets/data/indopak. Mushaf+ word-by-word stays Naskh. Frame PNGs used as CSS mask -> colour follows theme (green light, gold dark/night). Mushaf al-Madina QCF V4 (604 page fonts) deferred to 6b with page-by-page. Version 20261031e. Status: PASS (721f531; qpc/indopak 114 each, fonts SHA = app)
 
 ## Stage 6a-8 — Frame colour = text colour (2026-10-31)
-Frame + Bismillah image follow the text colour (dark on light themes, light on dark). PNGs confirmed transparent (corner alpha 0). Fallback to original-colour image if browser lacks CSS mask. Version 20261031f. Status: PENDING
+Frame + Bismillah image follow the text colour (dark on light themes, light on dark). PNGs confirmed transparent (corner alpha 0). Fallback to original-colour image if browser lacks CSS mask. Version 20261031f. Status: PASS (92ffc7c)
+
+## Stage 7 — App audit (2026-10-31)
+Read-only audit of C:\SiraatOne-Quran (205 dart files, 34 screens, ~170 settings keys, ~70 enums); report deleted after reading. Approved: A reader parity, B audio, C site themes + home, D tools + content. Prayer/Ramadan/Qibla later (needs location + privacy update).
+
+## Stage A1 — Reader parity part 1 (2026-10-31)
+11 app page backgrounds (exact colours from quran_reader_background_theme.dart), translation layouts Columns/Ayah by Ayah/Verse List, show Arabic/translation/word-by-word toggles, show ayah numbers + numbers on right, line height, side margins, ayah highlights (10 colours, app enum names) + Highlights tab, sura list views (list/small icons/large cards) + font size + meaning/numbers. Headless test: all features work, no JS errors. Version 20261031g. Status: PENDING
+Next A2: page-by-page layout, Tajweed colours + legend.
 
 ## Next
 Stage 6: CNAME + GoDaddy DNS switch (verify /privacy first).
