@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SiraatOne — The Holy Quran</title>
+<meta name="description" content="SiraatOne makes Islamic apps for Android: SiraatOne Quran for phone and tablet, and SiraatOne Azan for TV and tablet. No accounts, no ads, no tracking.">
+<meta name="theme-color" content="#0F6B4F">
+<link rel="icon" href="assets/img/logo.png">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap">
+    <div class="bar">
+      <a class="logo" href="./"><img src="assets/img/logo.png" alt="" width="36" height="36">SiraatOne</a>
+      <div class="bar-actions">
+        <button id="theme-toggle" class="icon-btn" type="button" aria-label="Switch theme">☾</button>
+        <button id="menu-btn" class="icon-btn menu-btn" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Menu">☰</button>
+      </div>
+    </div>
+    <nav id="site-nav" class="nav" aria-label="Main">
+      <a href="./" aria-current="page">Quran</a>
+      <a href="quran/">Quran app</a>
+      <a href="azan/">Azan app</a>
+      <a href="testers/">Become a Tester</a>
+      <a href="support/">Support</a>
+      <a href="privacy/">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <section class="hero hero-sm">
+    <h1>The Holy Quran</h1>
+    <p>Choose a sura to begin.</p>
+    <label class="sr" for="sura-search">Search sura</label>
+    <input id="sura-search" class="search" type="search" placeholder="Search by name or number" autocomplete="off">
+  </section>
+
+  <section aria-label="Sura list" class="sura-sec">
+    <ol id="sura-list" class="sura-list"><li class="muted">Loading suras…</li></ol>
+    <p class="muted small">Sura names and verse counts: Quran Foundation (api.quran.com).</p>
+  </section>
+
+  <section aria-labelledby="apps-h">
+    <h2 id="apps-h">Get the SiraatOne apps</h2>
+    <div class="grid grid-2">
+      <article class="card"><span class="tag">Android · Phone &amp; tablet</span><h3>SiraatOne Quran</h3>
+        <p class="muted">Translations, recitations, bookmarks, notes, Duas and Adhkar.</p><a class="btn btn-primary" href="quran/">Learn more</a></article>
+      <article class="card"><span class="tag">Android · TV &amp; tablet</span><h3>SiraatOne Azan</h3>
+        <p class="muted">Prayer times and Azan on a large screen.</p><a class="btn btn-primary" href="azan/">Learn more</a></article>
+    </div>
+    <p class="muted small">No accounts, no ads, no tracking. <a href="privacy/">Privacy policy</a> · <a href="testers/">Become a Tester</a></p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>© <span id="year">2026</span> SiraatOne · <a href="mailto:siraatone1@gmail.com">siraatone1@gmail.com</a></span>
+    <nav aria-label="Footer"><a href="support/">Support</a><a href="privacy/">Privacy</a></nav>
+  </div>
+</footer>
+<script src="assets/js/site.js" defer></script>
+<script src="assets/js/suras.js" defer></script>
+</body>
+</html>
