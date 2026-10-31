@@ -60,8 +60,6 @@
     });
   }
   function save() { SO.set('so.rs', S); }
-  (function () { var d = new Date(), k = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2), L = SO.get('so.days', []);
-    if (L.indexOf(k) < 0) { L.push(k); SO.set('so.days', L.slice(-400)); } })(); // reading streak (this browser only)
   function arNum(i) { return Number(i).toLocaleString('ar-EG'); }
   // QPC Hafs (Arabic-Indic digits) / IndoPak (font glyph in Private Use Area U+E000-F8FF) texts already end with their own ayah-number glyph: never add a second one
   // Bismillah above a sura = text of 1:1 without its ayah-number glyph (it is not an ayah of that sura)

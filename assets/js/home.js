@@ -51,28 +51,3 @@
   document.addEventListener('click', function (e) { var b = e.target.closest('[data-add]'); if (!b) return; order.push(b.getAttribute('data-add')); SO.set('so.qa', order); tools(true); draw(); });
   draw();
 })();
-// ----- Ayah of the day: same verse for everyone on a given date (verse number from the date), verified data, with reference.
-(function () {
-  var box = document.getElementById('w-ayah'); if (!box) return;
-  SO.j('assets/data/chapters.json').then(function (d) {
-    var ch = d.chapters, total = ch.reduce(function (t, c) { return t + c.verses; }, 0), now = new Date(), day = Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 864e5);
-    var k = (day * 2654435761 % total + total) % total, s = 0;
-    while (k >= ch[s].verses) { k -= ch[s].verses; s++; }
-    var sn = s + 1, a = k + 1;
-    return SO.j('assets/data/sura/' + sn + '.json').then(function (x) {
-      document.getElementById('wa-ar').textContent = x.ar[a - 1];
-      document.getElementById('wa-tr').textContent = x.en[a - 1] + ' — ' + ch[s].name_simple + ' ' + sn + ':' + a;
-      document.getElementById('wa-link').href = 'sura/?n=' + sn + '#' + a;
-    });
-  }).catch(function () { box.hidden = true; });
-})();
-// ----- Reading streak: consecutive days with Quran reading in this browser.
-(function () {
-  var days = SO.get('so.days', []), set = {}; days.forEach(function (d) { set[d] = 1; });
-  var dkey = function (dt) { return dt.getFullYear() + '-' + ('0' + (dt.getMonth() + 1)).slice(-2) + '-' + ('0' + dt.getDate()).slice(-2); };
-  var d = new Date(), n = 0; if (!set[dkey(d)]) d.setDate(d.getDate() - 1);
-  while (set[dkey(d)]) { n++; d.setDate(d.getDate() - 1); }
-  var e = document.getElementById('ws-n'); if (!e) return;
-  e.textContent = n + (n === 1 ? ' day' : ' days');
-  document.getElementById('ws-t').textContent = n ? (set[dkey(new Date())] ? 'You read today. Keep it up!' : 'Read today to keep your streak.') : 'Open the Quran today to start your streak.';
-})();
