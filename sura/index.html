@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sura — SiraatOne</title>
+<meta name="description" content="Read the Holy Quran: Uthmani Arabic text with English translation.">
+<meta name="theme-color" content="#2E7D32">
+<link rel="icon" href="../assets/img/logo.png">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap">
+    <div class="bar">
+      <a class="logo" href="../"><img src="../assets/img/logo.png" alt="" width="36" height="36">SiraatOne</a>
+      <div class="bar-actions">
+        <button id="theme-toggle" class="icon-btn" type="button" aria-label="Switch theme">☾</button>
+        <button id="menu-btn" class="icon-btn menu-btn" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Menu">☰</button>
+      </div>
+    </div>
+    <nav id="site-nav" class="nav" aria-label="Main">
+      <a href="../">Quran</a>
+      <a href="../quran/">Quran app</a>
+      <a href="../azan/">Azan app</a>
+      <a href="../testers/">Become a Tester</a>
+      <a href="../support/">Support</a>
+      <a href="../privacy/">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap mushaf reader">
+  <nav class="reader-nav" aria-label="Sura navigation">
+    <a href="../">← All suras</a>
+    <div class="tools">
+      <button type="button" class="chip" id="tr-toggle" aria-pressed="true">English</button>
+      <button type="button" class="chip" id="fs-down" aria-label="Smaller Arabic text">A−</button>
+      <button type="button" class="chip" id="fs-up" aria-label="Larger Arabic text">A+</button>
+    </div>
+  </nav>
+  <header class="sura-head">
+    <p class="ar-title" id="s-ar" lang="ar" dir="rtl"></p>
+    <h1 id="s-en">Loading…</h1>
+    <p class="sub" id="s-meta"></p>
+    <div class="rule" aria-hidden="true"><span></span></div>
+    <p class="bismillah" id="s-bism" lang="ar" dir="rtl" hidden></p>
+  </header>
+  <ol id="ayat" class="ayat"></ol>
+  <nav class="pager" aria-label="Previous and next sura"><a id="prev" hidden></a><a id="next" hidden></a></nav>
+  <p class="source">Arabic text (Uthmani): Quran Foundation. English translation: Saheeh International, via Quran Foundation.</p>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>© <span id="year">2026</span> SiraatOne · <a href="mailto:siraatone1@gmail.com">siraatone1@gmail.com</a></span>
+    <nav aria-label="Footer"><a href="../support/">Support</a><a href="../privacy/">Privacy</a></nav>
+  </div>
+</footer>
+<script src="../assets/js/site.js" defer></script>
+<script src="../assets/js/reader.js" defer></script>
+</body>
+</html>
