@@ -1,11 +1,11 @@
-# Builds assets/data/chapters.json from the Quran Foundation API (one-time, no runtime calls from the site).
+﻿# Builds assets/data/chapters.json from the Quran Foundation API (one-time, no runtime calls from the site).
 # Validates: 114 suras, 6236 verses total, ids 1..114 in order.
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 $out  = Join-Path $root 'assets\data\chapters.json'
 $r = Invoke-RestMethod 'https://api.quran.com/api/v4/chapters?language=en'
 $ch = $r.chapters | ForEach-Object {
-  [ordered]@{ id=[int]$_.id; name_simple=$_.name_simple; name_arabic=$_.name_arabic;
+  [pscustomobject]@{ id=[int]$_.id; name_simple=$_.name_simple; name_arabic=$_.name_arabic;
               meaning=$_.translated_name.name; verses=[int]$_.verses_count; place=$_.revelation_place }
 }
 $total = ($ch | Measure-Object -Property verses -Sum).Sum
@@ -17,3 +17,4 @@ $doc = [ordered]@{ source='Quran Foundation API v4 (api.quran.com/api/v4/chapter
 [IO.File]::WriteAllText($out, ($doc | ConvertTo-Json -Depth 4), (New-Object Text.UTF8Encoding $false))
 Write-Host "PASS: 114 suras, 6236 verses -> $out"
 Write-Host ("Check: 1={0} | 2={1} | 114={2}" -f $ch[0].name_simple, $ch[1].name_simple, $ch[113].name_simple)
+
