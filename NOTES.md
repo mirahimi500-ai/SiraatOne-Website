@@ -27,3 +27,6 @@ Status: PENDING local check
 ## Next
 Stage 3: GitHub repo + Pages preview on github.io.
 Stage 4: CNAME + GoDaddy DNS switch (verify /privacy first).
+
+## Stage 3 — GitHub Pages live (2026-10-30)
+URL: https://mirahimi500-ai.github.io/SiraatOne-Website/ | Status: PASS (HTTP 200)
