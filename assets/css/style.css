@@ -288,3 +288,11 @@ body{background:var(--bg)}
 .sl input{width:100%;accent-color:var(--brand);margin-top:8px}
 .tg{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-size:.95rem}
 .tg input{width:20px;height:20px;accent-color:var(--brand)}
+/* ===== Edge-to-edge on computers (full browser width) ===== */
+.wrap,.rd-wrap,.doc{max-width:none}
+.wrap{padding-left:clamp(16px,3vw,48px);padding-right:clamp(16px,3vw,48px)}
+.doc{padding-left:clamp(16px,3vw,48px);padding-right:clamp(16px,3vw,48px)}
+.refs{max-width:none}
+@media (min-width:1400px){.list.two{grid-template-columns:1fr 1fr 1fr}.list.grid3{grid-template-columns:repeat(4,1fr)}.name-grid{grid-template-columns:repeat(6,1fr)}.tiles{grid-template-columns:repeat(4,1fr)}}
+.status{padding-left:clamp(16px,3vw,48px);padding-right:clamp(16px,3vw,48px)}
+.bottombar{padding-left:clamp(14px,3vw,48px);padding-right:clamp(14px,3vw,48px)}

@@ -44,8 +44,11 @@ Files: names/index.html, assets/js/names.js, style.css, assets/data/names99.json
 
 ## Stage 6a — Reader v2, app-style (2026-10-31)
 Modes: Clean Mushaf (flowing Arabic), Mushaf+ (word-by-word + translation), Verse List. Settings modal (Reading/Text/Appearance/Behavior): sizes, header/meaning/decoration, background (app/cream/sepia/night), prev/next by Surah or Juz, hide toolbar on scroll, compact status, keep screen awake, auto scroll. Ayah action sheet (bookmark/favorite/copy/note). Original SVG header frame (app frame + Surah Name font not reused: source/license unknown).
-Files: sura/index.html, assets/js/reader.js, style.css, scripts/fetch-wbw.ps1, assets/data/wbw/*.json (generated). Headless test: no JS errors, bookmark saved. Status: PENDING
+Files: sura/index.html, assets/js/reader.js, style.css, scripts/fetch-wbw.ps1, assets/data/wbw/*.json (generated). Headless test: no JS errors, bookmark saved. wbw check 1:1 = app glosses. Status: PASS (b837a55)
 Later (6b): Page-by-page layout, side quick panel, Tajweed/IndoPak scripts. Printed version skipped.
+
+## Stage 6a-2 — Edge-to-edge layout on computers (2026-10-31)
+style.css: full browser width with side padding; 3-col sura list / 6-col names on wide screens. Status: PENDING
 
 ## Next
 Stage 6: CNAME + GoDaddy DNS switch (verify /privacy first).
