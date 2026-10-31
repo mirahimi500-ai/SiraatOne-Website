@@ -44,6 +44,10 @@
   (function () { var d = new Date(), k = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2), L = SO.get('so.days', []);
     if (L.indexOf(k) < 0) { L.push(k); SO.set('so.days', L.slice(-400)); } })(); // reading streak (this browser only)
   function arNum(i) { return Number(i).toLocaleString('ar-EG'); }
+  // QPC Hafs / IndoPak texts already end with their own ayah-number glyph: never add a second one
+  // Bismillah above a sura = text of 1:1 without its ayah-number glyph (it is not an ayah of that sura)
+  function noNum(a) { return (a || '').replace(/\s*[\u06DD]?[\u0660-\u0669\u06F0-\u06F9]+\s*$/, ''); }
+  function hasNum(a) { return /[\u0660-\u0669\u06F0-\u06F9]\s*$/.test(a || ''); }
   function end(i) { return '<span class="end">﴿' + arNum(i) + '﴾</span>'; }
 
   // ---------- apply settings ----------
@@ -115,9 +119,9 @@
       var b1 = all[all.length - 1].ar[0], h = legend();
       segs.forEach(function (g, i) {
         var s = g[0], d = all[i];
-        if (g[1] === 1) h += '<div class="pg-title">' + SO.sname(s, 'سورة ' + ch[s - 1].name_arabic) + '</div>' + (s !== 1 && s !== 9 ? '<p class="bismillah" lang="ar" dir="rtl">' + fmt(b1, 1, 0) + '</p>' : '');
+        if (g[1] === 1) h += '<div class="pg-title">' + SO.sname(s, 'سورة ' + ch[s - 1].name_arabic) + '</div>' + (s !== 1 && s !== 9 ? '<p class="bismillah" lang="ar" dir="rtl">' + fmt(noNum(b1), 1, 0) + '</p>' : '');
         h += '<p class="flow" lang="ar" dir="rtl">';
-        for (var a = g[1]; a <= g[2]; a++) h += '<span class="aya" id="a' + s + '_' + a + '" data-s="' + s + '" data-a="' + a + '"' + hl(s + ':' + a) + '>' + fmt(d.ar[a - 1], s, a - 1) + (S.nums ? ' ' + end(a) : '') + '</span> ';
+        for (var a = g[1]; a <= g[2]; a++) h += '<span class="aya" id="a' + s + '_' + a + '" data-s="' + s + '" data-a="' + a + '"' + hl(s + ':' + a) + '>' + fmt(d.ar[a - 1], s, a - 1) + (S.nums && !hasNum(d.ar[a - 1]) ? ' ' + end(a) : '') + '</span> ';
         h += '</p>';
       });
       $('body').innerHTML = '<div class="mpage">' + h + '<div class="pg-num">' + arNum(P) + '</div></div>';
@@ -134,11 +138,11 @@
     var go = S.mode === 'plus' && !wbw ? SO.j('../assets/data/wbw/' + n + '.json').then(function (d) { wbw = d.w; }).catch(function () { wbw = false; }) : Promise.resolve();
     go.then(function () {
       var c = ch[n - 1], h = '', mode = S.mode === 'plus' && !wbw ? 'verse' : S.mode;
-      $('s-bism').innerHTML = BI ? fmt(BI, 1, 0) : '';
+      $('s-bism').innerHTML = BI ? fmt(noNum(BI), 1, 0) : '';
       document.body.dataset.mode = mode;
       if (mode === 'clean') {
         h = '<p class="flow" lang="ar" dir="rtl">' + AR.map(function (a, i) {
-          return '<span class="aya" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(n + ':' + (i + 1)) + '>' + fmt(a, n, i) + (S.nums ? ' ' + end(i + 1) : '') + '</span>';
+          return '<span class="aya" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(n + ':' + (i + 1)) + '>' + fmt(a, n, i) + (S.nums && !hasNum(a) ? ' ' + end(i + 1) : '') + '</span>';
         }).join(' ') + '</p>';
       } else {
         var showAr = S.showAr || !S.showTr, showTr = S.showTr && mode !== 'clean';
@@ -146,7 +150,7 @@
           var k = n + ':' + (i + 1), top = '<div class="c-top">' + (S.nums ? '<span class="c-num">' + (i + 1) + '</span>' : '') + marks(k) + '<button type="button" class="more" data-a="' + (i + 1) + '" aria-label="Ayah ' + k + ' actions">•••</button></div>';
           var ar = mode === 'plus'
             ? '<div class="words" lang="ar" dir="rtl">' + wbw[i].map(function (w, j) { return '<span class="w" data-w="' + (j + 1) + '" data-wa="' + (i + 1) + '"><span class="wa">' + esc(w[0]) + '</span><span class="wt" dir="ltr">' + esc(w[1] || '') + '</span></span>'; }).join('') + end(i + 1) + '</div>'
-            : '<p class="ar" lang="ar" dir="rtl">' + fmt(a, n, i) + (S.nums ? ' ' + end(i + 1) : '') + '</p>';
+            : '<p class="ar" lang="ar" dir="rtl">' + fmt(a, n, i) + (S.nums && !hasNum(a) ? ' ' + end(i + 1) : '') + '</p>';
           return '<li class="card-a" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(k) + '>' + top + (showAr ? ar : '') + (showTr ? '<p class="tr">' + esc(sura.en[i]) + '</p>' : '') + '</li>';
         }).join('') + '</ol>';
       }

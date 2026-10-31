@@ -91,9 +91,9 @@ assets/data/duas.json generated from the app's catalog (duas_adhkar_catalog.dart
 ## Stage D3 — Hadith (2026-10-31)
 /hadith/: live HadeethEnc API (same endpoints as app hadeethenc_api_client.dart: categories/list, hadeeths/list, hadeeths/one; en + ar). CORS checked: Access-Control-Allow-Origin * (status 200). Category tree + paged lists + detail (Arabic, English, grade, reported by, explanation, benefits, link to source), Saved, options (Arabic/translation/metadata/size). All text escaped. Privacy page mentions HadeethEnc. Version 20261031p. Status: PENDING
 
+## Fix — double ayah numbers (2026-10-31)
+QPC Hafs / IndoPak texts already end with their own ayah-number glyph; reader no longer adds a second marker (hasNum). Bismillah above suras shows 1:1 without its number glyph (noNum). Version 20261031q. Status: PENDING
+
 ## Next
 Stage 6: CNAME + GoDaddy DNS switch (verify /privacy first).
 Rule: delete temp/draft/unneeded files after each step and after any failure.
-
-## Stage 8 - Final check (2026-10-31)
-Live check: 42 pages/files, 0 problems. Status: PASS (manual phone/PC check PENDING)
