@@ -7,8 +7,8 @@
 <meta name="description" content="Read the Holy Quran online with translation. Save your place, bookmarks and notes. From the makers of the SiraatOne apps.">
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="assets/img/logo.png">
-<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
-<link rel="stylesheet" href="assets/css/style.css?v=20261031l">
+<script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
+<link rel="stylesheet" href="assets/css/style.css?v=20261031m">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -53,17 +53,23 @@
   </section>
 
   <section aria-labelledby="qa-h">
-    <h2 id="qa-h" class="sec-h">Quick access</h2>
+    <div class="sec-row"><h2 id="qa-h" class="sec-h">Quick access</h2><button type="button" class="btn btn-ghost sm" id="qa-edit">Edit</button></div>
     <div class="tiles">
-      <a class="tile" href="read/" ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5.5 4 8.5 4 12 6c3.5-2 6.5-2 9-.5V19c-2.5-1.5-5.5-1.5-9 .5-3.5-2-6.5-2-9-.5z"/><path d="M12 6v13.5"/></svg><b>Read Quran</b><span>114 suras with translation</span></a>
-      <a class="tile" href="" data-continue><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5 3.5-5 3.5z"/></svg><b>Continue</b><span>Pick up where you left</span></a>
-      <a class="tile" href="read/#favorites" ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><b>Favorites</b><span>Ayahs you love</span></a>
-      <a class="tile" href="read/#bookmarks" ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h10v17l-5-4-5 4z"/></svg><b>Bookmarks</b><span>Saved places</span></a>
-      <a class="tile" href="read/#notes" ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="4" width="15" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><b>Notes</b><span>Your reflections</span></a>
-      <a class="tile" href="names/" ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6z"/><path d="M18.5 15.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></svg><b>99 Names of Allah</b><span>With sourced meanings</span></a>
-      <a class="tile" href="quran/" data-app><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20c-3.5 0-6-2.2-6-5.5V8.5a1.5 1.5 0 0 1 3 0V13"/><path d="M12 20c3.5 0 6-2.2 6-5.5V8.5a1.5 1.5 0 0 0-3 0V13"/><path d="M9 13V5.5a1.5 1.5 0 0 1 3 0V12M12 12V5.5a1.5 1.5 0 0 1 3 0V13"/></svg><b>Duas & Adhkar</b><span>In the SiraatOne Quran app</span><em>App</em></a>
-      <a class="tile" href="azan/" data-app><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><b>Prayer times & Azan</b><span>In the SiraatOne Azan app</span><em>App</em></a>
+      <a class="tile" data-id="read" href="read/" ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5.5 4 8.5 4 12 6c3.5-2 6.5-2 9-.5V19c-2.5-1.5-5.5-1.5-9 .5-3.5-2-6.5-2-9-.5z"/><path d="M12 6v13.5"/></svg><b>Read Quran</b><span>114 suras with translation</span></a>
+      <a class="tile" data-id="continue" href="" data-continue><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5 3.5-5 3.5z"/></svg><b>Continue</b><span>Pick up where you left</span></a>
+      <a class="tile" data-id="favorites" href="read/#favorites" ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><b>Favorites</b><span>Ayahs you love</span></a>
+      <a class="tile" data-id="bookmarks" href="read/#bookmarks" ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h10v17l-5-4-5 4z"/></svg><b>Bookmarks</b><span>Saved places</span></a>
+      <a class="tile" data-id="highlights" href="read/#highlights"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg><b>Highlights</b><span>Coloured ayahs</span></a>
+      <a class="tile" data-id="notes" href="read/#notes" ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="4" width="15" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><b>Notes</b><span>Your reflections</span></a>
+      <a class="tile" data-id="names" href="names/" ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6z"/><path d="M18.5 15.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></svg><b>99 Names of Allah</b><span>With sourced meanings</span></a>
+      <a class="tile" data-id="duas" href="quran/" data-app><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20c-3.5 0-6-2.2-6-5.5V8.5a1.5 1.5 0 0 1 3 0V13"/><path d="M12 20c3.5 0 6-2.2 6-5.5V8.5a1.5 1.5 0 0 0-3 0V13"/><path d="M9 13V5.5a1.5 1.5 0 0 1 3 0V12M12 12V5.5a1.5 1.5 0 0 1 3 0V13"/></svg><b>Duas & Adhkar</b><span>In the SiraatOne Quran app</span><em>App</em></a>
+      <a class="tile" data-id="prayer" href="azan/" data-app><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><b>Prayer times & Azan</b><span>In the SiraatOne Azan app</span><em>App</em></a>
     </div>
+  </section>
+
+  <section class="widgets" aria-label="Today">
+    <article class="card wcard" id="w-ayah"><small>Ayah of the day</small><p class="w-ar" lang="ar" dir="rtl" id="wa-ar"></p><p class="w-tr" id="wa-tr"></p><a id="wa-link" href="read/">Read in context →</a></article>
+    <article class="card wcard" id="w-streak"><small>Reading streak</small><p class="w-big" id="ws-n">0</p><p class="w-tr" id="ws-t">Open the Quran today to start your streak.</p></article>
   </section>
 
   <section class="apps-band" aria-label="SiraatOne apps">
@@ -78,8 +84,8 @@
     <nav aria-label="Footer"><a href="testers/">Become a Tester</a><a href="support/">Support</a><a href="privacy/">Privacy</a></nav>
   </div>
 </footer>
-<script src="assets/js/site.js?v=20261031l" defer></script>
-<script src="assets/js/lib.js?v=20261031l" defer></script>
-<script src="assets/js/home.js?v=20261031l" defer></script>
+<script src="assets/js/site.js?v=20261031m" defer></script>
+<script src="assets/js/lib.js?v=20261031m" defer></script>
+<script src="assets/js/home.js?v=20261031m" defer></script>
 </body>
 </html>
