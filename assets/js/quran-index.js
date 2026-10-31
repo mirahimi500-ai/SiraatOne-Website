@@ -13,7 +13,7 @@
     var items = ch.filter(function (c) { return !v || String(c.id) === v || c.name_simple.toLowerCase().replace(/[-'’ ]/g, '').indexOf(n) > -1 || c.meaning.toLowerCase().indexOf(n) > -1 || c.name_arabic.indexOf(v) > -1; });
     return items.length ? '<ol class="list two">' + items.map(function (c) {
       return row(link(c.id, 1), c.id, esc(c.name_simple), esc(c.meaning) + ' · ' + c.verses + ' ayahs · ' + (c.place === 'makkah' ? 'Makki' : 'Madani'),
-        '<span class="ar" lang="ar" dir="rtl">' + esc(c.name_arabic) + '</span>');
+        '<span class="ar" lang="ar" dir="rtl">' + SO.sname(c.id, c.name_arabic) + '</span>');
     }).join('') + '</ol>' : empty('No sura found.');
   }
   function starts(list, label) {

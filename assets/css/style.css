@@ -320,3 +320,12 @@ body.hdr-hid .status,body.hdr-hid .tabs{top:0}
 .frame.bism .frame-name{height:65.6%}
 .frame.plain{max-width:none}
 .frame.plain .frame-name{position:static;display:block;font-size:clamp(1.6rem,5vw,2.4rem);padding:6px 0}
+/* ===== Surah name font v2 (QUL) + gear icon ===== */
+@font-face{font-family:"SurahNameV2";src:url("../fonts/surah-name-v2.ttf") format("truetype");font-display:block}
+.sname .g{display:none;font-family:"SurahNameV2";font-weight:normal;line-height:1}
+.sn-ok .sname .g{display:inline}
+.sn-ok .sname .t{display:none}
+.row .ar .g{font-size:1.9rem}
+.frame-name .g{font-size:1.5em}
+.bb-mid .g{font-size:1.6rem;vertical-align:middle}
+.bb-btn svg.gear{fill:currentColor;stroke:none;width:24px;height:24px}

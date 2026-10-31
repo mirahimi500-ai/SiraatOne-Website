@@ -10,5 +10,9 @@ var SO = (function () {
   function pos(idx, s, a) { return { page: find(idx.page, s, a), juz: find(idx.juz, s, a), hizb: find(idx.hizb, s, a) }; }
   function toggle(k, key) { var l = get(k, []), i = l.indexOf(key); if (i > -1) l.splice(i, 1); else l.unshift(key); set(k, l); return i === -1; }
   function has(k, key) { return get(k, []).indexOf(key) > -1; }
-  return { get: get, set: set, j: j, esc: esc, pos: pos, toggle: toggle, has: has };
+  // Surah name font v2 (QUL): ligature "surahNNN". Falls back to plain Arabic text if the font is unavailable.
+  function sname(n, text) { var p = ('00' + n).slice(-3);
+    return '<span class="sname"><span class="g" aria-hidden="true">surah' + p + '</span><span class="t">' + esc(text) + '</span></span>'; }
+  if (document.fonts && document.fonts.load) document.fonts.load('1em SurahNameV2', 'surah001').then(function (f) { if (f.length) document.documentElement.classList.add('sn-ok'); });
+  return { sname: sname, get: get, set: set, j: j, esc: esc, pos: pos, toggle: toggle, has: has };
 })();

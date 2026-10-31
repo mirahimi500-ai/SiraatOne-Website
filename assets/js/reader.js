@@ -42,12 +42,12 @@
       if (sura.ar.length !== c.verses || sura.en.length !== c.verses) throw 0;
       if (r[2]) bism = r[2].ar[0]; // Bismillah = verse 1:1 from source data
       document.title = c.name_simple + ' — SiraatOne';
-      $('s-ar').textContent = 'سورة ' + c.name_arabic;
+      $('s-ar').innerHTML = SO.sname(n, 'سورة ' + c.name_arabic);
       $('s-en').textContent = c.name_simple;
       var m = c.meaning + ' · ' + c.verses + ' ayahs · ' + (c.place === 'makkah' ? 'Makki' : 'Madani');
       if (idx) { var p = SO.pos(idx, n, 1); m += ' · Juz ' + p.juz + ' · Page ' + p.page; }
       $('s-meta').textContent = m;
-      $('bb-name').textContent = arNum(n) + ' - ' + c.name_arabic;
+      $('bb-name').innerHTML = arNum(n) + ' - ' + SO.sname(n, c.name_arabic);
       $('s-bism').textContent = bism || ''; apply(false); render();
     })
     .catch(function () { $('s-en').textContent = 'This sura could not be loaded. Please refresh.'; });
