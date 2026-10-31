@@ -19,10 +19,29 @@
     if (TJD[s] !== undefined) return Promise.resolve(TJD[s]);
     return SO.j('../assets/data/tajweed/' + s + '.json').then(function (d) { return (TJD[s] = d.ar); }).catch(function () { return (TJD[s] = null); });
   }
-  function fmt(a, s, i) {
-    var m = S.tajweed && S.script !== 'indopak' && TJD[s] && TJD[s][i]; // IndoPak: only ~6% of verses align, so no Tajweed (fail-closed)
-    return (m && TJ.html(m, a, esc)) || esc(a);
+  // Tajweed = the app's method (quran_unicode_tajweed_text.dart): show Quran Foundation's text_uthmani_tajweed
+  // segments in the selected font. Uthmani (KFGQPC) only: U+0672 -> U+0670 and U+06DF -> U+06E0 (1:1, as the app does).
+  // The ayah marker comes from the source's own end segment (no second marker).
+  function tjSource(markup, mark) {
+    var segs = TJ.parse(markup); if (!segs) return null;
+    var uth = S.script === 'uthmani', out = '', endTxt = '';
+    segs.forEach(function (g) {
+      if (g.rule === 'endMarker') { endTxt = g.text.trim(); return; }
+      var t = uth ? g.text.replace(/\u0672/g, '\u0670').replace(/\u06DF/g, '\u06E0') : g.text;
+      var cls = g.rule && g.rule !== 'unknown' ? g.rule : null;
+      out += cls ? '<span class="tj-' + cls + '">' + esc(t) + '</span>' : esc(t);
+    });
+    out = out.replace(/\s+$/, '');
+    if (mark && endTxt && S.nums) out += ' ' + (S.script === 'naskh' ? '' : '<span class="tj-end">' + esc(endTxt) + '</span>');
+    return out;
   }
+  function fmt(a, s, i, noMark) {
+    var m = S.tajweed && TJD[s] && TJD[s][i];
+    // same single, exact repair as the app (known Quran Foundation markup defect at 32:3)
+    if (m && s === 32 && i === 2) m = m.replace('<tajweed class=ham_wasl>ٱ</tajweed>فْتَرَ>ٮٰ</tajweed>هُ', '<tajweed class=ham_wasl>ٱ</tajweed>فْتَرَ<tajweed class=madda_normal>ٮٰ</tajweed>هُ');
+    return (m && tjSource(m, !noMark)) || esc(a);
+  }
+
   function dirFor() { return S.script === 'uthmani' ? 'qpc' : S.script === 'indopak' ? 'indopak' : null; }
   // one sura in the chosen script: { ar, en, base }
   function getSura(s) {
@@ -111,7 +130,7 @@
     .catch(function (e) { if (e !== 'redirect') $('s-en').textContent = 'This sura could not be loaded. Please refresh.'; });
 
   var LEG = [['maddNormal', 'Madd — Normal'], ['qalqalah', 'Qalqalah'], ['ikhfa', 'Ikhfa'], ['idghamWithGhunnah', 'Idgham with Ghunnah'], ['iqlab', 'Iqlab'], ['ghunnah', 'Ghunnah']]; // labels from the app
-  function legend() { if (S.tajweed && S.script === 'indopak') return '<p class="hint tj-note">Tajweed colours are available with the Uthmani and Naskh fonts.</p>'; return S.tajweed && S.legend && document.body.dataset.tj === '1' ? '<div class="tj-legend">' + LEG.map(function (l) { return '<span class="tj-' + l[0] + '">' + l[1] + '</span>'; }).join('') + '</div>' : ''; }
+  function legend() { return S.tajweed && S.legend && document.body.dataset.tj === '1' ? '<div class="tj-legend">' + LEG.map(function (l) { return '<span class="tj-' + l[0] + '">' + l[1] + '</span>'; }).join('') + '</div>' : ''; }
   function renderPage() {
     var st = idx.page[P - 1], en = idx.page[P] || null, segs = [];
     for (var s = st[0]; s <= (en ? (en[1] === 1 ? en[0] - 1 : en[0]) : 114); s++) {
@@ -123,9 +142,9 @@
       var b1 = all[all.length - 1].ar[0], h = legend();
       segs.forEach(function (g, i) {
         var s = g[0], d = all[i];
-        if (g[1] === 1) h += '<div class="pg-title">' + SO.sname(s, 'سورة ' + ch[s - 1].name_arabic) + '</div>' + (s !== 1 && s !== 9 ? '<p class="bismillah" lang="ar" dir="rtl">' + fmt(noNum(b1), 1, 0) + '</p>' : '');
+        if (g[1] === 1) h += '<div class="pg-title">' + SO.sname(s, 'سورة ' + ch[s - 1].name_arabic) + '</div>' + (s !== 1 && s !== 9 ? '<p class="bismillah" lang="ar" dir="rtl">' + fmt(noNum(b1), 1, 0, true) + '</p>' : '');
         h += '<p class="flow" lang="ar" dir="rtl">';
-        for (var a = g[1]; a <= g[2]; a++) h += '<span class="aya" id="a' + s + '_' + a + '" data-s="' + s + '" data-a="' + a + '"' + hl(s + ':' + a) + '>' + fmt(d.ar[a - 1], s, a - 1) + (S.nums && !hasNum(d.ar[a - 1]) ? ' ' + end(a) : '') + '</span> ';
+        for (var a = g[1]; a <= g[2]; a++) h += '<span class="aya" id="a' + s + '_' + a + '" data-s="' + s + '" data-a="' + a + '"' + hl(s + ':' + a) + '>' + fmt(d.ar[a - 1], s, a - 1) + (S.nums && !(S.tajweed && TJD[s] ? S.script !== 'naskh' : hasNum(d.ar[a - 1])) ? ' ' + end(a) : '') + '</span> ';
         h += '</p>';
       });
       $('body').innerHTML = '<div class="mpage">' + h + '<div class="pg-num">' + arNum(P) + '</div></div>';
@@ -142,11 +161,11 @@
     var go = S.mode === 'plus' && !wbw ? SO.j('../assets/data/wbw/' + n + '.json').then(function (d) { wbw = d.w; }).catch(function () { wbw = false; }) : Promise.resolve();
     go.then(function () {
       var c = ch[n - 1], h = '', mode = S.mode === 'plus' && !wbw ? 'verse' : S.mode;
-      $('s-bism').innerHTML = BI ? fmt(noNum(BI), 1, 0) : '';
+      $('s-bism').innerHTML = BI ? fmt(noNum(BI), 1, 0, true) : '';
       document.body.dataset.mode = mode;
       if (mode === 'clean') {
         h = '<p class="flow" lang="ar" dir="rtl">' + AR.map(function (a, i) {
-          return '<span class="aya" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(n + ':' + (i + 1)) + '>' + fmt(a, n, i) + (S.nums && !hasNum(a) ? ' ' + end(i + 1) : '') + '</span>';
+          return '<span class="aya" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(n + ':' + (i + 1)) + '>' + fmt(a, n, i) + (S.nums && !(S.tajweed && TJD[n] ? S.script !== 'naskh' : hasNum(a)) ? ' ' + end(i + 1) : '') + '</span>';
         }).join(' ') + '</p>';
       } else {
         var showAr = S.showAr || !S.showTr, showTr = S.showTr && mode !== 'clean';
@@ -154,7 +173,7 @@
           var k = n + ':' + (i + 1), top = '<div class="c-top">' + (S.nums ? '<span class="c-num">' + (i + 1) + '</span>' : '') + marks(k) + '<button type="button" class="more" data-a="' + (i + 1) + '" aria-label="Ayah ' + k + ' actions">•••</button></div>';
           var ar = mode === 'plus'
             ? '<div class="words" lang="ar" dir="rtl">' + wbw[i].map(function (w, j) { return '<span class="w" data-w="' + (j + 1) + '" data-wa="' + (i + 1) + '"><span class="wa">' + esc(w[0]) + '</span><span class="wt" dir="ltr">' + esc(w[1] || '') + '</span></span>'; }).join('') + end(i + 1) + '</div>'
-            : '<p class="ar" lang="ar" dir="rtl">' + fmt(a, n, i) + (S.nums && !hasNum(a) ? ' ' + end(i + 1) : '') + '</p>';
+            : '<p class="ar" lang="ar" dir="rtl">' + fmt(a, n, i) + (S.nums && !(S.tajweed && TJD[n] ? S.script !== 'naskh' : hasNum(a)) ? ' ' + end(i + 1) : '') + '</p>';
           return '<li class="card-a" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(k) + '>' + top + (showAr ? ar : '') + (showTr ? '<p class="tr">' + esc(sura.en[i]) + '</p>' : '') + '</li>';
         }).join('') + '</ol>';
       }
