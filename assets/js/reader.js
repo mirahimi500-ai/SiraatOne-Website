@@ -20,7 +20,7 @@
     return SO.j('../assets/data/tajweed/' + s + '.json').then(function (d) { return (TJD[s] = d.ar); }).catch(function () { return (TJD[s] = null); });
   }
   function fmt(a, s, i) {
-    var m = S.tajweed && TJD[s] && TJD[s][i];
+    var m = S.tajweed && S.script !== 'indopak' && TJD[s] && TJD[s][i]; // IndoPak: only ~6% of verses align, so no Tajweed (fail-closed)
     return (m && TJ.html(m, a, esc)) || esc(a);
   }
   function dirFor() { return S.script === 'uthmani' ? 'qpc' : S.script === 'indopak' ? 'indopak' : null; }
@@ -101,7 +101,7 @@
     .catch(function (e) { if (e !== 'redirect') $('s-en').textContent = 'This sura could not be loaded. Please refresh.'; });
 
   var LEG = [['maddNormal', 'Madd — Normal'], ['qalqalah', 'Qalqalah'], ['ikhfa', 'Ikhfa'], ['idghamWithGhunnah', 'Idgham with Ghunnah'], ['iqlab', 'Iqlab'], ['ghunnah', 'Ghunnah']]; // labels from the app
-  function legend() { return S.tajweed && S.legend && document.body.dataset.tj === '1' ? '<div class="tj-legend">' + LEG.map(function (l) { return '<span class="tj-' + l[0] + '">' + l[1] + '</span>'; }).join('') + '</div>' : ''; }
+  function legend() { if (S.tajweed && S.script === 'indopak') return '<p class="hint tj-note">Tajweed colours are available with the Uthmani and Naskh fonts.</p>'; return S.tajweed && S.legend && document.body.dataset.tj === '1' ? '<div class="tj-legend">' + LEG.map(function (l) { return '<span class="tj-' + l[0] + '">' + l[1] + '</span>'; }).join('') + '</div>' : ''; }
   function renderPage() {
     var st = idx.page[P - 1], en = idx.page[P] || null, segs = [];
     for (var s = st[0]; s <= (en ? (en[1] === 1 ? en[0] - 1 : en[0]) : 114); s++) {

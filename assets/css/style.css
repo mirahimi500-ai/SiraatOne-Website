@@ -408,3 +408,4 @@ body[data-bg="classic"],body[data-bg="ivory"],body[data-bg="fiber"],body[data-bg
 .tj-maddPermissible,.tj-maddNecessary,.tj-maddObligatory{color:var(--tj-indigo)}.tj-qalqalah{color:var(--tj-red)}
 .tj-ikhfa,.tj-ikhfaShafawi{color:var(--tj-purple)}.tj-idghamShafawi,.tj-idghamWithGhunnah,.tj-idghamWithoutGhunnah,.tj-idghamMutajanisayn,.tj-idghamMutaqaribayn{color:var(--tj-green)}
 .tj-iqlab{color:var(--tj-cyan)}.tj-ghunnah{color:var(--tj-orange)}
+.tj-note{text-align:center;margin:6px 0 12px}
