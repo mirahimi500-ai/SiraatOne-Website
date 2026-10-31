@@ -51,7 +51,10 @@ Later (6b): Page-by-page layout, side quick panel, Tajweed/IndoPak scripts. Prin
 style.css: full browser width with side padding; 3-col sura list / 6-col names on wide screens. Status: PASS (d0a0cac)
 
 ## Stage 6a-3 — Hide top bar on scroll + cache busting (2026-10-31)
-site.js hides site header when scrolling down (all pages). CSS/JS links carry ?v=VERSION; bump VERSION on every release so browsers load new files. Current: 20261031a. Status: PENDING
+site.js hides site header when scrolling down (all pages). CSS/JS links carry ?v=VERSION; bump VERSION on every release so browsers load new files. Current: 20261031a. Status: PASS (e368891; old view was browser cache)
+
+## Stage 6a-4 — Home icons plain + app header frames (2026-10-31)
+Home quick access: plain icons, no boxes. scripts/prep-frames.ps1 copies app header images (user-owned) -> assets/img/frame.png (no Bismillah: suras 1, 9) and frame-bism.png (others), max 1200px. Version 20261031b. Status: PENDING
 
 ## Next
 Stage 6: CNAME + GoDaddy DNS switch (verify /privacy first).
