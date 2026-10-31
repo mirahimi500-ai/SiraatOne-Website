@@ -296,3 +296,9 @@ body{background:var(--bg)}
 @media (min-width:1400px){.list.two{grid-template-columns:1fr 1fr 1fr}.list.grid3{grid-template-columns:repeat(4,1fr)}.name-grid{grid-template-columns:repeat(6,1fr)}.tiles{grid-template-columns:repeat(4,1fr)}}
 .status{padding-left:clamp(16px,3vw,48px);padding-right:clamp(16px,3vw,48px)}
 .bottombar{padding-left:clamp(14px,3vw,48px);padding-right:clamp(14px,3vw,48px)}
+/* ===== Hide top site bar while scrolling down ===== */
+.site-header{transition:transform .25s}
+body.hdr-hid .site-header{transform:translateY(-100%)}
+.status,.tabs{transition:top .25s}
+body.hdr-hid .status,body.hdr-hid .tabs{top:0}
+.aya:hover{background:color-mix(in srgb,var(--brand) 5%,transparent)}

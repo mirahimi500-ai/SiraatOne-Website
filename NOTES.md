@@ -48,7 +48,10 @@ Files: sura/index.html, assets/js/reader.js, style.css, scripts/fetch-wbw.ps1, a
 Later (6b): Page-by-page layout, side quick panel, Tajweed/IndoPak scripts. Printed version skipped.
 
 ## Stage 6a-2 — Edge-to-edge layout on computers (2026-10-31)
-style.css: full browser width with side padding; 3-col sura list / 6-col names on wide screens. Status: PENDING
+style.css: full browser width with side padding; 3-col sura list / 6-col names on wide screens. Status: PASS (d0a0cac)
+
+## Stage 6a-3 — Hide top bar on scroll + cache busting (2026-10-31)
+site.js hides site header when scrolling down (all pages). CSS/JS links carry ?v=VERSION; bump VERSION on every release so browsers load new files. Current: 20261031a. Status: PENDING
 
 ## Next
 Stage 6: CNAME + GoDaddy DNS switch (verify /privacy first).

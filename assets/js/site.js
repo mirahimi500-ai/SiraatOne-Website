@@ -20,5 +20,12 @@
     var o = n.classList.toggle('open');
     m.setAttribute('aria-expanded', o ? 'true' : 'false');
   });
+  // hide the top site bar when scrolling down, show it when scrolling up
+  var ly = window.scrollY, nav = document.getElementById('site-nav');
+  window.addEventListener('scroll', function () {
+    var y = window.scrollY, open = nav && nav.classList.contains('open');
+    document.body.classList.toggle('hdr-hid', !open && y > ly && y > 90);
+    ly = y;
+  }, { passive: true });
   var y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear();
 })();
