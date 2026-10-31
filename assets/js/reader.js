@@ -15,7 +15,12 @@
   function apply(rerender) {
     root.style.setProperty('--ar-size', S.ar + 'rem'); root.style.setProperty('--tr-size', S.tr + 'rem');
     document.body.dataset.bg = S.bg;
-    $('head').hidden = !S.header; $('frame').hidden = !S.deco; $('s-meta').hidden = !S.meaning;
+    $('head').hidden = !S.header; $('s-meta').hidden = !S.meaning;
+    var useImg = S.header && S.deco, withB = useImg && !!bism;
+    $('frame').classList.toggle('plain', !useImg); $('frame').classList.toggle('bism', withB);
+    var im = $('frame-img'); im.hidden = !useImg;
+    if (useImg) { im.src = '../assets/img/' + (withB ? 'frame-bism.png' : 'frame.png'); im.height = withB ? 627 : 412; }
+    $('s-bism').hidden = !bism || withB;
     $('status').hidden = !S.compact; document.body.classList.toggle('has-status', S.compact);
     wake(); autoScroll();
     document.querySelectorAll('[data-set]').forEach(function (el) {
@@ -43,7 +48,7 @@
       if (idx) { var p = SO.pos(idx, n, 1); m += ' · Juz ' + p.juz + ' · Page ' + p.page; }
       $('s-meta').textContent = m;
       $('bb-name').textContent = arNum(n) + ' - ' + c.name_arabic;
-      apply(false); render();
+      $('s-bism').textContent = bism || ''; apply(false); render();
     })
     .catch(function () { $('s-en').textContent = 'This sura could not be loaded. Please refresh.'; });
 
@@ -51,7 +56,7 @@
     var go = S.mode === 'plus' && !wbw ? SO.j('../assets/data/wbw/' + n + '.json').then(function (d) { wbw = d.w; }).catch(function () { wbw = false; }) : Promise.resolve();
     go.then(function () {
       var c = ch[n - 1], h = '', mode = S.mode === 'plus' && !wbw ? 'verse' : S.mode;
-      $('s-bism').textContent = bism || ''; $('s-bism').hidden = !bism;
+      $('s-bism').textContent = bism || '';
       document.body.dataset.mode = mode;
       if (mode === 'clean') {
         h = '<p class="flow" lang="ar" dir="rtl">' + sura.ar.map(function (a, i) {

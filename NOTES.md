@@ -54,7 +54,7 @@ style.css: full browser width with side padding; 3-col sura list / 6-col names o
 site.js hides site header when scrolling down (all pages). CSS/JS links carry ?v=VERSION; bump VERSION on every release so browsers load new files. Current: 20261031a. Status: PASS (e368891; old view was browser cache)
 
 ## Stage 6a-4 — Home icons plain + app header frames (2026-10-31)
-Home quick access: plain icons, no boxes. scripts/prep-frames.ps1 copies app header images (user-owned) -> assets/img/frame.png (no Bismillah: suras 1, 9) and frame-bism.png (others), max 1200px. Version 20261031b. Status: PENDING
+Home quick access: plain icons, no boxes. scripts/prep-frames.ps1 copies app header images (user-owned) -> assets/img/frame.png (no Bismillah: suras 1, 9) and frame-bism.png (others), max 1200px (frame 1200x412, frame-bism 1200x627). Reader uses them when "title decoration" is on; name overlaid on frame (top 65.6% for frame-bism). Version 20261031c. Status: PENDING
 
 ## Next
 Stage 6: CNAME + GoDaddy DNS switch (verify /privacy first).

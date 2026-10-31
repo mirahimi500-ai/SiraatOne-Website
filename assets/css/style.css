@@ -313,3 +313,10 @@ body.hdr-hid .status,body.hdr-hid .tabs{top:0}
 .tile b{font-size:.88rem;font-weight:600;line-height:1.3}
 .tile span{display:none}
 .tile em{position:static;order:4;font-size:.65rem;padding:0 6px}
+/* ===== App header frame images ===== */
+.frame{max-width:720px;container-type:inline-size}
+.frame img{display:block;width:100%;height:auto}
+.frame-name{bottom:auto;height:100%;font-size:6.2cqw;padding:0}
+.frame.bism .frame-name{height:65.6%}
+.frame.plain{max-width:none}
+.frame.plain .frame-name{position:static;display:block;font-size:clamp(1.6rem,5vw,2.4rem);padding:6px 0}
