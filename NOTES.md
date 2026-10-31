@@ -107,7 +107,10 @@ Read app quran_unicode_tajweed_text.dart (read-only): with Tajweed ON the app re
 Vivid palette (light: #0A84FF blue, #FF1744 red, #D500F9 purple, #00C853 green, #00B8D4 cyan, #FF6D00 orange, #5856D6 indigo; brighter variants on dark themes). Same rule-to-colour mapping as app. Version 20261031v. Status: PASS (03979ec)
 
 ## Removed Ayah of the day + Reading streak (2026-10-31)
-User request: removed home widgets section, home.js widget code, reader streak recording, widget CSS. Version 20261031w. Status: PENDING
+User request: removed home widgets section, home.js widget code, reader streak recording, widget CSS. Version 20261031w. Status: PASS (432e1a1)
+
+## Privacy review (2026-10-31)
+Live GoDaddy siraatone.com/privacy returns 404 (Page Not Found). Play Console uses the GitHub Gists (OK). Gists renamed: Azan "SiraatOne Display" -> "SiraatOne Azan" (3b603d0), Quran "siraatone_quran" -> "SiraatOne Quran" (024278c). Website privacy = both Gist policies + "This website" section (dated 31 Oct 2026: local storage only, QF audio, HadeethEnc). After DNS switch: optionally point Play privacy links to https://siraatone.com/privacy/. Version 20261031x.
 
 ## Next
 Stage 6: CNAME + GoDaddy DNS switch (verify /privacy first).
