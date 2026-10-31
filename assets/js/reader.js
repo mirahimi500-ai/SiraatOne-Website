@@ -233,7 +233,9 @@
   // ---------- audio (same sources as the app: Quran Foundation ayah CDN + word audio) ----------
   var AUD = (function () {
     var el = new Audio(), wordEl = new Audio(), q = [], qi = -1, playing = false;
-    var url = function (s, a) { return 'https://verses.quran.foundation/' + S.reciter + '/mp3/' + ('00' + s).slice(-3) + ('00' + a).slice(-3) + '.mp3'; };
+    // official URLs from the Quran Foundation API (recitation 7 Alafasy, recitation 6 Husary)
+    var BASE = { Alafasy: 'https://verses.quran.foundation/Alafasy/mp3/', Husary: 'https://mirrors.quranicaudio.com/everyayah/Husary_64kbps/' };
+    var url = function (s, a) { return (BASE[S.reciter] || BASE.Alafasy) + ('00' + s).slice(-3) + ('00' + a).slice(-3) + '.mp3'; };
     var names = { Alafasy: 'Mishary Rashid Alafasy', Husary: 'Mahmoud Khalil Al-Hussary' };
     function queue() {
       if (pageMode) return Array.prototype.map.call(document.querySelectorAll('#body .aya'), function (x) { return [+x.dataset.s, +x.dataset.a]; });
