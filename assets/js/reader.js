@@ -4,9 +4,17 @@
   var n = parseInt(new URLSearchParams(location.search).get('n'), 10);
   var $ = function (id) { return document.getElementById(id); }, esc = SO.esc, root = document.documentElement;
   if (!(n >= 1 && n <= 114)) { location.replace('../read/'); return; }
-  var DEF = { mode: 'verse', ar: 1.9, tr: 1, header: true, meaning: true, deco: true, bg: 'app', nav: 'surah', hide: true, compact: true, awake: false, auto: false, speed: 3 };
+  var DEF = { mode: 'verse', script: 'uthmani', ar: 1.9, tr: 1, header: true, meaning: true, deco: true, bg: 'app', nav: 'surah', hide: true, compact: true, awake: false, auto: false, speed: 3 };
   var S = Object.assign({}, DEF, SO.get('so.rs', {}));
-  var ch, sura, idx, wbw = null, bism = null;
+  var ch, sura, idx, wbw = null, bism = null, AR = null, BI = null;
+  // Quran script: naskh = Uthmani text in Amiri Quran; uthmani = QPC Hafs (KFGQPC); indopak = IndoPak Nastaleeq
+  function loadScript() {
+    var dir = S.script === 'uthmani' ? 'qpc' : S.script === 'indopak' ? 'indopak' : null;
+    if (!dir) { AR = sura.ar; BI = bism; document.body.dataset.script = 'naskh'; return Promise.resolve(); }
+    return Promise.all([SO.j('../assets/data/' + dir + '/' + n + '.json'), bism ? SO.j('../assets/data/' + dir + '/1.json') : null])
+      .then(function (x) { if (x[0].ar.length !== sura.ar.length) throw 0; AR = x[0].ar; BI = x[1] ? x[1].ar[0] : null; document.body.dataset.script = S.script; })
+      .catch(function () { AR = sura.ar; BI = bism; document.body.dataset.script = 'naskh'; });
+  }
   function save() { SO.set('so.rs', S); }
   function arNum(i) { return Number(i).toLocaleString('ar-EG'); }
   function end(i) { return '<span class="end">﴿' + arNum(i) + '﴾</span>'; }
@@ -19,7 +27,7 @@
     var useImg = S.header && S.deco, withB = useImg && !!bism;
     $('frame').classList.toggle('plain', !useImg); $('frame').classList.toggle('bism', withB);
     var im = $('frame-img'); im.hidden = !useImg;
-    if (useImg) { im.src = '../assets/img/' + (withB ? 'frame-bism.png' : 'frame.png'); im.height = withB ? 627 : 412; }
+    if (useImg) { var u = 'url(../assets/img/' + (withB ? 'frame-bism.png' : 'frame.png') + ')'; im.style.webkitMaskImage = u; im.style.maskImage = u; }
     $('s-bism').hidden = !bism || withB;
     $('status').hidden = !S.compact; document.body.classList.toggle('has-status', S.compact);
     wake(); autoScroll();
@@ -48,7 +56,7 @@
       if (idx) { var p = SO.pos(idx, n, 1); m += ' · Juz ' + p.juz + ' · Page ' + p.page; }
       $('s-meta').textContent = m;
       $('bb-name').innerHTML = arNum(n) + ' - ' + SO.sname(n, c.name_arabic);
-      $('s-bism').textContent = bism || ''; apply(false); render();
+      loadScript().then(function () { apply(false); render(); });
     })
     .catch(function () { $('s-en').textContent = 'This sura could not be loaded. Please refresh.'; });
 
@@ -56,14 +64,14 @@
     var go = S.mode === 'plus' && !wbw ? SO.j('../assets/data/wbw/' + n + '.json').then(function (d) { wbw = d.w; }).catch(function () { wbw = false; }) : Promise.resolve();
     go.then(function () {
       var c = ch[n - 1], h = '', mode = S.mode === 'plus' && !wbw ? 'verse' : S.mode;
-      $('s-bism').textContent = bism || '';
+      $('s-bism').textContent = BI || '';
       document.body.dataset.mode = mode;
       if (mode === 'clean') {
-        h = '<p class="flow" lang="ar" dir="rtl">' + sura.ar.map(function (a, i) {
+        h = '<p class="flow" lang="ar" dir="rtl">' + AR.map(function (a, i) {
           return '<span class="aya" id="' + (i + 1) + '" data-a="' + (i + 1) + '">' + esc(a) + ' ' + end(i + 1) + '</span>';
         }).join(' ') + '</p>';
       } else {
-        h = '<ol class="cards">' + sura.ar.map(function (a, i) {
+        h = '<ol class="cards">' + AR.map(function (a, i) {
           var k = n + ':' + (i + 1), top = '<div class="c-top"><span class="c-num">' + (i + 1) + '</span>' + marks(k) + '<button type="button" class="more" data-a="' + (i + 1) + '" aria-label="Ayah ' + k + ' actions">•••</button></div>';
           var ar = mode === 'plus'
             ? '<div class="words" lang="ar" dir="rtl">' + wbw[i].map(function (w) { return '<span class="w"><span class="wa">' + esc(w[0]) + '</span><span class="wt" dir="ltr">' + esc(w[1] || '') + '</span></span>'; }).join('') + end(i + 1) + '</div>'
@@ -151,7 +159,7 @@
       document.querySelectorAll('.mtabs button').forEach(function (b) { b.setAttribute('aria-selected', b === tab); });
       document.querySelectorAll('[data-pane]').forEach(function (s) { s.hidden = s.getAttribute('data-pane') !== p; }); return; }
     var seg = e.target.closest('.seg button');
-    if (seg) { var k = seg.parentNode.getAttribute('data-set'); S[k] = seg.getAttribute('data-v'); save(); apply(k === 'mode'); return; }
+    if (seg) { var k = seg.parentNode.getAttribute('data-set'); S[k] = seg.getAttribute('data-v'); save(); if (k === 'script') loadScript().then(function () { apply(false); render(); }); else apply(k === 'mode'); return; }
     if (e.target.id === 'reset') { S = Object.assign({}, DEF); save(); apply(true); }
   });
   $('settings').addEventListener('input', function (e) {

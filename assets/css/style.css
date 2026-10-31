@@ -329,3 +329,19 @@ body.hdr-hid .status,body.hdr-hid .tabs{top:0}
 .frame-name .g{font-size:1.5em}
 .bb-mid .g{font-size:1.6rem;vertical-align:middle}
 .bb-btn svg.gear{fill:currentColor;stroke:none;width:24px;height:24px}
+/* ===== Quran fonts + theme-coloured frame ===== */
+@font-face{font-family:"UthmanicHafs";src:url("../fonts/uthmanic-hafs.ttf") format("truetype");font-display:swap}
+@font-face{font-family:"IndoPakNastaleeq";src:url("../fonts/indopak-nastaleeq.ttf") format("truetype");font-display:swap}
+body[data-script="uthmani"]{--quran:"UthmanicHafs","Amiri Quran",serif}
+body[data-script="indopak"]{--quran:"IndoPakNastaleeq","Amiri Quran",serif}
+body[data-script="indopak"] .flow,body[data-script="indopak"] .card-a .ar{line-height:2.6}
+.words .wa{font-family:"Amiri Quran","Amiri",serif}
+.fimg{width:100%;aspect-ratio:1200/412;background:var(--frame-c,var(--brand));-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+.frame.bism .fimg{aspect-ratio:1200/627}
+.fimg[hidden]{display:none}
+body[data-bg="night"]{--frame-c:var(--gold)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body{--frame-c:var(--gold)}}
+:root[data-theme="dark"] body{--frame-c:var(--gold)}
+.frame-name{color:var(--frame-c,var(--brand))}
+.frame-name .g{font-size:2.9em}
+.frame-name .t{font-size:1.4em}

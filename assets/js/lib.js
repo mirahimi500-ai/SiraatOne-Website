@@ -13,6 +13,6 @@ var SO = (function () {
   // Surah name font v2 (QUL): ligature "surahNNN". Falls back to plain Arabic text if the font is unavailable.
   function sname(n, text) { var p = ('00' + n).slice(-3);
     return '<span class="sname"><span class="g" aria-hidden="true">surah' + p + '</span><span class="t">' + esc(text) + '</span></span>'; }
-  if (document.fonts && document.fonts.load) document.fonts.load('1em SurahNameV2', 'surah001').then(function (f) { if (f.length) document.documentElement.classList.add('sn-ok'); });
+  if (document.fonts && document.fonts.load) document.fonts.load('1em SurahNameV2', 'surah001').then(function (f) { if (f.length) document.documentElement.classList.add('sn-ok'); }).catch(function () {});
   return { sname: sname, get: get, set: set, j: j, esc: esc, pos: pos, toggle: toggle, has: has };
 })();

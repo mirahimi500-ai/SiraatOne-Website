@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261031d">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261031e">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -37,7 +37,7 @@
   <div class="wrap rd-wrap">
     <header class="sura-head" id="head">
       <div class="frame" id="frame" aria-hidden="true">
-        <img id="frame-img" alt="" width="1200" height="412">
+        <div id="frame-img" class="fimg" aria-hidden="true"></div>
         <span class="frame-name" id="s-ar" lang="ar" dir="rtl"></span>
       </div>
       <h1 id="s-en">Loading…</h1>
@@ -45,7 +45,7 @@
     </header>
     <p class="bismillah" id="s-bism" lang="ar" dir="rtl" hidden></p>
     <div id="body"></div>
-    <p class="source">Arabic (Uthmani) and word-by-word: Quran Foundation. English: Saheeh International.</p>
+    <p class="source">Arabic text, fonts and word-by-word: Quran Foundation. English: Saheeh International.</p>
   </div>
   <nav class="bottombar" id="bar" aria-label="Reader">
     <a class="bb-btn" href="../read/" aria-label="All suras"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></a>
@@ -82,6 +82,9 @@
             <p class="hint">Clean Mushaf: Arabic only · Mushaf+: word-by-word + translation · Verse List: Arabic + translation</p>
           </section>
           <section data-pane="text" hidden>
+            <h3>Quran font</h3>
+            <div class="seg" data-set="script"><button data-v="uthmani">Uthmani</button><button data-v="indopak">IndoPak</button><button data-v="naskh">Naskh</button></div>
+            <p class="hint">Uthmani: KFGQPC Hafs (Madinah style) · IndoPak: Nastaleeq · Naskh: Amiri Quran</p>
             <label class="sl">Quran text size <b data-out="ar"></b><input type="range" min="1.3" max="3.4" step="0.1" data-set="ar"></label>
             <label class="sl">Translation text size <b data-out="tr"></b><input type="range" min="0.85" max="1.5" step="0.05" data-set="tr"></label>
           </section>
@@ -114,8 +117,8 @@
     <nav aria-label="Footer"><a href="../testers/">Become a Tester</a><a href="../support/">Support</a><a href="../privacy/">Privacy</a></nav>
   </div>
 </footer>
-<script src="../assets/js/site.js?v=20261031d" defer></script>
-<script src="../assets/js/lib.js?v=20261031d" defer></script>
-<script src="../assets/js/reader.js?v=20261031d" defer></script>
+<script src="../assets/js/site.js?v=20261031e" defer></script>
+<script src="../assets/js/lib.js?v=20261031e" defer></script>
+<script src="../assets/js/reader.js?v=20261031e" defer></script>
 </body>
 </html>
