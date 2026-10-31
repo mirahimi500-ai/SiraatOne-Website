@@ -24,9 +24,10 @@ Files: quran/, azan/, testers/, support/ index.html, 404.html, style.css (deskto
 Quran Play ID: com.siraatone.quran. Tester flow = email signup (confirm). 404 uses root paths (works on custom domain; not on github.io subpath).
 Status: PENDING local check
 
+## Stage 3b â€” Calm Quran reader design (2026-10-30)
+Files: index.html, assets/css/style.css, assets/js/suras.js, assets/fonts/ (Amiri, OFL, self-hosted)
+Cream Mushaf-index look, gold star numbers, Makki/Madani filter. Status: PENDING user review
+
 ## Next
 Stage 3: GitHub repo + Pages preview on github.io.
 Stage 4: CNAME + GoDaddy DNS switch (verify /privacy first).
-
-## Stage 3 — GitHub Pages live (2026-10-30)
-URL: https://mirahimi500-ai.github.io/SiraatOne-Website/ | Status: PASS (HTTP 200)
