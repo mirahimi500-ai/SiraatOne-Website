@@ -69,8 +69,10 @@ Frame + Bismillah image follow the text colour (dark on light themes, light on d
 Read-only audit of C:\SiraatOne-Quran (205 dart files, 34 screens, ~170 settings keys, ~70 enums); report deleted after reading. Approved: A reader parity, B audio, C site themes + home, D tools + content. Prayer/Ramadan/Qibla later (needs location + privacy update).
 
 ## Stage A1 — Reader parity part 1 (2026-10-31)
-11 app page backgrounds (exact colours from quran_reader_background_theme.dart), translation layouts Columns/Ayah by Ayah/Verse List, show Arabic/translation/word-by-word toggles, show ayah numbers + numbers on right, line height, side margins, ayah highlights (10 colours, app enum names) + Highlights tab, sura list views (list/small icons/large cards) + font size + meaning/numbers. Headless test: all features work, no JS errors. Version 20261031g. Status: PENDING
-Next A2: page-by-page layout, Tajweed colours + legend.
+11 app page backgrounds (exact colours from quran_reader_background_theme.dart), translation layouts Columns/Ayah by Ayah/Verse List, show Arabic/translation/word-by-word toggles, show ayah numbers + numbers on right, line height, side margins, ayah highlights (10 colours, app enum names) + Highlights tab, sura list views (list/small icons/large cards) + font size + meaning/numbers. Headless test: all features work, no JS errors. Version 20261031g. Status: PASS (5dc9ed9)
+
+## Stage A2 — Page-by-page + Tajweed (2026-10-31)
+Clean Mushaf "Page by Page" (Madani 604 pages from index.json, URL sura/?p=N, crosses suras, sura titles + Bismillah inside page, arrow keys / bottom bar). Tajweed: scripts/fetch-tajweed.ps1 -> assets/data/tajweed (QF text_uthmani_tajweed; only <tajweed> tags allowed; letters must equal verified Uthmani text). App legend colours for 6 rules (Madd Normal, Qalqalah, Ikhfa, Idgham with Ghunnah, Iqlab, Ghunnah), key toggle. Headless test: page boundaries, cross-sura bookmark, tajweed spans, back to scroll - all PASS, no JS errors. Version 20261031h. Status: PENDING
 
 ## Next
 Stage 6: CNAME + GoDaddy DNS switch (verify /privacy first).
