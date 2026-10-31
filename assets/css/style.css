@@ -409,3 +409,17 @@ body[data-bg="classic"],body[data-bg="ivory"],body[data-bg="fiber"],body[data-bg
 .tj-ikhfa,.tj-ikhfaShafawi{color:var(--tj-purple)}.tj-idghamShafawi,.tj-idghamWithGhunnah,.tj-idghamWithoutGhunnah,.tj-idghamMutajanisayn,.tj-idghamMutaqaribayn{color:var(--tj-green)}
 .tj-iqlab{color:var(--tj-cyan)}.tj-ghunnah{color:var(--tj-orange)}
 .tj-note{text-align:center;margin:6px 0 12px}
+/* ===== Stage B: audio ===== */
+.fillico{fill:currentColor!important;stroke:none!important}
+.audiobar{position:fixed;left:50%;transform:translateX(-50%);bottom:70px;z-index:7;display:flex;align-items:center;gap:6px;max-width:calc(100% - 24px);padding:8px 10px;border:1px solid var(--border);border-radius:16px;background:var(--surface);box-shadow:0 8px 24px rgba(0,0,0,.15);flex-wrap:wrap;justify-content:center}
+.audiobar[hidden]{display:none}
+.ab{height:38px;min-width:38px;display:grid;place-items:center;border:0;border-radius:10px;background:none;color:var(--text);cursor:pointer;font:inherit;font-size:.85rem;padding:0 8px}
+.ab:hover{background:var(--bg);color:var(--brand)}
+.ab svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ab.main{background:var(--brand);color:var(--brand-ink)}.ab.main:hover{background:var(--brand);color:var(--brand-ink);opacity:.9}
+.ab-info{display:flex;flex-direction:column;line-height:1.2;padding:0 6px;min-width:120px}
+.ab-info small{color:var(--muted);font-size:.75rem}
+.playing{background:color-mix(in srgb,var(--brand) 16%,var(--surface))!important;border-color:var(--brand)!important}
+.aya.playing{border-radius:6px}
+.w{cursor:pointer;border-radius:6px}.w:hover{background:color-mix(in srgb,var(--brand) 10%,transparent)}
+.audio-on .reader2{padding-bottom:150px}
