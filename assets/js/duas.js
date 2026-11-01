@@ -2,7 +2,7 @@
 // Quranic duas: Arabic is resolved from the verified Quran text (like the app), meaning from the site's verified translation.
 (function () {
   var $ = function (id) { return document.getElementById(id); }, esc = SO.esc;
-  var O = Object.assign({ tab: 'morning', font: 'uthmani', size: 1, tr: true, mean: true, num: true, cat: '' }, SO.get('so.dopt', {}));
+  var O = Object.assign({ tab: 'morning', font: 'uthmani', size: 1, tr: true, mean: true, num: true, virtue: true, when: true, prac: true, src: true, cnt: true, cat: '' }, SO.get('so.dopt', {}));
   var D, CH, saved = SO.get('so.duafav', []), counts = {};
   function save() { SO.set('so.dopt', O); }
   function arNum(i) { return Number(i).toLocaleString('ar-EG'); }
@@ -30,10 +30,10 @@
       '<button type="button" class="act d-fav" aria-pressed="' + (saved.indexOf(e.id) > -1) + '" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></button></div>' +
       (ar ? '<p class="d-ar" lang="ar" dir="rtl">' + esc(ar).replace(/[\u060C\u061B\u061F]/g, '<span class="ar-p">$&</span>') + '</p>' : '') +
       (O.tr && tl ? '<p class="d-tl">' + esc(tl) + '</p>' : '') + (O.mean && me ? '<p class="d-me">' + esc(me) + '</p>' : '') +
-      (pu ? '<p class="d-meta"><b>Virtue:</b> ' + esc(pu) + '</p>' : '') + (e.whenToSayEn ? '<p class="d-meta"><b>When:</b> ' + esc(e.whenToSayEn) + '</p>' : '') + (e.practiceEn ? '<p class="d-meta"><b>Practice:</b> ' + esc(e.practiceEn) + '</p>' : '') +
-      (rep ? '<button type="button" class="d-count' + (done >= rep ? ' done' : '') + '" data-k="' + key + '" data-max="' + rep + '">' + (done >= rep ? 'Done ✓' : done + ' / ' + rep + ' — tap to count') + '</button>' : '') +
-      '<details class="d-src"><summary>Source' + (e.quran ? ' · Quran ' + e.quran[0] + ':' + e.quran[1] + (e.quran[2] > e.quran[1] ? '-' + e.quran[2] : '') : '') + '</summary>' +
-      e.sources.map(function (s) { return '<p><b>' + esc(s[0]) + '</b><br>' + esc(s[1]) + '</p>'; }).join('') + '</details></li>';
+      (O.virtue && pu ? '<p class="d-meta"><b>Virtue:</b> ' + esc(pu) + '</p>' : '') + (O.when && e.whenToSayEn ? '<p class="d-meta"><b>When:</b> ' + esc(e.whenToSayEn) + '</p>' : '') + (O.prac && e.practiceEn ? '<p class="d-meta"><b>Practice:</b> ' + esc(e.practiceEn) + '</p>' : '') +
+      (O.cnt && rep ? '<button type="button" class="d-count' + (done >= rep ? ' done' : '') + '" data-k="' + key + '" data-max="' + rep + '">' + (done >= rep ? 'Done ✓' : done + ' / ' + rep + ' — tap to count') + '</button>' : '') +
+      (O.src ? '<details class="d-src"><summary>Source' + (e.quran ? ' · Quran ' + e.quran[0] + ':' + e.quran[1] + (e.quran[2] > e.quran[1] ? '-' + e.quran[2] : '') : '') + '</summary>' +
+      e.sources.map(function (s) { return '<p><b>' + esc(s[0]) + '</b><br>' + esc(s[1]) + '</p>'; }).join('') + '</details>' : '') + '</li>';
   }
   function render() {
     document.querySelectorAll('#d-tabs button').forEach(function (b) { b.setAttribute('aria-selected', b.dataset.t === O.tab); });
@@ -89,14 +89,14 @@
   $('d-hq').onkeydown = function (e) { if (e.key === 'Enter' && this.value.trim()) { $('d-q').value = this.value.trim(); location.hash = 'search'; } };
   SO.j('../assets/data/duas.json').then(function (d) {
     D = d; $('d-note').textContent = d.note; landing();
-    $('d-font').value = O.font; $('d-size').value = String(O.size); $('d-tr').checked = O.tr; $('d-mean').checked = O.mean; $('d-num').checked = O.num;
+    $('d-font').value = O.font; $('d-size').value = String(O.size); $('d-tr').checked = O.tr; $('d-mean').checked = O.mean; $('d-num').checked = O.num; ['virtue', 'when', 'prac', 'src', 'cnt'].forEach(function (k) { $('d-' + k).checked = O[k]; });
     route();
   }).catch(function () { $('d-list').innerHTML = '<li class="empty">Could not load. Please refresh.</li>'; });
   $('d-tabs').onclick = function (e) { var b = e.target.closest('button'); if (!b) return; O.tab = b.dataset.t; save(); render(); };
   $('d-cat').onchange = function () { O.cat = this.value; save(); render(); };
   $('d-font').onchange = function () { O.font = this.value; save(); render(); };
   $('d-size').onchange = function () { O.size = +this.value; save(); render(); };
-  [['d-tr', 'tr'], ['d-mean', 'mean'], ['d-num', 'num']].forEach(function (p) { $(p[0]).onchange = function () { O[p[1]] = this.checked; save(); render(); }; });
+  [['d-tr', 'tr'], ['d-mean', 'mean'], ['d-num', 'num'], ['d-virtue', 'virtue'], ['d-when', 'when'], ['d-prac', 'prac'], ['d-src', 'src'], ['d-cnt', 'cnt']].forEach(function (p) { $(p[0]).onchange = function () { O[p[1]] = this.checked; save(); render(); }; });
   var tm; $('d-q').oninput = function () { clearTimeout(tm); tm = setTimeout(render, 200); };
   $('d-list').onclick = function (e) {
     var f = e.target.closest('.d-fav');
