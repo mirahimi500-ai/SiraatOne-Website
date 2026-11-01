@@ -137,3 +137,4 @@ R1b (2026-11-01): i button centered under Bismillah; Surah information = app con
 R1c: surah info details shown horizontally (stat chips). Version 20261101h.
 R2 (2026-11-01): defaults clean mushaf/no paging/tajweed on/uthmani/app background/Alafasy; bottom-bar play hidden; volume slider in audio bar. Version 20261101n.
 R3: ayah popup text-size slider + Translation button/popup. Version 20261101q.
+Fix: ayah popup Tafsir/Translation lost the ayah (closeSheet cleared it). Translation popup language switch saved. PASS headless. Version 20261101t.

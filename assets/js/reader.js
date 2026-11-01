@@ -264,11 +264,7 @@
       document.querySelectorAll('#sh-hl button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-c') === (all[cur] || '')); }); return; }
     var b = e.target.closest('[data-a]'); if (!b) return;
     var a = b.getAttribute('data-a');
-    if (a === 'tafsir') { closeSheet(); openTafsir(cur); return; }
-    if (a === 'trans') { closeSheet(); showTrans(cur); return; }
-    if (0) { var kt; getSura(+kt[0]).then(function (d) { var t = trInfo(), x = $('tr-text');
-      $('tr-key').textContent = cur; $('tr-name').textContent = t ? t.name : 'Saheeh International'; x.textContent = d.en[+kt[1] - 1] || '';
-      if (t && t.dir === 'rtl') x.setAttribute('dir', 'rtl'); else x.removeAttribute('dir'); $('trans').hidden = false; }); return; }
+    if (a === 'tafsir' || a === 'trans') { var k0 = cur; closeSheet(); if (a === 'tafsir') openTafsir(k0); else showTrans(k0); return; }
     if (a === 'play') { var kp = cur.split(':'); closeSheet(); AUD.start(+kp[0], +kp[1]); return; }
     if (a === 'copy') {
       var ks = cur.split(':'), i = +ks[1] - 1;
