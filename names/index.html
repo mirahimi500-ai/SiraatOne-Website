@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261102i">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261102j">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -38,20 +38,23 @@
     <p class="ar-title" id="n-ar" lang="ar" dir="rtl"></p>
     <h1 id="n-title">99 Names of Allah</h1>
     <div class="rule" aria-hidden="true"><span></span></div>
+    <button type="button" class="icon-btn nm-menu" id="nm-menu" aria-label="Names settings" aria-expanded="false">☰</button>
+    <div class="nm-tools" id="nm-tools">
     <label class="sr" for="nf">Filter names</label>
     <input class="search" id="nf" type="search" autocomplete="off" placeholder="Filter by meaning or number">
     <div class="sl-opts nm-opts">
       <select id="nm-view" aria-label="View"><option value="cards">Large cards</option><option value="small">Small icons</option><option value="list">List</option></select>
       <select id="nm-font" aria-label="Arabic font"><option value="uthmani">Uthmani</option><option value="indopak">IndoPak</option></select>
-      <label><input type="checkbox" id="nm-meaning"> Meaning</label><label><input type="checkbox" id="nm-nums"> Numbers</label><label><input type="checkbox" id="nm-tts"> Tap to pronounce</label>
+      <label><input type="checkbox" id="nm-meaning"> Meaning</label><label><input type="checkbox" id="nm-nums"> Numbers</label><label><input type="checkbox" id="nm-tts"> Tap to pronounce</label><select id="nm-size" aria-label="Text size"><option value="0.85">Small</option><option value="1">Normal</option><option value="1.25">Large</option><option value="1.5">Extra large</option></select><label><input type="checkbox" id="nm-refs"> Show sources</label>
+    </div>
     </div>
   </header>
   <ol id="names" class="name-grid"><li class="empty">Loading…</li></ol>
   <section class="refs" id="refs" aria-label="Sources"></section>
 </main>
 
-<script src="../assets/js/site.js?v=20261102i" defer></script>
-<script src="../assets/js/lib.js?v=20261102i" defer></script>
-<script src="../assets/js/names.js?v=20261102i" defer></script>
+<script src="../assets/js/site.js?v=20261102j" defer></script>
+<script src="../assets/js/lib.js?v=20261102j" defer></script>
+<script src="../assets/js/names.js?v=20261102j" defer></script>
 </body>
 </html>

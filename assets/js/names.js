@@ -1,11 +1,11 @@
 // 99 Names: rendered only from assets/data/names99.json (from the SiraatOne Quran app; Nov 2026: Al-Ahad added, Allah not numbered (see enumeration note)).
 (function () {
   var list = document.getElementById('names'), f = document.getElementById('nf'), esc = SO.esc, all = [];
-  var O = Object.assign({ view: 'cards', font: 'uthmani', meaning: true, nums: true, tts: true }, SO.get('so.nm', {})); // same options as the app
+  var O = Object.assign({ view: 'cards', font: 'uthmani', meaning: true, nums: true, tts: true, size: '1', refs: true }, SO.get('so.nm', {})); // same options as the app
   var $ = function (id) { return document.getElementById(id); };
-  function opts() { list.className = 'name-grid nv-' + O.view + ' nf-' + O.font + (O.meaning ? '' : ' no-mean') + (O.nums ? '' : ' no-num'); }
-  [['nm-view', 'view'], ['nm-font', 'font']].forEach(function (p) { $(p[0]).value = O[p[1]]; $(p[0]).onchange = function () { O[p[1]] = this.value; SO.set('so.nm', O); opts(); }; });
-  [['nm-meaning', 'meaning'], ['nm-nums', 'nums'], ['nm-tts', 'tts']].forEach(function (p) { $(p[0]).checked = O[p[1]]; $(p[0]).onchange = function () { O[p[1]] = this.checked; SO.set('so.nm', O); opts(); }; });
+  function opts() { document.documentElement.style.setProperty('--nm-size', O.size); $('refs').hidden = !O.refs; list.className = 'name-grid nv-' + O.view + ' nf-' + O.font + (O.meaning ? '' : ' no-mean') + (O.nums ? '' : ' no-num'); }
+  [['nm-view', 'view'], ['nm-font', 'font'], ['nm-size', 'size']].forEach(function (p) { $(p[0]).value = O[p[1]]; $(p[0]).onchange = function () { O[p[1]] = this.value; SO.set('so.nm', O); opts(); }; });
+  [['nm-meaning', 'meaning'], ['nm-nums', 'nums'], ['nm-tts', 'tts'], ['nm-refs', 'refs']].forEach(function (p) { $(p[0]).checked = O[p[1]]; $(p[0]).onchange = function () { O[p[1]] = this.checked; SO.set('so.nm', O); opts(); }; });
   opts();
   // Tap to pronounce: the browser's own Arabic text-to-speech (like the app's device TTS). Nothing is sent to us.
   list.addEventListener('click', function (e) {
@@ -34,4 +34,6 @@
     render();
   }).catch(function () { list.innerHTML = '<li class="empty">Could not load. Please refresh.</li>'; });
   f.addEventListener('input', render);
+  $('nm-menu').onclick = function (e) { e.stopPropagation(); var o = $('nm-tools').classList.toggle('open'); this.setAttribute('aria-expanded', o); };
+  document.addEventListener('click', function (e) { if ($('nm-tools').classList.contains('open') && !e.target.closest('#nm-tools')) $('nm-tools').classList.remove('open'); });
 })();
