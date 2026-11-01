@@ -408,18 +408,25 @@
       box.textContent = t; if (/[\u0590-\u08FF]/.test(t.slice(0, 80))) box.setAttribute('dir', 'rtl');
     }).catch(function () { box.textContent = 'The tafsir could not be loaded. Please check your connection and try again.'; });
   }
-  function openTafsir(k) {
-    tfKey = k; $('tf-key').textContent = k; $('tafsir').hidden = false;
-    if (TFL) return tfShow();
-    $('tf-text').textContent = 'Loading…';
-    fj(TFB + 'editions.json').then(function (d) {
+  function tfList() {
+    if (TFL) return Promise.resolve(TFL);
+    return fj(TFB + 'editions.json').then(function (d) {
       TFL = (Array.isArray(d) ? d : d.editions || []).filter(function (e) { return e && e.slug; });
       TFL.sort(function (a, b) { return a.language_name === b.language_name ? (a.name < b.name ? -1 : 1) : a.language_name === 'english' ? -1 : b.language_name === 'english' ? 1 : a.language_name < b.language_name ? -1 : 1; });
       var cap = function (w) { return String(w || '').replace(/(^|[ -])\w/g, function (m) { return m.toUpperCase(); }); };
-      $('tf-pick').innerHTML = TFL.map(function (e) { return '<option value="' + esc(e.slug) + '">' + esc(cap(e.language_name) + ' — ' + e.name + (e.author_name ? ' (' + e.author_name + ')' : '')) + '</option>'; }).join('');
-      var sv = SO.get('so.tafsir', null); if (sv && TFL.some(function (e) { return e.slug === sv; })) $('tf-pick').value = sv;
-      $('tf-pick').onchange = tfShow; tfShow();
-    }).catch(function () { $('tf-text').textContent = 'The tafsir list could not be loaded. Please check your connection and try again.'; });
+      var opts = TFL.map(function (e) { return '<option value="' + esc(e.slug) + '">' + esc(cap(e.language_name) + ' — ' + e.name + (e.author_name ? ' (' + e.author_name + ')' : '')) + '</option>'; }).join('');
+      $('tf-pick').innerHTML = opts; $('set-tf').innerHTML = opts;
+      var sv = SO.get('so.tafsir', null); if (sv && TFL.some(function (e) { return e.slug === sv; })) { $('tf-pick').value = sv; $('set-tf').value = sv; }
+      return TFL;
+    });
+  }
+  $('open-set').addEventListener('click', function () { tfList().catch(function () { $('set-tf').innerHTML = '<option value="">Could not load — check your connection</option>'; }); });
+  $('set-tf').onchange = function () { if (this.value) { SO.set('so.tafsir', this.value); $('tf-pick').value = this.value; } };
+  function openTafsir(k) {
+    tfKey = k; $('tf-key').textContent = k; $('tafsir').hidden = false;
+    $('tf-text').textContent = 'Loading…';
+    tfList().then(function () { $('tf-pick').onchange = function () { $('set-tf').value = this.value; tfShow(); }; tfShow(); })
+      .catch(function () { $('tf-text').textContent = 'The tafsir list could not be loaded. Please check your connection and try again.'; });
   }
   $('tafsir').addEventListener('click', function (e) { if (e.target === $('tafsir') || e.target.closest('[data-close]')) $('tafsir').hidden = true; });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('tafsir').hidden = true; });
