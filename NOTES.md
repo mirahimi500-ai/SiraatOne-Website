@@ -136,3 +136,4 @@ R1 (2026-11-01): sura start shows only frame + name; new i button opens Surah in
 R1b (2026-11-01): i button centered under Bismillah; Surah information = app content (quran_surah_info.dart): curated overview 1-2 copied unchanged, structural overview for others from app metadata via scripts/export-surah-info.ps1 -> assets/data/surah-info.json. Version 20261101g. PASS (headless).
 R1c: surah info details shown horizontally (stat chips). Version 20261101h.
 R2 (2026-11-01): defaults clean mushaf/no paging/tajweed on/uthmani/app background/Alafasy; bottom-bar play hidden; volume slider in audio bar. Version 20261101n.
+R3: ayah popup text-size slider + Translation button/popup. Version 20261101q.

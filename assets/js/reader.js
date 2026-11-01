@@ -264,6 +264,9 @@
     var b = e.target.closest('[data-a]'); if (!b) return;
     var a = b.getAttribute('data-a');
     if (a === 'tafsir') { closeSheet(); openTafsir(cur); return; }
+    if (a === 'trans') { var kt = cur.split(':'); closeSheet(); getSura(+kt[0]).then(function (d) { var t = trInfo(), x = $('tr-text');
+      $('tr-key').textContent = cur; $('tr-name').textContent = t ? t.name : 'Saheeh International'; x.textContent = d.en[+kt[1] - 1] || '';
+      if (t && t.dir === 'rtl') x.setAttribute('dir', 'rtl'); else x.removeAttribute('dir'); $('trans').hidden = false; }); return; }
     if (a === 'play') { var kp = cur.split(':'); closeSheet(); AUD.start(+kp[0], +kp[1]); return; }
     if (a === 'copy') {
       var ks = cur.split(':'), i = +ks[1] - 1;
@@ -474,4 +477,8 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('sinfo').hidden = true; });
   // volume in the audio bar (saved with reader settings)
   $('ab-vol').value = S.vol; $('ab-vol').oninput = function () { S.vol = +this.value; save(); AUD.live(); if ($('settings').querySelector('[data-set=vol]')) apply(false); };
+  // Quran text size slider in the ayah popup
+  $('sh-size').value = S.ar; $('sh-size').oninput = function () { S.ar = +this.value; save(); apply(false); };
+  $('trans').addEventListener('click', function (e) { if (e.target === $('trans') || e.target.closest('[data-close]')) $('trans').hidden = true; });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('trans').hidden = true; });
 })();

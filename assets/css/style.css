@@ -557,3 +557,4 @@ input[type=range]{accent-color:var(--brand)}
 #si-body .si-en{margin:0}#si-body .si-mean{margin:.15rem 0 .9rem;color:var(--muted);font-size:1.05rem}
 .ab-vol{display:flex;align-items:center;gap:.35rem;margin-left:.4rem}.ab-vol svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8}.ab-vol input{width:90px;accent-color:var(--brand)}
 #play[hidden]{display:none!important}
+.sheet .sh-size{display:flex;flex-direction:column;gap:.3rem;margin:.6rem 0}.sheet .sh-size input{width:100%;accent-color:var(--brand)}
