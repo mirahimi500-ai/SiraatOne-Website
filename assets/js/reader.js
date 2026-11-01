@@ -261,6 +261,7 @@
       document.querySelectorAll('#sh-hl button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-c') === (all[cur] || '')); }); return; }
     var b = e.target.closest('[data-a]'); if (!b) return;
     var a = b.getAttribute('data-a');
+    if (a === 'tafsir') { closeSheet(); openTafsir(cur); return; }
     if (a === 'play') { var kp = cur.split(':'); closeSheet(); AUD.start(+kp[0], +kp[1]); return; }
     if (a === 'copy') {
       var ks = cur.split(':'), i = +ks[1] - 1;
@@ -283,21 +284,31 @@
     var el = new Audio(), wordEl = new Audio(), q = [], qi = -1, playing = false;
     // official URLs from the Quran Foundation API (recitation 7 Alafasy, recitation 6 Husary)
     var BASE = { Alafasy: 'https://verses.quran.foundation/Alafasy/mp3/', Husary: 'https://mirrors.quranicaudio.com/everyayah/Husary_64kbps/' };
-    var url = function (s, a) { return (BASE[S.reciter] || BASE.Alafasy) + ('00' + s).slice(-3) + ('00' + a).slice(-3) + '.mp3'; };
     var names = { Alafasy: 'Mishary Rashid Alafasy', Husary: 'Mahmoud Khalil Al-Hussary' };
+    // full-surah reciters (MP3Quran.net, same filter as the app: Hafs, https, all 114 suras) from assets/data/reciters.json
+    var REC = {}; function full() { return /^m:/.test(S.reciter) && REC[S.reciter]; }
+    var url = function (s, a) { var r = full(); if (r) return r.server + ('00' + s).slice(-3) + '.mp3'; return (BASE[S.reciter] || BASE.Alafasy) + ('00' + s).slice(-3) + ('00' + a).slice(-3) + '.mp3'; };
+    SO.j('../assets/data/reciters.json').then(function (d) {
+      d.reciters.forEach(function (r) { REC['m:' + r.id] = r; names['m:' + r.id] = r.name; });
+      var sel = $('rec-full'); $('rec-box').hidden = false;
+      sel.innerHTML += d.reciters.map(function (r) { return '<option value="m:' + r.id + '">' + esc(r.name + (d.reciters.filter(function (x) { return x.name === r.name; }).length > 1 ? ' — ' + r.moshaf : '')) + '</option>'; }).join('');
+      sel.value = full() ? S.reciter : '';
+      sel.onchange = function () { if (!this.value) return; S.reciter = this.value; save(); apply(false); if (qi >= 0) start(q[qi][0], q[qi][1] || 1); };
+    }).catch(function () {});
     function queue() {
+      if (full()) { if (!pageMode) return [[n, 0]]; var u = []; document.querySelectorAll('#body .aya').forEach(function (x) { if (u.indexOf(+x.dataset.s) < 0) u.push(+x.dataset.s); }); return u.map(function (s) { return [s, 0]; }); }
       if (pageMode) return Array.prototype.map.call(document.querySelectorAll('#body .aya'), function (x) { return [+x.dataset.s, +x.dataset.a]; });
       var out = []; for (var a = 1; a <= ch[n - 1].verses; a++) out.push([n, a]); return out;
     }
     function mark(on) {
       document.querySelectorAll('.playing').forEach(function (x) { x.classList.remove('playing'); });
-      if (!on || qi < 0) return; var it = q[qi], x = elFor(it[0] + ':' + it[1]);
+      if (!on || qi < 0 || !q[qi][1]) return; var it = q[qi], x = elFor(it[0] + ':' + it[1]);
       if (x) { x.classList.add('playing'); if (S.follow) x.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
     }
     function ui() {
       $('abar').hidden = qi < 0; document.body.classList.toggle('audio-on', qi >= 0);
       if (qi < 0) return; var it = q[qi];
-      $('ab-key').textContent = ch[it[0] - 1].name_simple + ' ' + it[0] + ':' + it[1]; $('ab-rec').textContent = names[S.reciter] || S.reciter;
+      $('ab-key').textContent = ch[it[0] - 1].name_simple + (it[1] ? ' ' + it[0] + ':' + it[1] : ' · full surah'); $('ab-rec').textContent = names[S.reciter] || S.reciter;
       $('ab-toggle').innerHTML = playing ? '<svg viewBox="0 0 24 24" class="fillico"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>' : '<svg viewBox="0 0 24 24" class="fillico"><path d="M8 5.5v13l11-6.5z"/></svg>';
       $('ab-toggle').setAttribute('aria-label', playing ? 'Pause' : 'Play');
       $('ab-speed').textContent = S.rate + '×'; $('ab-repeat').textContent = 'Repeat: ' + S.repeat;
@@ -306,7 +317,7 @@
       if (i < 0 || i >= q.length) return stop();
       qi = i; el.src = url(q[i][0], q[i][1]); el.playbackRate = S.rate; el.volume = S.vol;
       el.play().then(function () { playing = true; ui(); }).catch(function () { playing = false; ui(); });
-      mark(true); ui(); SO.set('so.last', { s: q[i][0], a: q[i][1] });
+      mark(true); ui(); if (q[i][1]) SO.set('so.last', { s: q[i][0], a: q[i][1] });
     }
     el.addEventListener('ended', function () {
       if (S.repeat === 'ayah') return play(qi);
@@ -317,7 +328,7 @@
       stop();
     });
     el.addEventListener('error', function () { playing = false; ui(); $('ab-rec').textContent = 'Audio could not be loaded'; });
-    function start(s, a) { q = queue(); var i = 0; q.forEach(function (it, k) { if (it[0] === s && it[1] === a) i = k; }); play(i); }
+    function start(s, a) { q = queue(); var i = 0; q.forEach(function (it, k) { if (it[0] === s && (it[1] === a || !it[1])) i = k; }); play(i); }
     function stop() { el.pause(); playing = false; qi = -1; mark(false); ui(); }
     function toggle() { if (qi < 0) { var l = SO.get('so.last', null); return start(l && (pageMode || l.s === n) ? l.s : n, l && (pageMode || l.s === n) ? l.a : 1); }
       if (playing) { el.pause(); playing = false; ui(); } else el.play().then(function () { playing = true; ui(); }).catch(function () {}); }
@@ -352,7 +363,7 @@
       document.querySelectorAll('.mtabs button').forEach(function (b) { b.setAttribute('aria-selected', b === tab); });
       document.querySelectorAll('[data-pane]').forEach(function (s) { s.hidden = s.getAttribute('data-pane') !== p; }); return; }
     var seg = e.target.closest('.seg button');
-    if (seg) { var k = seg.parentNode.getAttribute('data-set'); S[k] = seg.getAttribute('data-v'); save(); if (route()) return; if (k === 'script') reloadText(); else apply(k === 'mode' || k === 'tlay'); return; }
+    if (seg) { var k = seg.parentNode.getAttribute('data-set'); S[k] = seg.getAttribute('data-v'); save(); if (k === 'reciter' && $('rec-full')) $('rec-full').value = ''; if (route()) return; if (k === 'script') reloadText(); else apply(k === 'mode' || k === 'tlay'); return; }
     if (e.target.id === 'reset') { S = Object.assign({}, DEF); save(); apply(true); }
   });
   $('settings').addEventListener('input', function (e) {
@@ -381,4 +392,55 @@
     if (!S.auto && raf) { cancelAnimationFrame(raf); raf = null; }
   }
   ['wheel', 'touchstart'].forEach(function (ev) { addEventListener(ev, function () { if (S.auto) { S.auto = false; save(); apply(false); } }, { passive: true }); });
+
+  // ---------- Tafsir (same source as the app: spa5k/tafsir_api via jsDelivr), loaded when asked, shown unchanged ----------
+  var TFB = 'https://cdn.jsdelivr.net/gh/spa5k/tafsir_api@main/tafsir/', TFL = null, tfKey = null;
+  function fj(u) { return fetch(u).then(function (r) { if (!r.ok) throw 0; return r.json(); }); } // not cached: a failed load can be retried
+  function tfShow() {
+    var slug = $('tf-pick').value, p = tfKey.split(':'), box = $('tf-text'); SO.set('so.tafsir', slug);
+    box.textContent = 'Loading…'; box.removeAttribute('dir');
+    fj(TFB + slug + '/' + p[0] + '/' + p[1] + '.json').then(function (d) {
+      var t = (d && d.text || '').trim();
+      if (!t) { box.textContent = 'This tafsir has no separate text for this ayah (it may be explained together with nearby ayahs).'; return; }
+      box.textContent = t; if (/[\u0590-\u08FF]/.test(t.slice(0, 80))) box.setAttribute('dir', 'rtl');
+    }).catch(function () { box.textContent = 'The tafsir could not be loaded. Please check your connection and try again.'; });
+  }
+  function openTafsir(k) {
+    tfKey = k; $('tf-key').textContent = k; $('tafsir').hidden = false;
+    if (TFL) return tfShow();
+    $('tf-text').textContent = 'Loading…';
+    fj(TFB + 'editions.json').then(function (d) {
+      TFL = (Array.isArray(d) ? d : d.editions || []).filter(function (e) { return e && e.slug; });
+      TFL.sort(function (a, b) { return a.language_name === b.language_name ? (a.name < b.name ? -1 : 1) : a.language_name === 'english' ? -1 : b.language_name === 'english' ? 1 : a.language_name < b.language_name ? -1 : 1; });
+      var cap = function (w) { return String(w || '').replace(/(^|[ -])\w/g, function (m) { return m.toUpperCase(); }); };
+      $('tf-pick').innerHTML = TFL.map(function (e) { return '<option value="' + esc(e.slug) + '">' + esc(cap(e.language_name) + ' — ' + e.name + (e.author_name ? ' (' + e.author_name + ')' : '')) + '</option>'; }).join('');
+      var sv = SO.get('so.tafsir', null); if (sv && TFL.some(function (e) { return e.slug === sv; })) $('tf-pick').value = sv;
+      $('tf-pick').onchange = tfShow; tfShow();
+    }).catch(function () { $('tf-text').textContent = 'The tafsir list could not be loaded. Please check your connection and try again.'; });
+  }
+  $('tafsir').addEventListener('click', function (e) { if (e.target === $('tafsir') || e.target.closest('[data-close]')) $('tafsir').hidden = true; });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('tafsir').hidden = true; });
+
+  // ---------- Backup: export / import everything this site saved in this browser ----------
+  function bkKeys() { var out = []; try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k.indexOf('so.') === 0 || k === 'theme' || k === 'rm') out.push(k); } } catch (e) {} return out; }
+  $('bk-export').onclick = function () {
+    var data = {}; bkKeys().forEach(function (k) { data[k] = localStorage.getItem(k); });
+    var blob = new Blob([JSON.stringify({ app: 'siraatone.com', version: 1, created: new Date().toISOString(), data: data }, null, 1)], { type: 'application/json' });
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'siraatone-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+    document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    $('bk-msg').textContent = 'Backup saved (' + Object.keys(data).length + ' items).';
+  };
+  $('bk-file').onchange = function () {
+    var f = this.files[0]; this.value = ''; if (!f) return;
+    var r = new FileReader();
+    r.onload = function () {
+      var b; try { b = JSON.parse(r.result); } catch (e) { b = null; }
+      if (!b || b.app !== 'siraatone.com' || !b.data || typeof b.data !== 'object') { $('bk-msg').textContent = 'This is not a SiraatOne website backup file. Nothing was changed.'; return; }
+      var ks = Object.keys(b.data).filter(function (k) { return (k.indexOf('so.') === 0 || k === 'theme' || k === 'rm') && typeof b.data[k] === 'string'; });
+      if (!confirm('Replace the data in this browser with this backup (' + ks.length + ' items)?')) return;
+      try { bkKeys().forEach(function (k) { localStorage.removeItem(k); }); ks.forEach(function (k) { localStorage.setItem(k, b.data[k]); }); } catch (e) { $('bk-msg').textContent = 'Could not restore: browser storage is not available.'; return; }
+      location.reload();
+    };
+    r.readAsText(f);
+  };
 })();

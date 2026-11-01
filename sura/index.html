@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261101b">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261101c">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -71,10 +71,21 @@
         <button type="button" data-a="bm"><svg viewBox="0 0 24 24"><path d="M7 3.5h10v17l-5-4-5 4z"/></svg><span>Bookmark</span></button>
         <button type="button" data-a="fav"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span>Favorite</span></button>
         <button type="button" data-a="play"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg><span>Play</span></button>
+        <button type="button" data-a="tafsir"><svg viewBox="0 0 24 24"><path d="M4 5.5h7a2 2 0 0 1 2 2V20a2 2 0 0 0-2-2H4zM20 5.5h-7a2 2 0 0 0-2 2V20a2 2 0 0 1 2-2h7z"/></svg><span>Tafsir</span></button>
         <button type="button" data-a="copy"><svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg><span>Copy</span></button>
       </div>
       <div class="hl-row" id="sh-hl" aria-label="Highlight colour"><button type="button" data-c="yellow" title="Yellow" style="--c:#FDE047"></button><button type="button" data-c="amber" title="Amber" style="--c:#FBBF24"></button><button type="button" data-c="orange" title="Orange" style="--c:#FB923C"></button><button type="button" data-c="red" title="Red" style="--c:#F87171"></button><button type="button" data-c="pink" title="Pink" style="--c:#F472B6"></button><button type="button" data-c="purple" title="Purple" style="--c:#C084FC"></button><button type="button" data-c="indigo" title="Indigo" style="--c:#818CF8"></button><button type="button" data-c="blue" title="Blue" style="--c:#60A5FA"></button><button type="button" data-c="teal" title="Teal" style="--c:#2DD4BF"></button><button type="button" data-c="green" title="Green" style="--c:#4ADE80"></button><button type="button" data-c="" title="No highlight" class="hl-none">×</button></div>
       <textarea id="sh-note" class="note" placeholder="Your note (saved in this browser)"></textarea>
+    </div>
+  </div>
+  <div class="modal" id="tafsir" hidden>
+    <div class="modal-card" role="dialog" aria-label="Tafsir">
+      <div class="modal-top"><div><b>Tafsir <span id="tf-key"></span></b><small>Explanation of the ayah</small></div><button type="button" class="x" data-close aria-label="Close">×</button></div>
+      <div class="modal-body">
+        <label class="pick">Tafsir<select id="tf-pick"></select></label>
+        <div id="tf-text" class="tf-text" aria-live="polite"></div>
+        <p class="hint">Source: <a href="https://github.com/spa5k/tafsir_api" rel="noopener">spa5k/tafsir_api</a> (same source as the SiraatOne Quran app), shown unchanged. For religious rulings, please ask a qualified scholar.</p>
+      </div>
     </div>
   </div>
   <div class="modal" id="settings" hidden>
@@ -130,6 +141,8 @@
           <section data-pane="audio" hidden>
             <h3>Reciter</h3>
             <div class="seg" data-set="reciter"><button data-v="Alafasy">Mishary Rashid Alafasy</button><button data-v="Husary">Mahmoud Khalil Al-Hussary</button></div>
+            <p class="hint">Ayah by ayah (highlights the ayah being recited).</p>
+            <div id="rec-box" hidden><label class="pick">More reciters — full surah (MP3Quran.net)<select id="rec-full"><option value="">Choose a reciter…</option></select></label></div>
             <h3>Repeat</h3>
             <div class="seg" data-set="repeat"><button data-v="off">Off</button><button data-v="ayah">Ayah</button><button data-v="surah">Surah</button></div>
             <label class="tg">Continue to next surah<input type="checkbox" data-set="autoNext"></label>
@@ -147,6 +160,10 @@
             <label class="tg">Keep screen awake<input type="checkbox" data-set="awake"></label>
             <label class="tg">Auto scroll<input type="checkbox" data-set="auto"></label>
             <label class="sl">Auto scroll speed <b data-out="speed"></b><input type="range" min="1" max="10" step="1" data-set="speed"></label>
+            <h3>Backup</h3>
+            <p class="hint">Save your bookmarks, favorites, highlights, notes, tasbih, settings and other data from this browser to a file, or restore them from a file.</p>
+            <div class="bk-row"><button type="button" class="btn btn-ghost" id="bk-export">Export backup</button><label class="btn btn-ghost" for="bk-file">Import backup</label><input type="file" id="bk-file" accept=".json,application/json" hidden></div>
+            <p class="hint" id="bk-msg" role="status"></p>
             <button type="button" class="btn btn-ghost" id="reset">Reset settings</button>
           </section>
         </div>
@@ -161,9 +178,9 @@
     <nav aria-label="Footer"><a href="../support/#testers">Become a Tester</a><a href="../support/">Support</a><a href="../privacy/">Privacy</a><a href="../terms/">Terms &amp; Credits</a></nav>
   </div>
 </footer>
-<script src="../assets/js/site.js?v=20261101b" defer></script>
-<script src="../assets/js/lib.js?v=20261101b" defer></script>
-<script src="../assets/js/tajweed.js?v=20261101b" defer></script>
-<script src="../assets/js/reader.js?v=20261101b" defer></script>
+<script src="../assets/js/site.js?v=20261101c" defer></script>
+<script src="../assets/js/lib.js?v=20261101c" defer></script>
+<script src="../assets/js/tajweed.js?v=20261101c" defer></script>
+<script src="../assets/js/reader.js?v=20261101c" defer></script>
 </body>
 </html>

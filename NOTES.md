@@ -125,3 +125,6 @@ Theme-aware switches + translation lists (dark fix). Version 20261101b. PASS (sc
 
 ## Stage L1 — Legal check + Terms & Credits (2026-11-01)
 Checked: KFGQPC Hafs licence = free use/copy/distribute, no modify/sell (we serve unmodified). IndoPak + Surah Name V2 (QUL): "no copyright information" -> kept, unmodified, credited. HadeethEnc terms: republish allowed unchanged, credit HadeethEnc.com, latest version, no inappropriate ads -> live API meets this. New terms/ page (use terms, scholar disclaimer, all credits, copyright-owner contact); footer link on all pages. Status: PENDING live check
+
+## Stage F1 — Full-surah reciters + Tafsir + Backup (2026-11-01)
+Read app (read-only, staged copies deleted): reciters = MP3Quran.net API v3 rewaya=1, https, surah_total 114 (quran_resource_catalog_service.dart); tafsir = spa5k/tafsir_api via jsDelivr. scripts/fetch-reciters.ps1 -> assets/data/reciters.json (same filter + HEAD test 001/114.mp3). Reader: Audio tab "More reciters — full surah" (no ayah highlight), ayah sheet Tafsir (live, unchanged, all spa5k editions), Behavior tab Backup export/import (so.*, theme, rm). Privacy website section + Terms updated (MP3Quran.net, jsDelivr). Version 20261101c. Status: PENDING run + live check
