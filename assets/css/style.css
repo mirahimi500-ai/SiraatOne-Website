@@ -566,3 +566,4 @@ input[type=range]{accent-color:var(--brand)}
 .tabbar svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round;padding:3px 16px;box-sizing:content-box;border-radius:999px}
 .tabbar a[aria-current=page]{color:var(--brand)}.tabbar a[aria-current=page] svg{background:color-mix(in srgb,var(--brand) 16%,transparent)}
 body.has-tabbar{padding-bottom:72px}
+#tafsir .modal-body,#trans .modal-body{display:block}
