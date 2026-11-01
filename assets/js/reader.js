@@ -445,14 +445,28 @@
   };
 
   // ---------- Surah information (i button): name, meaning, details, translation, Tajweed colour key ----------
+  // Same content as the app (quran_surah_info.dart): curated overview for 1-2 (copied unchanged), structural overview for the rest
+  // built only from the app's verified metadata (assets/data/surah-info.json, scripts/export-surah-info.ps1).
+  var CUR = {"1": {"meaning": "The Opening", "revelationPlace": "Makkah", "nameNote": "Al-Fatihah means “The Opening.” It opens the Quran and gathers central themes of praise, worship, reliance on Allah, and guidance.", "summary": "A concise prayer of praise and worship that affirms reliance on Allah and asks Him for guidance to the Straight Path.", "sourceLabel": "Curated SiraatOne overview; chapter metadata verified against Quran Foundation and the installed full-Quran metadata."}, "2": {"meaning": "The Cow", "revelationPlace": "Madinah", "nameNote": "Al-Baqarah is named after the story of the cow mentioned in verses 67–73. The name does not mean the Surah is only about that story.", "summary": "A Madinan Surah centered on divine guidance. It addresses faith, worship, community life and law, lessons from Bani Isra’il, and the responsibilities of a believing community.", "sourceLabel": "Curated SiraatOne overview; chapter metadata verified against Quran Foundation and the installed full-Quran metadata."}};
   $('s-info').onclick = function () {
-    var c = ch && ch[n - 1]; if (!c) return;
-    var rows = [['Name', c.name_simple + ' · ' + c.name_arabic], ['Meaning', c.meaning], ['Surah number', n], ['Ayahs', c.verses], ['Revealed in', c.place === 'makkah' ? 'Makkah (Makki)' : 'Madinah (Madani)']];
-    if (idx) { var p = SO.pos(idx, n, 1); rows.push(['Starts at', 'Juz ' + p.juz + ' · Page ' + p.page]); }
-    var t = trInfo(); rows.push(['Translation', t ? t.name : 'Saheeh International']);
-    var h = '<dl class="si-dl">' + rows.map(function (r) { return '<dt>' + r[0] + '</dt><dd>' + esc(String(r[1])) + '</dd>'; }).join('') + '</dl>';
-    h += '<h3>Tajweed colours</h3>' + (S.tajweed && document.body.dataset.tj === '1' ? '<div class="tj-legend">' + LEG.map(function (l) { return '<span class="tj-' + l[0] + '">' + l[1] + '</span>'; }).join('') + '</div>' : '<p class="hint">Tajweed colouring is off. Turn it on in Settings → Text.</p>');
-    $('si-title').textContent = c.name_simple; $('si-body').innerHTML = h; $('sinfo').hidden = false;
+    SO.j('../assets/data/surah-info.json').then(function (d) {
+      var m = d.surahs[n - 1]; if (!m || m.number !== n) throw 0;
+      var rt = (m.revelation_type || '').trim(), rl = rt.toLowerCase(), place = ['makkah', 'mecca', 'makki', 'meccan'].indexOf(rl) > -1 ? 'Makkah' : ['madinah', 'medina', 'madani', 'medinan'].indexOf(rl) > -1 ? 'Madinah' : rt || 'Not specified'; // same mapping as the app
+      var mean = (m.meaning_en || '').trim() || m.name_en, cu = CUR[n];
+      var pages = m.page_start === m.page_end ? 'page ' + m.page_start : 'pages ' + m.page_start + '–' + m.page_end;
+      var juz = m.juz_start === m.juz_end ? 'Juz ' + m.juz_start : 'Juz ' + m.juz_start + '–' + m.juz_end;
+      var note = cu ? cu.nameNote : m.name_en + ' is commonly rendered in English as “' + mean + '.” This title information comes from the installed full-Quran chapter metadata.';
+      var sum = cu ? cu.summary : 'Surah ' + m.name_en + ' is a ' + place + ' chapter with ' + m.ayah_count + ' Ayahs, spanning ' + pages + ' and ' + juz + '.' +
+        (m.revelation_order > 0 ? ' Its recorded revelation order is ' + m.revelation_order + '.' : '') + (m.ruku_count > 0 ? ' It contains ' + m.ruku_count + ' ' + (m.ruku_count === 1 ? 'Ruku' : 'Rukus') + '.' : '');
+      var src = cu ? cu.sourceLabel : 'Structural overview generated only from the verified installed full-Quran metadata. It is not presented as Tafsir or as an AI-generated thematic interpretation.';
+      var rows = [['Meaning', cu ? cu.meaning : mean], ['Revealed in', cu ? cu.revelationPlace : place], ['Ayahs', m.ayah_count], ['Pages', pages.replace(/^pages? /, '')], ['Juz', juz.replace('Juz ', '')]];
+      if (m.revelation_order > 0) rows.push(['Revelation order', m.revelation_order]);
+      if (m.ruku_count > 0) rows.push(['Rukus', m.ruku_count]);
+      var h = '<p class="si-ar" lang="ar" dir="rtl">' + esc(m.name_ar) + '</p><dl class="si-dl">' + rows.map(function (r) { return '<dt>' + r[0] + '</dt><dd>' + esc(String(r[1])) + '</dd>'; }).join('') + '</dl>' +
+        '<h3>About the name</h3><p>' + esc(note) + '</p><h3>Overview</h3><p>' + esc(sum) + '</p><p class="hint">' + esc(src) + '</p>';
+      h += '<h3>Tajweed colours</h3>' + (S.tajweed && document.body.dataset.tj === '1' ? '<div class="tj-legend">' + LEG.map(function (l) { return '<span class="tj-' + l[0] + '">' + l[1] + '</span>'; }).join('') + '</div>' : '<p class="hint">Tajweed colouring is off. Turn it on in Settings → Text.</p>');
+      $('si-title').textContent = n + '. ' + m.name_en; $('si-body').innerHTML = h; $('sinfo').hidden = false;
+    }).catch(function () { $('si-title').textContent = ''; $('si-body').innerHTML = '<p class="hint">Surah information could not be loaded. Please refresh.</p>'; $('sinfo').hidden = false; });
   };
   $('sinfo').addEventListener('click', function (e) { if (e.target === $('sinfo') || e.target.closest('[data-close]')) $('sinfo').hidden = true; });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('sinfo').hidden = true; });
