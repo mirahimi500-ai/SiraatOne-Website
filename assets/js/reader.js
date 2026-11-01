@@ -56,6 +56,7 @@
     langs.sort(function (a, b) { return a === 'english' ? -1 : b === 'english' ? 1 : a < b ? -1 : 1; });
     L.innerHTML = langs.map(function (l) { return '<option value="' + esc(l) + '"' + (t && l === t.lang ? ' selected' : '') + '>' + esc(cap(l)) + '</option>'; }).join('');
     I.innerHTML = TRM.filter(function (x) { return x.lang === L.value; }).map(function (x) { return '<option value="' + x.id + '"' + (t && x.id === t.id ? ' selected' : '') + '>' + esc(x.name + (x.author && x.author !== x.name ? ' — ' + x.author : '')) + '</option>'; }).join('');
+    $('tp-lang').innerHTML = L.innerHTML; $('tp-lang').value = L.value; $('tp-id').innerHTML = I.innerHTML; $('tp-id').value = I.value; $('tp-box').hidden = false;
     var c = trInfo(); $('src-tr').textContent = 'Translation: ' + (c ? c.name : 'Saheeh International') + '.';
   }
   SO.j('../assets/data/translations.json').then(function (d) {
@@ -264,7 +265,8 @@
     var b = e.target.closest('[data-a]'); if (!b) return;
     var a = b.getAttribute('data-a');
     if (a === 'tafsir') { closeSheet(); openTafsir(cur); return; }
-    if (a === 'trans') { var kt = cur.split(':'); closeSheet(); getSura(+kt[0]).then(function (d) { var t = trInfo(), x = $('tr-text');
+    if (a === 'trans') { closeSheet(); showTrans(cur); return; }
+    if (0) { var kt; getSura(+kt[0]).then(function (d) { var t = trInfo(), x = $('tr-text');
       $('tr-key').textContent = cur; $('tr-name').textContent = t ? t.name : 'Saheeh International'; x.textContent = d.en[+kt[1] - 1] || '';
       if (t && t.dir === 'rtl') x.setAttribute('dir', 'rtl'); else x.removeAttribute('dir'); $('trans').hidden = false; }); return; }
     if (a === 'play') { var kp = cur.split(':'); closeSheet(); AUD.start(+kp[0], +kp[1]); return; }
@@ -482,4 +484,14 @@
   $('sh-size').value = S.ar; $('sh-size').oninput = function () { S.ar = +this.value; save(); apply(false); };
   $('trans').addEventListener('click', function (e) { if (e.target === $('trans') || e.target.closest('[data-close]')) $('trans').hidden = true; });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('trans').hidden = true; });
+  // translation popup with its own Language / Translator lists (same setting as Settings > Text)
+  var trKey = null;
+  function showTrans(k) {
+    trKey = k; var kt = k.split(':');
+    getSura(+kt[0]).then(function (d) { var t = trInfo(), x = $('tr-text');
+      $('tr-key').textContent = k; $('tr-name').textContent = t ? t.name : 'Saheeh International'; x.textContent = d.en[+kt[1] - 1] || '';
+      if (t && t.dir === 'rtl') x.setAttribute('dir', 'rtl'); else x.removeAttribute('dir'); $('trans').hidden = false; });
+  }
+  $('tp-lang').onchange = function () { if (!TRM) return; var v = this.value, f = TRM.filter(function (x) { return x.lang === v; })[0]; S.trid = f.id; save(); trUI(); reloadText(); showTrans(trKey); };
+  $('tp-id').onchange = function () { S.trid = +this.value; save(); trUI(); reloadText(); showTrans(trKey); };
 })();
