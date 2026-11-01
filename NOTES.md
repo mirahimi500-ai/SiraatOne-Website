@@ -140,3 +140,4 @@ R3: ayah popup text-size slider + Translation button/popup. Version 20261101q.
 Fix: ayah popup Tafsir/Translation lost the ayah (closeSheet cleared it). Translation popup language switch saved. PASS headless. Version 20261101t.
 Tafsir choice in Settings > Text (shared with popup). Version 20261101v.
 T2 (2026-11-01): bottom taskbar Home/Quran/App Library on all pages except reader (site.js); new apps/ App Library page (all tiles). Version 20261101w.
+Q1 (2026-11-01): reader bottom-bar surah name opens centred Quick access panel = app quran_quick_access_overlay.dart (Bookmarks/Highlights/Notes/Favorites icons, shortcuts 18/36/55/67, search, 114 rows: number, meaning, ayah count, SurahNameV2 name, current highlighted). PASS headless. Version 20261101y.

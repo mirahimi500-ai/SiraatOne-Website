@@ -567,3 +567,22 @@ input[type=range]{accent-color:var(--brand)}
 .tabbar a[aria-current=page]{color:var(--brand)}.tabbar a[aria-current=page] svg{background:color-mix(in srgb,var(--brand) 16%,transparent)}
 body.has-tabbar{padding-bottom:72px}
 #tafsir .modal-body,#trans .modal-body{display:block}
+/* quick access panel (app side panel, centred on the website) */
+.bb-name{background:none;border:0;color:inherit;font:inherit;cursor:pointer;padding:4px 10px;border-radius:999px}.bb-name:hover{background:color-mix(in srgb,var(--brand) 10%,transparent)}
+.qp .qp-card{width:min(440px,94vw);height:min(640px,86vh);display:flex;flex-direction:column;padding:0;overflow:hidden}
+.qp-icons{display:flex;justify-content:center;align-items:center;gap:8px;height:48px;position:relative;border-bottom:1px solid var(--border)}
+.qp-icons [data-q]{width:38px;height:38px;border-radius:50%;border:0;background:none;color:var(--muted);cursor:pointer;display:grid;place-items:center}
+.qp-icons [data-q] svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round}
+.qp-icons [data-q][aria-pressed=true]{color:var(--brand);background:color-mix(in srgb,var(--brand) 14%,transparent)}
+.qp-icons .x{position:absolute;right:8px}
+.qp-short{display:flex;justify-content:center;gap:14px;padding:6px 10px 2px;font-size:.78rem}.qp-short a{color:var(--link);text-decoration:none}
+.qp-search{margin:6px 12px;width:auto}
+.qp-list{flex:1;overflow:auto;padding:4px 8px 12px}
+.qp-row{display:flex;align-items:center;gap:8px;min-height:44px;padding:4px 8px;margin:4px 0;border-radius:10px;color:var(--text);text-decoration:none}
+.qp-row:hover{background:color-mix(in srgb,var(--brand) 8%,transparent)}
+.qp-row.cur{color:var(--brand)}.qp-row.cur .qp-d b{font-weight:800}
+.qp-n{width:24px;text-align:center;font-size:.7rem;color:var(--muted)}.qp-row.cur .qp-n{color:var(--brand)}
+.qp-d{flex:1;display:flex;flex-direction:column;min-width:0}.qp-d b{font-size:.86rem;font-weight:500}.qp-d small{font-size:.68rem;color:var(--muted)}
+.qp-ar{font-size:1.55rem;line-height:1.2;max-width:110px;white-space:nowrap}
+.qp-saved{flex-direction:column;align-items:flex-start;gap:0}.qp-saved small{font-size:.75rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.qp-back{margin:6px 4px}.qp-sec{display:block;margin:4px 8px;color:var(--muted);font-size:.85rem}.qp-all{display:block;margin:10px auto 0;width:max-content}.qp-empty{text-align:center;margin-top:1.5rem}

@@ -497,4 +497,41 @@
   }
   $('tp-lang').onchange = function () { if (!TRM) return; var v = this.value, f = TRM.filter(function (x) { return x.lang === v; })[0]; S.trid = f.id; save(); trUI(); reloadText(); showTrans(trKey); };
   $('tp-id').onchange = function () { S.trid = +this.value; save(); trUI(); reloadText(); showTrans(trKey); };
+
+  // ---------- Quick access panel (same as the app's side panel, quran_quick_access_overlay.dart) ----------
+  // Sections: Surahs (default), Bookmarks, Highlights, Notes, Favorites; shortcuts 18, 36, 55, 67; search; current surah highlighted.
+  var QS = 'surahs', QSH = [18, 36, 55, 67], QT = { bm: 'Bookmarks', hl: 'Highlights', notes: 'Notes', fav: 'Favorites' };
+  function qpSaved(sec) {
+    var keys = sec === 'bm' ? SO.get('so.bm', []) : sec === 'fav' ? SO.get('so.fav', []) : Object.keys(SO.get(sec === 'hl' ? 'so.hl' : 'so.notes', {}));
+    var notes = SO.get('so.notes', {});
+    keys = keys.filter(function (k) { return /^\d+:\d+$/.test(k); }).sort(function (a, b) { var x = a.split(':'), y = b.split(':'); return x[0] - y[0] || x[1] - y[1]; });
+    var h = '<button type="button" class="btn btn-ghost sm qp-back" data-back>← Surahs</button><b class="qp-sec">' + QT[sec] + '</b>';
+    if (!keys.length) return h + '<p class="hint qp-empty">Nothing saved yet.</p>';
+    return h + keys.map(function (k) { var p = k.split(':'), sub = 'Ayah ' + p[1] + (sec === 'notes' && notes[k] ? ' • ' + notes[k] : '');
+      return '<a class="qp-row qp-saved" href="?n=' + p[0] + '#' + p[1] + '"><span class="qp-ar" lang="ar" dir="rtl">' + SO.sname(+p[0], esc(ch[p[0] - 1].name_arabic)) + '</span><small>' + esc(sub) + '</small></a>'; }).join('') +
+      '<a class="btn btn-ghost sm qp-all" href="../read/#' + { bm: 'bookmarks', hl: 'highlights', notes: 'notes', fav: 'favorites' }[sec] + '">View all saved</a>';
+  }
+  function qpRender() {
+    document.querySelectorAll('.qp-icons [data-q]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.q === QS); });
+    $('qp-short').hidden = $('qp-q').hidden = QS !== 'surahs';
+    if (QS !== 'surahs') { $('qp-list').innerHTML = qpSaved(QS); return; }
+    var q = $('qp-q').value.trim().toLowerCase().replace(/[-'\s]/g, '');
+    $('qp-list').innerHTML = ch.filter(function (c) { return !q || String(c.id) === q || (c.name_simple + c.meaning).toLowerCase().replace(/[-'\s]/g, '').indexOf(q) > -1 || c.name_arabic.indexOf($('qp-q').value.trim()) > -1; }).map(function (c) {
+      return '<a class="qp-row' + (c.id === n ? ' cur' : '') + '" href="?n=' + c.id + '"><span class="qp-n">' + c.id + '</span><span class="qp-d"><b>' + esc(c.meaning) + '</b><small>' + c.verses + ' Ayahs</small></span><span class="qp-ar" lang="ar" dir="rtl">' + SO.sname(c.id, esc(c.name_arabic)) + '</span></a>';
+    }).join('') || '<p class="hint qp-empty">No matching surah.</p>';
+  }
+  $('bb-name').onclick = function () {
+    if (!ch) return; QS = 'surahs'; $('qp-q').value = '';
+    $('qp-short').innerHTML = QSH.map(function (x) { return '<a href="?n=' + x + '">' + esc(ch[x - 1].name_simple) + '</a>'; }).join('');
+    qpRender(); $('qpanel').hidden = false;
+    var c = $('qp-list').querySelector('.cur'); if (c) c.scrollIntoView({ block: 'center' });
+  };
+  $('qpanel').addEventListener('click', function (e) {
+    if (e.target === $('qpanel') || e.target.closest('[data-close]')) { $('qpanel').hidden = true; return; }
+    var b = e.target.closest('[data-q]'); if (b) { QS = QS === b.dataset.q ? 'surahs' : b.dataset.q; qpRender(); return; }
+    if (e.target.closest('[data-back]')) { QS = 'surahs'; qpRender(); return; }
+    if (e.target.closest('a')) $('qpanel').hidden = true;
+  });
+  $('qp-q').oninput = qpRender;
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('qpanel').hidden = true; });
 })();
