@@ -158,7 +158,7 @@
     }
     Promise.all(segs.map(function (g) { return getSura(g[0]); }).concat([getSura(1)]).concat(segs.map(function (g) { return getTj(g[0]); })).concat([getTj(1)])).then(function (all) {
       all = all.slice(0, segs.length + 1); document.body.dataset.tj = S.tajweed && TJD[segs[0][0]] ? '1' : '0';
-      var b1 = all[all.length - 1].ar[0], h = legend();
+      var b1 = all[all.length - 1].ar[0], h = '';
       segs.forEach(function (g, i) {
         var s = g[0], d = all[i];
         if (g[1] === 1) h += '<div class="pg-title">' + SO.sname(s, 'سورة ' + ch[s - 1].name_arabic) + '</div>' + (s !== 1 && s !== 9 ? '<p class="bismillah" lang="ar" dir="rtl">' + fmt(noNum(b1), 1, 0, true) + '</p>' : '');
@@ -197,7 +197,7 @@
         }).join('') + '</ol>';
       }
       if (S.mode === 'plus' && wbw === false) h = '<p class="empty">Word-by-word is not available yet. Showing Verse List.</p>' + h;
-      $('body').innerHTML = legend() + h;
+      $('body').innerHTML = h;
       var t = parseInt(location.hash.slice(1), 10);
       if (t > 1 && $(String(t))) $(String(t)).scrollIntoView();
       SO.set('so.last', { s: n, a: t > 0 && t <= c.verses ? t : 1 });
@@ -443,4 +443,17 @@
     };
     r.readAsText(f);
   };
+
+  // ---------- Surah information (i button): name, meaning, details, translation, Tajweed colour key ----------
+  $('s-info').onclick = function () {
+    var c = ch && ch[n - 1]; if (!c) return;
+    var rows = [['Name', c.name_simple + ' · ' + c.name_arabic], ['Meaning', c.meaning], ['Surah number', n], ['Ayahs', c.verses], ['Revealed in', c.place === 'makkah' ? 'Makkah (Makki)' : 'Madinah (Madani)']];
+    if (idx) { var p = SO.pos(idx, n, 1); rows.push(['Starts at', 'Juz ' + p.juz + ' · Page ' + p.page]); }
+    var t = trInfo(); rows.push(['Translation', t ? t.name : 'Saheeh International']);
+    var h = '<dl class="si-dl">' + rows.map(function (r) { return '<dt>' + r[0] + '</dt><dd>' + esc(String(r[1])) + '</dd>'; }).join('') + '</dl>';
+    h += '<h3>Tajweed colours</h3>' + (S.tajweed && document.body.dataset.tj === '1' ? '<div class="tj-legend">' + LEG.map(function (l) { return '<span class="tj-' + l[0] + '">' + l[1] + '</span>'; }).join('') + '</div>' : '<p class="hint">Tajweed colouring is off. Turn it on in Settings → Text.</p>');
+    $('si-title').textContent = c.name_simple; $('si-body').innerHTML = h; $('sinfo').hidden = false;
+  };
+  $('sinfo').addEventListener('click', function (e) { if (e.target === $('sinfo') || e.target.closest('[data-close]')) $('sinfo').hidden = true; });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('sinfo').hidden = true; });
 })();

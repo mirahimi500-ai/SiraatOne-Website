@@ -543,3 +543,8 @@ input[type=range]{accent-color:var(--brand)}
 .duas .dua-list{display:block;max-width:900px;margin:8px auto 0}
 .duas .dua{background:none;border:0;border-radius:0;padding:22px 4px;position:relative}
 .duas .dua+.dua::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:1px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--muted) 45%,transparent),transparent)}
+/* surah info button + modal */
+.sura-head{position:relative}
+.info-btn{position:absolute;top:6px;right:6px;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border);background:var(--surface);color:var(--brand);font:italic 700 1rem/1 Georgia,serif;cursor:pointer;z-index:2}
+.info-btn:hover{border-color:var(--brand)}
+.si-dl{display:grid;grid-template-columns:auto 1fr;gap:.5rem 1rem;margin:.25rem 0 1rem}.si-dl dt{color:var(--muted)}.si-dl dd{margin:0;font-weight:600}
