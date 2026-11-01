@@ -131,3 +131,4 @@ Read app (read-only, staged copies deleted): reciters = MP3Quran.net API v3 rewa
 
 ## Stage D4 — Duas landing like the app (2026-11-01)
 Read app (read-only, staged copies deleted): duas_adhkar_screen.dart _buildLandingBrowseContent, dua_folder_labels.dart icons, strings (en). Landing: "Collections" (Morning/Evening, Prophetic, Quranic, Prayer/Salah with the app's prayer_salah.png icon) + "Browse Prophetic & Quranic Duas" (15 topics, app short titles + order), 4 equal columns, search all, Saved. Folder/topic opens list with back button (hash URLs). Test: 19 tiles, Faith 15, Morning 25, Prophetic 133, no JS errors. Version 20261101d. Status: PENDING live check
+D4b (2026-11-01): Duas list - title hidden, centered pill Morning/Evening, single column, no boxes, faded centered divider. Version 20261101e.
