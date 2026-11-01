@@ -520,3 +520,18 @@ input[type=range]{accent-color:var(--brand)}
 .tf-text[dir=rtl]{font-family:var(--quran,serif);font-size:calc(var(--tr-size,1rem)*1.2);line-height:2}
 .bk-row{display:flex;gap:.6rem;flex-wrap:wrap;margin:.4rem 0}
 .bk-row label.btn{cursor:pointer}
+/* Duas landing = app layout: Collections + Browse topics, 4 equal columns */
+.d-home{max-width:1080px;margin:0 auto}
+.d-home-top{display:flex;gap:.6rem;align-items:center;margin:.5rem 0 1rem}.d-home-top .search{flex:1}
+.d-h{font-size:.95rem;font-weight:700;color:var(--muted);margin:1.6rem 0 .6rem}
+.d-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media (min-width:600px){.d-grid{gap:12px}}
+.d-tile{display:flex;flex-direction:column;align-items:center;gap:.45rem;padding:.75rem .1rem;border-radius:12px;text-align:center;color:var(--text);text-decoration:none}
+.d-tile:hover{background:color-mix(in srgb,var(--brand) 8%,transparent)}
+.d-tile b{font-size:.8rem;font-weight:600;line-height:1.25;overflow-wrap:normal;word-break:normal;hyphens:none}
+@media (min-width:700px){.d-tile b{font-size:.92rem}}
+.d-ic{display:grid;place-items:center;width:56px;height:56px;border-radius:14px;background:color-mix(in srgb,var(--brand) 16%,var(--surface));color:var(--brand)}
+@media (min-width:700px){.d-ic{width:68px;height:68px;border-radius:18px}}
+.d-ic .ico{width:28px;height:28px}
+.salah-ic{display:block;width:32px;height:32px;background:currentColor;-webkit-mask:url(../img/prayer-salah.png) center/contain no-repeat;mask:url(../img/prayer-salah.png) center/contain no-repeat}
+.d-back{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin:.25rem 0 .75rem}.d-back h2{margin:0;font-size:1.15rem}

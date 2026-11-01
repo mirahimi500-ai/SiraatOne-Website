@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261101c">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261101d">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -34,10 +34,17 @@
 
 <main id="main" class="wrap tool duas">
   <header class="tool-head"><h1>Duas &amp; Adhkar</h1><p class="sub">From the SiraatOne Quran app's sourced catalog. Saved items stay in this browser.</p></header>
-  <div class="tabs" role="tablist" id="d-tabs">
+  <section id="d-home" class="d-home" hidden>
+    <div class="d-home-top"><input class="search" id="d-hq" type="search" placeholder="Search all duas" autocomplete="off"><a class="btn btn-ghost sm" href="#saved">Saved</a></div>
+    <h2 class="d-h">Collections</h2>
+    <div class="d-grid" id="d-cols"></div>
+    <h2 class="d-h">Browse Prophetic &amp; Quranic Duas</h2>
+    <div class="d-grid" id="d-topics"></div>
+  </section>
+  <div id="d-view" hidden>
+  <div class="d-back"><a href="#" class="btn btn-ghost sm" id="d-backbtn">← Duas &amp; Adhkar</a><h2 id="d-title"></h2></div>
+  <div class="tabs" role="tablist" id="d-tabs" hidden>
     <button type="button" data-t="morning">Morning</button><button type="button" data-t="evening">Evening</button>
-    <button type="button" data-t="prophetic">Prophetic</button><button type="button" data-t="quranic">Quranic</button>
-    <button type="button" data-t="prayer">Prayer &amp; Salah</button><button type="button" data-t="saved">Saved</button>
   </div>
   <div class="qx-tools d-tools">
     <input class="search" id="d-q" type="search" placeholder="Search duas (title, meaning)" autocomplete="off">
@@ -49,6 +56,7 @@
     </div>
   </div>
   <ol class="dua-list" id="d-list"><li class="empty">Loading…</li></ol>
+  </div>
   <p class="hint d-note" id="d-note"></p>
 </main>
 
@@ -58,8 +66,8 @@
     <nav aria-label="Footer"><a href="../support/#testers">Become a Tester</a><a href="../support/">Support</a><a href="../privacy/">Privacy</a><a href="../terms/">Terms &amp; Credits</a></nav>
   </div>
 </footer>
-<script src="../assets/js/site.js?v=20261101c" defer></script>
-<script src="../assets/js/lib.js?v=20261101c" defer></script>
-<script src="../assets/js/duas.js?v=20261101c" defer></script>
+<script src="../assets/js/site.js?v=20261101d" defer></script>
+<script src="../assets/js/lib.js?v=20261101d" defer></script>
+<script src="../assets/js/duas.js?v=20261101d" defer></script>
 </body>
 </html>

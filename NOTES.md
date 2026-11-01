@@ -128,3 +128,6 @@ Checked: KFGQPC Hafs licence = free use/copy/distribute, no modify/sell (we serv
 
 ## Stage F1 — Full-surah reciters + Tafsir + Backup (2026-11-01)
 Read app (read-only, staged copies deleted): reciters = MP3Quran.net API v3 rewaya=1, https, surah_total 114 (quran_resource_catalog_service.dart); tafsir = spa5k/tafsir_api via jsDelivr. scripts/fetch-reciters.ps1 -> assets/data/reciters.json (same filter + HEAD test 001/114.mp3). Reader: Audio tab "More reciters — full surah" (no ayah highlight), ayah sheet Tafsir (live, unchanged, all spa5k editions), Behavior tab Backup export/import (so.*, theme, rm). Privacy website section + Terms updated (MP3Quran.net, jsDelivr). Version 20261101c. Status: PENDING run + live check
+
+## Stage D4 — Duas landing like the app (2026-11-01)
+Read app (read-only, staged copies deleted): duas_adhkar_screen.dart _buildLandingBrowseContent, dua_folder_labels.dart icons, strings (en). Landing: "Collections" (Morning/Evening, Prophetic, Quranic, Prayer/Salah with the app's prayer_salah.png icon) + "Browse Prophetic & Quranic Duas" (15 topics, app short titles + order), 4 equal columns, search all, Saved. Folder/topic opens list with back button (hash URLs). Test: 19 tiles, Faith 15, Morning 25, Prophetic 133, no JS errors. Version 20261101d. Status: PENDING live check
