@@ -554,3 +554,4 @@ input[type=range]{accent-color:var(--brand)}
 #si-body{text-align:center}#si-body .si-ar{margin:0 0 .8rem;font-size:2.4rem;line-height:1.2}
 #si-body .si-en{margin:0;font-size:1.3rem}#si-body .si-ar{font-size:3.4rem;margin:.1rem 0 .9rem}
 #si-body .si-ar{font-size:6.8rem;line-height:1;margin:0}#si-body .si-en{margin:0 0 .9rem}
+#si-body .si-en{margin:0}#si-body .si-mean{margin:.15rem 0 .9rem;color:var(--muted);font-size:1.05rem}
