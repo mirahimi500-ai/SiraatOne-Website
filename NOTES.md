@@ -118,3 +118,6 @@ Rule: delete temp/draft/unneeded files after each step and after any failure.
 
 ## Tester page merged into Support (2026-10-31)
 testers/ removed; its content is now support/#testers; footer "Become a Tester" links to support/#testers on all pages. Status: PENDING live check
+
+## Stage T1 — All translations (2026-11-01)
+scripts/fetch-translations.ps1: every Quran Foundation translation (126 listed / 66 languages) saved once to assets/data/tr/<id>/<sura>.json + translations.json. Checks per translation: verse_key order, 114 suras, counts, 6236, no empty verse; failed ones skipped and listed. Reader: Settings > Text > Translation (Language, Translator), RTL for Arabic-script/Hebrew, credit line follows choice. Saheeh (20) stays in sura/*.json. Version 20261101a. Status: PENDING run on PC

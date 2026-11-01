@@ -502,3 +502,8 @@ body[data-dfont="naskh"] .d-ar{font-family:"Amiri Quran","Amiri",serif}
 :root,body[data-bg="classic"],body[data-bg="ivory"],body[data-bg="fiber"],body[data-bg="green"],body[data-bg="sand"],body[data-bg="charcoal"]{--tj-grey:#8E8E8E;--tj-blue:#0A84FF;--tj-indigo:#5856D6;--tj-red:#FF1744;--tj-purple:#D500F9;--tj-green:#00C853;--tj-cyan:#00B8D4;--tj-orange:#FF6D00}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--tj-grey:#C7C7C7;--tj-blue:#40C4FF;--tj-indigo:#8C9EFF;--tj-red:#FF5252;--tj-purple:#EA80FC;--tj-green:#69F0AE;--tj-cyan:#18FFFF;--tj-orange:#FFAB40}}
 :root[data-theme="dark"],body[data-bg="blue"],body[data-bg="forest"],body[data-bg="warmdark"],body[data-bg="royal"]{--tj-grey:#C7C7C7;--tj-blue:#40C4FF;--tj-indigo:#8C9EFF;--tj-red:#FF5252;--tj-purple:#EA80FC;--tj-green:#69F0AE;--tj-cyan:#18FFFF;--tj-orange:#FFAB40}
+
+/* translation picker */
+.pick{display:flex;flex-direction:column;gap:.3rem;margin:.5rem 0;font-size:.9rem}
+.pick select{font:inherit;padding:.55rem .6rem;border-radius:10px;border:1px solid var(--line,#ccc);background:var(--bg1,#fff);color:inherit;max-width:100%}
+.card-a .tr[dir=rtl]{text-align:right;font-size:calc(var(--tr-size,1rem)*1.12)}

@@ -5,7 +5,7 @@
   if (!(n >= 1) && P >= 1 && P <= 604) n = 1; // set from the page index below
   var $ = function (id) { return document.getElementById(id); }, esc = SO.esc, root = document.documentElement;
   if (!(n >= 1 && n <= 114)) { location.replace('../read/'); return; }
-  var DEF = { mode: 'verse', script: 'uthmani', ar: 1.9, tr: 1, header: true, meaning: true, deco: true, bg: 'app', nav: 'surah', hide: true, compact: true, awake: false, auto: false, speed: 3, paging: 'scroll', tajweed: false, legend: true, reciter: 'Alafasy', repeat: 'off', autoNext: true, follow: true, tapWord: true, rate: 1, vol: 1, lh: 2.3, pad: 48, tlay: 'ayah', nums: true, numsRight: false, showAr: true, showTr: true, showWbw: true };
+  var DEF = { mode: 'verse', script: 'uthmani', ar: 1.9, tr: 1, header: true, meaning: true, deco: true, bg: 'app', nav: 'surah', hide: true, compact: true, awake: false, auto: false, speed: 3, paging: 'scroll', tajweed: false, legend: true, reciter: 'Alafasy', repeat: 'off', autoNext: true, follow: true, tapWord: true, rate: 1, vol: 1, lh: 2.3, pad: 48, tlay: 'ayah', nums: true, numsRight: false, showAr: true, showTr: true, showWbw: true, trid: 20 };
   var S = Object.assign({}, DEF, SO.get('so.rs', {}));
   S.bg = { cream: 'classic', sepia: 'sand', night: 'forest' }[S.bg] || S.bg; // old values -> app backgrounds
   var HL = { yellow: '#FDE047', amber: '#FBBF24', orange: '#FB923C', red: '#F87171', pink: '#F472B6', purple: '#C084FC', indigo: '#818CF8', blue: '#60A5FA', teal: '#2DD4BF', green: '#4ADE80' };
@@ -42,19 +42,40 @@
     return (m && tjSource(m, !noMark)) || esc(a);
   }
 
+  // Translations: 20 = Saheeh International (inside sura/*.json); others from assets/data/tr/<id>/<sura>.json (scripts/fetch-translations.ps1)
+  var TRM = null, TRT = null;
+  function trInfo() { return TRM && TRM.filter(function (t) { return t.id === +S.trid; })[0]; }
+  function getTr(s) { if (+S.trid === 20 || !trInfo()) return Promise.resolve(null); return SO.j('../assets/data/tr/' + S.trid + '/' + s + '.json').then(function (d) { return d.t; }).catch(function () { return null; }); }
+  function trAttr() { var t = trInfo(); return t && +S.trid !== 20 ? ' dir="' + t.dir + '"' : ''; }
+  function trUI() {
+    var L = $('tr-lang'), I = $('tr-id'), t = trInfo() || TRM.filter(function (x) { return x.id === 20; })[0];
+    var cap = function (w) { return w.replace(/(^|[ -])\w/g, function (m) { return m.toUpperCase(); }); };
+    var langs = []; TRM.forEach(function (x) { if (langs.indexOf(x.lang) < 0) langs.push(x.lang); });
+    langs.sort(function (a, b) { return a === 'english' ? -1 : b === 'english' ? 1 : a < b ? -1 : 1; });
+    L.innerHTML = langs.map(function (l) { return '<option value="' + esc(l) + '"' + (t && l === t.lang ? ' selected' : '') + '>' + esc(cap(l)) + '</option>'; }).join('');
+    I.innerHTML = TRM.filter(function (x) { return x.lang === L.value; }).map(function (x) { return '<option value="' + x.id + '"' + (t && x.id === t.id ? ' selected' : '') + '>' + esc(x.name + (x.author && x.author !== x.name ? ' — ' + x.author : '')) + '</option>'; }).join('');
+    var c = trInfo(); $('src-tr').textContent = 'Translation: ' + (c ? c.name : 'Saheeh International') + '.';
+  }
+  SO.j('../assets/data/translations.json').then(function (d) {
+    TRM = d.translations; $('tr-box').hidden = false; trUI();
+    if (+S.trid !== 20 && sura) reloadText();
+    $('tr-lang').onchange = function () { var f = TRM.filter(function (x) { return x.lang === $('tr-lang').value; })[0]; S.trid = f.id; save(); trUI(); reloadText(); };
+    $('tr-id').onchange = function () { S.trid = +this.value; save(); trUI(); reloadText(); };
+  }).catch(function () {});
+
   function dirFor() { return S.script === 'uthmani' ? 'qpc' : S.script === 'indopak' ? 'indopak' : null; }
   // one sura in the chosen script: { ar, en, base }
   function getSura(s) {
-    var d = dirFor(), key = s + '|' + d;
-    if (!CACHE[key]) CACHE[key] = Promise.all([SO.j('../assets/data/sura/' + s + '.json'), d ? SO.j('../assets/data/' + d + '/' + s + '.json').catch(function () { return null; }) : null])
-      .then(function (x) { var ok = x[1] && x[1].ar.length === x[0].ar.length; return { ar: ok ? x[1].ar : x[0].ar, en: x[0].en, base: x[0].ar, styled: !!ok }; });
+    var d = dirFor(), key = s + '|' + d + '|' + S.trid;
+    if (!CACHE[key]) CACHE[key] = Promise.all([SO.j('../assets/data/sura/' + s + '.json'), d ? SO.j('../assets/data/' + d + '/' + s + '.json').catch(function () { return null; }) : null, getTr(s)])
+      .then(function (x) { var ok = x[1] && x[1].ar.length === x[0].ar.length, t = x[2] && x[2].length === x[0].en.length ? x[2] : x[0].en; return { ar: ok ? x[1].ar : x[0].ar, en: t, base: x[0].ar, styled: !!ok }; });
     return CACHE[key];
   }
   function elFor(k) { var p = k.split(':'); return document.getElementById(pageMode ? 'a' + p[0] + '_' + p[1] : p[1]); }
   // Quran script: naskh = Uthmani text in Amiri Quran; uthmani = QPC Hafs (KFGQPC); indopak = IndoPak Nastaleeq
   function loadScript() {
     return Promise.all([getSura(n), bism ? getSura(1) : null, getTj(n), bism ? getTj(1) : null]).then(function (x) {
-      AR = x[0].ar; BI = x[1] ? x[1].ar[0] : null;
+      AR = x[0].ar; BI = x[1] ? x[1].ar[0] : null; TRT = x[0].en;
       document.body.dataset.tj = S.tajweed && x[2] ? '1' : '0';
       document.body.dataset.script = !x[0].styled ? 'naskh' : S.script;
     });
@@ -172,7 +193,7 @@
           var ar = mode === 'plus'
             ? '<div class="words" lang="ar" dir="rtl">' + wbw[i].map(function (w, j) { return '<span class="w" data-w="' + (j + 1) + '" data-wa="' + (i + 1) + '"><span class="wa">' + esc(w[0]) + '</span><span class="wt" dir="ltr">' + esc(w[1] || '') + '</span></span>'; }).join('') + end(i + 1) + '</div>'
             : '<p class="ar" lang="ar" dir="rtl">' + fmt(a, n, i) + (S.nums && !(S.tajweed && TJD[n] ? S.script !== 'naskh' : hasNum(a)) ? ' ' + end(i + 1) : '') + '</p>';
-          return '<li class="card-a" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(k) + '>' + top + (showAr ? ar : '') + (showTr ? '<p class="tr">' + esc(sura.en[i]) + '</p>' : '') + '</li>';
+          return '<li class="card-a" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(k) + '>' + top + (showAr ? ar : '') + (showTr ? '<p class="tr"' + trAttr() + '>' + esc((TRT || sura.en)[i]) + '</p>' : '') + '</li>';
         }).join('') + '</ol>';
       }
       if (S.mode === 'plus' && wbw === false) h = '<p class="empty">Word-by-word is not available yet. Showing Verse List.</p>' + h;

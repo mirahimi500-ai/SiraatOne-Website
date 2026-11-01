@@ -1,0 +1,846 @@
+{
+    "source":  "Quran Foundation API v4 (api.quran.com/api/v4/resources/translations)",
+    "fetched":  "2026-10-31",
+    "translations":  [
+                         {
+                             "id":  47,
+                             "name":  "Albanian",
+                             "author":  "Albanian",
+                             "lang":  "albanian",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  89,
+                             "name":  "Albanian Translation",
+                             "author":  "Sherif Ahmeti\t",
+                             "lang":  "albanian",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  88,
+                             "name":  "Hasan Efendi Nahi",
+                             "author":  "Hasan Efendi Nahi",
+                             "lang":  "albanian",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  236,
+                             "name":  "Ramdane At Mansour",
+                             "author":  "Ramdane At Mansour",
+                             "lang":  "Amazigh",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  87,
+                             "name":  "Sadiq and Sani",
+                             "author":  "Sadiq and Sani",
+                             "lang":  "amharic",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  120,
+                             "name":  "Shaykh Rafeequl Islam Habibur-Rahman",
+                             "author":  "Shaykh Rafeequl Islam Habibur-Rahman",
+                             "lang":  "assamese",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  75,
+                             "name":  "Alikhan Musayev",
+                             "author":  "Alikhan Musayev",
+                             "lang":  "azeri",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  23,
+                             "name":  "Azerbaijani",
+                             "author":  "Azerbaijani",
+                             "lang":  "azeri",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  796,
+                             "name":  "Baba Mamady Jani",
+                             "author":  "Baba Mamady Jani",
+                             "lang":  "bambara",
+                             "dir":  "rtl"
+                         },
+                         {
+                             "id":  795,
+                             "name":  "Suliman Kanti",
+                             "author":  "Suliman Kanti",
+                             "lang":  "bambara",
+                             "dir":  "rtl"
+                         },
+                         {
+                             "id":  213,
+                             "name":  "Dr. Abu Bakr Muhammad Zakaria",
+                             "author":  "Dr. Abu Bakr Muhammad Zakaria",
+                             "lang":  "bengali",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  162,
+                             "name":  "Rawai Al-bayan",
+                             "author":  "Bayaan Foundation",
+                             "lang":  "bengali",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  163,
+                             "name":  "Sheikh Mujibur Rahman",
+                             "author":  "Darussalaam Publication",
+                             "lang":  "bengali",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  161,
+                             "name":  "Taisirul Quran",
+                             "author":  "Tawheed Publication",
+                             "lang":  "bengali",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  126,
+                             "name":  "Besim Korkut",
+                             "author":  "Besim Korkut",
+                             "lang":  "bosnian",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  214,
+                             "name":  "Dar Al-Salam Center",
+                             "author":  "Dar Al-Salam Center",
+                             "lang":  "bosnian",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  25,
+                             "name":  "Muhamed Mehanović",
+                             "author":  "Muhamed Mehanović",
+                             "lang":  "bosnian",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  237,
+                             "name":  "Tzvetan Theophanov",
+                             "author":  "Tzvetan Theophanov",
+                             "lang":  "Bulgarian",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  128,
+                             "name":  "Cambodian Muslim Community Development",
+                             "author":  "Cambodian Muslim Community Development",
+                             "lang":  "central khmer",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  56,
+                             "name":  "Chinese Translation (Simplified) - Ma Jain",
+                             "author":  "Ma Jian",
+                             "lang":  "chinese",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  109,
+                             "name":  "Muhammad Makin",
+                             "author":  "Muhammad Makin",
+                             "lang":  "chinese",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  26,
+                             "name":  "Czech",
+                             "author":  "Czech",
+                             "lang":  "czech",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  785,
+                             "name":  "Mawlawi Muhammad Anwar Badkhashani",
+                             "author":  "Mawlawi Muhammad Anwar Badkhashani",
+                             "lang":  "dari",
+                             "dir":  "rtl"
+                         },
+                         {
+                             "id":  840,
+                             "name":  "Abu Bakr Ibrahim Ali (Bakurube)",
+                             "author":  "Abu Bakr Ibrahim Ali",
+                             "lang":  "divehi",
+                             "dir":  "rtl"
+                         },
+                         {
+                             "id":  86,
+                             "name":  "Office of the president of Maldives",
+                             "author":  "Office of the president of Maldives",
+                             "lang":  "divehi, dhivehi, maldivian",
+                             "dir":  "rtl"
+                         },
+                         {
+                             "id":  144,
+                             "name":  "Sofian S. Siregar",
+                             "author":  "Sofian S. Siregar",
+                             "lang":  "Dutch",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  95,
+                             "name":  "A. Maududi (Tafhim commentary)",
+                             "author":  "Sayyid Abul Ala Maududi",
+                             "lang":  "english",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  22,
+                             "name":  "A. Yusuf Ali",
+                             "author":  "Abdullah Yusuf Ali",
+                             "lang":  "english",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  203,
+                             "name":  "Al-Hilali \u0026 Khan",
+                             "author":  "Muhammad Taqi-ud-Din al-Hilali \u0026 Muhammad Muhsin Khan",
+                             "lang":  "english",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  149,
+                             "name":  "Fadel Soliman, Bridges’ translation",
+                             "author":  "Fadel Soliman",
+                             "lang":  "english",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  19,
+                             "name":  "M. Pickthall",
+                             "author":  "Mohammed Marmaduke William Pickthall",
+                             "lang":  "english",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  85,
+                             "name":  "M.A.S. Abdel Haleem",
+                             "author":  "Abdul Haleem",
+                             "lang":  "english",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  20,
+                             "name":  "Saheeh International",
+                             "author":  "Saheeh International",
+                             "lang":  "english",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  84,
+                             "name":  "T. Usmani",
+                             "author":  "Mufti Taqi Usmani",
+                             "lang":  "english",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  57,
+                             "name":  "Transliteration",
+                             "author":  "Transliteration",
+                             "lang":  "english",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  30,
+                             "name":  "Finnish",
+                             "author":  "Finnish",
+                             "lang":  "finnish",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  136,
+                             "name":  "Montada Islamic Foundation",
+                             "author":  "Montada Islamic Foundation",
+                             "lang":  "french",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  31,
+                             "name":  "Muhammad Hamidullah",
+                             "author":  "Muhammad Hamidullah",
+                             "lang":  "french",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  779,
+                             "name":  "Rashid Maash",
+                             "author":  "Rashid Maash",
+                             "lang":  "french",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  208,
+                             "name":  "Abu Reda Muhammad ibn Ahmad",
+                             "author":  "Abu Reda Muhammad ibn Ahmad",
+                             "lang":  "german",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  27,
+                             "name":  "Frank Bubenheim and Nadeem",
+                             "author":  "Frank Bubenheim and Nadeem",
+                             "lang":  "german",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  225,
+                             "name":  "Rabila Al-Umry",
+                             "author":  "Rabila Al-Umry",
+                             "lang":  "gujarati",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  115,
+                             "name":  "Abubakar Mahmood Jummi",
+                             "author":  "Abubakar Mahmood Jummi",
+                             "lang":  "hausa",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  32,
+                             "name":  "Hausa Translation(Abubakar Gumi)",
+                             "author":  "Abubakar Mahmoud Gumi",
+                             "lang":  "hausa",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  233,
+                             "name":  "Dar Al-Salam Center",
+                             "author":  "Dar Al-Salam Center",
+                             "lang":  "hebrew",
+                             "dir":  "rtl"
+                         },
+                         {
+                             "id":  122,
+                             "name":  "Maulana Azizul Haque al-Umari",
+                             "author":  "Maulana Azizul Haque al-Umari",
+                             "lang":  "hindi",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  33,
+                             "name":  "Indonesian Islamic Affairs Ministry",
+                             "author":  "Unknown",
+                             "lang":  "indonesian",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  134,
+                             "name":  "King Fahad Quran Complex",
+                             "author":  "King Fahad Quran Complex",
+                             "lang":  "indonesian",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  141,
+                             "name":  "The Sabiq Company",
+                             "author":  "The Sabiq company",
+                             "lang":  "indonesian",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  153,
+                             "name":  "Hamza Roberto Piccardo",
+                             "author":  "Hamza Roberto Piccardo",
+                             "lang":  "italian",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  209,
+                             "name":  "Othman al-Sharif",
+                             "author":  "Othman al-Sharif",
+                             "lang":  "italian",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  35,
+                             "name":  "Ryoichi Mita",
+                             "author":  "Ryoichi Mita",
+                             "lang":  "japanese",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  218,
+                             "name":  "Saeed Sato",
+                             "author":  "Saeed Sato",
+                             "lang":  "japanese",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  222,
+                             "name":  "Khalifa Altay",
+                             "author":  "Khalifa Altay",
+                             "lang":  "kazakh",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  113,
+                             "name":  "Khalifah Altai",
+                             "author":  "Khalifah Altai",
+                             "lang":  "kazakh",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  774,
+                             "name":  "The Rwanda Muslims Association team",
+                             "author":  "The Rwanda Muslims Association team",
+                             "lang":  "kinyarwanda",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  219,
+                             "name":  "Hamed Choi",
+                             "author":  "Hamed Choi",
+                             "lang":  "korean",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  36,
+                             "name":  "Korean",
+                             "author":  "Korean",
+                             "lang":  "korean",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  143,
+                             "name":  "Muhammad Saleh Bamoki",
+                             "author":  "Muhammad Saleh Bamoki",
+                             "lang":  "kurdish",
+                             "dir":  "rtl"
+                         },
+                         {
+                             "id":  39,
+                             "name":  "Abdullah Muhammad Basmeih",
+                             "author":  "Abdullah Muhammad Basmeih",
+                             "lang":  "malay",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  224,
+                             "name":  "Abdul-Hamid Haidar \u0026 Kanhi Muhammad",
+                             "author":  "Abdul-Hamid Haidar \u0026 Kanhi Muhammad",
+                             "lang":  "malayalam",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  37,
+                             "name":  "Malayalam Translation(Abdul Hameed and Kunhi)",
+                             "author":  "Cheriyamundam Abdul Hameed and Kunhi Mohammed Parappoor",
+                             "lang":  "malayalam",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  80,
+                             "name":  "Muhammad Karakunnu and Vanidas Elayavoor",
+                             "author":  "Muhammad Karakunnu and Vanidas Elayavoor",
+                             "lang":  "malayalam",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  38,
+                             "name":  "Maranao",
+                             "author":  "Maranao",
+                             "lang":  "maranao",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  226,
+                             "name":  "Muhammad Shafi’i Ansari",
+                             "author":  "Muhammad Shafi’i Ansari",
+                             "lang":  "marathi",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  108,
+                             "name":  "Ahl Al-Hadith Central Society of Nepal",
+                             "author":  "Ahl Al-Hadith Central Society of Nepal",
+                             "lang":  "nepali",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  41,
+                             "name":  "Norwegian",
+                             "author":  "Norwegian",
+                             "lang":  "norwegian",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  111,
+                             "name":  "Ghali Apapur Apaghuna",
+                             "author":  "Ghali Apapur Apaghuna",
+                             "lang":  "oromo",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  118,
+                             "name":  "Zakaria Abulsalam",
+                             "author":  "Zakaria Abulsalam",
+                             "lang":  "pashto",
+                             "dir":  "rtl"
+                         },
+                         {
+                             "id":  29,
+                             "name":  "Hussein Taji Kal Dari",
+                             "author":  "Hussein Taji Kal Dari",
+                             "lang":  "persian",
+                             "dir":  "rtl"
+                         },
+                         {
+                             "id":  135,
+                             "name":  "IslamHouse.com",
+                             "author":  "IslamHouse.com",
+                             "lang":  "persian",
+                             "dir":  "rtl"
+                         },
+                         {
+                             "id":  42,
+                             "name":  "Józef Bielawski",
+                             "author":  "Józef Bielawski",
+                             "lang":  "polish",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  103,
+                             "name":  "Helmi Nasr",
+                             "author":  "Helmi Nasr",
+                             "lang":  "portuguese",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  43,
+                             "name":  "Portuguese Translation( Samir )",
+                             "author":  "Samir El-Hayek",
+                             "lang":  "portuguese",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  44,
+                             "name":  "Grigore",
+                             "author":  "George Grigore",
+                             "lang":  "Romanian",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  782,
+                             "name":  "Islamic and Cultural League",
+                             "author":  "Islamic and Cultural League",
+                             "lang":  "romanian",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  79,
+                             "name":  "Abu Adel",
+                             "author":  "Abu Adel",
+                             "lang":  "russian",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  78,
+                             "name":  "Ministry of Awqaf, Egypt",
+                             "author":  "Ministry of Awqaf, Egypt",
+                             "lang":  "russian",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  45,
+                             "name":  "Russian Translation ( Elmir Kuliev )",
+                             "author":  "Elmir Kuliev",
+                             "lang":  "russian",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  238,
+                             "name":  "Taj Mehmood Amroti",
+                             "author":  "Taj Mehmood Amroti",
+                             "lang":  "Sindhi",
+                             "dir":  "rtl"
+                         },
+                         {
+                             "id":  228,
+                             "name":  "Ruwwad Center",
+                             "author":  "Translation Pioneers Center",
+                             "lang":  "sinhala, sinhalese",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  46,
+                             "name":  "Mahmud Muhammad Abduh",
+                             "author":  "Mahmud Muhammad Abduh",
+                             "lang":  "somali",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  140,
+                             "name":  "Montada Islamic Foundation",
+                             "author":  "Montada Islamic Foundation",
+                             "lang":  "spanish",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  199,
+                             "name":  "Noor International Center",
+                             "author":  "Noor International Center",
+                             "lang":  "spanish",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  83,
+                             "name":  "Sheikh Isa Garcia",
+                             "author":  "Sheikh Isa Garcia",
+                             "lang":  "spanish",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  49,
+                             "name":  "Ali Muhsin Al-Barwani",
+                             "author":  "Ali Muhsin Al-Barwani",
+                             "lang":  "swahili",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  231,
+                             "name":  "Dr. Abdullah Muhammad Abu Bakr and Sheikh Nasir Khamis",
+                             "author":  "Dr. Abdullah Muhammad Abu Bakr and Sheikh Nasir Khamis",
+                             "lang":  "swahili",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  48,
+                             "name":  "Knut Bernström",
+                             "author":  "Knut Bernström",
+                             "lang":  "swedish",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  211,
+                             "name":  "Dar Al-Salam Center",
+                             "author":  "Dar Al-Salam Center",
+                             "lang":  "tagalog",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  139,
+                             "name":  "Khawaja Mirof \u0026 Khawaja Mir",
+                             "author":  "Khawaja Mirof \u0026 Khawaja Mir",
+                             "lang":  "tajik",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  223,
+                             "name":  "Pioneers of Translation Center",
+                             "author":  "Pioneers of Translation Center",
+                             "lang":  "tajik",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  74,
+                             "name":  "Tajik",
+                             "author":  "AbdolMohammad Ayati",
+                             "lang":  "tajik",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  133,
+                             "name":  "Abdul Hameed Baqavi",
+                             "author":  "Abdul Hameed Baqavi",
+                             "lang":  "tamil",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  50,
+                             "name":  "Jan Trust Foundation",
+                             "author":  "Jan Trust Foundation",
+                             "lang":  "tamil",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  229,
+                             "name":  "Sheikh Omar Sharif bin Abdul Salam",
+                             "author":  "Sheikh Omar Sharif bin Abdul Salam",
+                             "lang":  "tamil",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  53,
+                             "name":  "Tatar",
+                             "author":  "Tatar",
+                             "lang":  "tatar",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  227,
+                             "name":  "Maulana Abder-Rahim ibn Muhammad",
+                             "author":  "Maulana Abder-Rahim ibn Muhammad",
+                             "lang":  "telugu",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  230,
+                             "name":  "Society of Institutes and Universities",
+                             "author":  "Society of Institutes and Universities",
+                             "lang":  "thai",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  51,
+                             "name":  "Thai Translatio (King Fahad Quran Complex)",
+                             "author":  "King Fahad Quran Complex",
+                             "lang":  "thai",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  210,
+                             "name":  "Dar Al-Salam Center",
+                             "author":  "Dar Al-Salam Center",
+                             "lang":  "turkish",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  52,
+                             "name":  "Elmalili Hamdi Yazir",
+                             "author":  "Elmalili Hamdi Yazir\t",
+                             "lang":  "turkish",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  124,
+                             "name":  "Muslim Shahin",
+                             "author":  "Muslim Shahin",
+                             "lang":  "turkish",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  112,
+                             "name":  "Shaban Britch",
+                             "author":  "Shaban Britch",
+                             "lang":  "turkish",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  77,
+                             "name":  "Turkish Translation(Diyanet)",
+                             "author":  "Diyanet Isleri",
+                             "lang":  "turkish",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  76,
+                             "name":  "Muhammad Saleh",
+                             "author":  "Muhammad Saleh",
+                             "lang":  "uighur, uyghur",
+                             "dir":  "rtl"
+                         },
+                         {
+                             "id":  217,
+                             "name":  "Dr. Mikhailo Yaqubovic",
+                             "author":  "Dr. Mikhailo Yaqubovic",
+                             "lang":  "ukrainian",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  831,
+                             "name":  "Abul Ala Maududi(Roman Urdu)",
+                             "author":  "Abul Ala Maududi",
+                             "lang":  "urdu",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  158,
+                             "name":  "Bayan-ul-Quran",
+                             "author":  "Dr. Israr Ahmad",
+                             "lang":  "urdu",
+                             "dir":  "rtl"
+                         },
+                         {
+                             "id":  234,
+                             "name":  "Fatah Muhammad Jalandhari",
+                             "author":  "Fatah Muhammad Jalandhari",
+                             "lang":  "urdu",
+                             "dir":  "rtl"
+                         },
+                         {
+                             "id":  54,
+                             "name":  "Maulana Muhammad Junagarhi",
+                             "author":  "Maulana Muhammad Junagarhi",
+                             "lang":  "urdu",
+                             "dir":  "rtl"
+                         },
+                         {
+                             "id":  819,
+                             "name":  "Maulana Wahiduddin Khan",
+                             "author":  "Maulana Wahiduddin Khan",
+                             "lang":  "urdu",
+                             "dir":  "rtl"
+                         },
+                         {
+                             "id":  151,
+                             "name":  "Shaykh al-Hind Mahmud al-Hasan(with Tafsir E Usmani)",
+                             "author":  "Shaykh al-Hind Mahmud al-Hasan",
+                             "lang":  "urdu",
+                             "dir":  "rtl"
+                         },
+                         {
+                             "id":  97,
+                             "name":  "Tafheem e Qur\u0027an - Syed Abu Ali Maududi",
+                             "author":  "Syed Abu Ali Maududi",
+                             "lang":  "urdu",
+                             "dir":  "rtl"
+                         },
+                         {
+                             "id":  101,
+                             "name":  "Alauddin Mansour",
+                             "author":  "Alauddin Mansour",
+                             "lang":  "uzbek",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  127,
+                             "name":  "Muhammad Sodik Muhammad Yusuf",
+                             "author":  "Muhammad Sodik Muhammad Yusuf",
+                             "lang":  "uzbek",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  55,
+                             "name":  "Muhammad Sodiq Muhammad Yusuf (Latin) ",
+                             "author":  "Muhammad Sodiq Muhammad Yusuf",
+                             "lang":  "uzbek",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  221,
+                             "name":  "Hasan Abdul-Karim",
+                             "author":  "Hasan Abdul-Karim",
+                             "lang":  "vietnamese",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  220,
+                             "name":  "Ruwwad Center",
+                             "author":  "Translation Pioneers Center",
+                             "lang":  "vietnamese",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  798,
+                             "name":  "Abdul Hamid Silika",
+                             "author":  "Abdul Hamid Silika",
+                             "lang":  "yau,yuw",
+                             "dir":  "ltr"
+                         },
+                         {
+                             "id":  125,
+                             "name":  "Shaykh Abu Rahimah Mikael Aykyuni",
+                             "author":  "Shaykh Abu Rahimah Mikael Aykyuni",
+                             "lang":  "yoruba",
+                             "dir":  "ltr"
+                         }
+                     ]
+}
