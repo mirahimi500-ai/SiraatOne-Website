@@ -122,3 +122,6 @@ testers/ removed; its content is now support/#testers; footer "Become a Tester" 
 ## Stage T1 — All translations (2026-11-01)
 scripts/fetch-translations.ps1: every Quran Foundation translation (126 listed / 66 languages) saved once to assets/data/tr/<id>/<sura>.json + translations.json. Checks per translation: verse_key order, 114 suras, counts, 6236, no empty verse; failed ones skipped and listed. Reader: Settings > Text > Translation (Language, Translator), RTL for Arabic-script/Hebrew, credit line follows choice. Saheeh (20) stays in sura/*.json. Version 20261101a. Status: PENDING run on PC
 Theme-aware switches + translation lists (dark fix). Version 20261101b. PASS (screenshot dark).
+
+## Stage L1 — Legal check + Terms & Credits (2026-11-01)
+Checked: KFGQPC Hafs licence = free use/copy/distribute, no modify/sell (we serve unmodified). IndoPak + Surah Name V2 (QUL): "no copyright information" -> kept, unmodified, credited. HadeethEnc terms: republish allowed unchanged, credit HadeethEnc.com, latest version, no inappropriate ads -> live API meets this. New terms/ page (use terms, scholar disclaimer, all credits, copyright-owner contact); footer link on all pages. Status: PENDING live check
