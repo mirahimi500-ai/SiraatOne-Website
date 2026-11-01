@@ -28,7 +28,7 @@
     var rep = O.tab === 'morning' ? e.morningRepetitions : O.tab === 'evening' ? e.eveningRepetitions : null, key = e.id + ':' + O.tab, done = counts[key] || 0;
     return '<li class="dua" data-id="' + e.id + '"><div class="d-top">' + (O.num ? '<span class="c-num">' + (i + 1) + '</span>' : '') + '<b>' + esc(e.title) + '</b>' +
       '<button type="button" class="act d-fav" aria-pressed="' + (saved.indexOf(e.id) > -1) + '" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></button></div>' +
-      (ar ? '<p class="d-ar" lang="ar" dir="rtl">' + esc(ar) + '</p>' : '') +
+      (ar ? '<p class="d-ar" lang="ar" dir="rtl">' + esc(ar).replace(/[\u060C\u061B\u061F]/g, '<span class="ar-p">$&</span>') + '</p>' : '') +
       (O.tr && tl ? '<p class="d-tl">' + esc(tl) + '</p>' : '') + (O.mean && me ? '<p class="d-me">' + esc(me) + '</p>' : '') +
       (pu ? '<p class="d-meta"><b>Virtue:</b> ' + esc(pu) + '</p>' : '') + (e.whenToSayEn ? '<p class="d-meta"><b>When:</b> ' + esc(e.whenToSayEn) + '</p>' : '') + (e.practiceEn ? '<p class="d-meta"><b>Practice:</b> ' + esc(e.practiceEn) + '</p>' : '') +
       (rep ? '<button type="button" class="d-count' + (done >= rep ? ' done' : '') + '" data-k="' + key + '" data-max="' + rep + '">' + (done >= rep ? 'Done ✓' : done + ' / ' + rep + ' — tap to count') + '</button>' : '') +
