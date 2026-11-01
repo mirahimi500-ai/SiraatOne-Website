@@ -462,7 +462,7 @@
       var rows = [['Meaning', cu ? cu.meaning : mean], ['Revealed in', cu ? cu.revelationPlace : place], ['Ayahs', m.ayah_count], ['Pages', pages.replace(/^pages? /, '')], ['Juz', juz.replace('Juz ', '')]];
       if (m.revelation_order > 0) rows.push(['Revelation order', m.revelation_order]);
       if (m.ruku_count > 0) rows.push(['Rukus', m.ruku_count]);
-      var h = '<p class="si-ar" lang="ar" dir="rtl">' + esc(m.name_ar) + '</p><dl class="si-dl">' + rows.map(function (r) { return '<dt>' + r[0] + '</dt><dd>' + esc(String(r[1])) + '</dd>'; }).join('') + '</dl>' +
+      var h = '<p class="si-ar" lang="ar" dir="rtl">' + esc(m.name_ar) + '</p><div class="si-stats">' + rows.map(function (r) { return '<div><small>' + r[0] + '</small><b>' + esc(String(r[1])) + '</b></div>'; }).join('') + '</div>' +
         '<h3>About the name</h3><p>' + esc(note) + '</p><h3>Overview</h3><p>' + esc(sum) + '</p><p class="hint">' + esc(src) + '</p>';
       h += '<h3>Tajweed colours</h3>' + (S.tajweed && document.body.dataset.tj === '1' ? '<div class="tj-legend">' + LEG.map(function (l) { return '<span class="tj-' + l[0] + '">' + l[1] + '</span>'; }).join('') + '</div>' : '<p class="hint">Tajweed colouring is off. Turn it on in Settings → Text.</p>');
       $('si-title').textContent = n + '. ' + m.name_en; $('si-body').innerHTML = h; $('sinfo').hidden = false;
