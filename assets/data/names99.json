@@ -5,343 +5,343 @@
   "core_hadith_reference": "Jami at-Tirmidhi 3508",
   "core_hadith_status": "The hadith affirming ninety-nine Names is graded Sahih on the cited source.",
   "enumeration_reference": "Jami at-Tirmidhi 3507",
-  "enumeration_status": "Commonly transmitted enumeration; the cited source grades this enumerated narration Da'if.",
+  "enumeration_status": "Commonly transmitted enumeration; the cited source grades this enumerated narration Da'if. This list follows it from Ar-Rahman to As-Sabur and adds Al-Ahad after Al-Wahid, as in the widely circulated list (Al-Ahad: Quran 112:1). The name Allah is the Name to which all the others belong.",
   "meaning_note": "English meanings are concise explanatory glosses, not exhaustive theological definitions.",
   "names": [
     {
       "id": 1,
-      "arabic": "اللَّهُ",
-      "meaning_en": "The One worthy of worship"
-    },
-    {
-      "id": 2,
       "arabic": "الرَّحْمَنُ",
       "meaning_en": "The Most Merciful"
     },
     {
-      "id": 3,
+      "id": 2,
       "arabic": "الرَّحِيمُ",
       "meaning_en": "The Bestower of Mercy"
     },
     {
-      "id": 4,
+      "id": 3,
       "arabic": "الْمَلِكُ",
       "meaning_en": "The King"
     },
     {
-      "id": 5,
+      "id": 4,
       "arabic": "الْقُدُّوسُ",
       "meaning_en": "The Perfectly Pure"
     },
     {
-      "id": 6,
+      "id": 5,
       "arabic": "السَّلاَمُ",
       "meaning_en": "The Granter of Safety"
     },
     {
-      "id": 7,
+      "id": 6,
       "arabic": "الْمُؤْمِنُ",
       "meaning_en": "The Granter of Security"
     },
     {
-      "id": 8,
+      "id": 7,
       "arabic": "الْمُهَيْمِنُ",
       "meaning_en": "The Guardian"
     },
     {
-      "id": 9,
+      "id": 8,
       "arabic": "الْعَزِيزُ",
       "meaning_en": "The Almighty"
     },
     {
-      "id": 10,
+      "id": 9,
       "arabic": "الْجَبَّارُ",
       "meaning_en": "The Compeller"
     },
     {
-      "id": 11,
+      "id": 10,
       "arabic": "الْمُتَكَبِّرُ",
       "meaning_en": "The Supremely Great"
     },
     {
-      "id": 12,
+      "id": 11,
       "arabic": "الْخَالِقُ",
       "meaning_en": "The Creator"
     },
     {
-      "id": 13,
+      "id": 12,
       "arabic": "الْبَارِئُ",
       "meaning_en": "The Originator"
     },
     {
-      "id": 14,
+      "id": 13,
       "arabic": "الْمُصَوِّرُ",
       "meaning_en": "The Fashioner"
     },
     {
-      "id": 15,
+      "id": 14,
       "arabic": "الْغَفَّارُ",
       "meaning_en": "The Constant Forgiver"
     },
     {
-      "id": 16,
+      "id": 15,
       "arabic": "الْقَهَّارُ",
       "meaning_en": "The Subduer"
     },
     {
-      "id": 17,
+      "id": 16,
       "arabic": "الْوَهَّابُ",
       "meaning_en": "The Bestower"
     },
     {
-      "id": 18,
+      "id": 17,
       "arabic": "الرَّزَّاقُ",
       "meaning_en": "The Provider"
     },
     {
-      "id": 19,
+      "id": 18,
       "arabic": "الْفَتَّاحُ",
       "meaning_en": "The Opener"
     },
     {
-      "id": 20,
+      "id": 19,
       "arabic": "الْعَلِيمُ",
       "meaning_en": "The All-Knowing"
     },
     {
-      "id": 21,
+      "id": 20,
       "arabic": "الْقَابِضُ",
       "meaning_en": "The Withholder"
     },
     {
-      "id": 22,
+      "id": 21,
       "arabic": "الْبَاسِطُ",
       "meaning_en": "The Expander"
     },
     {
-      "id": 23,
+      "id": 22,
       "arabic": "الْخَافِضُ",
       "meaning_en": "The Abaser"
     },
     {
-      "id": 24,
+      "id": 23,
       "arabic": "الرَّافِعُ",
       "meaning_en": "The Exalter"
     },
     {
-      "id": 25,
+      "id": 24,
       "arabic": "الْمُعِزُّ",
       "meaning_en": "The Giver of Honor"
     },
     {
-      "id": 26,
+      "id": 25,
       "arabic": "الْمُذِلُّ",
       "meaning_en": "The One Who Lowers"
     },
     {
-      "id": 27,
+      "id": 26,
       "arabic": "السَّمِيعُ",
       "meaning_en": "The All-Hearing"
     },
     {
-      "id": 28,
+      "id": 27,
       "arabic": "الْبَصِيرُ",
       "meaning_en": "The All-Seeing"
     },
     {
-      "id": 29,
+      "id": 28,
       "arabic": "الْحَكَمُ",
       "meaning_en": "The Judge"
     },
     {
-      "id": 30,
+      "id": 29,
       "arabic": "الْعَدْلُ",
       "meaning_en": "The Just"
     },
     {
-      "id": 31,
+      "id": 30,
       "arabic": "اللَّطِيفُ",
       "meaning_en": "The Subtle and Kind"
     },
     {
-      "id": 32,
+      "id": 31,
       "arabic": "الْخَبِيرُ",
       "meaning_en": "The All-Aware"
     },
     {
-      "id": 33,
+      "id": 32,
       "arabic": "الْحَلِيمُ",
       "meaning_en": "The Forbearing"
     },
     {
-      "id": 34,
+      "id": 33,
       "arabic": "الْعَظِيمُ",
       "meaning_en": "The Magnificent"
     },
     {
-      "id": 35,
+      "id": 34,
       "arabic": "الْغَفُورُ",
       "meaning_en": "The Great Forgiver"
     },
     {
-      "id": 36,
+      "id": 35,
       "arabic": "الشَّكُورُ",
       "meaning_en": "The Appreciative"
     },
     {
-      "id": 37,
+      "id": 36,
       "arabic": "الْعَلِيُّ",
       "meaning_en": "The Most High"
     },
     {
-      "id": 38,
+      "id": 37,
       "arabic": "الْكَبِيرُ",
       "meaning_en": "The Most Great"
     },
     {
-      "id": 39,
+      "id": 38,
       "arabic": "الْحَفِيظُ",
       "meaning_en": "The Preserver"
     },
     {
-      "id": 40,
+      "id": 39,
       "arabic": "الْمُقِيتُ",
       "meaning_en": "The Powerful Sustainer"
     },
     {
-      "id": 41,
+      "id": 40,
       "arabic": "الْحَسِيبُ",
       "meaning_en": "The Reckoner"
     },
     {
-      "id": 42,
+      "id": 41,
       "arabic": "الْجَلِيلُ",
       "meaning_en": "The Majestic"
     },
     {
-      "id": 43,
+      "id": 42,
       "arabic": "الْكَرِيمُ",
       "meaning_en": "The Most Generous"
     },
     {
-      "id": 44,
+      "id": 43,
       "arabic": "الرَّقِيبُ",
       "meaning_en": "The Watchful"
     },
     {
-      "id": 45,
+      "id": 44,
       "arabic": "الْمُجِيبُ",
       "meaning_en": "The Responder"
     },
     {
-      "id": 46,
+      "id": 45,
       "arabic": "الْوَاسِعُ",
       "meaning_en": "The All-Encompassing"
     },
     {
-      "id": 47,
+      "id": 46,
       "arabic": "الْحَكِيمُ",
       "meaning_en": "The All-Wise"
     },
     {
-      "id": 48,
+      "id": 47,
       "arabic": "الْوَدُودُ",
       "meaning_en": "The Most Loving"
     },
     {
-      "id": 49,
+      "id": 48,
       "arabic": "الْمَجِيدُ",
       "meaning_en": "The Glorious"
     },
     {
-      "id": 50,
+      "id": 49,
       "arabic": "الْبَاعِثُ",
       "meaning_en": "The Resurrector"
     },
     {
-      "id": 51,
+      "id": 50,
       "arabic": "الشَّهِيدُ",
       "meaning_en": "The Witness"
     },
     {
-      "id": 52,
+      "id": 51,
       "arabic": "الْحَقُّ",
       "meaning_en": "The Truth"
     },
     {
-      "id": 53,
+      "id": 52,
       "arabic": "الْوَكِيلُ",
       "meaning_en": "The Trustee"
     },
     {
-      "id": 54,
+      "id": 53,
       "arabic": "الْقَوِيُّ",
       "meaning_en": "The Strong"
     },
     {
-      "id": 55,
+      "id": 54,
       "arabic": "الْمَتِينُ",
       "meaning_en": "The Firm"
     },
     {
-      "id": 56,
+      "id": 55,
       "arabic": "الْوَلِيُّ",
       "meaning_en": "The Helping Protector"
     },
     {
-      "id": 57,
+      "id": 56,
       "arabic": "الْحَمِيدُ",
       "meaning_en": "The Praiseworthy"
     },
     {
-      "id": 58,
+      "id": 57,
       "arabic": "الْمُحْصِي",
       "meaning_en": "The One Who Encompasses All"
     },
     {
-      "id": 59,
+      "id": 58,
       "arabic": "الْمُبْدِئُ",
       "meaning_en": "The Beginner of Creation"
     },
     {
-      "id": 60,
+      "id": 59,
       "arabic": "الْمُعِيدُ",
       "meaning_en": "The Restorer"
     },
     {
-      "id": 61,
+      "id": 60,
       "arabic": "الْمُحْيِي",
       "meaning_en": "The Giver of Life"
     },
     {
-      "id": 62,
+      "id": 61,
       "arabic": "الْمُمِيتُ",
       "meaning_en": "The Bringer of Death"
     },
     {
-      "id": 63,
+      "id": 62,
       "arabic": "الْحَىُّ",
       "meaning_en": "The Ever-Living"
     },
     {
-      "id": 64,
+      "id": 63,
       "arabic": "الْقَيُّومُ",
       "meaning_en": "The Self-Sustaining"
     },
     {
-      "id": 65,
+      "id": 64,
       "arabic": "الْوَاجِدُ",
       "meaning_en": "The One Who Brings Forth"
     },
     {
-      "id": 66,
+      "id": 65,
       "arabic": "الْمَاجِدُ",
       "meaning_en": "The Illustrious"
     },
     {
-      "id": 67,
+      "id": 66,
       "arabic": "الْوَاحِدُ",
       "meaning_en": "The One"
+    },
+    {
+      "id": 67,
+      "arabic": "الأَحَدُ",
+      "meaning_en": "The Unique, the Only One"
     },
     {
       "id": 68,
