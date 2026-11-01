@@ -3,7 +3,7 @@
   var QUICK = [67, 32, 18, 36, 55]; // same shortcuts as the SiraatOne Quran app
   var panel = document.getElementById('panel'), tools = document.getElementById('tools'), esc = SO.esc;
   var params = new URLSearchParams(location.search), ch, idx;
-  var SL = Object.assign({ view: 'list', fs: 'current', meaning: true, nums: true }, SO.get('so.sl', {})); // sura list view (as in the app)
+  var SL = Object.assign({ view: 'list', fs: 'current', meaning: true, nums: true, ayahs: true, place: true, ar: true, only: 'all', sort: 'mushaf' }, SO.get('so.sl', {})); // sura list view (as in the app)
   function link(s, a) { return '../sura/?n=' + s + (a > 1 ? '#' + a : ''); }
   function name(s) { return ch[s - 1].name_simple; }
   function row(href, num, title, sub, right) {
@@ -11,10 +11,11 @@
   }
   function surahs(f) {
     var v = (f || '').trim(), n = v.toLowerCase().replace(/[-'’ ]/g, '');
-    var items = ch.filter(function (c) { return !v || String(c.id) === v || c.name_simple.toLowerCase().replace(/[-'’ ]/g, '').indexOf(n) > -1 || c.meaning.toLowerCase().indexOf(n) > -1 || c.name_arabic.indexOf(v) > -1; });
+    var items = ch.filter(function (c) { return SL.only === 'all' || c.place === SL.only; }).filter(function (c) { return !v || String(c.id) === v || c.name_simple.toLowerCase().replace(/[-'’ ]/g, '').indexOf(n) > -1 || c.meaning.toLowerCase().indexOf(n) > -1 || c.name_arabic.indexOf(v) > -1; });
+    if (SL.sort !== 'mushaf') items = items.slice().sort(function (a, b) { return SL.sort === 'short' ? a.verses - b.verses || a.id - b.id : b.verses - a.verses || a.id - b.id; });
     return items.length ? '<ol class="list two sv-' + SL.view + ' fs-' + SL.fs + '">' + items.map(function (c) {
-      return row(link(c.id, 1), SL.nums ? c.id : '', esc(c.name_simple), (SL.meaning ? esc(c.meaning) + ' · ' : '') + c.verses + ' ayahs · ' + (c.place === 'makkah' ? 'Makki' : 'Madani'),
-        '<span class="ar" lang="ar" dir="rtl">' + SO.sname(c.id, c.name_arabic) + '</span>');
+      return row(link(c.id, 1), SL.nums ? c.id : '', esc(c.name_simple), [SL.meaning ? esc(c.meaning) : '', SL.ayahs ? c.verses + ' ayahs' : '', SL.place ? (c.place === 'makkah' ? 'Makki' : 'Madani') : ''].filter(Boolean).join(' · '),
+        SL.ar ? '<span class="ar" lang="ar" dir="rtl">' + SO.sname(c.id, c.name_arabic) + '</span>' : '');
     }).join('') + '</ol>' : empty('No sura found.');
   }
   function starts(list, label) {
@@ -62,19 +63,21 @@
     tab = t;
     Array.prototype.forEach.call(document.querySelectorAll('[data-tab]'), function (b) { b.setAttribute('aria-selected', b.getAttribute('data-tab') === t); });
     if (push) history.replaceState(null, '', '#' + t);
-    tools.innerHTML = ''; var out;
+    tools.innerHTML = ''; var out; tools.classList.toggle('pop', t === 'surah'); tools.classList.remove('open'); document.getElementById('qx-menu').hidden = t !== 'surah';
     if (t === 'surah' || t === 'search') {
       tools.innerHTML = '<input class="search" id="f" type="search" autocomplete="off" placeholder="' + (t === 'surah' ? 'Filter by name, meaning or number' : 'Search the Quran (English or Arabic)') + '">';
       if (t === 'surah') tools.innerHTML += '<div class="sl-opts">' +
         '<select id="sl-view" aria-label="View"><option value="list">List</option><option value="small">Small icons</option><option value="cards">Large cards</option></select>' +
         '<select id="sl-fs" aria-label="Font size"><option value="small">Small</option><option value="current">Normal</option><option value="large">Large</option><option value="xl">Extra large</option></select>' +
-        '<label><input type="checkbox" id="sl-meaning"> Meaning</label><label><input type="checkbox" id="sl-nums"> Numbers</label></div>';
+        '<select id="sl-only" aria-label="Show"><option value="all">All suras</option><option value="makkah">Makki only</option><option value="madinah">Madani only</option></select>' +
+        '<select id="sl-sort" aria-label="Order"><option value="mushaf">Mushaf order</option><option value="short">Shortest first</option><option value="long">Longest first</option></select>' +
+        '<label><input type="checkbox" id="sl-meaning"> Meaning</label><label><input type="checkbox" id="sl-nums"> Numbers</label><label><input type="checkbox" id="sl-ayahs"> Ayah count</label><label><input type="checkbox" id="sl-place"> Makki / Madani</label><label><input type="checkbox" id="sl-ar"> Arabic name</label></div>';
       var f = document.getElementById('f'); if (t === 'search' && params.get('q')) f.value = params.get('q');
       if (t === 'surah') {
-        var v = document.getElementById('sl-view'), z = document.getElementById('sl-fs'), m = document.getElementById('sl-meaning'), u = document.getElementById('sl-nums');
-        v.value = SL.view; z.value = SL.fs; m.checked = SL.meaning; u.checked = SL.nums;
-        var upd = function () { SL = { view: v.value, fs: z.value, meaning: m.checked, nums: u.checked }; SO.set('so.sl', SL); panel.innerHTML = surahs(f.value); };
-        [v, z, m, u].forEach(function (x) { x.addEventListener('change', upd); });
+        var g = function (i) { return document.getElementById('sl-' + i); }, SEL = ['view', 'fs', 'only', 'sort'], BOX = ['meaning', 'nums', 'ayahs', 'place', 'ar'];
+        SEL.forEach(function (k) { g(k).value = SL[k]; }); BOX.forEach(function (k) { g(k).checked = SL[k]; });
+        var upd = function () { SEL.forEach(function (k) { SL[k] = g(k).value; }); BOX.forEach(function (k) { SL[k] = g(k).checked; }); SO.set('so.sl', SL); panel.innerHTML = surahs(f.value); };
+        SEL.concat(BOX).forEach(function (k) { g(k).addEventListener('change', upd); });
       }
       var run = function () { var r = t === 'surah' ? surahs(f.value) : search(f.value); Promise.resolve(r).then(function (h) { if (tab === t) panel.innerHTML = h; }); };
       var tm; f.addEventListener('input', function () { clearTimeout(tm); tm = setTimeout(run, t === 'search' ? 300 : 0); });
@@ -96,4 +99,6 @@
     var start = params.get('tab') || location.hash.slice(1);
     show(document.querySelector('[data-tab="' + start + '"]') ? start : 'surah', false);
   }).catch(function () { panel.innerHTML = empty('Could not load. Please refresh.'); });
+  document.getElementById('qx-menu').onclick = function (e) { e.stopPropagation(); var o = tools.classList.toggle('open'); this.setAttribute('aria-expanded', o); };
+  document.addEventListener('click', function (e) { if (tools.classList.contains('open') && !e.target.closest('#tools')) tools.classList.remove('open'); });
 })();

@@ -603,3 +603,12 @@ body.has-tabbar{padding-bottom:72px}
 .duas .dua .d-fav{position:absolute;right:0}
 .duas .d-src summary{display:inline-block;cursor:pointer}
 .duas .d-tools label{display:flex;align-items:center;gap:.5rem}
+/* Quran index settings menu */
+.qx{position:relative}.qx-head{position:relative}
+#qx-menu[hidden]{display:none!important}
+.qx-menu{position:absolute;right:0;top:0}
+#tools.pop{display:none;position:absolute;right:0;z-index:20;width:min(340px,92vw);flex-direction:column;align-items:stretch;gap:.6rem;padding:14px;border-radius:14px;background:var(--surface);border:1px solid var(--border);box-shadow:0 10px 30px rgba(0,0,0,.18)}
+#tools.pop.open{display:flex}
+#tools.pop .sl-opts{display:flex;flex-direction:column;align-items:stretch;gap:.5rem}
+#tools.pop .search,#tools.pop select{width:100%}
+#tools.pop label{display:flex;align-items:center;gap:.5rem}
