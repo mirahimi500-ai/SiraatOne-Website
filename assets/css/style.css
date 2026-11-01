@@ -559,3 +559,4 @@ input[type=range]{accent-color:var(--brand)}
 #play[hidden]{display:none!important}
 .sheet .sh-size{display:flex;flex-direction:column;gap:.3rem;margin:.6rem 0}.sheet .sh-size input{width:100%;accent-color:var(--brand)}
 .rd-wrap>.source{display:none}
+.tf-text[dir=rtl],.tr[dir=rtl]{font-family:"Segoe UI","Noto Naskh Arabic","Noto Sans Arabic",Tahoma,"Geeza Pro",Arial,sans-serif}
