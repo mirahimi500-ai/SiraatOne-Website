@@ -550,3 +550,4 @@ input[type=range]{accent-color:var(--brand)}
 .si-dl{display:grid;grid-template-columns:auto 1fr;gap:.5rem 1rem;margin:.25rem 0 1rem}.si-dl dt{color:var(--muted)}.si-dl dd{margin:0;font-weight:600}
 .si-ar{font-family:var(--quran,serif);font-size:1.6rem;text-align:center;margin:.2rem 0 .6rem}
 .si-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin:.25rem 0 1rem}.si-stats>div{display:flex;flex-direction:column;align-items:center;padding:.45rem .8rem;border-radius:12px;background:color-mix(in srgb,var(--brand) 9%,transparent);min-width:72px}.si-stats small{color:var(--muted);font-size:.72rem}.si-stats b{font-size:.92rem}
+#si-body{display:block}#si-body>*{max-width:none}
