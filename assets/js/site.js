@@ -46,5 +46,7 @@
     var tb = document.createElement('nav'); tb.className = 'tabbar'; tb.setAttribute('aria-label', 'App');
     tb.innerHTML = IT.map(function (t) { return '<a href="' + base + t[1] + '"' + (t[0] === here ? ' aria-current="page"' : '') + '><svg viewBox="0 0 24 24" aria-hidden="true">' + t[3] + '</svg><span>' + t[2] + '</span></a>'; }).join('');
     document.body.appendChild(tb); document.body.classList.add('has-tabbar');
+    // no duplicates: a Quick access tile whose page is already in the taskbar is not shown
+    IT.forEach(function (t) { if (!t[1]) return; document.querySelectorAll('.tiles a[href="' + base + t[1] + '"]').forEach(function (x) { x.classList.add('in-bar'); }); });
   }
 })();
