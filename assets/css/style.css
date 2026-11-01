@@ -505,5 +505,13 @@ body[data-dfont="naskh"] .d-ar{font-family:"Amiri Quran","Amiri",serif}
 
 /* translation picker */
 .pick{display:flex;flex-direction:column;gap:.3rem;margin:.5rem 0;font-size:.9rem}
-.pick select{font:inherit;padding:.55rem .6rem;border-radius:10px;border:1px solid var(--line,#ccc);background:var(--bg1,#fff);color:inherit;max-width:100%}
+.pick select{font:inherit;padding:.55rem .6rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);max-width:100%}
 .card-a .tr[dir=rtl]{text-align:right;font-size:calc(var(--tr-size,1rem)*1.12)}
+/* theme-aware switches (all themes and page backgrounds) */
+.tg input[type=checkbox]{appearance:none;-webkit-appearance:none;flex:0 0 auto;width:44px;height:26px;margin:0 0 0 12px;border-radius:13px;background:color-mix(in srgb,var(--muted) 45%,transparent);border:1px solid var(--border);position:relative;cursor:pointer;transition:background .2s}
+.tg input[type=checkbox]::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.35);transition:transform .2s}
+.tg input[type=checkbox]:checked{background:var(--brand);border-color:var(--brand)}
+.tg input[type=checkbox]:checked::after{transform:translateX(18px);background:#fff}
+.tg input[type=checkbox]:focus-visible{outline:2px solid var(--link);outline-offset:2px}
+.rm .tg input[type=checkbox],.rm .tg input[type=checkbox]::after{transition:none}
+input[type=range]{accent-color:var(--brand)}
