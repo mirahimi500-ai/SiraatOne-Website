@@ -115,3 +115,6 @@ Live GoDaddy siraatone.com/privacy returns 404 (Page Not Found). Play Console us
 ## Next
 Stage 6: CNAME + GoDaddy DNS switch (verify /privacy first).
 Rule: delete temp/draft/unneeded files after each step and after any failure.
+
+## Tester page merged into Support (2026-10-31)
+testers/ removed; its content is now support/#testers; footer "Become a Tester" links to support/#testers on all pages. Status: PENDING live check
