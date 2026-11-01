@@ -54,4 +54,6 @@
   [['h-ar', 'ar'], ['h-tr', 'tr'], ['h-meta', 'meta']].forEach(function (p) { $(p[0]).checked = O[p[1]]; $(p[0]).onchange = function () { O[p[1]] = this.checked; SO.set('so.hopt', O); route(); }; });
   $('h-size').value = String(O.size); $('h-size').onchange = function () { O.size = +this.value; SO.set('so.hopt', O); route(); };
   addEventListener('hashchange', route); route();
+  $('h-menu').onclick = function (e) { e.stopPropagation(); var o = $('h-tools').classList.toggle('open'); this.setAttribute('aria-expanded', o); };
+  document.addEventListener('click', function (e) { if ($('h-tools').classList.contains('open') && !e.target.closest('#h-tools')) $('h-tools').classList.remove('open'); });
 })();
