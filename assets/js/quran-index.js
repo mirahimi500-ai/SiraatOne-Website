@@ -63,7 +63,7 @@
     tab = t;
     Array.prototype.forEach.call(document.querySelectorAll('[data-tab]'), function (b) { b.setAttribute('aria-selected', b.getAttribute('data-tab') === t); });
     if (push) history.replaceState(null, '', '#' + t);
-    tools.innerHTML = ''; var out; tools.classList.toggle('pop', t === 'surah'); tools.classList.remove('open'); document.getElementById('qx-menu').hidden = t !== 'surah'; document.getElementById('quick').hidden = t !== 'surah';
+    tools.innerHTML = ''; var out; tools.classList.toggle('pop', t === 'surah'); tools.classList.remove('open'); document.getElementById('qx-menu').hidden = t !== 'surah'; document.getElementById('quick').hidden = t !== 'surah'; document.getElementById('qx-title').textContent = t === 'surah' ? 'The Holy Quran' : { juz: 'Juz', hizb: 'Hizb', page: 'Page', search: 'Search', bookmarks: 'Bookmarks', highlights: 'Highlights', favorites: 'Favorites', notes: 'Notes' }[t] || ''; document.getElementById('qx-sub').hidden = t !== 'surah';
     if (t === 'surah' || t === 'search') {
       tools.innerHTML = '<input class="search" id="f" type="search" autocomplete="off" placeholder="' + (t === 'surah' ? 'Filter by name, meaning or number' : 'Search the Quran (English or Arabic)') + '">';
       if (t === 'surah') tools.innerHTML += '<div class="sl-opts">' +

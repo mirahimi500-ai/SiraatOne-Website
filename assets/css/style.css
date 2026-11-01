@@ -613,3 +613,4 @@ body.has-tabbar{padding-bottom:72px}
 #tools.pop .search,#tools.pop select{width:100%}
 #tools.pop label{display:flex;align-items:center;gap:.5rem}
 #quick[hidden]{display:none!important}
+#qx-sub[hidden]{display:none!important}
