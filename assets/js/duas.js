@@ -81,6 +81,7 @@
     if (home) return;
     $('d-title').textContent = O.tab === 'topic' ? (D.categoryTitles[O.cat] || '') : TITLE[O.tab];
     $('d-tabs').hidden = !(O.tab === 'morning' || O.tab === 'evening');
+    $('d-title').hidden = !$('d-tabs').hidden;
     save(); render(); window.scrollTo(0, 0);
   }
   window.addEventListener('hashchange', route);

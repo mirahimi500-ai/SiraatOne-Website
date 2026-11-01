@@ -586,3 +586,4 @@ body.has-tabbar{padding-bottom:72px}
 .qp-ar{font-size:1.55rem;line-height:1.2;max-width:110px;white-space:nowrap}
 .qp-saved{flex-direction:column;align-items:flex-start;gap:0}.qp-saved small{font-size:.75rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .qp-back{margin:6px 4px}.qp-sec{display:block;margin:4px 8px;color:var(--muted);font-size:.85rem}.qp-all{display:block;margin:10px auto 0;width:max-content}.qp-empty{text-align:center;margin-top:1.5rem}
+#d-tabs[hidden],#d-title[hidden]{display:none!important}.duas .d-back{position:relative;justify-content:center;min-height:44px}.duas .d-back #d-backbtn{position:absolute;left:0}.duas #d-title{display:block;margin:0;padding:8px 22px;border-radius:999px;background:var(--brand);color:var(--brand-ink);font-size:.95rem;font-weight:600}
