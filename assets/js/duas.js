@@ -46,7 +46,7 @@
   // Landing = the app's Duas & Adhkar screen: Collections folders, then "Browse Prophetic & Quranic Duas" topics (same labels and order as the app)
   var IC = {
     twilight: '<path d="M4 18h16M7 14.5a5 5 0 0 1 10 0M12 4v3M5.2 7.2l2 2M18.8 7.2l-2 2M2.5 14h2M19.5 14h2"/>',
-    hands: '<path d="M12 20c-3.5 0-6-2.2-6-5.5V8.5a1.5 1.5 0 0 1 3 0V13"/><path d="M12 20c3.5 0 6-2.2 6-5.5V8.5a1.5 1.5 0 0 0-3 0V13"/><path d="M9 13V5.5a1.5 1.5 0 0 1 3 0V12M12 12V5.5a1.5 1.5 0 0 1 3 0V13"/>',
+    hands: '<path d="M7 21v-4.5L4.5 12V6.5a1.2 1.2 0 0 1 2.4 0V11"/><path d="M6.9 9.5V4.8a1.2 1.2 0 0 1 2.4 0v6.7L11 14v7"/><path d="M17 21v-4.5l2.5-4.5V6.5a1.2 1.2 0 0 0-2.4 0V11"/><path d="M17.1 9.5V4.8a1.2 1.2 0 0 0-2.4 0v6.7L13 14v7"/>',
     book: '<path d="M3 5.5C5.5 4 8.5 4 12 6c3.5-2 6.5-2 9-.5V19c-2.5-1.5-5.5-1.5-9 .5-3.5-2-6.5-2-9-.5z"/><path d="M12 6v13.5"/>',
     mosque: '<path d="M4 20V11h16v9M2.5 20h19M12 4c2.5 1.5 4 3.3 4 5.5H8C8 7.3 9.5 5.5 12 4zM12 2.5V4M10 20v-4a2 2 0 0 1 4 0v4"/>',
     heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',
