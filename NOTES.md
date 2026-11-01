@@ -139,3 +139,4 @@ R2 (2026-11-01): defaults clean mushaf/no paging/tajweed on/uthmani/app backgrou
 R3: ayah popup text-size slider + Translation button/popup. Version 20261101q.
 Fix: ayah popup Tafsir/Translation lost the ayah (closeSheet cleared it). Translation popup language switch saved. PASS headless. Version 20261101t.
 Tafsir choice in Settings > Text (shared with popup). Version 20261101v.
+T2 (2026-11-01): bottom taskbar Home/Quran/App Library on all pages except reader (site.js); new apps/ App Library page (all tiles). Version 20261101w.

@@ -38,4 +38,13 @@
     ly = y;
   }, { passive: true });
   var y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear();
+  // Bottom taskbar like the app (Home / Quran / App Library); not on the sura reader, which has its own bar
+  if (!document.getElementById('bar')) {
+    var lg = document.querySelector('.logo'), base = lg ? lg.getAttribute('href') : '';
+    var path = location.pathname, here = /\/read\/|\/sura\//.test(path) ? 'quran' : /\/apps\//.test(path) ? 'apps' : /\/(names|duas|hadith|tasbih|calendar|privacy|terms|support|quran|azan)\//.test(path) ? '' : 'home';
+    var IT = [['home', '', 'Home', '<path d="M4 11l8-6.5 8 6.5V20H4zM10 20v-5h4v5"/>'], ['quran', 'read/', 'Quran', '<path d="M3 5.5C5.5 4 8.5 4 12 6c3.5-2 6.5-2 9-.5V19c-2.5-1.5-5.5-1.5-9 .5-3.5-2-6.5-2-9-.5z"/><path d="M12 6v13.5"/>'], ['apps', 'apps/', 'App Library', '<rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/>']];
+    var tb = document.createElement('nav'); tb.className = 'tabbar'; tb.setAttribute('aria-label', 'App');
+    tb.innerHTML = IT.map(function (t) { return '<a href="' + base + t[1] + '"' + (t[0] === here ? ' aria-current="page"' : '') + '><svg viewBox="0 0 24 24" aria-hidden="true">' + t[3] + '</svg><span>' + t[2] + '</span></a>'; }).join('');
+    document.body.appendChild(tb); document.body.classList.add('has-tabbar');
+  }
 })();

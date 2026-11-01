@@ -560,3 +560,9 @@ input[type=range]{accent-color:var(--brand)}
 .sheet .sh-size{display:flex;flex-direction:column;gap:.3rem;margin:.6rem 0}.sheet .sh-size input{width:100%;accent-color:var(--brand)}
 .rd-wrap>.source{display:none}
 .tf-text[dir=rtl],.tr[dir=rtl]{font-family:"Segoe UI","Noto Naskh Arabic","Noto Sans Arabic",Tahoma,"Geeza Pro",Arial,sans-serif}
+/* bottom taskbar like the app */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;justify-content:space-around;background:var(--surface);border-top:1px solid var(--border);padding:6px 8px calc(6px + env(safe-area-inset-bottom))}
+.tabbar a{flex:1;max-width:160px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0;color:var(--muted);text-decoration:none;font-size:.75rem;font-weight:600}
+.tabbar svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round;padding:3px 16px;box-sizing:content-box;border-radius:999px}
+.tabbar a[aria-current=page]{color:var(--brand)}.tabbar a[aria-current=page] svg{background:color-mix(in srgb,var(--brand) 16%,transparent)}
+body.has-tabbar{padding-bottom:72px}
