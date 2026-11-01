@@ -106,4 +106,7 @@
       if (navigator.vibrate) navigator.vibrate(counts[k] >= mx ? [40, 40, 80] : 10);
       c.classList.toggle('done', counts[k] >= mx); c.textContent = counts[k] >= mx ? 'Done ✓' : counts[k] + ' / ' + mx + ' — tap to count'; }
   };
+  // settings menu (☰): search, font, size, transliteration, meaning, numbers
+  $('d-menu').onclick = function (e) { e.stopPropagation(); var t = document.querySelector('.d-tools'), o = t.classList.toggle('open'); this.setAttribute('aria-expanded', o); };
+  document.addEventListener('click', function (e) { var t = document.querySelector('.d-tools'); if (t && t.classList.contains('open') && !e.target.closest('.d-tools')) { t.classList.remove('open'); $('d-menu').setAttribute('aria-expanded', 'false'); } });
 })();
