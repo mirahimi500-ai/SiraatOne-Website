@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261102u">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261102v">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -33,23 +33,56 @@
   </div>
 </header>
 
-<main id="main" class="wrap tool">
-  <header class="tool-head"><h1>Islamic Calendar</h1><p class="sub" id="cal-today"></p></header>
-  <div class="cal-bar">
-    <button type="button" class="btn btn-ghost sm" id="cal-prev" aria-label="Previous month">‹</button>
-    <h2 id="cal-title"></h2>
-    <button type="button" class="btn btn-ghost sm" id="cal-next" aria-label="Next month">›</button>
-    <button type="button" class="btn btn-ghost sm" id="cal-now">Today</button>
+<main id="main" class="wrap tool cal2">
+  <div class="tb-top">
+    <a class="btn btn-ghost sm" href="../" id="cl-back">← Back</a>
+    <h1>Islamic Calendar</h1>
+    <button type="button" class="icon-btn" id="cl-menu" aria-label="Islamic Calendar settings" aria-expanded="false"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h10"/></svg></button>
+    <div class="tb-pop" id="cl-pop">
+      <b>Settings</b>
+      <label class="pick">Calculation<select id="cs-cal"><option value="islamic-umalqura">Umm al-Qura (default, as in the app)</option><option value="islamic-civil">Islamic civil (tabular)</option><option value="islamic-tbla">Tabular (astronomical epoch)</option></select></label>
+      <label class="pick">Manual adjustment<select id="cs-adj"><option value="-2">−2 days</option><option value="-1">−1 day</option><option value="0">0</option><option value="1">+1 day</option><option value="2">+2 days</option></select></label>
+      <label class="pick">Week starts on<select id="cs-wk"><option value="6">Saturday</option><option value="0">Sunday</option><option value="1">Monday</option></select></label>
+      <label class="tg">Show Islamic days<input type="checkbox" id="cs-ev"></label>
+      <label class="tg">Show second date in each day<input type="checkbox" id="cs-sec"></label>
+      <label class="tg">Arabic numerals (١٢٣)<input type="checkbox" id="cs-arn"></label>
+      <label class="tg">Highlight Fridays<input type="checkbox" id="cs-fri"></label>
+      <button type="button" class="btn btn-ghost sm" id="cs-about">About Hijri dates</button>
+      <button type="button" class="btn btn-ghost sm" id="cs-reset">Reset settings</button>
+    </div>
   </div>
-  <div class="cal-grid" id="cal-grid"></div>
-  <div class="cal-opts">
-    <label>Hijri date adjustment <select id="cal-adj"><option>-2</option><option>-1</option><option selected>0</option><option>1</option><option>2</option></select> days</label>
-    <span class="hint">Tap a day to mark it as fasted. Calculation: Umm al-Qura (built into your browser). Local moon sighting may differ by a day — use the adjustment.</span>
+
+  <section class="cl-hero" id="cl-hero"></section>
+
+  <div class="cl-cols">
+    <div class="cl-main">
+      <div class="tb-mode cl-viewpill" id="cl-view"><button type="button" data-v="h">Hijri month</button><button type="button" data-v="g">Gregorian month</button></div>
+      <div class="cl-bar">
+        <button type="button" class="ts-rb" id="cl-prev" aria-label="Previous month">‹</button>
+        <div class="cl-title"><b id="cl-t1"></b><small id="cl-t2"></small></div>
+        <button type="button" class="ts-rb" id="cl-next" aria-label="Next month">›</button>
+      </div>
+      <div class="cl-tools"><button type="button" class="btn btn-ghost sm" id="cl-today">Go to today</button><label class="btn btn-ghost sm cl-pick">Pick Gregorian date<input type="date" id="cl-date"></label></div>
+      <div class="cl-wk" id="cl-wk"></div>
+      <div class="cl-grid" id="cl-grid" role="grid"></div>
+      <p class="hint cl-hint">Tap a day for details. Long press (or double-click) a day to mark or clear a fast.</p>
+    </div>
+    <aside class="cl-side">
+      <div class="ts-card cl-day" id="cl-day"></div>
+      <div class="ts-card"><div class="ts-hh"><b>Upcoming Islamic days</b></div><ol class="cl-up" id="cl-up"></ol></div>
+      <div class="ts-card"><div class="ts-hh"><b>Fasting</b><button type="button" class="btn btn-ghost sm" id="cl-fclear">Clear all</button></div>
+        <div class="ts-stats cl-fs"><div><small>Total days fasted</small><b id="cf-all">0</b></div><div><small>This Hijri month</small><b id="cf-m">0</b></div><div><small>This Hijri year</small><b id="cf-y">0</b></div></div></div>
+      <div class="ts-card cl-conv"><div class="ts-hh"><b>Date converter</b></div>
+        <label class="pick">Gregorian → Hijri<input type="date" id="cv-g"></label><p class="cl-out" id="cv-go"></p>
+        <div class="cl-hin"><label class="pick">Day<input type="number" id="cv-d" min="1" max="30" value="1"></label><label class="pick">Hijri month<select id="cv-m"></select></label><label class="pick">Year AH<input type="number" id="cv-y" min="1300" max="1600"></label></div>
+        <p class="cl-out" id="cv-ho"></p></div>
+    </aside>
   </div>
+  <div class="modal" id="cl-about" hidden><div class="modal-card"><div class="modal-top"><div><b>About Hijri dates</b></div><button type="button" class="x" data-close aria-label="Close">×</button></div><div class="modal-body" style="display:block"><p id="cl-abouttx"></p><p class="hint">Islamic days and their sources are listed for reference. Each date is calculated; follow your local announcements for Ramadan, Eid and other days.</p></div></div></div>
 </main>
 
-<script src="../assets/js/site.js?v=20261102u" defer></script>
-<script src="../assets/js/lib.js?v=20261102u" defer></script>
-<script src="../assets/js/calendar.js?v=20261102u" defer></script>
+<script src="../assets/js/site.js?v=20261102v" defer></script>
+<script src="../assets/js/lib.js?v=20261102v" defer></script>
+<script src="../assets/js/calendar.js?v=20261102v" defer></script>
 </body>
 </html>
