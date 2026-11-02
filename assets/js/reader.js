@@ -292,7 +292,7 @@
     if (t === $('body').firstElementChild && !pageMode) { scrollTo(0, 0); return; }
     // the site header may slide in/out after the jump, so place by where the top pill will settle
     var fix = function () { var hd = document.querySelector('.site-header'), st = $('status'),
-      pillB = (document.body.classList.contains('hdr-hid') || !hd ? 8 : hd.offsetHeight + 8) + st.offsetHeight;
+      pillB = (document.body.classList.contains('hdr-hid') || !hd ? 8 : hd.offsetHeight + 16) + st.offsetHeight;
       scrollTo(0, Math.max(0, t.getBoundingClientRect().top + scrollY - pillB - 10)); };
     fix(); setTimeout(fix, 60); setTimeout(fix, 450);
   }

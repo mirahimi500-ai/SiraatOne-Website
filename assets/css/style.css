@@ -949,3 +949,21 @@ body:has(#bar.hid) .status{transform:none;opacity:1;pointer-events:auto}
 .modal-card:has(.mtabs) .mpanes{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-gutter:stable;padding-right:6px}
 @media (max-width:699px){.modal-card:has(.mtabs){height:86vh}}
 .rm .modal-card:has(.mtabs) .mpanes{scroll-behavior:auto}
+/* HDR1: top site bar = floating pill (all pages); hides with a slow, smooth slide when scrolling down, other bars follow the same motion */
+:root{--hdr-ease:cubic-bezier(.4,0,.2,1);--hdr-t:.7s}
+.site-header{top:8px;margin:8px 8px 0;border:1px solid var(--border);border-radius:999px;background:color-mix(in srgb,var(--surface) 90%,transparent);backdrop-filter:blur(12px) saturate(1.2);-webkit-backdrop-filter:blur(12px) saturate(1.2);box-shadow:0 6px 24px rgba(0,0,0,.10);
+  transition:transform var(--hdr-t) var(--hdr-ease),opacity var(--hdr-t) var(--hdr-ease),border-radius .3s}
+.site-header .wrap{min-height:52px;padding-left:14px;padding-right:10px}
+@media (min-width:860px){.site-header .wrap{min-height:54px}}
+body.hdr-hid .site-header{transform:translateY(calc(-100% - 16px));opacity:0;pointer-events:none}
+.site-header:has(.nav.open){border-radius:22px}
+.site-header .logo{font-weight:800;letter-spacing:.2px}
+.site-header .logo img{width:32px;height:32px;border-radius:10px}
+@media (min-width:860px){.site-header .nav a{border-radius:999px;padding:7px 14px;font-weight:600}
+  .site-header .nav a[aria-current="page"]{background:color-mix(in srgb,var(--brand) 14%,transparent);font-weight:700}}
+.site-header .nav a{font-weight:600}
+.status,.tabs{top:78px;transition:top var(--hdr-t) var(--hdr-ease),transform .45s cubic-bezier(.2,.7,.2,1),opacity .45s}
+@media (min-width:860px){.status,.tabs{top:72px}}
+body.hdr-hid .status{top:8px}
+.bottombar{transition:transform var(--hdr-t) var(--hdr-ease),opacity var(--hdr-t) var(--hdr-ease)}
+.rm .site-header,.rm .status,.rm .tabs{transition:none}
