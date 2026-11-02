@@ -1053,3 +1053,8 @@ body[data-script="indopak"] .flow,body[data-script="indopak"] .card-a .ar{line-h
 .rm .mini{transition:none}
 .mini3.two{grid-template-columns:repeat(2,minmax(0,1fr))}
 .tile .lr-sub{display:block!important;font-size:.72rem;color:var(--muted);line-height:1.25;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* MG1: default Mushaf background (App Theme) is a soft green, matching the site; light and dark; OLED stays black */
+body[data-bg="app"]{--bg:#EDF3E7;--surface:#F5F9F0;--border:color-mix(in srgb,#8FA898 42%,transparent)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body[data-bg="app"]{--bg:#0E1813;--surface:#15221B;--border:#24352B}}
+:root[data-theme="dark"] body[data-bg="app"]{--bg:#0E1813;--surface:#15221B;--border:#24352B}
+:root.oled body[data-bg="app"]{--bg:#000;--surface:#0B0F0C}

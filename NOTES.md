@@ -206,3 +206,4 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - PW3: other times as in the Azan app: Ishraq/Duha (sunrise+20 min), Midnight, Qiyam = start of last third (Maghrib->Fajr): 3 boxes under Home prayer card; prayer page card 'Other times & Qibla'. Checked by hand (Maghrib 4:55, Fajr 5:15 -> 11:05 / 1:08).
 - MINI3: Last read / Saved / Tasbih restored as 3 small side-by-side boxes under the Home prayer card.
 - LR1: Continue tile renamed 'Last read' with continue-reading icon and sura · ayah subtitle (Home + App Library); small Last read box removed (Saved + Tasbih boxes remain, 2 columns).
+- MG1: default Mushaf background (App Theme, renamed 'SiraatOne Green (default)') is soft green: light #EDF3E7, dark #0E1813, OLED black.
