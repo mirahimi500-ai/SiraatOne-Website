@@ -701,3 +701,4 @@ body.has-tabbar{padding-bottom:72px}
 @font-face{font-family:"IndoPakNastaleeq";src:local("Segoe UI"),local("Tahoma"),local("Arial"),local("Noto Naskh Arabic"),local("Geeza Pro"),local("Roboto");unicode-range:U+060C,U+061B,U+061F}
 @font-face{font-family:"Amiri Quran";src:local("Segoe UI"),local("Tahoma"),local("Arial"),local("Noto Naskh Arabic"),local("Geeza Pro"),local("Roboto");unicode-range:U+060C,U+061B,U+061F}
 #dh-src{display:none}
+#dh-snd,#dh-vib{display:none!important}
