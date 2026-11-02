@@ -872,3 +872,9 @@ option,optgroup{color:var(--text);background-color:var(--surface)}
 .hd2 #h-tabs{position:static;border:0;margin:0 auto 14px}
 .hd2 .cl-side .ts-card{padding:16px;text-align:left}
 @media(min-width:900px){.hd2 .cl-cols{grid-template-columns:minmax(0,1fr) 320px}}
+/* App Library in the Islamic Calendar layout */
+.lib2 .cl-hd b{font-family:inherit}
+.lib-card{max-width:none;margin:0;text-align:left;display:block}
+.lib2 .tiles{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))!important;margin-top:10px}
+.lib2 .cl-side .ts-card{padding:16px;text-align:left}
+@media(min-width:900px){.lib2 .cl-cols{grid-template-columns:minmax(0,1fr) 320px}}
