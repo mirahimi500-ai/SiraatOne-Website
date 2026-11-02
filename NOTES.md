@@ -183,3 +183,14 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - SET1: reader Settings window fixed size (86vh, max 680px); sections scroll smoothly inside; scroll resets on section switch.
 - HDR1: top site bar = floating pill (all pages), bold logo, pill nav links; slow smooth hide (0.7s) on scroll down, status/tabs/bottom bar follow same motion.
 - HDR2: top bar hides as a visible slide-up (0.9s, fade only at the end), slides back down on scroll up.
+- PV1: Settings live preview (real ayahs of current sura, follows every setting: mode, font, tajweed, sizes, spacing, margins, header/meaning/decoration, numbers, translation, background) at top of Reading/Text/Look; thumbnails on Reading mode, Paging, Translation layout, Quran font, Repeat, Next/previous.
+- PV1 reverted (user: not professional/accurate). Settings back to SET1 state.
+- MP+1: Mushaf+ Tajweed word by word (only when word count matches word-by-word data, else plain); tafsir under each ayah also in Mushaf+; Tajweed setting no longer greyed in Mushaf+.
+- WBW2: word-by-word language choice (Settings > Reading, shown once scripts/fetch-wbw-langs.ps1 has run; per-ayah English fallback if word counts differ; RTL glosses for ur/fa/ps/ku). LH1: line height slider works in every mode/font (Mushaf+ row spacing, IndoPak, page mode).
+- WBW3: own 'Word by word' section in Settings > Reading (toggle + language); always enabled; turning on switches to Mushaf+.
+- WBW4: fetch-wbw-langs.ps1 fixed: QF v4 word language param is 'language' (verified ur on 1:2).
+- WBW5: Mushaf+ tajweed words in selected Mushaf font (fixes broken letters); RTL word meanings in system Arabic font, bigger.
+- WBW6: Mushaf+ ayah sign taken from the selected Mushaf text (own number glyph, Mushaf font) instead of ﴿﴾; slider 'Word meaning spacing (Mushaf+)' 0-30px (default 8).
+- TJ-NASKH: Tajweed in Naskh/IndoPak maps source placeholders 1:1 to standard Uthmani letters (U+0672->U+0670, U+066E->U+0649; verified vs sura text 2:2, 2:29) - fixes dotted circles.
+- TJ-NASKH2: Naskh/IndoPak Tajweed: a coloured part never starts with a bare vowel mark; its letter joins the same colour (sura 2 real data: 0 parts starting with a mark, no U+0672/U+066E left).
+- VL1: Verse List: word by word works (words + meanings when on); inline tafsir always open, plain text under translation with one thin line (no box/colour/arrow).

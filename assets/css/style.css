@@ -972,3 +972,19 @@ body.hdr-hid .status{top:8px}
 body.hdr-hid .site-header{transition:transform .9s cubic-bezier(.65,0,.35,1),opacity .2s linear .7s}
 .status,.tabs{transition:top .9s cubic-bezier(.65,0,.35,1),transform .45s cubic-bezier(.2,.7,.2,1),opacity .45s}
 .rm .site-header,.rm body.hdr-hid .site-header{transition:none}
+/* LH1: line height slider applies in every mode and font */
+body[data-script="indopak"] .flow,body[data-script="indopak"] .card-a .ar{line-height:calc(var(--lh,2.3) + .2)}
+.words{row-gap:calc((var(--lh,2.3) - 1.4) * .9em)}
+.wa{line-height:calc(var(--lh,2.3) * .8)}
+.mpage .flow{line-height:var(--lh,2.4)}
+/* WBW5: Tajweed words use the selected Mushaf font (their text is encoded for it); RTL word meanings in a clear system Arabic font */
+.words .wa.tjw{font-family:var(--quran)}
+.wt[dir=rtl]{font-family:"Segoe UI","Noto Naskh Arabic","Noto Sans Arabic",Tahoma,"Geeza Pro",Arial,sans-serif;font-size:calc(var(--tr-size)*.85);line-height:1.6;margin-top:2px}
+/* WBW6: Mushaf+ ayah sign from the Mushaf text itself; adjustable space between each word and its meaning */
+.words .end-own{font-family:var(--quran);font-size:var(--ar-size);line-height:calc(var(--lh,2.3) * .8);color:inherit;align-self:flex-start}
+.w .wt{margin-top:var(--wgap,8px)}
+/* TF2: inline tafsir always open, plain text under the translation, one thin line above */
+.tf-inl{margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.tf-inl p{margin:0;white-space:pre-line;font-size:var(--tr-size);line-height:1.7;color:var(--text);background:none}
+.tf-inl p[dir=rtl]{text-align:right;font-family:"Segoe UI","Noto Naskh Arabic","Noto Sans Arabic",Tahoma,"Geeza Pro",Arial,sans-serif}
+.tf-inl:empty{display:none}

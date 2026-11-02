@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261104g">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261104r">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -149,8 +149,11 @@
             <div class="seg" data-set="tlay"><button data-v="columns">Columns</button><button data-v="ayah">Ayah by Ayah</button><button data-v="list">Verse List</button></div>
             <label class="tg">Show Arabic with translation<input type="checkbox" data-set="showAr"></label>
             <label class="tg">Show ayah translation<input type="checkbox" data-set="showTr"></label>
-            <label class="tg">Show word-by-word meanings (Mushaf+)<input type="checkbox" data-set="showWbw"></label>
-            <label class="tg">Show tafsir under each ayah (Verse List)<input type="checkbox" data-set="tfInline"></label>
+            <label class="tg">Show tafsir under each ayah (Mushaf+, Verse List)<input type="checkbox" data-set="tfInline"></label>
+            <h3>Word by word</h3>
+            <label class="tg">Word-by-word meanings<input type="checkbox" data-set="showWbw"></label>
+            <label class="sl" id="wbw-lang-row">Word-by-word language<select id="wbw-lang"></select></label>
+            <p class="hint">Shown under each word in Mushaf+ and Verse List.</p>
             <p class="hint">Options that do not apply to the selected reading mode are greyed out.</p>
           </section>
           <section data-pane="text" hidden>
@@ -170,6 +173,7 @@
             <label class="sl">Quran text size <b data-out="ar"></b><input type="range" min="1.3" max="3.4" step="0.1" data-set="ar"></label>
             <label class="sl">Translation text size <b data-out="tr"></b><input type="range" min="0.85" max="1.5" step="0.05" data-set="tr"></label>
             <label class="sl">Line height <b data-out="lh"></b><input type="range" min="1.6" max="3.2" step="0.1" data-set="lh"></label>
+            <label class="sl">Word meaning spacing (Mushaf+) <b data-out="wgap"></b><input type="range" min="0" max="30" step="1" data-set="wgap"></label>
             <label class="sl">Side margins <b data-out="pad"></b><input type="range" min="0" max="240" step="8" data-set="pad"></label>
           </section>
           <section data-pane="look" hidden>
@@ -218,9 +222,9 @@
   </div>
 </main>
 
-<script src="../assets/js/site.js?v=20261104g" defer></script>
-<script src="../assets/js/lib.js?v=20261104g" defer></script>
-<script src="../assets/js/tajweed.js?v=20261104g" defer></script>
-<script src="../assets/js/reader.js?v=20261104g" defer></script>
+<script src="../assets/js/site.js?v=20261104r" defer></script>
+<script src="../assets/js/lib.js?v=20261104r" defer></script>
+<script src="../assets/js/tajweed.js?v=20261104r" defer></script>
+<script src="../assets/js/reader.js?v=20261104r" defer></script>
 </body>
 </html>
