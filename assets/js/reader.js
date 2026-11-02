@@ -26,12 +26,11 @@
   // segments in the selected font. Uthmani (KFGQPC) only: U+0672 -> U+0670 and U+06DF -> U+06E0 (1:1, as the app does).
   // The ayah marker comes from the source's own end segment (no second marker).
   function tjSource(markup, mark) {
-    var segs = TJ.parse(markup); if (!segs) return null;
-    var uth = S.script === 'uthmani', out = '', endTxt = '';
+    var segs = tjSegs(markup); if (!segs) return null;
+    var out = '', endTxt = '';
     segs.forEach(function (g) {
       if (g.rule === 'endMarker') { endTxt = g.text.trim(); return; }
-      var t = tjText(g.text);
-      var cls = g.rule && g.rule !== 'unknown' ? g.rule : null;
+      var t = g.text, cls = g.rule && g.rule !== 'unknown' ? g.rule : null;
       out += cls ? '<span class="tj-' + cls + '">' + esc(t) + '</span>' : esc(t);
     });
     out = out.replace(/\s+$/, '');
@@ -42,6 +41,20 @@
   // lack the source's placeholders, so they get the standard Uthmani letters (checked against sura text, e.g. 2:2, 2:29):
   // U+0672 -> U+0670 (dagger alef), U+066E -> U+0649 (alef maksura before dagger alef).
   function tjText(t) { return S.script === 'uthmani' ? t.replace(/\u0672/g, '\u0670').replace(/\u06DF/g, '\u06E0') : t.replace(/\u0672/g, '\u0670').replace(/\u066E/g, '\u0649'); }
+  // Segments with mapped text. Naskh / IndoPak: a coloured part must never start with a bare vowel mark (the browser would
+  // draw it on a dotted circle), so the letter it belongs to moves into the same part (letter + its marks share one colour).
+  var MK = '\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06DC\u06DF-\u06E4\u06E7\u06E8\u06EA-\u06ED', MK0 = new RegExp('^[' + MK + ']'), MKT = new RegExp('[^\\s' + MK + '][' + MK + ']*$');
+  function tjSegs(markup) {
+    var segs = TJ.parse(markup); if (!segs) return null;
+    segs = segs.map(function (g) { return { rule: g.rule, text: g.rule === 'endMarker' ? g.text : tjText(g.text) }; });
+    if (S.script === 'uthmani') return segs;
+    for (var k = 1; k < segs.length; k++) {
+      var g = segs[k], p = segs[k - 1]; if (g.rule === 'endMarker' || p.rule === 'endMarker' || !MK0.test(g.text)) continue;
+      var m = p.text.match(MKT); if (!m) continue;
+      p.text = p.text.slice(0, -m[0].length); g.text = m[0] + g.text;
+    }
+    return segs.filter(function (g) { return g.text !== ''; });
+  }
   function fmt(a, s, i, noMark) {
     var m = tjMarkup(s, i);
     return (m && tjSource(m, !noMark)) || esc(a);
@@ -55,11 +68,11 @@
   // Mushaf+: the same Tajweed colours word by word. Used only when the word count matches the word-by-word data exactly
   // (otherwise that ayah stays plain: fail-closed, never a wrong split).
   function tjWords(s, i, count) {
-    var m = tjMarkup(s, i), segs = m && TJ.parse(m); if (!segs) return null;
-    var uth = S.script === 'uthmani', out = [], cur = '';
+    var m = tjMarkup(s, i), segs = m && tjSegs(m); if (!segs) return null;
+    var out = [], cur = '';
     segs.forEach(function (g) {
       if (g.rule === 'endMarker') return;
-      var cls = g.rule && g.rule !== 'unknown' ? g.rule : null, t = tjText(g.text);
+      var cls = g.rule && g.rule !== 'unknown' ? g.rule : null, t = g.text;
       t.split(/(\s+)/).forEach(function (p) { if (!p) return; if (/^\s+$/.test(p)) { if (cur) { out.push(cur); cur = ''; } return; } cur += cls ? '<span class="tj-' + cls + '">' + esc(p) + '</span>' : esc(p); });
     });
     if (cur) out.push(cur);

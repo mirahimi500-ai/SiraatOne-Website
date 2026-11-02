@@ -192,3 +192,4 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - WBW5: Mushaf+ tajweed words in selected Mushaf font (fixes broken letters); RTL word meanings in system Arabic font, bigger.
 - WBW6: Mushaf+ ayah sign taken from the selected Mushaf text (own number glyph, Mushaf font) instead of ﴿﴾; slider 'Word meaning spacing (Mushaf+)' 0-30px (default 8).
 - TJ-NASKH: Tajweed in Naskh/IndoPak maps source placeholders 1:1 to standard Uthmani letters (U+0672->U+0670, U+066E->U+0649; verified vs sura text 2:2, 2:29) - fixes dotted circles.
+- TJ-NASKH2: Naskh/IndoPak Tajweed: a coloured part never starts with a bare vowel mark; its letter joins the same colour (sura 2 real data: 0 parts starting with a mark, no U+0672/U+066E left).
