@@ -180,3 +180,4 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - MP1: top info pill never hides; narrow info pill inside Mushaf at every sura + Juz start (clean, verse/plus, page); Clean + No Paging = continuous (next suras appended), toolbar name/arrows/status/last-read follow visible sura.
 - MP2: every sura start (continuous scroll + page mode) uses the same decorated frame with large name + Bismillah as the top header.
 - NAV2: ‹ › (Surah/Juz) land exactly at the start: info pill 10px under the top pill (header slide accounted), toolbar stays shown; loaded next suras jump without reload; scroll restoration manual.
+- SET1: reader Settings window fixed size (86vh, max 680px); sections scroll smoothly inside; scroll resets on section switch.

@@ -942,3 +942,10 @@ body:has(#bar.hid) .status{transform:none;opacity:1;pointer-events:auto}
 @media (max-width:520px){.mpill{padding:3px 10px;gap:6px;font-size:.7rem}.mpill [lang="ar"]{font-size:.8rem}}
 .mpill-li{list-style:none}
 .sura-next{margin-top:28px}
+/* SET1: Settings window keeps one fixed size; each section scrolls smoothly inside it (no jumping when switching sections) */
+.modal-card:has(.mtabs){height:min(86vh,680px);max-height:none;overflow:hidden;display:flex;flex-direction:column}
+.modal-card:has(.mtabs) .modal-body{flex:1;min-height:0}
+.modal-card:has(.mtabs) .mtabs{flex:none}
+.modal-card:has(.mtabs) .mpanes{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-gutter:stable;padding-right:6px}
+@media (max-width:699px){.modal-card:has(.mtabs){height:86vh}}
+.rm .modal-card:has(.mtabs) .mpanes{scroll-behavior:auto}
