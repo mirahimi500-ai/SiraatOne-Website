@@ -11,7 +11,7 @@ function Get-Json($u) { for ($k = 0; $k -lt 4; $k++) { try { $r = Invoke-WebRequ
 function Glosses($n, $lang) {
   $out = New-Object System.Collections.ArrayList; $p = 1
   do {
-    $r = Get-Json "https://api.quran.com/api/v4/verses/by_chapter/${n}?words=true&word_fields=text_uthmani&word_translation_language=$lang&per_page=50&page=$p"
+    $r = Get-Json "https://api.quran.com/api/v4/verses/by_chapter/${n}?words=true&word_fields=text_uthmani&language=$lang&per_page=50&page=$p"
     foreach ($v in $r.verses) { [void]$out.Add(@($v.words | ? { $_.char_type_name -eq 'word' } | % { [string]$_.translation.text })) }
     $p = $r.pagination.next_page
   } while ($p)
