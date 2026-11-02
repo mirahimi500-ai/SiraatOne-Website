@@ -47,6 +47,7 @@
     var h = location.hash.slice(1), m = /^(c|h|s)=?(.*)$/.exec(h) || [];
     document.querySelectorAll('#h-tabs button').forEach(function (b) { b.setAttribute('aria-selected', (b.dataset.m === 'saved') === (m[1] === 's')); });
     document.documentElement.style.setProperty('--h-size', O.size);
+    $('h-savedn').textContent = saved.length;
     $('h-body').innerHTML = '<p class="empty">Loading…</p>';
     if (m[1] === 'h') one(decodeURIComponent(m[2])); else if (m[1] === 'c') catList(m[2]); else if (m[1] === 's') savedList(); else catList('');
   }
@@ -56,4 +57,6 @@
   addEventListener('hashchange', route); route();
   $('h-menu').onclick = function (e) { e.stopPropagation(); var o = $('h-tools').classList.toggle('open'); this.setAttribute('aria-expanded', o); };
   document.addEventListener('click', function (e) { if ($('h-tools').classList.contains('open') && !e.target.closest('#h-tools')) $('h-tools').classList.remove('open'); });
+  // Back: inside a category/hadith -> previous step; at the top -> previous page / Home
+  $('h-back').onclick = function (e) { if (location.hash.length > 1) { e.preventDefault(); history.length > 1 ? history.back() : (location.hash = ''); } else if (history.length > 1 && document.referrer.indexOf(location.host) > -1) { e.preventDefault(); history.back(); } };
 })();

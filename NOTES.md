@@ -164,3 +164,4 @@ PV2: Privacy in Islamic Calendar layout; policy text unchanged (verified key pas
 Fix: privacy pill - card display rule overrode [hidden]; now one policy visible at a time (tested real visibility). Version 20261103l.
 TM2: Terms & Credits in Islamic Calendar layout, text unchanged; pill Using this website / Credits & sources; side For copyright owners + Contact. PASS (real visibility). Version 20261103m.
 AP2: Quran app + Azan app pages in Islamic Calendar layout (hero + Play button, features grid, side Content sources/Phones + Help & policies). Text unchanged. Version 20261103n.
+HD3: Hadith in Islamic Calendar layout (top bar Back/⚙, hero الأحاديث النبوية + saved count, pill Collections/Saved, breadcrumbs + list, side Source/Note). Version 20261103o.

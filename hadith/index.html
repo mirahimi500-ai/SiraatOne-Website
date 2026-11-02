@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261103n">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261103o">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -33,19 +33,35 @@
   </div>
 </header>
 
-<main id="main" class="wrap tool hadith">
-  <header class="tool-head h-head"><button type="button" class="icon-btn h-menu" id="h-menu" aria-label="Hadith settings" aria-expanded="false">☰</button><h1>Hadith</h1><p class="sub">From <a href="https://hadeethenc.com/en/home" rel="noopener">HadeethEnc.com</a> (Encyclopedia of Translated Prophetic Hadiths), loaded live — the same source as the SiraatOne Quran app.</p></header>
-  <div class="tabs" role="tablist" id="h-tabs"><button type="button" data-m="lib">Collections</button><button type="button" data-m="saved">Saved</button></div>
-  <div class="sl-opts h-opts" id="h-tools">
-    <label><input type="checkbox" id="h-ar"> Arabic</label><label><input type="checkbox" id="h-tr"> Translation</label><label><input type="checkbox" id="h-meta"> Grade &amp; explanation</label>
-    <select id="h-size" aria-label="Text size"><option value="0.9">Small</option><option value="1">Normal</option><option value="1.2">Large</option><option value="1.45">Extra large</option></select>
+<main id="main" class="wrap tool hadith cal2 hd2">
+  <div class="tb-top">
+    <a class="btn btn-ghost sm" href="../" id="h-back">← Back</a>
+    <h1>Hadith</h1>
+    <button type="button" class="icon-btn h-menu" id="h-menu" aria-label="Hadith settings" aria-expanded="false"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96a7.03 7.03 0 0 0-1.62-.94l-.36-2.54a.48.48 0 0 0-.48-.41h-3.84a.48.48 0 0 0-.48.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 0 0-.59.22L2.74 8.87a.48.48 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.48.48 0 0 0-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/></svg></button>
+    <div class="tb-pop" id="h-tools"><b>Settings</b>
+    <label class="tg">Arabic<input type="checkbox" id="h-ar"></label><label class="tg">Translation<input type="checkbox" id="h-tr"></label><label class="tg">Grade &amp; explanation<input type="checkbox" id="h-meta"></label>
+    <label class="pick">Text size<select id="h-size" aria-label="Text size"><option value="0.9">Small</option><option value="1">Normal</option><option value="1.2">Large</option><option value="1.45">Extra large</option></select></label>
   </div>
-  <nav class="crumbs" id="h-crumbs"></nav>
-  <div id="h-body"><p class="empty">Loading…</p></div>
+  </div>
+  <section class="cl-hero">
+    <div class="cl-hd"><small>Prophetic Hadiths</small><b lang="ar" dir="rtl">الأحاديث النبوية</b><span>Arabic, translation, grade and explanation</span><em>From HadeethEnc.com (Encyclopedia of Translated Prophetic Hadiths), loaded live</em></div>
+    <div class="cl-hn"><small>Saved</small><b id="h-savedn">0</b><span><a href="#s">Open saved hadiths →</a></span></div>
+  </section>
+  <div class="tabs tb-mode cl-viewpill" role="tablist" id="h-tabs"><button type="button" data-m="lib">Collections</button><button type="button" data-m="saved">Saved</button></div>
+  <div class="cl-cols">
+    <div class="cl-main">
+      <nav class="crumbs" id="h-crumbs"></nav>
+      <div id="h-body"><p class="empty">Loading…</p></div>
+    </div>
+    <aside class="cl-side">
+      <div class="ts-card"><div class="ts-hh"><b>Source</b></div><p class="hint">Hadiths, translations, grades and explanations are loaded live from <a href="https://hadeethenc.com/en/home" rel="noopener">HadeethEnc.com</a> and shown unchanged — the same source as the SiraatOne Quran app.</p></div>
+      <div class="ts-card"><div class="ts-hh"><b>Note</b></div><p class="hint">For religious rulings, please ask a qualified scholar. See <a href="../terms/">Terms &amp; Credits</a>.</p></div>
+    </aside>
+  </div>
 </main>
 
-<script src="../assets/js/site.js?v=20261103n" defer></script>
-<script src="../assets/js/lib.js?v=20261103n" defer></script>
-<script src="../assets/js/hadith.js?v=20261103n" defer></script>
+<script src="../assets/js/site.js?v=20261103o" defer></script>
+<script src="../assets/js/lib.js?v=20261103o" defer></script>
+<script src="../assets/js/hadith.js?v=20261103o" defer></script>
 </body>
 </html>
