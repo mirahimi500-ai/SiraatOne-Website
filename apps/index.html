@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261102m">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261102n">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -36,6 +36,7 @@
 <main id="main" class="wrap dash">
   <section aria-labelledby="lib-h">
     <div class="lib-top"><a class="btn btn-ghost sm" href="../" onclick="if(history.length>1&&document.referrer.indexOf(location.host)>-1){history.back();return false}">← Back</a><h1 id="lib-h" class="sec-h">App Library</h1></div>
+    <p class="hint">Tap <b>+ Home</b> to add a shortcut to Quick access on the Home page, or <b>✓ Home</b> to remove it.</p>
     <div class="tiles">
       <a class="tile" data-id="read" href="../read/" ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5.5 4 8.5 4 12 6c3.5-2 6.5-2 9-.5V19c-2.5-1.5-5.5-1.5-9 .5-3.5-2-6.5-2-9-.5z"/><path d="M12 6v13.5"/></svg><b>Read Quran</b><span>114 suras with translation</span></a>
       <a class="tile" data-id="continue" href="../read/" id="lib-cont"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5 3.5-5 3.5z"/></svg><b>Continue</b><span>Pick up where you left</span></a>
@@ -53,7 +54,17 @@
   </section>
 </main>
 
-<script src="../assets/js/site.js?v=20261102m" defer></script>
+<script src="../assets/js/site.js?v=20261102n" defer></script>
 <script>try{var l=JSON.parse(localStorage.getItem("so.last"));if(l&&l.s)document.getElementById("lib-cont").href="../sura/?n="+l.s+"#"+l.a}catch(e){}</script>
+<script>
+(function(){ // Quick access shortcuts are managed here (same list the Home page uses: so.qa)
+  var g=document.querySelector('.tiles'); if(!g) return;
+  var tiles=[].slice.call(g.querySelectorAll('.tile')), all=tiles.map(function(t){return t.getAttribute('data-id')});
+  function get(){try{var o=JSON.parse(localStorage.getItem('so.qa'));return Array.isArray(o)?o:all.slice()}catch(e){return all.slice()}}
+  function draw(){var o=get();tiles.forEach(function(t){var id=t.getAttribute('data-id'),b=t.querySelector('.lib-add');if(!b){b=document.createElement('button');b.type='button';b.className='lib-add';t.appendChild(b)}var on=o.indexOf(id)>-1;b.textContent=on?'\u2713 Home':'+ Home';b.setAttribute('aria-pressed',on)})}
+  g.addEventListener('click',function(e){var b=e.target.closest('.lib-add');if(!b)return;e.preventDefault();var id=b.closest('.tile').getAttribute('data-id'),o=get(),i=o.indexOf(id);if(i>-1)o.splice(i,1);else o.push(id);try{localStorage.setItem('so.qa',JSON.stringify(o))}catch(x){}draw()});
+  draw();
+})();
+</script>
 </body>
 </html>

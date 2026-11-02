@@ -143,3 +143,5 @@ T2 (2026-11-01): bottom taskbar Home/Quran/App Library on all pages except reade
 Q1 (2026-11-01): reader bottom-bar surah name opens centred Quick access panel = app quran_quick_access_overlay.dart (Bookmarks/Highlights/Notes/Favorites icons, shortcuts 18/36/55/67, search, 114 rows: number, meaning, ayah count, SurahNameV2 name, current highlighted). PASS headless. Version 20261101y.
 Removed footer + Quran-page source line from all pages; Privacy and Terms & Credits added to top menu.
 Q2: Quran index surah options in ☰ menu + Makki/Madani filter, order, ayah count/place/Arabic toggles. PASS headless. Version 20261102f.
+N1 (2026-11-01): names99.json per user: removed Allah from #1, added Al-Ahad (Quran 112:1) after Al-Wahid; 99 names Ar-Rahman..As-Sabur; enumeration note updated. Website only - app file unchanged.
+QA2: Quick access remove fixed ([hidden] overridden by .tile display); re-add only from App Library (+ Home / ✓ Home, same so.qa list). PASS headless. Version 20261102n.

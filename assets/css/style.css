@@ -631,3 +631,8 @@ body.has-tabbar{padding-bottom:72px}
 #h-tools.open{display:flex}#h-tools select{width:100%}#h-tools label{display:flex;align-items:center;gap:.5rem}
 .tiles .in-bar{display:none!important}
 .lib-top{display:flex;align-items:center;gap:.8rem;margin:.4rem 0 .8rem}.lib-top .sec-h{margin:0}
+/* Quick access remove fix + App Library add */
+.tiles .tile[hidden]{display:none!important}
+.tile{position:relative}
+.lib-add{margin-top:.4rem;border:1px solid var(--brand);background:none;color:var(--brand);border-radius:999px;padding:3px 12px;font:inherit;font-size:.78rem;font-weight:600;cursor:pointer}
+.lib-add[aria-pressed=true]{background:var(--brand);color:var(--brand-ink)}

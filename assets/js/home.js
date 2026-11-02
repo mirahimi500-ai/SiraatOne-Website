@@ -27,18 +27,15 @@
     order.forEach(function (id) { grid.appendChild(tiles[id]); });
     all.forEach(function (id) { if (order.indexOf(id) < 0) grid.appendChild(tiles[id]); });
     var add = document.getElementById('qa-add'); if (add) add.remove();
-    if (grid.classList.contains('editing')) {
-      var hid = all.filter(function (id) { return order.indexOf(id) < 0; });
-      if (hid.length) { var d = document.createElement('div'); d.id = 'qa-add'; d.className = 'qa-add';
-        d.innerHTML = '<span>Add:</span>' + hid.map(function (id) { return '<button type="button" data-add="' + id + '">+ ' + tiles[id].querySelector('b').textContent + '</button>'; }).join('');
-        grid.after(d); }
+    if (grid.classList.contains('editing') && all.some(function (id) { return order.indexOf(id) < 0; })) {
+      var d = document.createElement('p'); d.id = 'qa-add'; d.className = 'hint qa-add'; d.innerHTML = 'To add a removed shortcut back, open <a href="apps/">App Library</a> and tap <b>+ Home</b>.'; grid.after(d);
     }
   }
   function tools(on) {
     grid.querySelectorAll('.tile').forEach(function (x) {
       var t = x.querySelector('.qa-t'); if (t) t.remove();
       if (on) { t = document.createElement('span'); t.className = 'qa-t';
-        t.innerHTML = '<button type="button" data-mv="-1" aria-label="Move earlier">‹</button><button type="button" data-mv="1" aria-label="Move later">›</button><button type="button" data-mv="x" aria-label="Hide">✕</button>'; x.appendChild(t); }
+        t.innerHTML = '<button type="button" data-mv="-1" aria-label="Move earlier">‹</button><button type="button" data-mv="1" aria-label="Move later">›</button><button type="button" data-mv="x" aria-label="Remove from Quick access">✕</button>'; x.appendChild(t); }
     });
   }
   btn.onclick = function () { var on = grid.classList.toggle('editing'); btn.textContent = on ? 'Done' : 'Edit'; tools(on); draw(); };
