@@ -794,3 +794,6 @@ option,optgroup{color:var(--text);background-color:var(--surface)}
 .home2 .ts-stats a{display:flex;flex-direction:column;padding:8px;border-radius:12px;background:color-mix(in srgb,var(--brand) 8%,transparent);color:var(--text);text-decoration:none}
 .home2 .ts-stats a small{font-size:.72rem;color:var(--muted)}.home2 .ts-stats a b{font-size:1.2rem}
 .home2 .cl-side .ts-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+/* full width (edge to edge) for all calendar-style pages */
+.cal2,.tasbih,.names2,.saved2,.home2{max-width:none!important;width:100%}
+@media(min-width:1400px){.cl-cols{grid-template-columns:minmax(0,3fr) minmax(340px,1fr)}}
