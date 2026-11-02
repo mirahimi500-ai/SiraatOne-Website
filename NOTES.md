@@ -182,3 +182,4 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - NAV2: ‹ › (Surah/Juz) land exactly at the start: info pill 10px under the top pill (header slide accounted), toolbar stays shown; loaded next suras jump without reload; scroll restoration manual.
 - SET1: reader Settings window fixed size (86vh, max 680px); sections scroll smoothly inside; scroll resets on section switch.
 - HDR1: top site bar = floating pill (all pages), bold logo, pill nav links; slow smooth hide (0.7s) on scroll down, status/tabs/bottom bar follow same motion.
+- HDR2: top bar hides as a visible slide-up (0.9s, fade only at the end), slides back down on scroll up.

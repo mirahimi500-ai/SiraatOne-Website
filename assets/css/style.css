@@ -967,3 +967,8 @@ body.hdr-hid .site-header{transform:translateY(calc(-100% - 16px));opacity:0;poi
 body.hdr-hid .status{top:8px}
 .bottombar{transition:transform var(--hdr-t) var(--hdr-ease),opacity var(--hdr-t) var(--hdr-ease)}
 .rm .site-header,.rm .status,.rm .tabs{transition:none}
+/* HDR2: pure slide-up hide (fade only at the very end), slide-down show */
+.site-header{transition:transform .6s cubic-bezier(.2,.8,.2,1),opacity .15s linear,border-radius .3s}
+body.hdr-hid .site-header{transition:transform .9s cubic-bezier(.65,0,.35,1),opacity .2s linear .7s}
+.status,.tabs{transition:top .9s cubic-bezier(.65,0,.35,1),transform .45s cubic-bezier(.2,.7,.2,1),opacity .45s}
+.rm .site-header,.rm body.hdr-hid .site-header{transition:none}
