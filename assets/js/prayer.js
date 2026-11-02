@@ -17,18 +17,8 @@
 
   if (!A) { $('pt-hero').innerHTML = '<p class="hint">Prayer times could not be loaded. Please refresh.</p>'; return; }
 
-  // ---------- calculation ----------
-  function params() {
-    var M = A.CalculationMethod, p = ({ ISNA: M.NorthAmerica, MWL: M.MuslimWorldLeague, UmmAlQura: M.UmmAlQura, Egyptian: M.Egyptian, Karachi: M.Karachi,
-      Moonsighting: M.MoonsightingCommittee, Dubai: M.Dubai, Kuwait: M.Kuwait, Qatar: M.Qatar, Singapore: M.Singapore, Turkey: M.Turkey, Tehran: M.Tehran }[S.m] || M.NorthAmerica)();
-    if (S.m === 'Dubai') { p.methodAdjustments.sunrise = 0; p.methodAdjustments.asr = 0; } // as the app: published UAE timetable
-    p.madhab = S.a === 'Hanafi' ? A.Madhab.Hanafi : A.Madhab.Shafi;
-    var R = A.HighLatitudeRule;
-    p.highLatitudeRule = S.h === 'middle' ? R.MiddleOfTheNight : S.h === 'seventh' ? R.SeventhOfTheNight : S.h === 'angle' ? R.TwilightAngle
-      : (Math.abs(L.lat) > 48 ? R.SeventhOfTheNight : R.MiddleOfTheNight);
-    P.forEach(function (k) { p.adjustments[k] = +S.adj[k] || 0; });
-    return p;
-  }
+  // ---------- calculation (shared with the Home widget: prayer-core.js) ----------
+  function params() { return PT.params(S, L); }
   function tz() { return (L && L.tz) || Intl.DateTimeFormat().resolvedOptions().timeZone; }
   function ymd(d) { var o = {}; new Intl.DateTimeFormat('en-US', { timeZone: tz(), year: 'numeric', month: 'numeric', day: 'numeric' }).formatToParts(d).forEach(function (x) { o[x.type] = +x.value; }); return o; }
   function times(y, m, d) { return new A.PrayerTimes(new A.Coordinates(L.lat, L.lng), new Date(y, m - 1, d), params()); }

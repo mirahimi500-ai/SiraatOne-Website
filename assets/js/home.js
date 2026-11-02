@@ -72,3 +72,38 @@
   if (tb) { Object.keys(tb.dh.rows || {}).forEach(function (k) { all += tb.dh.rows[k].total || 0; }); life = tb.sv ? tb.sv.life : 0; }
   $('hm-tb').innerHTML = '<div><small>Dhikr total</small><b>' + all + '</b></div><div><small>Saved counters</small><b>' + life + '</b></div>';
 })();
+
+// ---------- Prayer Times widget (same calculation and settings as the Prayer Times page) ----------
+(function () {
+  var body = document.getElementById('pw-body'); if (!body) return;
+  if (!window.PT || !PT.ok) { document.getElementById('pw').hidden = true; return; }
+  var esc = SO.esc, S = PT.settings(), L = SO.get('so.ploc', null), last = '';
+  function empty() {
+    document.getElementById('pw-loc').textContent = '';
+    body.innerHTML = '<div class="pw-empty"><p>See today\'s prayer times and the time left until the next prayer.</p><div class="pw-btns"><button type="button" class="btn btn-primary sm" id="pw-gps">Use my location</button><a class="btn btn-ghost sm" href="prayer/">Search a city</a></div></div>';
+    document.getElementById('pw-gps').onclick = function () {
+      var b = this; if (!navigator.geolocation) { location.href = 'prayer/'; return; } b.textContent = 'Finding you…';
+      navigator.geolocation.getCurrentPosition(function (p) {
+        L = { lat: +p.coords.latitude.toFixed(4), lng: +p.coords.longitude.toFixed(4), name: 'My location', tz: Intl.DateTimeFormat().resolvedOptions().timeZone };
+        SO.set('so.ploc', L); last = ''; draw();
+      }, function () { location.href = 'prayer/'; }, { timeout: 15000, maximumAge: 6e5 });
+    };
+  }
+  function draw() {
+    if (!L) { empty(); return; }
+    var now = new Date(), nx = PT.next(S, L, now), t = PT.ymd(L, now), pt = PT.times(S, L, t.year, t.month, t.day);
+    var key = nx.k + nx.d;
+    if (key !== last) {
+      last = key; document.getElementById('pw-loc').textContent = L.name;
+      body.innerHTML = '<div class="pw-next"><small>Next prayer</small><b>' + PT.label(nx.k, nx.y, nx.m, nx.d) + ' <span lang="ar" dir="rtl">' + PT.AR[nx.k] + '</span></b>' +
+        '<span class="pw-at">' + PT.fmt(S, L, nx.at) + '</span><span class="pw-left" id="pw-left"></span></div>' +
+        '<ol class="pw-list">' + PT.P.map(function (k) {
+          var cls = (k === nx.k && nx.d === t.day ? 'now' : pt[k] < now ? 'past' : '') + (k === 'sunrise' ? ' sun' : '');
+          return '<li class="' + cls + '"><small>' + PT.label(k, t.year, t.month, t.day) + '</small><b>' + PT.fmt(S, L, pt[k]) + '</b></li>';
+        }).join('') + '</ol>';
+    }
+    var el = document.getElementById('pw-left'); if (el) el.textContent = 'in ' + PT.left(nx.at - now);
+  }
+  draw(); setInterval(draw, 1000);
+  addEventListener('storage', function (e) { if (e.key === 'so.ploc' || e.key === 'so.pt') { S = PT.settings(); L = SO.get('so.ploc', null); last = ''; draw(); } });
+})();
