@@ -835,3 +835,12 @@ option,optgroup{color:var(--text);background-color:var(--surface)}
 .d-sidea[aria-current=true]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
 .duas2 .cl-side .ts-card{padding:16px}
 @media(min-width:900px){.duas2 .cl-cols{grid-template-columns:minmax(0,1fr) 340px}}
+/* Support in the Islamic Calendar layout */
+.tb-spacer{width:44px;height:44px}
+.sup2 .cl-hd b{font-family:inherit;font-size:clamp(1.2rem,3.5vw,1.7rem);color:var(--link);word-break:break-word}
+.sup2 .cl-hn b .btn{font-size:.95rem}
+.sp-sec[hidden]{display:none}
+.sp-sec{max-width:none;margin:0;text-align:left}
+.sp-q{border-bottom:1px solid var(--border);padding:4px 0}.sp-q summary{cursor:pointer;font-weight:600;padding:10px 0;list-style-position:outside}.sp-q p{margin:0 0 12px;color:var(--muted)}
+.sup2 .cl-side .ts-card{padding:16px;text-align:left}
+@media(min-width:900px){.sup2 .cl-cols{grid-template-columns:minmax(0,1fr) 340px}}
