@@ -916,3 +916,17 @@ body.as-split .bb-mid #prev,body.as-split .bb-mid #next{visibility:hidden}.as-l 
 .as-ctl .i-pause,.as-ctl.run .i-play{display:none}.as-ctl.run .i-pause{display:block}
 .as-ctl .as-b.as-x{border-color:transparent;background:transparent;color:var(--muted);margin-left:6px}.as-ctl .as-b.as-x svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
 .rm .bottombar,.rm .site-header{transition:none}
+/* PILL1: floating pill toolbars (reader top info bar, reader bottom bar, home taskbar): off the edges, bold, soft shadow, smooth hide */
+.status{margin:8px auto 0;width:min(calc(100% - 24px),760px);box-sizing:border-box;padding:6px 18px;border:1px solid var(--border);border-radius:999px;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);box-shadow:0 4px 18px rgba(0,0,0,.10);font-weight:700;top:68px;
+  transition:top .4s cubic-bezier(.2,.7,.2,1),transform .4s cubic-bezier(.2,.7,.2,1),opacity .4s}
+body.hdr-hid .status{top:8px}
+body:has(#bar.hid) .status{transform:translateY(calc(-100% - 90px));opacity:0;pointer-events:none}
+.bottombar{left:0;right:0;margin:0 auto;max-width:760px;width:auto;bottom:calc(10px + env(safe-area-inset-bottom));left:12px;right:12px;padding:6px 10px;border:1px solid var(--border);border-radius:999px;box-shadow:0 8px 28px rgba(0,0,0,.14);background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);font-weight:700;
+  transition:transform .45s cubic-bezier(.2,.7,.2,1),opacity .45s}
+.bottombar.hid{transform:translateY(calc(100% + 24px));opacity:0}
+.bottombar .bb-name{font-weight:700}
+.tabbar{left:12px;right:12px;margin:0 auto;max-width:760px;bottom:calc(10px + env(safe-area-inset-bottom));padding:6px 8px;border:1px solid var(--border);border-radius:999px;box-shadow:0 8px 28px rgba(0,0,0,.14);background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px)}
+.tabbar a{font-weight:700}
+body.has-tabbar{padding-bottom:88px}
+.rm .status{transition:none}
+@media (min-width:860px){.status{top:72px}}
