@@ -5,10 +5,11 @@
   if (!(n >= 1) && P >= 1 && P <= 604) n = 1; // set from the page index below
   var $ = function (id) { return document.getElementById(id); }, esc = SO.esc, root = document.documentElement;
   if (!(n >= 1 && n <= 114)) { location.replace('../read/'); return; }
-  var DEF = { mode: 'clean', script: 'uthmani', ar: 1.9, tr: 1, header: true, meaning: true, deco: true, bg: 'app', nav: 'surah', hide: true, compact: true, awake: false, auto: false, speed: 3, paging: 'scroll', tajweed: true, legend: true, reciter: 'Alafasy', repeat: 'off', autoNext: true, follow: true, tapWord: true, rate: 1, vol: 1, lh: 2.3, pad: 48, tlay: 'ayah', nums: true, numsRight: false, showAr: true, showTr: true, showWbw: true, trid: 20 };
+  var DEF = { mode: 'clean', script: 'uthmani', ar: 1.9, tr: 1, header: true, meaning: true, deco: true, bg: 'app', nav: 'surah', hide: true, compact: true, awake: false, auto: false, speed: 3, paging: 'scroll', tajweed: true, legend: true, reciter: 'Alafasy', repeat: 'off', autoNext: true, follow: true, tapWord: true, rate: 1, vol: 1, lh: 2.3, pad: 48, tlay: 'ayah', nums: true, numsRight: false, showAr: true, showTr: true, showWbw: true, trid: 20, tfInline: false };
   var S = Object.assign({}, DEF, SO.get('so.rs', {}));
   // one-time move to the new defaults (Nov 2026) for browsers that saved older settings
   if ((S.dv || 0) < 2) { S.mode = 'clean'; S.paging = 'scroll'; S.tajweed = true; S.script = 'uthmani'; S.reciter = 'Alafasy'; S.dv = 2; SO.set('so.rs', S); }
+  if (S.dv < 3) { S.meaning = false; S.dv = 3; SO.set('so.rs', S); } // the meaning line under the frame starts off (details are in the i button)
   S.bg = { cream: 'classic', sepia: 'sand', night: 'forest' }[S.bg] || S.bg; // old values -> app backgrounds
   var HL = { yellow: '#FDE047', amber: '#FBBF24', orange: '#FB923C', red: '#F87171', pink: '#F472B6', purple: '#C084FC', indigo: '#818CF8', blue: '#60A5FA', teal: '#2DD4BF', green: '#4ADE80' };
   function hl(k) { var c = SO.get('so.hl', {})[k]; return c && HL[c] ? ' style="--hl:' + HL[c] + '" data-hl="' + c + '"' : ''; }
@@ -96,7 +97,7 @@
     root.style.setProperty('--ar-size', S.ar + 'rem'); root.style.setProperty('--tr-size', S.tr + 'rem'); root.style.setProperty('--lh', S.lh); root.style.setProperty('--pad', S.pad + 'px');
     document.body.classList.toggle('nums-right', !!S.numsRight); document.body.classList.toggle('no-wbw', !S.showWbw);
     document.body.dataset.bg = S.bg;
-    $('head').hidden = !S.header; $('s-meta').hidden = !S.meaning;
+    $('head').hidden = !S.header; $('s-meta').hidden = !S.meaning; $('s-meta').classList.toggle('sr', !S.meaning); $('s-meta').classList.toggle('s-mean', !!S.meaning);
     var useImg = S.header && S.deco, withB = useImg && !!bism;
     $('frame').classList.toggle('plain', !useImg); $('frame').classList.toggle('bism', withB);
     var im = $('frame-img'); im.hidden = !useImg;
@@ -120,10 +121,26 @@
       else el.value = S[k];
     });
     document.querySelectorAll('[data-out]').forEach(function (o) { var k = o.getAttribute('data-out'); o.textContent = k === 'rate' ? S.rate + '×' : k === 'vol' ? Math.round(S.vol * 100) + '%' : k === 'speed' ? S.speed : k === 'lh' ? (+S.lh).toFixed(1) : k === 'pad' ? S.pad + 'px' : Math.round(S[k] * 16); });
+    deps();
     if (ch) navLinks();
     if (rerender && sura) render();
   }
 
+  // grey out options that do not apply to the selected reading mode (they work again when that mode is chosen)
+  function deps() {
+    var m = S.mode, on = {
+      paging: m === 'clean', tlay: m === 'verse', showAr: m === 'verse', showTr: m === 'verse', tfInline: m === 'verse',
+      showWbw: m === 'plus', tapWord: m === 'plus', numsRight: m !== 'clean', tajweed: m !== 'plus', legend: m !== 'plus' && S.tajweed,
+      speed: S.auto, meaning: S.header, deco: S.header };
+    Object.keys(on).forEach(function (k) {
+      document.querySelectorAll('#settings [data-set="' + k + '"]').forEach(function (el) {
+        var box = el.closest('.tg, .sl, .pick') || el, h = box.previousElementSibling;
+        box.classList.toggle('dis', !on[k]); if (el.matches('input,select')) el.disabled = !on[k];
+        if (el.classList.contains('seg')) el.querySelectorAll('button').forEach(function (b) { b.disabled = !on[k]; });
+        if (h && h.tagName === 'H3' && el.classList.contains('seg')) h.classList.toggle('dis', !on[k]);
+      });
+    });
+  }
   // ---------- data ----------
   Promise.all([SO.j('../assets/data/chapters.json'), SO.j('../assets/data/index.json').catch(function () { return null; })])
     .then(function (r0) {
@@ -196,9 +213,10 @@
           var ar = mode === 'plus'
             ? '<div class="words" lang="ar" dir="rtl">' + wbw[i].map(function (w, j) { return '<span class="w" data-w="' + (j + 1) + '" data-wa="' + (i + 1) + '"><span class="wa">' + esc(w[0]) + '</span><span class="wt" dir="ltr">' + esc(w[1] || '') + '</span></span>'; }).join('') + end(i + 1) + '</div>'
             : '<p class="ar" lang="ar" dir="rtl">' + fmt(a, n, i) + (S.nums && !(S.tajweed && TJD[n] ? S.script !== 'naskh' : hasNum(a)) ? ' ' + end(i + 1) : '') + '</p>';
-          return '<li class="card-a" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(k) + '>' + top + (showAr ? ar : '') + (showTr ? '<p class="tr"' + trAttr() + '>' + esc((TRT || sura.en)[i]) + '</p>' : '') + '</li>';
+          return '<li class="card-a" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(k) + '>' + top + (showAr ? ar : '') + (showTr ? '<p class="tr"' + trAttr() + '>' + esc((TRT || sura.en)[i]) + '</p>' : '') + (S.tfInline && mode === 'verse' ? '<div class="tf-inl" data-tf="' + (i + 1) + '"></div>' : '') + '</li>';
         }).join('') + '</ol>';
       }
+      if (S.tfInline && mode === 'verse') setTimeout(tfFill, 0);
       if (S.mode === 'plus' && wbw === false) h = '<p class="empty">Word-by-word is not available yet. Showing Verse List.</p>' + h;
       $('body').innerHTML = h;
       var t = parseInt(location.hash.slice(1), 10);
@@ -391,11 +409,14 @@
   }
   document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') wake(); });
   var raf = null, acc = 0;
+  var asRun = false;
   function autoScroll() {
-    if (S.auto && !raf) { var step = function () { acc += S.speed * 0.12; if (acc >= 1) { scrollBy(0, Math.floor(acc)); acc -= Math.floor(acc); } raf = requestAnimationFrame(step); }; raf = requestAnimationFrame(step); }
-    if (!S.auto && raf) { cancelAnimationFrame(raf); raf = null; }
+    var b = $('as-btn'); if (b) { b.hidden = !S.auto; b.setAttribute('aria-pressed', asRun && S.auto); b.setAttribute('aria-label', asRun ? 'Pause auto scroll' : 'Start auto scroll'); }
+    if (S.auto && asRun && !raf) { var step = function () { acc += S.speed * 0.12; if (acc >= 1) { scrollBy(0, Math.floor(acc)); acc -= Math.floor(acc); } raf = requestAnimationFrame(step); }; raf = requestAnimationFrame(step); }
+    if ((!S.auto || !asRun) && raf) { cancelAnimationFrame(raf); raf = null; }
   }
-  ['wheel', 'touchstart'].forEach(function (ev) { addEventListener(ev, function () { if (S.auto) { S.auto = false; save(); apply(false); } }, { passive: true }); });
+  ['wheel', 'touchstart'].forEach(function (ev) { addEventListener(ev, function (e) { if (asRun && !(e.target.closest && e.target.closest('#bar, #settings'))) { asRun = false; autoScroll(); } }, { passive: true }); }); // reading by hand pauses it
+  $('as-btn').onclick = function () { asRun = !asRun; autoScroll(); };
 
   // ---------- Tafsir (same source as the app: spa5k/tafsir_api via jsDelivr), loaded when asked, shown unchanged ----------
   var TFB = 'https://cdn.jsdelivr.net/gh/spa5k/tafsir_api@main/tafsir/', TFL = null, tfKey = null;
@@ -475,7 +496,7 @@
       if (m.ruku_count > 0) rows.push(['Rukus', m.ruku_count]);
       var h = '<p class="si-ar" lang="ar" dir="rtl">' + SO.sname(n, esc(m.name_ar)) + '</p><h2 class="si-en">' + esc(m.name_en) + '</h2><p class="si-mean">' + esc(cu ? cu.meaning : mean) + '</p><div class="si-stats">' + rows.map(function (r) { return '<div><small>' + r[0] + '</small><b>' + esc(String(r[1])) + '</b></div>'; }).join('') + '</div>' +
         '<h3>About the name</h3><p>' + esc(note) + '</p><h3>Overview</h3><p>' + esc(sum) + '</p><p class="hint">' + esc(src) + '</p>';
-      h += '<h3>Tajweed colours</h3>' + (S.tajweed && document.body.dataset.tj === '1' ? '<div class="tj-legend">' + LEG.map(function (l) { return '<span class="tj-' + l[0] + '">' + l[1] + '</span>'; }).join('') + '</div>' : '<p class="hint">Tajweed colouring is off. Turn it on in Settings → Text.</p>');
+      h += '<h3>Tajweed colours</h3>' + (S.tajweed && S.legend && document.body.dataset.tj === '1' ? '<div class="tj-legend">' + LEG.map(function (l) { return '<span class="tj-' + l[0] + '">' + l[1] + '</span>'; }).join('') + '</div>' : '<p class="hint">Tajweed colouring is off. Turn it on in Settings → Text.</p>');
       h += '<p class="hint">' + esc($('src-tr').parentNode.textContent) + '</p>';
       $('si-title').textContent = ''; $('si-body').innerHTML = h; $('sinfo').hidden = false;
     }).catch(function () { $('si-title').textContent = ''; $('si-body').innerHTML = '<p class="hint">Surah information could not be loaded. Please refresh.</p>'; $('sinfo').hidden = false; });
@@ -538,4 +559,12 @@
   // reopen Settings (same tab) after switching between page-by-page and scrolling
   (function () { var t = null; try { t = sessionStorage.getItem('so.reopen'); sessionStorage.removeItem('so.reopen'); } catch (e) {}
     if (!t) return; $('settings').hidden = false; var b = document.querySelector('.mtabs [data-p="' + t + '"]'); if (b) b.click(); })();
+  // tafsir under each ayah (app setting "show tafsir in translation"): the tafsir chosen in Settings > Text, whole surah in one file
+  function tfFill() {
+    var slug = SO.get('so.tafsir', null) || 'en-tafisr-ibn-kathir', boxes = document.querySelectorAll('.tf-inl'); if (!boxes.length) return;
+    boxes.forEach(function (b) { b.textContent = 'Loading tafsir…'; });
+    fj(TFB + slug + '/' + n + '.json').then(function (d) { var a = Array.isArray(d) ? d : (d.ayahs || []), by = {}; a.forEach(function (x) { by[x.ayah] = x.text; });
+      boxes.forEach(function (b) { var t = (by[b.dataset.tf] || '').trim(); b.innerHTML = t ? '<details><summary>Tafsir</summary><p' + (/[\u0590-\u08FF]/.test(t.slice(0, 60)) ? ' dir="rtl"' : '') + '>' + esc(t) + '</p></details>' : ''; }); })
+      .catch(function () { boxes.forEach(function (b) { b.textContent = 'Tafsir could not be loaded.'; }); });
+  }
 })();

@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261103r">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261103s">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -55,6 +55,7 @@
       <button type="button" id="bb-name" class="bb-name" lang="ar" dir="rtl" aria-label="Surah list"></button>
       <a id="next" class="bb-btn" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></a></div>
     <button class="bb-btn" id="play" type="button" hidden aria-label="Play recitation"><svg viewBox="0 0 24 24" class="fillico"><path d="M8 5.5v13l11-6.5z"/></svg></button>
+    <button class="bb-btn" id="as-btn" type="button" hidden aria-label="Start auto scroll" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M12 4v13M6.5 12.5L12 18l5.5-5.5"/><path d="M5 21h14"/></svg></button>
     <button class="bb-btn" id="open-set" type="button" aria-label="Reader settings"><svg viewBox="0 0 24 24" class="gear"><path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96a7.03 7.03 0 0 0-1.62-.94l-.36-2.54a.48.48 0 0 0-.48-.41h-3.84a.48.48 0 0 0-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 0 0-.59.22L2.74 8.87a.48.48 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.48.48 0 0 0-.12-.61zM12 15.6a3.6 3.6 0 1 1 0-7.2 3.6 3.6 0 0 1 0 7.2z"/></svg></button>
   </nav>
   <div class="audiobar" id="abar" hidden>
@@ -142,6 +143,8 @@
             <label class="tg">Show Arabic with translation<input type="checkbox" data-set="showAr"></label>
             <label class="tg">Show ayah translation<input type="checkbox" data-set="showTr"></label>
             <label class="tg">Show word-by-word meanings (Mushaf+)<input type="checkbox" data-set="showWbw"></label>
+            <label class="tg">Show tafsir under each ayah (Verse List)<input type="checkbox" data-set="tfInline"></label>
+            <p class="hint">Options that do not apply to the selected reading mode are greyed out.</p>
           </section>
           <section data-pane="text" hidden>
             <h3>Quran font</h3>
@@ -205,9 +208,9 @@
   </div>
 </main>
 
-<script src="../assets/js/site.js?v=20261103r" defer></script>
-<script src="../assets/js/lib.js?v=20261103r" defer></script>
-<script src="../assets/js/tajweed.js?v=20261103r" defer></script>
-<script src="../assets/js/reader.js?v=20261103r" defer></script>
+<script src="../assets/js/site.js?v=20261103s" defer></script>
+<script src="../assets/js/lib.js?v=20261103s" defer></script>
+<script src="../assets/js/tajweed.js?v=20261103s" defer></script>
+<script src="../assets/js/reader.js?v=20261103s" defer></script>
 </body>
 </html>
