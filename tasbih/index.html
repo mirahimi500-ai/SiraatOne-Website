@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261102o">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261102p">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -44,9 +44,10 @@
       <label><input type="checkbox" id="tb-snd"> Sound at target</label>
       <label><input type="checkbox" id="tb-conf"> Confirm before reset</label>
       <label><input type="checkbox" id="tb-stats"> Show statistics</label>
-      <div class="tb-manage"><button type="button" class="btn btn-ghost sm" id="tb-add">+ New counter</button><button type="button" class="btn btn-ghost sm" id="tb-ren">Rename</button><button type="button" class="btn btn-ghost sm" id="tb-del">Delete</button></div>
+      <div class="tb-manage"><button type="button" class="btn btn-ghost sm" id="tb-add">+ Add saved counter</button><button type="button" class="btn btn-ghost sm" id="tb-ren">Rename</button><button type="button" class="btn btn-ghost sm" id="tb-del">Delete</button></div>
     </div>
   </div>
+  <div class="tb-mode" id="tb-mode" role="tablist"><button type="button" data-m="dhikr">Dhikr</button><button type="button" data-m="own">Saved counters</button></div>
   <div class="tb-chips" id="tb-chips"></div>
   <p class="tb-ar" id="tb-ar" lang="ar" dir="rtl"></p>
   <p class="tb-name" id="tb-name"></p>
@@ -56,12 +57,16 @@
   </button>
   <div class="tb-row"><button type="button" class="btn btn-ghost sm" id="tb-undo">−1</button><button type="button" class="btn btn-ghost sm" id="tb-reset">Reset</button></div>
   <p class="tb-src" id="tb-src"></p>
-  <p class="tb-stats" id="tb-st"></p>
+  <section class="tb-statbox" id="tb-st">
+    <div class="tb-nums"><div><b id="st-life">0</b><small>Lifetime</small></div><div><b id="st-today">0</b><small>Today</small></div><div><b id="st-tg">0</b><small>Targets reached</small></div><div><b id="st-ses">0</b><small>Sessions</small></div></div>
+    <h3>Recent sessions</h3><ol class="tb-hist" id="tb-hist"></ol>
+    <div class="tb-row"><button type="button" class="btn btn-ghost sm" id="tb-clear">Clear history</button><button type="button" class="btn btn-ghost sm" id="tb-rstats">Reset statistics</button></div>
+  </section>
   <p class="hint tb-hint">Tap the circle, or press Space / Enter. Saved in this browser only. A target is a personal goal, not a prescribed number for every phrase.</p>
 </main>
 
-<script src="../assets/js/site.js?v=20261102o" defer></script>
-<script src="../assets/js/lib.js?v=20261102o" defer></script>
-<script src="../assets/js/tasbih.js?v=20261102o" defer></script>
+<script src="../assets/js/site.js?v=20261102p" defer></script>
+<script src="../assets/js/lib.js?v=20261102p" defer></script>
+<script src="../assets/js/tasbih.js?v=20261102p" defer></script>
 </body>
 </html>

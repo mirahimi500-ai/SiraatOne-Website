@@ -14,11 +14,15 @@
   ];
   var old = SO.get('so.tb', null), D = SO.get('so.tb2', null);
   if (!D) { // first run: counters for the app phrases; keep earlier custom counters from the old page
-    D = { cur: 'subhan_allah', c: {}, own: [], vib: true, snd: false, conf: true, stats: true, days: {}, total: 0 };
+    D = { cur: 'subhan_allah', c: {}, own: [], vib: true, snd: true, conf: true, stats: true, days: {}, total: 0 };
     CAT.forEach(function (x) { D.c[x[0]] = { n: 0, t: x[5] }; });
     if (old && old.list) { old.list.forEach(function (o, i) { if (o.n || o.name !== 'Tasbih') { var id = 'own' + i; D.own.push({ id: id, name: o.name }); D.c[id] = { n: o.n || 0, t: o.target || 0 }; } });
       ['vib', 'snd', 'conf', 'stats'].forEach(function (k) { if (k in old) D[k] = old[k]; }); D.days = old.days || {}; }
   }
+  // same features as the app: modes Dhikr / Saved counters (max 12), session history (max 20), lifetime, targets reached
+  D.mode = D.mode || 'dhikr'; D.hist = D.hist || []; D.tg = D.tg || 0; D.ownCur = D.ownCur || (D.own[0] && D.own[0].id) || null; D.dCur = D.dCur || (D.cur && D.cur.indexOf('own') !== 0 ? D.cur : 'subhan_allah');
+  if (!D.own.length) { D.own.push({ id: 'own1', name: 'Tasbih' }); D.c.own1 = D.c.own1 || { n: 0, t: 33 }; D.ownCur = 'own1'; }
+  D.cur = D.mode === 'own' ? D.ownCur : D.dCur;
   function save() { SO.set('so.tb2', D); }
   function today() { var d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
   function item(id) { var a = CAT.filter(function (x) { return x[0] === id; })[0]; if (a) return { id: a[0], name: a[1], ar: a[2], src: a[3], url: a[4] };
@@ -32,19 +36,21 @@
     $('tb-prog').style.strokeDasharray = C; $('tb-prog').style.strokeDashoffset = C * (1 - p);
     $('tb-n').textContent = x.n;
     $('tb-goal').textContent = x.t ? 'Round ' + (Math.floor(Math.max(x.n - 1, 0) / x.t) + 1) + ' · ' + (x.n % x.t || (x.n ? x.t : 0)) + ' / ' + x.t : 'No target';
-    $('tb-st').hidden = !D.stats; $('tb-st').textContent = 'Today: ' + (D.days[today()] || 0) + ' · This dhikr: ' + x.n + ' · All time: ' + (D.total || 0);
+    $('tb-st').hidden = !D.stats; $('st-life').textContent = D.total || 0; $('st-today').textContent = D.days[today()] || 0; $('st-tg').textContent = D.tg; $('st-ses').textContent = D.hist.length;
+    $('tb-hist').innerHTML = D.hist.length ? D.hist.map(function (h) { return '<li><b>' + esc(h.name) + '</b><span>' + h.n + '</span><small>' + esc(h.d) + '</small></li>'; }).join('') : '<li class="hint">No sessions yet. A session is saved when you reset a counter.</li>';
   }
   function draw() {
     var it = item(D.cur), x = c();
-    $('tb-chips').innerHTML = CAT.map(function (a) { return '<button type="button" class="tb-chip" data-id="' + a[0] + '" aria-pressed="' + (a[0] === D.cur) + '"><span lang="ar" dir="rtl">' + esc(a[2].length > 34 ? a[2].slice(0, 32) + '…' : a[2]) + '</span><small>' + esc(a[1]) + '</small></button>'; }).join('') +
-      D.own.map(function (o) { return '<button type="button" class="tb-chip" data-id="' + o.id + '" aria-pressed="' + (o.id === D.cur) + '"><span>' + esc(o.name) + '</span><small>My counter</small></button>'; }).join('');
+    document.querySelectorAll('#tb-mode button').forEach(function (b) { b.setAttribute('aria-selected', b.dataset.m === D.mode); });
+    $('tb-chips').innerHTML = D.mode === 'own' ? D.own.map(function (o) { return '<button type="button" class="tb-chip" data-id="' + o.id + '" aria-pressed="' + (o.id === D.cur) + '"><span>' + esc(o.name) + '</span><small>' + (D.c[o.id] ? D.c[o.id].n : 0) + '</small></button>'; }).join('') : CAT.map(function (a) { return '<button type="button" class="tb-chip" data-id="' + a[0] + '" aria-pressed="' + (a[0] === D.cur) + '"><span lang="ar" dir="rtl">' + esc(a[2].length > 34 ? a[2].slice(0, 32) + '…' : a[2]) + '</span><small>' + esc(a[1]) + '</small></button>'; }).join('') +
+''; 
     $('tb-ar').textContent = it.ar || ''; $('tb-ar').hidden = !it.ar; $('tb-name').textContent = it.name;
     $('tb-src').innerHTML = it.src ? 'Source: <a href="' + it.url + '" target="_blank" rel="noopener">' + esc(it.src) + '</a>' : '';
     var sel = $('tb-target'), std = ['0', '33', '34', '99', '100'], v = String(x.t), co = sel.querySelector('[data-custom]');
     if (std.indexOf(v) < 0) { if (!co) { co = document.createElement('option'); co.dataset.custom = 1; sel.insertBefore(co, sel.lastChild); } co.value = v; co.textContent = v; } else if (co) co.remove();
     sel.value = v;
     ['vib', 'snd', 'conf', 'stats'].forEach(function (k) { $('tb-' + k).checked = !!D[k]; });
-    $('tb-ren').hidden = $('tb-del').hidden = !it.own;
+    $('tb-ren').hidden = !it.own; $('tb-del').hidden = !it.own || D.own.length < 2; $('tb-add').hidden = D.own.length >= 12;
     ring();
     var a = $('tb-chips').querySelector('[aria-pressed=true]'); if (a) a.scrollIntoView({ block: 'nearest', inline: 'center' });
   }
@@ -52,6 +58,7 @@
     var x = c(); x.n++; D.total = (D.total || 0) + 1; D.days[today()] = (D.days[today()] || 0) + 1;
     var hit = x.t && x.n % x.t === 0;
     if (D.vib && navigator.vibrate) navigator.vibrate(hit ? [60, 60, 120] : 12);
+    if (hit) D.tg++;
     if (hit && D.snd) beep();
     var r = $('tb-tap'); r.classList.remove('pulse', 'hit'); void r.offsetWidth; r.classList.add(hit ? 'hit' : 'pulse');
     ring(); clearTimeout(inc.t); inc.t = setTimeout(save, 250); // instant screen update, saved right after
@@ -62,13 +69,16 @@
   document.addEventListener('keydown', function (e) { if (e.code === 'Space' && e.target === document.body) { e.preventDefault(); inc(); } });
   window.addEventListener('pagehide', save);
   $('tb-undo').onclick = function () { var x = c(); if (x.n > 0) { x.n--; D.total = Math.max(0, (D.total || 0) - 1); save(); ring(); } };
-  $('tb-reset').onclick = function () { if (!D.conf || confirm('Reset this counter to 0?')) { c().n = 0; save(); ring(); } };
+  $('tb-reset').onclick = function () { var x = c(); if (!D.conf || confirm('Reset this counter to 0?')) { if (x.n) { D.hist.unshift({ name: item(D.cur).name, n: x.n, d: new Date().toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) }); D.hist = D.hist.slice(0, 20); } x.n = 0; save(); draw(); } };
+  $('tb-clear').onclick = function () { if (confirm('Clear the session history?')) { D.hist = []; save(); ring(); } };
+  $('tb-rstats').onclick = function () { if (confirm('Reset all statistics (lifetime, today, targets reached)?')) { D.total = 0; D.days = {}; D.tg = 0; save(); ring(); } };
+  $('tb-mode').onclick = function (e) { var b = e.target.closest('[data-m]'); if (!b) return; D.mode = b.dataset.m; D.cur = D.mode === 'own' ? D.ownCur : D.dCur; save(); draw(); };
   $('tb-target').onchange = function () { var v = this.value; if (v === 'c') { v = parseInt(prompt('Target number:', '33'), 10); if (!(v > 0)) { draw(); return; } } c().t = +v; save(); draw(); };
   ['vib', 'snd', 'conf', 'stats'].forEach(function (k) { $('tb-' + k).onchange = function () { D[k] = this.checked; save(); ring(); }; });
-  $('tb-chips').onclick = function (e) { var b = e.target.closest('[data-id]'); if (!b) return; D.cur = b.dataset.id; save(); draw(); };
-  $('tb-add').onclick = function () { var nm = prompt('Name for the new counter:', 'My counter ' + (D.own.length + 1)); if (!nm) return; var id = 'own' + Date.now(); D.own.push({ id: id, name: nm.slice(0, 40) }); D.c[id] = { n: 0, t: 33 }; D.cur = id; save(); draw(); };
+  $('tb-chips').onclick = function (e) { var b = e.target.closest('[data-id]'); if (!b) return; D.cur = b.dataset.id; if (D.mode === 'own') D.ownCur = D.cur; else D.dCur = D.cur; save(); draw(); };
+  $('tb-add').onclick = function () { var nm = prompt('Name for the new counter:', 'My counter ' + (D.own.length + 1)); if (!nm) return; var id = 'own' + Date.now(); D.own.push({ id: id, name: nm.slice(0, 40) }); D.c[id] = { n: 0, t: 33 }; D.mode = 'own'; D.cur = D.ownCur = id; save(); draw(); };
   $('tb-ren').onclick = function () { var o = D.own.filter(function (x) { return x.id === D.cur; })[0]; if (!o) return; var r = prompt('New name:', o.name); if (!r) return; o.name = r.slice(0, 40); save(); draw(); };
-  $('tb-del').onclick = function () { var i = D.own.findIndex(function (x) { return x.id === D.cur; }); if (i < 0 || !confirm('Delete "' + D.own[i].name + '"?')) return; delete D.c[D.cur]; D.own.splice(i, 1); D.cur = CAT[0][0]; save(); draw(); };
+  $('tb-del').onclick = function () { var i = D.own.findIndex(function (x) { return x.id === D.cur; }); if (i < 0 || !confirm('Delete "' + D.own[i].name + '"?')) return; delete D.c[D.cur]; D.own.splice(i, 1); D.cur = D.ownCur = D.own[0].id; save(); draw(); };
   $('tb-menu').onclick = function (e) { e.stopPropagation(); var o = $('tb-pop').classList.toggle('open'); this.setAttribute('aria-expanded', o); };
   document.addEventListener('click', function (e) { if ($('tb-pop').classList.contains('open') && !e.target.closest('#tb-pop')) $('tb-pop').classList.remove('open'); });
   $('tb-back').onclick = function (e) { if (history.length > 1 && document.referrer.indexOf(location.host) > -1) { e.preventDefault(); history.back(); } };
