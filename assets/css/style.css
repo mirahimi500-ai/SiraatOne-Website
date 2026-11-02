@@ -857,3 +857,4 @@ option,optgroup{color:var(--text);background-color:var(--surface)}
 .pv2 .summary{padding:12px 14px;border-radius:12px;background:color-mix(in srgb,var(--brand) 8%,transparent)}
 .pv2 .cl-side .ts-card{padding:16px}
 @media(min-width:900px){.pv2 .cl-cols{grid-template-columns:minmax(0,1fr) 340px}}
+.pv2 .pv-sec[hidden]{display:none!important}
