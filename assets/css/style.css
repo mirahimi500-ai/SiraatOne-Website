@@ -930,3 +930,8 @@ body:has(#bar.hid) .status{transform:translateY(calc(-100% - 90px));opacity:0;po
 body.has-tabbar{padding-bottom:88px}
 .rm .status{transition:none}
 @media (min-width:860px){.status{top:72px}}
+/* PILL2: Mushaf info pill (sura no. · name · Juz · page, Arabic on the right): slim, full width edge to edge */
+.status{width:calc(100% - 16px);max-width:none;margin:6px 8px 0;padding:3px 14px;font-size:.78rem;align-items:center;line-height:1.5}
+.status [lang="ar"]{font-size:.92rem}
+.status span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+@media (max-width:520px){.status{padding:3px 10px;gap:6px;font-size:.7rem}.status [lang="ar"]{font-size:.8rem}}

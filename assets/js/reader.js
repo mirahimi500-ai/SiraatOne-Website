@@ -5,7 +5,7 @@
   if (!(n >= 1) && P >= 1 && P <= 604) n = 1; // set from the page index below
   var $ = function (id) { return document.getElementById(id); }, esc = SO.esc, root = document.documentElement;
   if (!(n >= 1 && n <= 114)) { location.replace('../read/'); return; }
-  var DEF = { mode: 'clean', script: 'uthmani', ar: 1.9, tr: 1, header: true, meaning: true, deco: true, bg: 'app', nav: 'surah', hide: true, compact: true, awake: false, auto: false, speed: 3, paging: 'scroll', tajweed: true, legend: true, reciter: 'Alafasy', repeat: 'off', autoNext: true, follow: true, tapWord: true, rate: 1, vol: 1, lh: 2.3, pad: 48, tlay: 'ayah', nums: true, numsRight: false, showAr: true, showTr: true, showWbw: true, trid: 20, tfInline: false, asNext: true, asResume: true, asEta: true };
+  var DEF = { mode: 'clean', script: 'uthmani', ar: 1.9, tr: 1, header: true, meaning: true, deco: true, bg: 'app', nav: 'surah', hide: true, awake: false, auto: false, speed: 3, paging: 'scroll', tajweed: true, legend: true, reciter: 'Alafasy', repeat: 'off', autoNext: true, follow: true, tapWord: true, rate: 1, vol: 1, lh: 2.3, pad: 48, tlay: 'ayah', nums: true, numsRight: false, showAr: true, showTr: true, showWbw: true, trid: 20, tfInline: false, asNext: true, asResume: true, asEta: true };
   var S = Object.assign({}, DEF, SO.get('so.rs', {}));
   // one-time move to the new defaults (Nov 2026) for browsers that saved older settings
   if ((S.dv || 0) < 2) { S.mode = 'clean'; S.paging = 'scroll'; S.tajweed = true; S.script = 'uthmani'; S.reciter = 'Alafasy'; S.dv = 2; SO.set('so.rs', S); }
@@ -112,7 +112,7 @@
       else { im.style.backgroundImage = u; im.classList.add('raw', 'ready'); } // old browsers: original colours
     }
     $('s-bism').hidden = !bism || withB;
-    $('status').hidden = !S.compact; document.body.classList.toggle('has-status', S.compact);
+    $('status').hidden = false; document.body.classList.add('has-status'); // the info pill is part of every Mushaf
     wake(); autoScroll();
     document.querySelectorAll('[data-set]').forEach(function (el) {
       var k = el.getAttribute('data-set');
@@ -241,8 +241,8 @@
   }
   function status(a, s) {
     s = s || n; var c = ch[s - 1], j = idx ? SO.pos(idx, s, a) : null;
-    $('st-en').textContent = s + '-' + c.name_simple + ' · ' + s + ':' + a + (j ? ' · Juz ' + j.juz + ' · Page ' + j.page : '');
-    $('st-ar').textContent = arNum(s) + ' - ' + c.name_arabic + (j ? ' / الجزء ' + arNum(j.juz) : '');
+    $('st-en').textContent = s + ' · ' + c.name_simple + (j ? ' · Juz ' + j.juz + ' · Page ' + j.page : '');
+    $('st-ar').textContent = arNum(s) + ' · ' + c.name_arabic + (j ? ' · الجزء ' + arNum(j.juz) + ' · صفحة ' + arNum(j.page) : '');
   }
 
   // ---------- prev / next (by Surah or Juz) ----------
