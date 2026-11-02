@@ -196,3 +196,4 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - VL1: Verse List: word by word works (words + meanings when on); inline tafsir always open, plain text under translation with one thin line (no box/colour/arrow).
 - COL1: Verse List Columns: Arabic/words right; translation then tafsir on the left (with or without word by word).
 - SET2: reader Settings regrouped (Layout / Text / Translation / Audio / More); Surah title = one choice (frame/plain/hidden) replacing 3 toggles; meaning line removed (in ⓘ + info pill); fixes: tafsir toggle live, Tajweed key shown on page, Juz/Surah nav greyed in Page by Page, tap-word + wbw language greying, clearer labels.
+- WIN1: reader windows (Settings, ayah menu, tafsir, translation, info, quick panel) slide up + fade in on open, slide down + fade out on close (0.3-0.45s); Esc/backdrop/× all animated; off with Reduce motion.

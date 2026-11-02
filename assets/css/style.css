@@ -992,3 +992,13 @@ body[data-script="indopak"] .flow,body[data-script="indopak"] .card-a .ar{line-h
 @media (min-width:860px){.cards.tl-columns .card-a>.ar,.cards.tl-columns .card-a>.words{grid-column:2;grid-row:2 / span 2;margin-top:8px}
 .cards.tl-columns .card-a>.tr{grid-column:1;grid-row:2;align-self:start}
 .cards.tl-columns .card-a>.tf-inl{grid-column:1;grid-row:3;align-self:start}}
+/* WIN1: reader windows open with a smooth slide-up and close with a smooth slide-down (same easing as the toolbars) */
+@keyframes winIn{from{opacity:0}to{opacity:1}}
+@keyframes winOut{from{opacity:1}to{opacity:0}}
+@keyframes cardIn{from{transform:translateY(48px);opacity:0}to{transform:none;opacity:1}}
+@keyframes cardOut{from{transform:none;opacity:1}to{transform:translateY(48px);opacity:0}}
+.modal:not([hidden]),.sheet:not([hidden]){animation:winIn .3s ease both}
+.modal:not([hidden])>.modal-card,.sheet:not([hidden])>.sheet-card{animation:cardIn .45s cubic-bezier(.2,.8,.2,1) both}
+.modal.closing,.sheet.closing{animation:winOut .3s ease both;pointer-events:none}
+.modal.closing>.modal-card,.sheet.closing>.sheet-card{animation:cardOut .3s cubic-bezier(.65,0,.35,1) both}
+.rm .modal,.rm .sheet,.rm .modal>.modal-card,.rm .sheet>.sheet-card{animation:none!important}

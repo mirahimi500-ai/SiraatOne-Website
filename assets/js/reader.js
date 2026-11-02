@@ -392,7 +392,7 @@
     $('sheet').querySelector('[data-a="fav"]').setAttribute('aria-pressed', SO.has('so.fav', cur));
     $('sh-note').value = SO.get('so.notes', {})[cur] || '';
     var hc = SO.get('so.hl', {})[cur] || ''; document.querySelectorAll('#sh-hl button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-c') === hc); });
-    $('sheet').hidden = false;
+    winShow($('sheet'));
   });
   $('sheet').addEventListener('click', function (e) {
     if (e.target === $('sheet') || e.target.closest('[data-close]')) { closeSheet(); return; }
@@ -413,10 +413,15 @@
     }
     b.setAttribute('aria-pressed', SO.toggle(a === 'bm' ? 'so.bm' : 'so.fav', cur));
   });
+  // windows (Settings, ayah menu, tafsir, translation, info, panel) open and close with a smooth slide
+  function winShow(el) { clearTimeout(el._ht); el.classList.remove('closing'); el.hidden = false; }
+  function winHide(el) { if (el.hidden || el.classList.contains('closing')) return;
+    if (document.documentElement.classList.contains('rm')) { el.hidden = true; return; }
+    el.classList.add('closing'); el._ht = setTimeout(function () { el.hidden = true; el.classList.remove('closing'); }, 300); }
   function closeSheet() {
     var notes = SO.get('so.notes', {}), v = $('sh-note').value.trim();
     if (cur) { if (v) notes[cur] = v; else delete notes[cur]; SO.set('so.notes', notes); }
-    $('sheet').hidden = true;
+    winHide($('sheet'));
     var el = cur && elFor(cur); if (el) { var m = el.querySelector('.marks'); if (m) m.outerHTML = marks(cur); }
     cur = null;
   }
@@ -498,9 +503,9 @@
     if (e.key === 'ArrowRight' && P > 1) location.href = '?p=' + (P - 1);
   });
   // ---------- settings modal ----------
-  $('open-set').onclick = function () { $('settings').hidden = false; };
+  $('open-set').onclick = function () { winShow($('settings')); };
   $('settings').addEventListener('click', function (e) {
-    if (e.target === $('settings') || e.target.closest('[data-close]')) { $('settings').hidden = true; return; }
+    if (e.target === $('settings') || e.target.closest('[data-close]')) { winHide($('settings')); return; }
     var tab = e.target.closest('[data-p]');
     if (tab) { var p = tab.getAttribute('data-p');
       document.querySelectorAll('.mtabs button').forEach(function (b) { b.setAttribute('aria-selected', b === tab); });
@@ -517,7 +522,7 @@
     if (k === 'rate' || k === 'vol') AUD.live();
     apply(['nums', 'showAr', 'showTr', 'legend', 'tfInline'].indexOf(k) > -1);
   });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { if (!$('sheet').hidden) closeSheet(); $('settings').hidden = true; } });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { if (!$('sheet').hidden) closeSheet(); winHide($('settings')); } });
 
   // ---------- behavior: hide toolbar, keep awake, auto scroll ----------
   var lastY = scrollY;
@@ -638,12 +643,12 @@
   $('open-set').addEventListener('click', function () { tfList().catch(function () { $('set-tf').innerHTML = '<option value="">Could not load — check your connection</option>'; }); });
   $('set-tf').onchange = function () { if (this.value) { SO.set('so.tafsir', this.value); $('tf-pick').value = this.value; } };
   function openTafsir(k) {
-    tfKey = k; $('tf-key').textContent = k; $('tafsir').hidden = false;
+    tfKey = k; $('tf-key').textContent = k; winShow($('tafsir'));
     $('tf-text').textContent = 'Loading…';
     tfList().then(function () { $('tf-pick').onchange = function () { $('set-tf').value = this.value; tfShow(); }; tfShow(); })
       .catch(function () { $('tf-text').textContent = 'The tafsir list could not be loaded. Please check your connection and try again.'; });
   }
-  $('tafsir').addEventListener('click', function (e) { if (e.target === $('tafsir') || e.target.closest('[data-close]')) $('tafsir').hidden = true; });
+  $('tafsir').addEventListener('click', function (e) { if (e.target === $('tafsir') || e.target.closest('[data-close]')) winHide($('tafsir')); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('tafsir').hidden = true; });
 
   // ---------- Backup: export / import everything this site saved in this browser ----------
@@ -691,16 +696,16 @@
         '<h3>About the name</h3><p>' + esc(note) + '</p><h3>Overview</h3><p>' + esc(sum) + '</p><p class="hint">' + esc(src) + '</p>';
       h += '<h3>Tajweed colours</h3>' + (S.tajweed && S.legend && document.body.dataset.tj === '1' ? '<div class="tj-legend">' + LEG.map(function (l) { return '<span class="tj-' + l[0] + '">' + l[1] + '</span>'; }).join('') + '</div>' : '<p class="hint">Tajweed colouring is off. Turn it on in Settings → Text.</p>');
       h += '<p class="hint">' + esc($('src-tr').parentNode.textContent) + '</p>';
-      $('si-title').textContent = ''; $('si-body').innerHTML = h; $('sinfo').hidden = false;
-    }).catch(function () { $('si-title').textContent = ''; $('si-body').innerHTML = '<p class="hint">Surah information could not be loaded. Please refresh.</p>'; $('sinfo').hidden = false; });
+      $('si-title').textContent = ''; $('si-body').innerHTML = h; winShow($('sinfo'));
+    }).catch(function () { $('si-title').textContent = ''; $('si-body').innerHTML = '<p class="hint">Surah information could not be loaded. Please refresh.</p>'; winShow($('sinfo')); });
   };
-  $('sinfo').addEventListener('click', function (e) { if (e.target === $('sinfo') || e.target.closest('[data-close]')) $('sinfo').hidden = true; });
+  $('sinfo').addEventListener('click', function (e) { if (e.target === $('sinfo') || e.target.closest('[data-close]')) winHide($('sinfo')); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('sinfo').hidden = true; });
   // volume in the audio bar (saved with reader settings)
   $('ab-vol').value = S.vol; $('ab-vol').oninput = function () { S.vol = +this.value; save(); AUD.live(); if ($('settings').querySelector('[data-set=vol]')) apply(false); };
   // Quran text size slider in the ayah popup
   $('sh-size').value = S.ar; $('sh-size').oninput = function () { S.ar = +this.value; save(); apply(false); };
-  $('trans').addEventListener('click', function (e) { if (e.target === $('trans') || e.target.closest('[data-close]')) $('trans').hidden = true; });
+  $('trans').addEventListener('click', function (e) { if (e.target === $('trans') || e.target.closest('[data-close]')) winHide($('trans')); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('trans').hidden = true; });
   // translation popup with its own Language / Translator lists (same setting as Settings > Text)
   var trKey = null;
@@ -708,7 +713,7 @@
     trKey = k; var kt = k.split(':');
     getSura(+kt[0]).then(function (d) { var t = trInfo(), x = $('tr-text');
       $('tr-key').textContent = k; $('tr-name').textContent = t ? t.name : 'Saheeh International'; x.textContent = d.en[+kt[1] - 1] || '';
-      if (t && t.dir === 'rtl') x.setAttribute('dir', 'rtl'); else x.removeAttribute('dir'); $('trans').hidden = false; });
+      if (t && t.dir === 'rtl') x.setAttribute('dir', 'rtl'); else x.removeAttribute('dir'); winShow($('trans')); });
   }
   $('tp-lang').onchange = function () { if (!TRM) return; var v = this.value, f = TRM.filter(function (x) { return x.lang === v; })[0]; S.trid = f.id; save(); trUI(); reloadText(); showTrans(trKey); };
   $('tp-id').onchange = function () { S.trid = +this.value; save(); trUI(); reloadText(); showTrans(trKey); };
@@ -738,11 +743,11 @@
   $('bb-name').onclick = function () {
     if (!ch) return; QS = 'surahs'; $('qp-q').value = '';
     $('qp-short').innerHTML = QSH.map(function (x) { return '<a href="?n=' + x + '">' + esc(ch[x - 1].name_simple) + '</a>'; }).join('');
-    qpRender(); $('qpanel').hidden = false;
+    qpRender(); winShow($('qpanel'));
     var c = $('qp-list').querySelector('.cur'); if (c) c.scrollIntoView({ block: 'center' });
   };
   $('qpanel').addEventListener('click', function (e) {
-    if (e.target === $('qpanel') || e.target.closest('[data-close]')) { $('qpanel').hidden = true; return; }
+    if (e.target === $('qpanel') || e.target.closest('[data-close]')) { winHide($('qpanel')); return; }
     var b = e.target.closest('[data-q]'); if (b) { QS = QS === b.dataset.q ? 'surahs' : b.dataset.q; qpRender(); return; }
     if (e.target.closest('[data-back]')) { QS = 'surahs'; qpRender(); return; }
     if (e.target.closest('a')) $('qpanel').hidden = true;
@@ -751,7 +756,7 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('qpanel').hidden = true; });
   // reopen Settings (same tab) after switching between page-by-page and scrolling
   (function () { var t = null; try { t = sessionStorage.getItem('so.reopen'); sessionStorage.removeItem('so.reopen'); } catch (e) {}
-    if (!t) return; $('settings').hidden = false; var b = document.querySelector('.mtabs [data-p="' + t + '"]'); if (b) b.click(); })();
+    if (!t) return; winShow($('settings')); var b = document.querySelector('.mtabs [data-p="' + t + '"]'); if (b) b.click(); })();
   // tafsir under each ayah (app setting "show tafsir in translation"): the tafsir chosen in Settings > Text, whole surah in one file
   function tfFill() {
     var slug = SO.get('so.tafsir', null) || 'en-tafisr-ibn-kathir', boxes = document.querySelectorAll('.tf-inl'); if (!boxes.length) return;
