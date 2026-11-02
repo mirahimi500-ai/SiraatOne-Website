@@ -844,3 +844,9 @@ option,optgroup{color:var(--text);background-color:var(--surface)}
 .sp-q{border-bottom:1px solid var(--border);padding:4px 0}.sp-q summary{cursor:pointer;font-weight:600;padding:10px 0;list-style-position:outside}.sp-q p{margin:0 0 12px;color:var(--muted)}
 .sup2 .cl-side .ts-card{padding:16px;text-align:left}
 @media(min-width:900px){.sup2 .cl-cols{grid-template-columns:minmax(0,1fr) 340px}}
+/* FAQ: arrow inside the card (was hanging outside on the left) */
+.sp-q summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.sp-q summary::-webkit-details-marker{display:none}
+.sp-q summary::after{content:"";flex:0 0 auto;width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .2s;margin-right:4px}
+.sp-q[open] summary::after{transform:rotate(-135deg)}
+.sp-q:last-of-type{border-bottom:0}
