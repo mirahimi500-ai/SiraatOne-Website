@@ -142,7 +142,7 @@
       else el.value = S[k];
     });
     document.querySelectorAll('[data-out]').forEach(function (o) { var k = o.getAttribute('data-out'); o.textContent = k === 'rate' ? S.rate + '×' : k === 'vol' ? Math.round(S.vol * 100) + '%' : k === 'speed' ? S.speed : k === 'lh' ? (+S.lh).toFixed(1) : k === 'pad' ? S.pad + 'px' : Math.round(S[k] * 16); });
-    deps();
+    deps(); pvDraw();
     if (ch) navLinks();
     if (rerender && sura) render();
   }
@@ -190,6 +190,39 @@
     .catch(function (e) { if (e !== 'redirect') $('s-en').textContent = 'This sura could not be loaded. Please refresh.'; });
 
   var LEG = [['maddNormal', 'Madd — Normal'], ['qalqalah', 'Qalqalah'], ['ikhfa', 'Ikhfa'], ['idghamWithGhunnah', 'Idgham with Ghunnah'], ['iqlab', 'Iqlab'], ['ghunnah', 'Ghunnah']]; // labels from the app
+  // ---------- Settings: live preview (real text of this sura, current settings) + small preview thumbnails on choices ----------
+  function pvDraw() {
+    var box = document.querySelectorAll('#settings .pv'); if (!box.length || !AR || !ch) return;
+    var c = ch[n - 1], k = Math.min(2, AR.length), mode = S.mode === 'plus' && !wbw ? 'verse' : S.mode, h = '';
+    if (S.header) h += '<div class="pv-head">' + frameHtml(n, null).replace(/<p class="bismillah"[\s\S]*$/, '') + (S.meaning ? '<small>' + esc(c.meaning) + '</small>' : '') + '</div>';
+    var ar = function (i) { return fmt(AR[i], n, i) + (S.nums && !(S.tajweed && TJD[n] ? S.script !== 'naskh' : hasNum(AR[i])) ? ' ' + end(i + 1) : ''); };
+    if (mode === 'clean') { h += '<p class="flow" lang="ar" dir="rtl">'; for (var i = 0; i < k; i++) h += ar(i) + ' '; h += '</p>'; }
+    else for (var i2 = 0; i2 < k; i2++) h += '<div class="pv-card">' + (S.showAr || !S.showTr ? '<p class="ar" lang="ar" dir="rtl">' + ar(i2) + '</p>' : '') + (S.showTr ? '<p class="tr"' + trAttr() + '>' + esc((TRT || sura.en)[i2]) + '</p>' : '') + '</div>';
+    h = '<span class="pv-tag">Preview</span><div class="pv-in" style="padding-inline:' + Math.round(S.pad / 3) + 'px">' + h + '</div>';
+    box.forEach(function (b) { b.innerHTML = h; b.classList.toggle('nr', !!S.numsRight); });
+  }
+  (function thumbs() {
+    var L = function (y, x1, x2, w) { return '<path d="M' + x1 + ' ' + y + 'H' + x2 + '" stroke-width="' + (w || 2) + '"/>'; },
+      sv = function (b) { return '<svg viewBox="0 0 48 32" aria-hidden="true">' + b + '</svg>'; }, pg = '<rect x="6" y="2" width="36" height="28" rx="3" fill="none"/>';
+    var T = {
+      mode: { clean: sv(pg + L(9, 11, 37) + L(14, 11, 37) + L(19, 11, 37) + L(24, 17, 37)),
+        plus: sv(pg + '<rect x="10" y="7" width="8" height="5" rx="1" fill="currentColor" opacity=".55" stroke="none"/><rect x="20" y="7" width="8" height="5" rx="1" fill="currentColor" opacity=".55" stroke="none"/><rect x="30" y="7" width="8" height="5" rx="1" fill="currentColor" opacity=".55" stroke="none"/>' + L(15, 11, 17, 1) + L(15, 21, 27, 1) + L(15, 31, 37, 1) + L(21, 11, 37) + L(26, 11, 30, 1)),
+        verse: sv('<rect x="6" y="3" width="36" height="11" rx="2" fill="none"/><rect x="6" y="18" width="36" height="11" rx="2" fill="none"/>' + L(7, 18, 38) + L(11, 10, 30, 1) + L(22, 18, 38) + L(26, 10, 30, 1)) },
+      paging: { page: sv(pg + L(9, 11, 37) + L(14, 11, 37) + L(19, 11, 37) + '<circle cx="24" cy="25" r="1.6" fill="currentColor" stroke="none"/>'),
+        scroll: sv('<rect x="12" y="1" width="24" height="30" rx="3" fill="none"/>' + L(7, 16, 32) + L(12, 16, 32) + L(17, 16, 32) + '<path d="M24 20v8M20.5 24.5 24 28l3.5-3.5" fill="none"/>') },
+      tlay: { columns: sv(pg + L(9, 10, 22) + L(14, 10, 22) + L(19, 10, 22) + L(9, 26, 38, 1) + L(14, 26, 38, 1) + L(19, 26, 38, 1)),
+        ayah: sv(pg + L(8, 14, 38) + L(12, 10, 30, 1) + L(18, 14, 38) + L(22, 10, 30, 1)),
+        list: sv(pg + '<circle cx="12" cy="9" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="16" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="23" r="1.6" fill="currentColor" stroke="none"/>' + L(9, 16, 37) + L(16, 16, 37) + L(23, 16, 37)) },
+      repeat: { off: sv('<path d="M8 16h28M31 11l5 5-5 5" fill="none"/>'),
+        ayah: sv('<path d="M14 10h18a5 5 0 0 1 0 10H16M19 16l-4 4 4 4" fill="none"/><text x="24" y="14" font-size="7" text-anchor="middle" fill="currentColor" stroke="none">1</text>'),
+        surah: sv('<path d="M14 10h18a5 5 0 0 1 0 10H16M19 16l-4 4 4 4" fill="none"/>' + L(5, 18, 30, 1) + L(27, 18, 30, 1)) },
+      nav: { surah: '<span class="th-ar" lang="ar">سورة</span>', juz: '<span class="th-ar" lang="ar">جزء</span>' },
+      script: { uthmani: '<span class="th-ar" lang="ar" style="font-family:UthmanicHafs,\'Amiri Quran\',serif">بِسْمِ ٱللَّهِ</span>',
+        indopak: '<span class="th-ar" lang="ar" style="font-family:IndoPakNastaleeq,\'Amiri Quran\',serif">بِسْمِ ٱللَّهِ</span>',
+        naskh: '<span class="th-ar" lang="ar" style="font-family:\'Amiri Quran\',serif">بِسْمِ ٱللَّهِ</span>' } };
+    Object.keys(T).forEach(function (k) { document.querySelectorAll('#settings .seg[data-set="' + k + '"] button').forEach(function (b) {
+      var t = T[k][b.getAttribute('data-v')]; if (t) { b.insertAdjacentHTML('afterbegin', '<span class="th">' + t + '</span>'); b.classList.add('has-th'); } }); });
+  })();
   function legend() { return S.tajweed && S.legend && document.body.dataset.tj === '1' ? '<div class="tj-legend">' + LEG.map(function (l) { return '<span class="tj-' + l[0] + '">' + l[1] + '</span>'; }).join('') + '</div>' : ''; }
   function renderPage() {
     var st = idx.page[P - 1], en = idx.page[P] || null, segs = [];

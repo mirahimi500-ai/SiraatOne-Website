@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261104g">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261104h">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -140,6 +140,7 @@
         </div>
         <div class="mpanes">
           <section data-pane="reading">
+            <div class="pv" aria-label="Live preview"></div>
             <h3>Reading mode</h3>
             <div class="seg" data-set="mode"><button data-v="clean">Clean Mushaf</button><button data-v="plus">Mushaf+</button><button data-v="verse">Verse List</button></div>
             <p class="hint">Clean Mushaf: Arabic only · Mushaf+: word-by-word + translation · Verse List: Arabic + translation</p>
@@ -154,6 +155,7 @@
             <p class="hint">Options that do not apply to the selected reading mode are greyed out.</p>
           </section>
           <section data-pane="text" hidden>
+            <div class="pv" aria-label="Live preview"></div>
             <h3>Quran font</h3>
             <div class="seg" data-set="script"><button data-v="uthmani">Uthmani</button><button data-v="indopak">IndoPak</button><button data-v="naskh">Naskh</button></div>
             <label class="tg">Tajweed colouring<input type="checkbox" data-set="tajweed"></label>
@@ -173,6 +175,7 @@
             <label class="sl">Side margins <b data-out="pad"></b><input type="range" min="0" max="240" step="8" data-set="pad"></label>
           </section>
           <section data-pane="look" hidden>
+            <div class="pv" aria-label="Live preview"></div>
             <label class="tg">Show Surah title header<input type="checkbox" data-set="header"></label>
             <label class="tg">Show Surah meaning<input type="checkbox" data-set="meaning"></label>
             <label class="tg">Show title decoration<input type="checkbox" data-set="deco"></label>
@@ -218,9 +221,9 @@
   </div>
 </main>
 
-<script src="../assets/js/site.js?v=20261104g" defer></script>
-<script src="../assets/js/lib.js?v=20261104g" defer></script>
-<script src="../assets/js/tajweed.js?v=20261104g" defer></script>
-<script src="../assets/js/reader.js?v=20261104g" defer></script>
+<script src="../assets/js/site.js?v=20261104h" defer></script>
+<script src="../assets/js/lib.js?v=20261104h" defer></script>
+<script src="../assets/js/tajweed.js?v=20261104h" defer></script>
+<script src="../assets/js/reader.js?v=20261104h" defer></script>
 </body>
 </html>
