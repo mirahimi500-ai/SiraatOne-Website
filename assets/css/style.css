@@ -636,3 +636,27 @@ body.has-tabbar{padding-bottom:72px}
 .tile{position:relative}
 .lib-add{margin-top:.4rem;border:1px solid var(--brand);background:none;color:var(--brand);border-radius:999px;padding:3px 12px;font:inherit;font-size:.78rem;font-weight:600;cursor:pointer}
 .lib-add[aria-pressed=true]{background:var(--brand);color:var(--brand-ink)}
+/* Tasbih v2 */
+.tasbih{text-align:center;max-width:720px}
+.tb-top{display:flex;align-items:center;justify-content:space-between;position:relative;margin:.4rem 0 .6rem}.tb-top h1{margin:0;font-size:1.4rem}
+.tb-pop{display:none;position:absolute;right:0;top:48px;z-index:20;width:min(320px,92vw);flex-direction:column;gap:.6rem;padding:14px;border-radius:14px;background:var(--surface);border:1px solid var(--border);box-shadow:0 10px 30px rgba(0,0,0,.18);text-align:left}
+.tb-pop.open{display:flex}.tb-pop label{display:flex;align-items:center;gap:.5rem}.tb-pop select{width:100%}
+.tb-manage{display:flex;flex-wrap:wrap;gap:6px}.tb-manage [hidden]{display:none}
+.tb-chips{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:none;scroll-snap-type:x proximity}.tb-chips::-webkit-scrollbar{display:none}
+.tb-chip{flex:0 0 auto;scroll-snap-align:center;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 14px;border-radius:14px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;font:inherit;max-width:220px}
+.tb-chip span{font-size:1.05rem;white-space:nowrap}.tb-chip span[lang=ar]{font-family:"UthmanicHafs","Amiri Quran",serif;font-size:1.2rem}.tb-chip small{font-size:.7rem;color:var(--muted)}
+.tb-chip[aria-pressed=true]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}.tb-chip[aria-pressed=true] small{color:inherit;opacity:.85}
+.tb-ar{font-family:"UthmanicHafs","Amiri Quran",serif;font-size:clamp(1.6rem,6vw,2.4rem);line-height:1.8;margin:.6rem 0 0}.tb-ar[hidden]{display:none}
+.tb-name{color:var(--muted);margin:.1rem 0 .8rem}
+.tb-ring{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;width:min(72vw,280px);aspect-ratio:1;margin:0 auto;border-radius:50%;border:0;background:color-mix(in srgb,var(--brand) 7%,var(--surface));color:var(--text);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;box-shadow:0 6px 24px rgba(0,0,0,.08)}
+.tb-ring svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.tb-track{fill:none;stroke:color-mix(in srgb,var(--muted) 22%,transparent);stroke-width:6}
+.tb-prog{fill:none;stroke:var(--brand);stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .25s ease-out}
+.tb-ring span{position:relative;font-size:clamp(3rem,13vw,4.6rem);font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.tb-ring small{position:relative;color:var(--muted);margin-top:.4rem;font-size:.85rem}
+.tb-ring.pulse{animation:tbp .16s ease-out}.tb-ring.hit{animation:tbh .5s ease-out}
+@keyframes tbp{50%{transform:scale(.965)}}
+@keyframes tbh{30%{transform:scale(1.05);box-shadow:0 0 0 10px color-mix(in srgb,var(--brand) 25%,transparent)}}
+.rm .tb-ring{animation:none!important}.rm .tb-prog{transition:none}
+.tb-row{display:flex;gap:10px;justify-content:center;margin-top:16px}
+.tb-src{font-size:.82rem;color:var(--muted);margin-top:12px}.tb-stats{color:var(--muted)}.tb-stats[hidden]{display:none}.tb-hint{font-size:.78rem}

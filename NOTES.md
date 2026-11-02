@@ -145,3 +145,4 @@ Removed footer + Quran-page source line from all pages; Privacy and Terms & Cred
 Q2: Quran index surah options in ☰ menu + Makki/Madani filter, order, ayah count/place/Arabic toggles. PASS headless. Version 20261102f.
 N1 (2026-11-01): names99.json per user: removed Allah from #1, added Al-Ahad (Quran 112:1) after Al-Wahid; 99 names Ar-Rahman..As-Sabur; enumeration note updated. Website only - app file unchanged.
 QA2: Quick access remove fixed ([hidden] overridden by .tile display); re-add only from App Library (+ Home / ✓ Home, same so.qa list). PASS headless. Version 20261102n.
+TB2 (2026-11-02): Tasbih rebuilt: Back, settings (Target, Vibrate, Sound, Confirm, Stats, own counters), app's 8 sourced dhikr copied unchanged from tasbih_dhikr_catalog.dart with sunnah.com links, progress ring, pointerdown instant tap, pulse/target animation. Old counters migrated (so.tb -> so.tb2). PASS headless. Version 20261102o.

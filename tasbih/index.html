@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261102n">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261102o">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -33,26 +33,35 @@
   </div>
 </header>
 
-<main id="main" class="wrap tool">
-  <header class="tool-head"><h1>Tasbih</h1><p class="sub">Tap the circle or press Space. Saved in this browser only.</p></header>
-  <div class="tb-profiles" id="tb-prof"></div>
-  <button type="button" class="tb-ring" id="tb-tap" aria-label="Count"><span id="tb-n">0</span><small id="tb-goal"></small></button>
-  <div class="tb-row">
-    <label>Target <select id="tb-target"><option value="0">None</option><option>33</option><option>34</option><option>99</option><option>100</option><option value="c">Custom…</option></select></label>
-    <button type="button" class="btn btn-ghost sm" id="tb-undo">−1</button>
-    <button type="button" class="btn btn-ghost sm" id="tb-reset">Reset</button>
+<main id="main" class="wrap tool tasbih">
+  <div class="tb-top">
+    <a class="btn btn-ghost sm" href="../" id="tb-back">← Back</a>
+    <h1>Tasbih</h1>
+    <button type="button" class="icon-btn" id="tb-menu" aria-label="Tasbih settings" aria-expanded="false"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96a7.03 7.03 0 0 0-1.62-.94l-.36-2.54a.48.48 0 0 0-.48-.41h-3.84a.48.48 0 0 0-.48.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 0 0-.59.22L2.74 8.87a.48.48 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.48.48 0 0 0-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/></svg></button>
+    <div class="tb-pop" id="tb-pop">
+      <label class="pick">Target<select id="tb-target"><option value="0">None</option><option>33</option><option>34</option><option>99</option><option>100</option><option value="c">Custom…</option></select></label>
+      <label><input type="checkbox" id="tb-vib"> Vibrate (phones)</label>
+      <label><input type="checkbox" id="tb-snd"> Sound at target</label>
+      <label><input type="checkbox" id="tb-conf"> Confirm before reset</label>
+      <label><input type="checkbox" id="tb-stats"> Show statistics</label>
+      <div class="tb-manage"><button type="button" class="btn btn-ghost sm" id="tb-add">+ New counter</button><button type="button" class="btn btn-ghost sm" id="tb-ren">Rename</button><button type="button" class="btn btn-ghost sm" id="tb-del">Delete</button></div>
+    </div>
   </div>
-  <div class="tb-opts">
-    <label><input type="checkbox" id="tb-vib"> Vibrate (phones)</label>
-    <label><input type="checkbox" id="tb-snd"> Sound at target</label>
-    <label><input type="checkbox" id="tb-conf"> Confirm before reset</label>
-    <label><input type="checkbox" id="tb-stats"> Show statistics</label>
-  </div>
+  <div class="tb-chips" id="tb-chips"></div>
+  <p class="tb-ar" id="tb-ar" lang="ar" dir="rtl"></p>
+  <p class="tb-name" id="tb-name"></p>
+  <button type="button" class="tb-ring" id="tb-tap" aria-label="Count">
+    <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="tb-track" cx="60" cy="60" r="54"/><circle class="tb-prog" id="tb-prog" cx="60" cy="60" r="54"/></svg>
+    <span id="tb-n">0</span><small id="tb-goal"></small>
+  </button>
+  <div class="tb-row"><button type="button" class="btn btn-ghost sm" id="tb-undo">−1</button><button type="button" class="btn btn-ghost sm" id="tb-reset">Reset</button></div>
+  <p class="tb-src" id="tb-src"></p>
   <p class="tb-stats" id="tb-st"></p>
+  <p class="hint tb-hint">Tap the circle, or press Space / Enter. Saved in this browser only. A target is a personal goal, not a prescribed number for every phrase.</p>
 </main>
 
-<script src="../assets/js/site.js?v=20261102n" defer></script>
-<script src="../assets/js/lib.js?v=20261102n" defer></script>
-<script src="../assets/js/tasbih.js?v=20261102n" defer></script>
+<script src="../assets/js/site.js?v=20261102o" defer></script>
+<script src="../assets/js/lib.js?v=20261102o" defer></script>
+<script src="../assets/js/tasbih.js?v=20261102o" defer></script>
 </body>
 </html>
