@@ -988,3 +988,7 @@ body[data-script="indopak"] .flow,body[data-script="indopak"] .card-a .ar{line-h
 .tf-inl p{margin:0;white-space:pre-line;font-size:var(--tr-size);line-height:1.7;color:var(--text);background:none}
 .tf-inl p[dir=rtl]{text-align:right;font-family:"Segoe UI","Noto Naskh Arabic","Noto Sans Arabic",Tahoma,"Geeza Pro",Arial,sans-serif}
 .tf-inl:empty{display:none}
+/* COL1: Columns view: Arabic (or words) on the right; translation and tafsir stacked on the left */
+@media (min-width:860px){.cards.tl-columns .card-a>.ar,.cards.tl-columns .card-a>.words{grid-column:2;grid-row:2 / span 2;margin-top:8px}
+.cards.tl-columns .card-a>.tr{grid-column:1;grid-row:2;align-self:start}
+.cards.tl-columns .card-a>.tf-inl{grid-column:1;grid-row:3;align-self:start}}
