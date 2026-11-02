@@ -400,13 +400,13 @@
   // ---------- behavior: hide toolbar, keep awake, auto scroll ----------
   var lastY = scrollY;
   addEventListener('scroll', function () {
-    var y = scrollY, dy = y - lastY; if (Math.abs(dy) < 6) return; // ignore tiny moves: no flicker
+    var y = scrollY, dy = y - lastY; if (asRun) { lastY = y; return; } if (Math.abs(dy) < 6) return; // auto scroll handles the bar itself; ignore tiny moves: no flicker
     if (S.hide) $('bar').classList.toggle('hid', dy > 0 && y > 120); else $('bar').classList.remove('hid'); lastY = y;
   }, { passive: true });
   // tap an empty part of the page to show / hide the toolbar (like the app); taps on ayahs and words keep their own actions
   document.addEventListener('click', function (e) {
-    if (e.target.closest('.aya, .w, .more, .card-a, a, button, input, select, label, #bar, #settings, #sheet, .modal, #abar, .site-header')) return;
-    $('bar').classList.toggle('hid');
+    if (!document.contains(e.target) || e.target.closest('.aya, .w, .more, .card-a, a, button, input, select, label, #bar, #settings, #sheet, .modal, #abar, .site-header')) return;
+    $('bar').classList.toggle('hid'); if (asRun) asHide();
   });
   var lock = null;
   function wake() {
@@ -418,7 +418,9 @@
   // Speed 1-20 = 6-120 pixels per second, time based (same speed on every screen), smooth sub-pixel steps.
   // Bottom-bar ↓ opens the control bar: play/pause, slower, faster, speed, time left, stop. Scrolling by hand pauses
   // (and resumes after 3 s if chosen). At the end it continues to the next surah / page if chosen. Screen kept awake while running.
-  var raf = null, acc = 0, asRun = false, last = 0, resumeT = null, asLock = null, endT = null;
+  var raf = null, acc = 0, asRun = false, last = 0, resumeT = null, asLock = null, endT = null, hideT = null;
+  // while running, the toolbar slides away after 3 s; tap the page to bring it back (it stays while you use it)
+  function asHide() { clearTimeout(hideT); if (asRun && !$('bar').classList.contains('hid')) hideT = setTimeout(function () { if (asRun) $('bar').classList.add('hid'); }, 3000); }
   function pps() { return 6 + (Math.max(1, Math.min(20, +S.speed || 5)) - 1) * 6; }
   function atEnd() { return innerHeight + scrollY >= document.documentElement.scrollHeight - 4; }
   function eta() {
@@ -429,7 +431,6 @@
   function asUi() {
     var bar = $('asbar'); bar.hidden = !S.auto; document.body.classList.toggle('as-on', !!S.auto); bar.classList.toggle('run', asRun);
     $('as-spd').textContent = S.speed; $('as-eta').textContent = asRun && S.asEta ? (eta() || '–') : 'speed';
-    $('as-play').innerHTML = asRun ? '<svg viewBox="0 0 24 24" class="fillico"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>' : '<svg viewBox="0 0 24 24" class="fillico"><path d="M8 5.5v13l11-6.5z"/></svg>';
     $('as-play').setAttribute('aria-label', asRun ? 'Pause' : 'Play'); $('as-slow').disabled = S.speed <= 1; $('as-fast').disabled = S.speed >= 20;
   }
   function holdAwake(on) { if (on && !asLock && navigator.wakeLock) navigator.wakeLock.request('screen').then(function (l) { asLock = l; }).catch(function () {}); if (!on && asLock) { asLock.release(); asLock = null; } }
@@ -451,11 +452,16 @@
     if ((!S.auto || !asRun) && raf) { cancelAnimationFrame(raf); raf = null; holdAwake(false); }
     asUi();
   }
-  function asPlay(on) { clearTimeout(resumeT); clearTimeout(endT); asRun = on === undefined ? !asRun : on; if (asRun && atEnd()) scrollTo(0, 0); autoScroll(); }
+  function asPlay(on) { clearTimeout(resumeT); clearTimeout(endT); clearTimeout(hideT); asRun = on === undefined ? !asRun : on; if (asRun && atEnd()) scrollTo(0, 0); if (!asRun) $('bar').classList.remove('hid'); autoScroll(); asHide(); }
   function asSpeed(d) { S.speed = Math.max(1, Math.min(20, (+S.speed || 5) + d)); save(); asUi(); var o = document.querySelector('[data-out="speed"]'); if (o) o.textContent = S.speed; var r = document.querySelector('[data-set="speed"]'); if (r) r.value = S.speed; }
   $('as-play').onclick = function () { asPlay(); };
-  $('as-slow').onclick = function () { asSpeed(-1); }; $('as-fast').onclick = function () { asSpeed(1); };
-  ['wheel', 'touchstart', 'keydown'].forEach(function (ev) { addEventListener(ev, function (e) {
+  $('as-slow').onclick = function () { asSpeed(-1); asHide(); }; $('as-fast').onclick = function () { asSpeed(1); asHide(); };
+  $('as-close').onclick = function () { asPlay(false); S.auto = false; save(); apply(false); }; // turns the whole feature off (same as the setting)
+  // while it runs and the toolbar is away, the first tap anywhere only brings the toolbar back (does not open an ayah)
+  document.addEventListener('click', function (e) { if (!asRun || !$('bar').classList.contains('hid') || !document.contains(e.target) || e.target.closest('#bar, #settings, #sheet, .modal, .site-header')) return;
+    e.stopPropagation(); e.preventDefault(); $('bar').classList.remove('hid'); asHide(); }, true);
+  $('bar').addEventListener('pointerdown', function () { clearTimeout(hideT); }); $('bar').addEventListener('pointerup', asHide);
+  ['wheel', 'touchmove', 'keydown'].forEach(function (ev) { addEventListener(ev, function (e) {
     if (ev === 'keydown') { if (!S.auto || /INPUT|SELECT|TEXTAREA/.test(e.target.tagName) || !$('settings').hidden) return;
       if (e.key === 's' || e.key === 'S') { asPlay(); e.preventDefault(); return; }
       if (e.key === '+' || e.key === '=') { asSpeed(1); return; } if (e.key === '-') { asSpeed(-1); return; }

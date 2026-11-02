@@ -907,5 +907,8 @@ html{scroll-behavior:auto}
 .as-ctl[hidden]{display:none}
 .as-ctl .as-b{width:34px;height:34px;font-size:1.15rem}.as-ctl .as-b.main{width:38px;height:38px}.as-ctl .as-b svg{width:18px;height:18px}
 .as-ctl .as-info{min-width:38px}.as-ctl.run .as-b.main{box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 30%,transparent)}
-@media(max-width:520px){body.as-on .bb-mid #prev,body.as-on .bb-mid #next{display:none}.as-ctl .as-info small{display:none}}
+/* auto scroll: its own row on top of the toolbar, so the sura name never moves; hides with the toolbar */
+.bottombar{flex-wrap:wrap}.as-ctl{order:-1;flex:0 0 100%;justify-content:center;gap:10px;margin:0 0 6px;padding:4px 6px;border-radius:14px}
+.as-ctl .i-pause,.as-ctl.run .i-play{display:none}.as-ctl.run .i-pause{display:block}
+.as-ctl .as-b.as-x{border-color:transparent;background:transparent;color:var(--muted);margin-left:6px}.as-ctl .as-b.as-x svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
 .rm .bottombar,.rm .site-header{transition:none}
