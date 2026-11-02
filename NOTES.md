@@ -195,3 +195,4 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - TJ-NASKH2: Naskh/IndoPak Tajweed: a coloured part never starts with a bare vowel mark; its letter joins the same colour (sura 2 real data: 0 parts starting with a mark, no U+0672/U+066E left).
 - VL1: Verse List: word by word works (words + meanings when on); inline tafsir always open, plain text under translation with one thin line (no box/colour/arrow).
 - COL1: Verse List Columns: Arabic/words right; translation then tafsir on the left (with or without word by word).
+- SET2: reader Settings regrouped (Layout / Text / Translation / Audio / More); Surah title = one choice (frame/plain/hidden) replacing 3 toggles; meaning line removed (in ⓘ + info pill); fixes: tafsir toggle live, Tajweed key shown on page, Juz/Surah nav greyed in Page by Page, tap-word + wbw language greying, clearer labels.

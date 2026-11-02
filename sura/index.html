@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261104s">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261104t">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -132,85 +132,83 @@
       <div class="modal-top"><div><b>Quran Settings</b><small>Customize your reading</small></div><button type="button" class="x" data-close aria-label="Close">×</button></div>
       <div class="modal-body">
         <div class="mtabs" role="tablist">
-          <button type="button" data-p="reading" aria-selected="true">Reading<small>Layout &amp; content</small></button>
-          <button type="button" data-p="text">Text<small>Sizes</small></button>
-          <button type="button" data-p="look">Appearance<small>Display &amp; theme</small></button>
+          <button type="button" data-p="reading" aria-selected="true">Layout<small>Mode &amp; page</small></button>
+          <button type="button" data-p="text">Text<small>Font &amp; sizes</small></button>
+          <button type="button" data-p="content">Translation<small>Words &amp; tafsir</small></button>
           <button type="button" data-p="audio">Audio<small>Recitation</small></button>
-          <button type="button" data-p="behave">Behavior<small>Navigation &amp; controls</small></button>
+          <button type="button" data-p="behave">More<small>Controls &amp; backup</small></button>
         </div>
         <div class="mpanes">
           <section data-pane="reading">
             <h3>Reading mode</h3>
             <div class="seg" data-set="mode"><button data-v="clean">Clean Mushaf</button><button data-v="plus">Mushaf+</button><button data-v="verse">Verse List</button></div>
-            <p class="hint">Clean Mushaf: Arabic only · Mushaf+: word-by-word + translation · Verse List: Arabic + translation</p>
-            <h3>Mushaf layout (Clean Mushaf)</h3>
-            <div class="seg" data-set="paging"><button data-v="page">Page by Page</button><button data-v="scroll">No Paging</button></div>
-            <h3>Translation layout</h3>
-            <div class="seg" data-set="tlay"><button data-v="columns">Columns</button><button data-v="ayah">Ayah by Ayah</button><button data-v="list">Verse List</button></div>
-            <label class="tg">Show Arabic with translation<input type="checkbox" data-set="showAr"></label>
-            <label class="tg">Show ayah translation<input type="checkbox" data-set="showTr"></label>
-            <label class="tg">Show tafsir under each ayah (Mushaf+, Verse List)<input type="checkbox" data-set="tfInline"></label>
-            <h3>Word by word</h3>
-            <label class="tg">Word-by-word meanings<input type="checkbox" data-set="showWbw"></label>
-            <label class="sl" id="wbw-lang-row">Word-by-word language<select id="wbw-lang"></select></label>
-            <p class="hint">Shown under each word in Mushaf+ and Verse List.</p>
-            <p class="hint">Options that do not apply to the selected reading mode are greyed out.</p>
+            <p class="hint">Clean Mushaf: Arabic only · Mushaf+: words with meanings · Verse List: ayah with translation</p>
+            <h3>Clean Mushaf pages</h3>
+            <div class="seg" data-set="paging"><button data-v="scroll">Continuous</button><button data-v="page">Page by Page</button></div>
+            <h3>Verse List layout</h3>
+            <div class="seg" data-set="tlay"><button data-v="ayah">Cards</button><button data-v="columns">Side by side</button><button data-v="list">Plain list</button></div>
+            <label class="tg">Show Arabic<input type="checkbox" data-set="showAr"></label>
+            <label class="tg">Show translation<input type="checkbox" data-set="showTr"></label>
+            <h3>Surah title</h3>
+            <div class="seg" data-set="title"><button data-v="frame">Decorated frame</button><button data-v="plain">Plain</button><button data-v="off">Hidden</button></div>
+            <h3>Ayah numbers</h3>
+            <label class="tg">Show ayah numbers<input type="checkbox" data-set="nums"></label>
+            <label class="tg">Number on the right side (Mushaf+, Verse List)<input type="checkbox" data-set="numsRight"></label>
+            <h3>Page background</h3>
+            <div class="seg bgs" data-set="bg"><button data-v="app" style="--sw:var(--bg0,#F7F7F4)"><i></i>App Theme</button><button data-v="classic" style="--sw:#F6F0E2"><i></i>Classic Paper</button><button data-v="ivory" style="--sw:#F3EFDE"><i></i>Geometric Ivory</button><button data-v="fiber" style="--sw:#ECE0C5"><i></i>Natural Fiber</button><button data-v="green" style="--sw:#F0F2E4"><i></i>Subtle Green</button><button data-v="sand" style="--sw:#E5CC9F"><i></i>Warm Sand</button><button data-v="charcoal" style="--sw:#CCB29B"><i></i>Night Charcoal</button><button data-v="blue" style="--sw:#121A2A"><i></i>Deep Blue</button><button data-v="forest" style="--sw:#14261F"><i></i>Forest Dark</button><button data-v="warmdark" style="--sw:#2A201A"><i></i>Warm Dark</button><button data-v="royal" style="--sw:#1C182A"><i></i>Royal Night</button></div>
           </section>
           <section data-pane="text" hidden>
             <h3>Quran font</h3>
             <div class="seg" data-set="script"><button data-v="uthmani">Uthmani</button><button data-v="indopak">IndoPak</button><button data-v="naskh">Naskh</button></div>
-            <label class="tg">Tajweed colouring<input type="checkbox" data-set="tajweed"></label>
+            <label class="tg">Tajweed colours<input type="checkbox" data-set="tajweed"></label>
             <label class="tg">Show Tajweed colour key<input type="checkbox" data-set="legend"></label>
-            <p class="hint">Uthmani: KFGQPC Hafs (Madinah style) · IndoPak: Nastaleeq · Naskh: Amiri Quran · Tajweed shows Quran Foundation's Tajweed text in your selected font (same as the app)</p>
+            <h3>Sizes</h3>
+            <label class="sl">Quran text <b data-out="ar"></b><input type="range" min="1.3" max="3.4" step="0.1" data-set="ar"></label>
+            <label class="sl">Translation text <b data-out="tr"></b><input type="range" min="0.85" max="1.5" step="0.05" data-set="tr"></label>
+            <label class="sl">Line height <b data-out="lh"></b><input type="range" min="1.6" max="3.2" step="0.1" data-set="lh"></label>
+            <label class="sl">Side margins <b data-out="pad"></b><input type="range" min="0" max="240" step="8" data-set="pad"></label>
+          </section>
+          <section data-pane="content" hidden>
             <div id="tr-box" hidden>
               <h3>Translation</h3>
               <label class="pick">Language<select id="tr-lang"></select></label>
               <label class="pick">Translator<select id="tr-id"></select></label>
-              <p class="hint">All translations: Quran Foundation (api.quran.com). Each translation belongs to its translator or publisher.</p>
+              <p class="hint">Source: Quran Foundation. Each translation belongs to its translator.</p>
             </div>
+            <h3>Word by word</h3>
+            <label class="tg">Word-by-word meanings<input type="checkbox" data-set="showWbw"></label>
+            <label class="sl" id="wbw-lang-row">Language<select id="wbw-lang"></select></label>
+            <label class="sl">Space under each word <b data-out="wgap"></b><input type="range" min="0" max="30" step="1" data-set="wgap"></label>
             <h3>Tafsir</h3>
-            <label class="pick">Tafsir shown when you tap an ayah → Tafsir<select id="set-tf"><option value="">Loading…</option></select></label>
-            <label class="sl">Quran text size <b data-out="ar"></b><input type="range" min="1.3" max="3.4" step="0.1" data-set="ar"></label>
-            <label class="sl">Translation text size <b data-out="tr"></b><input type="range" min="0.85" max="1.5" step="0.05" data-set="tr"></label>
-            <label class="sl">Line height <b data-out="lh"></b><input type="range" min="1.6" max="3.2" step="0.1" data-set="lh"></label>
-            <label class="sl">Word meaning spacing (Mushaf+) <b data-out="wgap"></b><input type="range" min="0" max="30" step="1" data-set="wgap"></label>
-            <label class="sl">Side margins <b data-out="pad"></b><input type="range" min="0" max="240" step="8" data-set="pad"></label>
-          </section>
-          <section data-pane="look" hidden>
-            <label class="tg">Show Surah title header<input type="checkbox" data-set="header"></label>
-            <label class="tg">Show Surah meaning<input type="checkbox" data-set="meaning"></label>
-            <label class="tg">Show title decoration<input type="checkbox" data-set="deco"></label>
-            <label class="tg">Show ayah numbers<input type="checkbox" data-set="nums"></label>
-            <label class="tg">Ayah numbers on the right<input type="checkbox" data-set="numsRight"></label>
-            <h3>Quran page background</h3>
-            <div class="seg bgs" data-set="bg"><button data-v="app" style="--sw:var(--bg0,#F7F7F4)"><i></i>App Theme</button><button data-v="classic" style="--sw:#F6F0E2"><i></i>Classic Paper</button><button data-v="ivory" style="--sw:#F3EFDE"><i></i>Geometric Ivory</button><button data-v="fiber" style="--sw:#ECE0C5"><i></i>Natural Fiber</button><button data-v="green" style="--sw:#F0F2E4"><i></i>Subtle Green</button><button data-v="sand" style="--sw:#E5CC9F"><i></i>Warm Sand</button><button data-v="charcoal" style="--sw:#CCB29B"><i></i>Night Charcoal</button><button data-v="blue" style="--sw:#121A2A"><i></i>Deep Blue</button><button data-v="forest" style="--sw:#14261F"><i></i>Forest Dark</button><button data-v="warmdark" style="--sw:#2A201A"><i></i>Warm Dark</button><button data-v="royal" style="--sw:#1C182A"><i></i>Royal Night</button></div>
+            <label class="tg">Show tafsir under each ayah<input type="checkbox" data-set="tfInline"></label>
+            <label class="pick">Tafsir<select id="set-tf"><option value="">Loading…</option></select></label>
+            <p class="hint">Word by word and tafsir show in Mushaf+ and Verse List. The same tafsir opens when you tap an ayah.</p>
           </section>
           <section data-pane="audio" hidden>
             <h3>Reciter</h3>
             <div class="seg" data-set="reciter"><button data-v="Alafasy">Mishary Rashid Alafasy</button><button data-v="Husary">Mahmoud Khalil Al-Hussary</button></div>
-            <p class="hint">Ayah by ayah (highlights the ayah being recited).</p>
             <div id="rec-box" hidden><label class="pick">More reciters — full surah (MP3Quran.net)<select id="rec-full"><option value="">Choose a reciter…</option></select></label></div>
-            <h3>Repeat</h3>
-            <div class="seg" data-set="repeat"><button data-v="off">Off</button><button data-v="ayah">Ayah</button><button data-v="surah">Surah</button></div>
-            <label class="tg">Continue to next surah<input type="checkbox" data-set="autoNext"></label>
-            <label class="tg">Follow the recitation (scroll + highlight)<input type="checkbox" data-set="follow"></label>
-            <label class="tg">Tap a word to hear it (Mushaf+)<input type="checkbox" data-set="tapWord"></label>
+            <h3>Playback</h3>
+            <div class="seg" data-set="repeat"><button data-v="off">Repeat off</button><button data-v="ayah">Repeat ayah</button><button data-v="surah">Repeat surah</button></div>
             <label class="sl">Speed <b data-out="rate"></b><input type="range" min="0.5" max="2" step="0.25" data-set="rate"></label>
             <label class="sl">Volume <b data-out="vol"></b><input type="range" min="0" max="1" step="0.05" data-set="vol"></label>
-            <p class="hint">Audio streams from Quran Foundation recitation sources only when you press play.</p>
+            <label class="tg">Follow the recitation (scroll + highlight)<input type="checkbox" data-set="follow"></label>
+            <label class="tg">Continue to the next surah<input type="checkbox" data-set="autoNext"></label>
+            <label class="tg">Tap a word to hear it (word by word)<input type="checkbox" data-set="tapWord"></label>
           </section>
           <section data-pane="behave" hidden>
-            <h3>Next / previous buttons</h3>
-            <div class="seg" data-set="nav"><button data-v="surah">Surah</button><button data-v="juz">Juz</button></div>
+            <h3>Navigation</h3>
+            <div class="seg" data-set="nav"><button data-v="surah">Next / previous by Surah</button><button data-v="juz">by Juz</button></div>
             <label class="tg">Hide toolbar when scrolling<input type="checkbox" data-set="hide"></label>
             <label class="tg">Keep screen awake<input type="checkbox" data-set="awake"></label>
+            <h3>Auto scroll</h3>
             <label class="tg">Auto scroll<input type="checkbox" data-set="auto"></label>
-            <label class="sl">Auto scroll speed <b data-out="speed"></b><input type="range" min="1" max="20" step="1" data-set="speed"></label>
+            <label class="sl">Speed <b data-out="speed"></b><input type="range" min="1" max="20" step="1" data-set="speed"></label>
             <label class="tg">Continue to the next surah / page<input type="checkbox" data-set="asNext"></label>
             <label class="tg">Resume after scrolling by hand<input type="checkbox" data-set="asResume"></label>
             <label class="tg">Show time left<input type="checkbox" data-set="asEta"></label>
-            <p class="hint">When Auto scroll is on, the bottom toolbar shows − ▶ + and the speed. The toolbar hides while scrolling; tap the page to show it. Keys: S start/pause · − / + speed · Esc stop.</p>
-            <h3>Backup</h3>
+            <p class="hint">Controls appear in the bottom toolbar. Keys: S start/pause · − / + speed · Esc stop.</p>
+            <h3>Backup &amp; reset</h3>
             <p class="hint">Save your bookmarks, favorites, highlights, notes, tasbih, settings and other data from this browser to a file, or restore them from a file.</p>
             <div class="bk-row"><button type="button" class="btn btn-ghost" id="bk-export">Export backup</button><label class="btn btn-ghost" for="bk-file">Import backup</label><input type="file" id="bk-file" accept=".json,application/json" hidden></div>
             <p class="hint" id="bk-msg" role="status"></p>
@@ -222,9 +220,9 @@
   </div>
 </main>
 
-<script src="../assets/js/site.js?v=20261104s" defer></script>
-<script src="../assets/js/lib.js?v=20261104s" defer></script>
-<script src="../assets/js/tajweed.js?v=20261104s" defer></script>
-<script src="../assets/js/reader.js?v=20261104s" defer></script>
+<script src="../assets/js/site.js?v=20261104t" defer></script>
+<script src="../assets/js/lib.js?v=20261104t" defer></script>
+<script src="../assets/js/tajweed.js?v=20261104t" defer></script>
+<script src="../assets/js/reader.js?v=20261104t" defer></script>
 </body>
 </html>

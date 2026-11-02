@@ -157,6 +157,7 @@
 
   // ---------- apply settings ----------
   function apply(rerender) {
+    S.title = !S.header ? 'off' : S.deco ? 'frame' : 'plain'; S.meaning = false;
     root.style.setProperty('--ar-size', S.ar + 'rem'); root.style.setProperty('--tr-size', S.tr + 'rem'); root.style.setProperty('--lh', S.lh); root.style.setProperty('--pad', S.pad + 'px'); root.style.setProperty('--wgap', (S.wgap === undefined ? 8 : S.wgap) + 'px');
     document.body.classList.toggle('nums-right', !!S.numsRight); document.body.classList.toggle('no-wbw', !S.showWbw);
     document.body.dataset.bg = S.bg;
@@ -193,8 +194,10 @@
   function deps() {
     var m = S.mode, on = {
       paging: m === 'clean', tlay: m === 'verse', showAr: m === 'verse', showTr: m === 'verse', tfInline: m !== 'clean',
-      wgap: m !== 'clean' && S.showWbw, showWbw: m !== 'clean', tapWord: m === 'plus', numsRight: m !== 'clean', tajweed: true, legend: !!S.tajweed,
-      speed: S.auto, asNext: S.auto, asResume: S.auto, asEta: S.auto, meaning: S.header, deco: S.header };
+      wgap: m !== 'clean' && S.showWbw, showWbw: m !== 'clean', tapWord: m === 'plus' || (m === 'verse' && S.showWbw), numsRight: m !== 'clean' && S.nums,
+      tajweed: true, legend: !!S.tajweed, nav: !(m === 'clean' && S.paging === 'page'),
+      speed: S.auto, asNext: S.auto, asResume: S.auto, asEta: S.auto };
+    var wl = $('wbw-lang'); if (wl) { wl.disabled = !on.wgap; wl.closest('.sl').classList.toggle('dis', !on.wgap); }
     Object.keys(on).forEach(function (k) {
       document.querySelectorAll('#settings [data-set="' + k + '"]').forEach(function (el) {
         var box = el.closest('.tg, .sl, .pick') || el, h = box.previousElementSibling;
@@ -248,7 +251,7 @@
         else if (jzStart(s, g[1])) h += mpill(s, g[1]);
         h += flowHtml(s, d.ar, g[1], g[2], function (a) { return 'a' + s + '_' + a; });
       });
-      $('body').innerHTML = '<div class="mpage">' + h + '<div class="pg-num">' + arNum(P) + '</div></div>';
+      $('body').innerHTML = '<div class="mpage">' + legend() + h + '<div class="pg-num">' + arNum(P) + '</div></div>';
       $('bb-name').textContent = 'صفحة ' + arNum(P);
       var pr = $('prev'), nx = $('next');
       pr.href = P > 1 ? '?p=' + (P - 1) : '#'; pr.classList.toggle('off', P === 1); pr.title = P > 1 ? 'Page ' + (P - 1) : '';
@@ -285,6 +288,7 @@
       }
       if (S.tfInline && mode !== 'clean') setTimeout(tfFill, 0);
       if (S.mode === 'plus' && wbw === false) h = '<p class="empty">Word-by-word is not available yet. Showing Verse List.</p>' + h;
+      h = legend() + h; // Tajweed colour key at the top of the sura when chosen
       $('body').innerHTML = h;
       var t = parseInt(location.hash.slice(1), 10);
       if (t > 1 && $(String(t))) jumpTo($(String(t))); else scrollTo(0, 0);
@@ -502,7 +506,7 @@
       document.querySelectorAll('.mtabs button').forEach(function (b) { b.setAttribute('aria-selected', b === tab); });
       document.querySelectorAll('[data-pane]').forEach(function (s) { s.hidden = s.getAttribute('data-pane') !== p; }); var mp = document.querySelector('#settings .mpanes'); if (mp) mp.scrollTop = 0; return; }
     var seg = e.target.closest('.seg button');
-    if (seg) { var k = seg.parentNode.getAttribute('data-set'); S[k] = seg.getAttribute('data-v'); save(); if (k === 'reciter' && $('rec-full')) $('rec-full').value = ''; if (route()) return; if (k === 'script') reloadText(); else apply(k === 'mode' || k === 'tlay'); return; }
+    if (seg) { var k = seg.parentNode.getAttribute('data-set'); S[k] = seg.getAttribute('data-v'); if (k === 'title') { S.header = S.title !== 'off'; S.deco = S.title === 'frame'; } save(); if (k === 'reciter' && $('rec-full')) $('rec-full').value = ''; if (route()) return; if (k === 'script') reloadText(); else apply(k === 'mode' || k === 'tlay'); return; }
     if (e.target.id === 'reset') { S = Object.assign({}, DEF); save(); apply(true); }
   });
   $('settings').addEventListener('input', function (e) {
@@ -511,7 +515,7 @@
     if (k === 'tajweed') { reloadText(); return; }
     if (k === 'showWbw') { apply(false); render(); return; } // word by word: Mushaf+ and Verse List
     if (k === 'rate' || k === 'vol') AUD.live();
-    apply(['nums', 'showAr', 'showTr', 'legend'].indexOf(k) > -1);
+    apply(['nums', 'showAr', 'showTr', 'legend', 'tfInline'].indexOf(k) > -1);
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { if (!$('sheet').hidden) closeSheet(); $('settings').hidden = true; } });
 
