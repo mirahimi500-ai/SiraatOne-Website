@@ -738,3 +738,16 @@ body.has-tabbar{padding-bottom:72px}
 .cl-fs{display:flex}
 .cl-hin{display:grid;grid-template-columns:70px 1fr 90px;gap:6px}.cl-conv input,.cl-conv select{width:100%;font:inherit;padding:.5rem;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text)}
 .cl-out{margin:0;min-height:1.2em}.cl-out span{font-family:"Amiri",serif;color:var(--brand)}
+/* readable text in every theme (light, dark, OLED, reader backgrounds) and in every selected state */
+select,input[type=date],input[type=number],input[type=search],input[type=text],textarea{color:var(--text);background-color:var(--surface);border-color:var(--border)}
+option,optgroup{color:var(--text);background-color:var(--surface)}
+.cal2,.cal2 .cl-c,.cal2 .ts-card,.cl-hero{color:var(--text)}
+.cl-c.ev,.cl-c.eid,.cl-c.fri{color:var(--text)}
+.cl-c.sel,.cl-c.sel b,.cl-c.sel small,.cl-c.sel em{color:var(--brand-ink)!important}
+.cl-c.today:not(.sel) b{color:var(--brand)}
+.cl-hd b,.cl-dar,.cl-out span,.cl-title b span{color:var(--link)}
+.cl-up li em{color:var(--link)}
+.ts-chip[aria-pressed=true],.tb-chip[aria-pressed=true]{color:var(--link)}
+.tb-mode button[aria-selected=true],.cl-viewpill button[aria-selected=true],#d-tabs button[aria-selected=true],.duas #d-title{color:var(--brand-ink)}
+.lib-add[aria-pressed=true]{color:var(--brand-ink)}
+.cl-evs a,.cl-src a{color:var(--link)}
