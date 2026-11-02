@@ -63,7 +63,7 @@
   }
 
   // word-by-word languages list (only the ones downloaded)
-  SO.j('../assets/data/wbw-langs.json').then(function (l) { var sel = $('wbw-lang'); if (!sel || !l || l.length < 2) return;
+  SO.j('../assets/data/wbw-langs.json').catch(function () { return [{ code: 'en', name: 'English' }]; }).then(function (l) { var sel = $('wbw-lang'); if (!sel || !l || !l.length) return;
     sel.innerHTML = l.map(function (x) { return '<option value="' + x.code + '">' + esc(x.name) + '</option>'; }).join(''); sel.value = S.wbwLang || 'en'; $('wbw-lang-row').hidden = false;
     sel.onchange = function () { S.wbwLang = this.value; save(); render(); }; }).catch(function () {});
   var RTLW = { ur: 1, fa: 1, ps: 1, ku: 1 };
