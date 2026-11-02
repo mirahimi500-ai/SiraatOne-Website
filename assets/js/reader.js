@@ -348,6 +348,7 @@
   function route() {
     var want = S.mode === 'clean' && S.paging === 'page';
     if (!idx || want === pageMode) return false;
+    try { var tb = document.querySelector('.mtabs [aria-selected=true]'); sessionStorage.setItem('so.reopen', tb ? tb.getAttribute('data-p') : 'reading'); } catch (e) {} // keep Settings open after the page switch
     if (want) { var l = SO.get('so.last', { s: n, a: 1 }); location.href = '?p=' + SO.pos(idx, l.s, l.a).page; }
     else { var st = idx.page[P - 1]; location.href = '?n=' + st[0] + '#' + st[1]; }
     return true;
@@ -534,4 +535,7 @@
   });
   $('qp-q').oninput = qpRender;
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('qpanel').hidden = true; });
+  // reopen Settings (same tab) after switching between page-by-page and scrolling
+  (function () { var t = null; try { t = sessionStorage.getItem('so.reopen'); sessionStorage.removeItem('so.reopen'); } catch (e) {}
+    if (!t) return; $('settings').hidden = false; var b = document.querySelector('.mtabs [data-p="' + t + '"]'); if (b) b.click(); })();
 })();
