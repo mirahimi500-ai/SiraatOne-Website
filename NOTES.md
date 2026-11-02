@@ -191,3 +191,4 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - WBW4: fetch-wbw-langs.ps1 fixed: QF v4 word language param is 'language' (verified ur on 1:2).
 - WBW5: Mushaf+ tajweed words in selected Mushaf font (fixes broken letters); RTL word meanings in system Arabic font, bigger.
 - WBW6: Mushaf+ ayah sign taken from the selected Mushaf text (own number glyph, Mushaf font) instead of ﴿﴾; slider 'Word meaning spacing (Mushaf+)' 0-30px (default 8).
+- TJ-NASKH: Tajweed in Naskh/IndoPak maps source placeholders 1:1 to standard Uthmani letters (U+0672->U+0670, U+066E->U+0649; verified vs sura text 2:2, 2:29) - fixes dotted circles.

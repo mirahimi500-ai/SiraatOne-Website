@@ -30,7 +30,7 @@
     var uth = S.script === 'uthmani', out = '', endTxt = '';
     segs.forEach(function (g) {
       if (g.rule === 'endMarker') { endTxt = g.text.trim(); return; }
-      var t = uth ? g.text.replace(/\u0672/g, '\u0670').replace(/\u06DF/g, '\u06E0') : g.text;
+      var t = tjText(g.text);
       var cls = g.rule && g.rule !== 'unknown' ? g.rule : null;
       out += cls ? '<span class="tj-' + cls + '">' + esc(t) + '</span>' : esc(t);
     });
@@ -38,6 +38,10 @@
     if (mark && endTxt && S.nums) out += ' ' + (S.script === 'naskh' ? '' : '<span class="tj-end">' + esc(endTxt) + '</span>');
     return out;
   }
+  // 1:1 character mapping of the Tajweed source to the selected font. Uthmani (KFGQPC): as the app. Naskh / IndoPak fonts
+  // lack the source's placeholders, so they get the standard Uthmani letters (checked against sura text, e.g. 2:2, 2:29):
+  // U+0672 -> U+0670 (dagger alef), U+066E -> U+0649 (alef maksura before dagger alef).
+  function tjText(t) { return S.script === 'uthmani' ? t.replace(/\u0672/g, '\u0670').replace(/\u06DF/g, '\u06E0') : t.replace(/\u0672/g, '\u0670').replace(/\u066E/g, '\u0649'); }
   function fmt(a, s, i, noMark) {
     var m = tjMarkup(s, i);
     return (m && tjSource(m, !noMark)) || esc(a);
@@ -55,7 +59,7 @@
     var uth = S.script === 'uthmani', out = [], cur = '';
     segs.forEach(function (g) {
       if (g.rule === 'endMarker') return;
-      var cls = g.rule && g.rule !== 'unknown' ? g.rule : null, t = uth ? g.text.replace(/\u0672/g, '\u0670').replace(/\u06DF/g, '\u06E0') : g.text;
+      var cls = g.rule && g.rule !== 'unknown' ? g.rule : null, t = tjText(g.text);
       t.split(/(\s+)/).forEach(function (p) { if (!p) return; if (/^\s+$/.test(p)) { if (cur) { out.push(cur); cur = ''; } return; } cur += cls ? '<span class="tj-' + cls + '">' + esc(p) + '</span>' : esc(p); });
     });
     if (cur) out.push(cur);
