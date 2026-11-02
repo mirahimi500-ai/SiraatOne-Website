@@ -84,3 +84,16 @@
   draw(); setInterval(draw, 1000);
   addEventListener('storage', function (e) { if (e.key === 'so.ploc' || e.key === 'so.pt') { S = PT.settings(); L = SO.get('so.ploc', null); last = ''; draw(); } });
 })();
+
+// ---------- Small boxes under the prayer card: Last read, Saved, Tasbih (this browser's data) ----------
+(function () {
+  var $ = function (id) { return document.getElementById(id); }; if (!$('mn-lr')) return;
+  var last = SO.get('so.last', null);
+  if (last) { $('mn-lr').href = 'sura/?n=' + last.s + '#' + last.a; $('mn-lr-m').textContent = 'Ayah ' + last.a; $('mn-lr-t').textContent = 'Surah ' + last.s;
+    SO.j('assets/data/chapters.json').then(function (d) { var c = d.chapters[last.s - 1]; if (c) $('mn-lr-t').textContent = c.name_simple; }).catch(function () {}); }
+  var n = function (k, arr) { var v = SO.get(k, arr ? [] : {}); return (Array.isArray(v) ? v : Object.keys(v)).length; };
+  $('mn-sv').textContent = n('so.bm', 1) + n('so.fav', 1) + n('so.hl') + n('so.notes');
+  var tb = SO.get('so.tb3', null), all = 0;
+  if (tb && tb.dh && tb.dh.rows) Object.keys(tb.dh.rows).forEach(function (k) { all += tb.dh.rows[k].total || 0; });
+  $('mn-tb').textContent = all.toLocaleString();
+})();

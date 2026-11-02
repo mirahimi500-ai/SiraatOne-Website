@@ -1045,3 +1045,9 @@ body[data-script="indopak"] .flow,body[data-script="indopak"] .card-a .ar{line-h
 .pw-ex{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
 .pw-ex div{display:flex;flex-direction:column;gap:2px;padding:10px 8px;border-radius:12px;background:color-mix(in srgb,var(--brand) 8%,var(--surface));border:1px solid var(--border);text-align:center}
 .pw-ex small{font-size:.72rem;color:var(--muted);line-height:1.2}.pw-ex b{font-size:.9rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+/* MINI3: Last read / Saved / Tasbih small boxes under the Home prayer card */
+.mini3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.mini{display:flex;flex-direction:column;gap:2px;padding:12px 10px;border-radius:14px;border:1px solid var(--border);background:var(--surface);color:var(--text);text-decoration:none;min-width:0;transition:border-color .2s,transform .2s}
+.mini:hover{border-color:var(--brand);transform:translateY(-2px)}
+.mini small{font-size:.72rem;color:var(--muted)}.mini b{font-size:1rem;color:var(--brand);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mini span{font-size:.75rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rm .mini{transition:none}
