@@ -33,5 +33,9 @@ var PT = (function () {
   }
   function left(ms) { var s = Math.max(0, Math.floor(ms / 1000)), h = Math.floor(s / 3600), mi = Math.floor(s % 3600 / 60), se = s % 60;
     return (h ? h + 'h ' : '') + (h || mi ? mi + 'm ' : '') + (h ? '' : se + 's'); }
-  return { ok: !!A, DEF: DEF, P: P, FIVE: FIVE, NAME: NAME, AR: AR, settings: settings, params: params, tz: tz, ymd: ymd, times: times, fmt: fmt, isFri: isFri, label: label, next: next, left: left };
+  // Other times, as in the SiraatOne Azan app: Ishraq/Duha from 20 min after sunrise (the app's safety margin);
+  // the night is Maghrib -> next Fajr: middle of the night, and Qiyam = start of its last third (Adhan SunnahTimes).
+  function extras(S, L, y, m, d) { var pt = times(S, L, y, m, d), sn = new A.SunnahTimes(pt);
+    return { ishraq: new Date(pt.sunrise.getTime() + 20 * 60000), midnight: sn.middleOfTheNight, qiyam: sn.lastThirdOfTheNight }; }
+  return { extras: extras, ok: !!A, DEF: DEF, P: P, FIVE: FIVE, NAME: NAME, AR: AR, settings: settings, params: params, tz: tz, ymd: ymd, times: times, fmt: fmt, isFri: isFri, label: label, next: next, left: left };
 })();

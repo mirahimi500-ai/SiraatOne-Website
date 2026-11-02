@@ -75,6 +75,9 @@
           var cls = (k === nx.k && nx.d === t.day ? 'now' : pt[k] < now ? 'past' : '') + (k === 'sunrise' ? ' sun' : '');
           return '<li class="' + cls + '"><span>' + PT.label(k, t.year, t.month, t.day) + '</span><b>' + PT.fmt(S, L, pt[k]) + '</b></li>';
         }).join('') + '</ol>';
+      var ex = PT.extras(S, L, t.year, t.month, t.day);
+      body.innerHTML += '<div class="pw-ex"><div><small>Ishraq / Duha</small><b>' + PT.fmt(S, L, ex.ishraq) + '</b></div><div><small>Midnight</small><b>' + PT.fmt(S, L, ex.midnight) + '</b></div>' +
+        '<div><small>Qiyam (last third)</small><b>' + PT.fmt(S, L, ex.qiyam) + '</b></div></div>';
     }
     var el = document.getElementById('pw-left'); if (el) el.textContent = 'in ' + PT.left(nx.at - now);
   }

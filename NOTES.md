@@ -203,3 +203,4 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - PW2: Home prayer widget moved to the right column as a compact card, replacing Last read / Saved / Tasbih cards (removed from code); no location -> 'Location required' link to prayer/.
 - H3: Home redesign (same content): green gradient hero with Hijri date, next Islamic day chip and search inside; Prayer card beside it (stacked on phone); Quick access as card tiles with coloured icon bubbles and subtitles (auto-fill grid), edit mode unchanged.
 - H3 reverted (user): Home back to PW2 layout (hero + search, Quick access, prayer card in right column).
+- PW3: other times as in the Azan app: Ishraq/Duha (sunrise+20 min), Midnight, Qiyam = start of last third (Maghrib->Fajr): 3 boxes under Home prayer card; prayer page card 'Other times & Qibla'. Checked by hand (Maghrib 4:55, Fajr 5:15 -> 11:05 / 1:08).

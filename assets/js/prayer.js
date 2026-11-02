@@ -78,7 +78,8 @@
   function drawExtra() {
     var t = ymd(new Date()), pt = times(t.year, t.month, t.day), sn = new A.SunnahTimes(pt), q = A.Qibla(new A.Coordinates(L.lat, L.lng));
     var dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
-    $('pt-extra').innerHTML = '<li><span>Middle of the night</span><b>' + tFmt(sn.middleOfTheNight) + '</b></li><li><span>Last third of the night</span><b>' + tFmt(sn.lastThirdOfTheNight) + '</b></li>' +
+    var ex = PT.extras(S, L, t.year, t.month, t.day);
+    $('pt-extra').innerHTML = '<li><span>Ishraq / Duha begins</span><b>' + tFmt(ex.ishraq) + '</b></li><li><span>Middle of the night</span><b>' + tFmt(sn.middleOfTheNight) + '</b></li><li><span>Qiyam al-Layl (last third)</span><b>' + tFmt(sn.lastThirdOfTheNight) + '</b></li>' +
       '<li><span>Qibla direction</span><b>' + q.toFixed(1) + '° ' + dirs[Math.round(q / 45) % 8] + '</b></li>';
   }
   var lastK = '';
