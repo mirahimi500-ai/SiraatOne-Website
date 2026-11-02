@@ -177,3 +177,4 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - NAV1: Juz mode toolbar shows current Juz (updates while scrolling); ‹ › go to prev/next Juz start (same sura: scrolls, no freeze); Surah mode shows sura.
 - PILL1: reader top info bar, reader bottom bar, home taskbar = floating bold pills; top+bottom hide/show together smoothly.
 - PILL2: Mushaf info pill always shown in every mode, full width (8px margin), slim; EN left: no · name · Juz · Page; AR right same; compact setting removed.
+- MP1: top info pill never hides; narrow info pill inside Mushaf at every sura + Juz start (clean, verse/plus, page); Clean + No Paging = continuous (next suras appended), toolbar name/arrows/status/last-read follow visible sura.

@@ -935,3 +935,10 @@ body.has-tabbar{padding-bottom:88px}
 .status [lang="ar"]{font-size:.92rem}
 .status span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 @media (max-width:520px){.status{padding:3px 10px;gap:6px;font-size:.7rem}.status [lang="ar"]{font-size:.8rem}}
+/* MP1: the top info pill always stays visible; narrow info pill inside the Mushaf at each sura / Juz start; continuous suras */
+body:has(#bar.hid) .status{transform:none;opacity:1;pointer-events:auto}
+.mpill{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:14px 0;padding:3px 14px;border:1px solid color-mix(in srgb,var(--brand) 35%,var(--border));border-radius:999px;background:color-mix(in srgb,var(--brand) 7%,var(--surface));color:var(--brand);font:700 .78rem/1.5 var(--sans,system-ui);direction:ltr;text-align:left}
+.mpill span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}.mpill [lang="ar"]{font-family:var(--serif);font-size:.92rem}
+@media (max-width:520px){.mpill{padding:3px 10px;gap:6px;font-size:.7rem}.mpill [lang="ar"]{font-size:.8rem}}
+.mpill-li{list-style:none}
+.sura-next{margin-top:28px}

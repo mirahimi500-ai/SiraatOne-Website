@@ -75,7 +75,7 @@
       .then(function (x) { var ok = x[1] && x[1].ar.length === x[0].ar.length, t = x[2] && x[2].length === x[0].en.length ? x[2] : x[0].en; return { ar: ok ? x[1].ar : x[0].ar, en: t, base: x[0].ar, styled: !!ok }; });
     return CACHE[key];
   }
-  function elFor(k) { var p = k.split(':'); return document.getElementById(pageMode ? 'a' + p[0] + '_' + p[1] : p[1]); }
+  function elFor(k) { var p = k.split(':'); return document.getElementById(pageMode || +p[0] !== n ? 'a' + p[0] + '_' + p[1] : p[1]); }
   // Quran script: naskh = Uthmani text in Amiri Quran; uthmani = QPC Hafs (KFGQPC); indopak = IndoPak Nastaleeq
   function loadScript() {
     return Promise.all([getSura(n), bism ? getSura(1) : null, getTj(n), bism ? getTj(1) : null]).then(function (x) {
@@ -90,6 +90,19 @@
   // Bismillah above a sura = text of 1:1 without its ayah-number glyph (it is not an ayah of that sura)
   function noNum(a) { return (a || '').replace(/\s*([\u06DD]?[\u0660-\u0669\u06F0-\u06F9]+|[\uE000-\uF8FF]+)\s*$/, ''); }
   function hasNum(a) { return /([\u0660-\u0669\u06F0-\u06F9]|[\uE000-\uF8FF])\s*$/.test(a || ''); }
+  // narrow info pill placed inside the Mushaf at the start of every sura and every Juz
+  function jzStart(s, a) { if (!idx) return false; for (var i = 0; i < idx.juz.length; i++) if (idx.juz[i][0] === s && idx.juz[i][1] === a) return true; return false; }
+  function mpill(s, a) { var c = ch[s - 1], p = idx ? SO.pos(idx, s, a) : null;
+    return '<div class="mpill" role="note"><span>' + s + ' · ' + esc(c.name_simple) + (p ? ' · Juz ' + p.juz + ' · Page ' + p.page : '') + '</span><span lang="ar" dir="rtl">' + arNum(s) + ' · ' + c.name_arabic + (p ? ' · الجزء ' + arNum(p.juz) + ' · صفحة ' + arNum(p.page) : '') + '</span></div>'; }
+  // clean flow for ayahs a1..a2 of sura s, split by a pill at each Juz start
+  function flowHtml(s, d, a1, a2, idf) {
+    var h = '<p class="flow" lang="ar" dir="rtl">';
+    for (var a = a1; a <= a2; a++) {
+      if (a > a1 && jzStart(s, a)) h += '</p>' + mpill(s, a) + '<p class="flow" lang="ar" dir="rtl">';
+      h += '<span class="aya" id="' + idf(a) + '" data-s="' + s + '" data-a="' + a + '"' + hl(s + ':' + a) + '>' + fmt(d[a - 1], s, a - 1) + (S.nums && !(S.tajweed && TJD[s] ? S.script !== 'naskh' : hasNum(d[a - 1])) ? ' ' + end(a) : '') + '</span> ';
+    }
+    return h + '</p>';
+  }
   function end(i) { return '<span class="end">﴿' + arNum(i) + '﴾</span>'; }
 
   // ---------- apply settings ----------
@@ -181,10 +194,9 @@
       var b1 = all[all.length - 1].ar[0], h = '';
       segs.forEach(function (g, i) {
         var s = g[0], d = all[i];
-        if (g[1] === 1) h += '<div class="pg-title">' + SO.sname(s, 'سورة ' + ch[s - 1].name_arabic) + '</div>' + (s !== 1 && s !== 9 ? '<p class="bismillah" lang="ar" dir="rtl">' + fmt(noNum(b1), 1, 0, true) + '</p>' : '');
-        h += '<p class="flow" lang="ar" dir="rtl">';
-        for (var a = g[1]; a <= g[2]; a++) h += '<span class="aya" id="a' + s + '_' + a + '" data-s="' + s + '" data-a="' + a + '"' + hl(s + ':' + a) + '>' + fmt(d.ar[a - 1], s, a - 1) + (S.nums && !(S.tajweed && TJD[s] ? S.script !== 'naskh' : hasNum(d.ar[a - 1])) ? ' ' + end(a) : '') + '</span> ';
-        h += '</p>';
+        if (g[1] === 1) h += mpill(s, 1) + '<div class="pg-title">' + SO.sname(s, 'سورة ' + ch[s - 1].name_arabic) + '</div>' + (s !== 1 && s !== 9 ? '<p class="bismillah" lang="ar" dir="rtl">' + fmt(noNum(b1), 1, 0, true) + '</p>' : '');
+        else if (jzStart(s, g[1])) h += mpill(s, g[1]);
+        h += flowHtml(s, d.ar, g[1], g[2], function (a) { return 'a' + s + '_' + a; });
       });
       $('body').innerHTML = '<div class="mpage">' + h + '<div class="pg-num">' + arNum(P) + '</div></div>';
       $('bb-name').textContent = 'صفحة ' + arNum(P);
@@ -203,9 +215,7 @@
       $('s-bism').innerHTML = BI ? fmt(noNum(BI), 1, 0, true) : '';
       document.body.dataset.mode = mode;
       if (mode === 'clean') {
-        h = '<p class="flow" lang="ar" dir="rtl">' + AR.map(function (a, i) {
-          return '<span class="aya" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(n + ':' + (i + 1)) + '>' + fmt(a, n, i) + (S.nums && !(S.tajweed && TJD[n] ? S.script !== 'naskh' : hasNum(a)) ? ' ' + end(i + 1) : '') + '</span>';
-        }).join(' ') + '</p>';
+        h = mpill(n, 1) + flowHtml(n, AR, 1, AR.length, function (a) { return String(a); });
       } else {
         var showAr = S.showAr || !S.showTr, showTr = S.showTr && mode !== 'clean';
         h = '<ol class="cards tl-' + (mode === 'plus' ? 'ayah' : S.tlay) + '">' + AR.map(function (a, i) {
@@ -213,7 +223,7 @@
           var ar = mode === 'plus'
             ? '<div class="words" lang="ar" dir="rtl">' + wbw[i].map(function (w, j) { return '<span class="w" data-w="' + (j + 1) + '" data-wa="' + (i + 1) + '"><span class="wa">' + esc(w[0]) + '</span><span class="wt" dir="ltr">' + esc(w[1] || '') + '</span></span>'; }).join('') + end(i + 1) + '</div>'
             : '<p class="ar" lang="ar" dir="rtl">' + fmt(a, n, i) + (S.nums && !(S.tajweed && TJD[n] ? S.script !== 'naskh' : hasNum(a)) ? ' ' + end(i + 1) : '') + '</p>';
-          return '<li class="card-a" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(k) + '>' + top + (showAr ? ar : '') + (showTr ? '<p class="tr"' + trAttr() + '>' + esc((TRT || sura.en)[i]) + '</p>' : '') + (S.tfInline && mode === 'verse' ? '<div class="tf-inl" data-tf="' + (i + 1) + '"></div>' : '') + '</li>';
+          return (i === 0 || jzStart(n, i + 1) ? '<li class="mpill-li">' + mpill(n, i + 1) + '</li>' : '') + '<li class="card-a" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(k) + '>' + top + (showAr ? ar : '') + (showTr ? '<p class="tr"' + trAttr() + '>' + esc((TRT || sura.en)[i]) + '</p>' : '') + (S.tfInline && mode === 'verse' ? '<div class="tf-inl" data-tf="' + (i + 1) + '"></div>' : '') + '</li>';
         }).join('') + '</ol>';
       }
       if (S.tfInline && mode === 'verse') setTimeout(tfFill, 0);
@@ -222,7 +232,7 @@
       var t = parseInt(location.hash.slice(1), 10);
       if (t > 1 && $(String(t))) $(String(t)).scrollIntoView();
       SO.set('so.last', { s: n, a: t > 0 && t <= c.verses ? t : 1 });
-      observe();
+      tail = n; observe(); more();
     });
   }
   function marks(k) {
@@ -234,18 +244,39 @@
   function observe() {
     if (io) io.disconnect(); if (!('IntersectionObserver' in window)) return;
     io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (!e.isIntersecting || pageMode) return; var a = +e.target.getAttribute('data-a'); SO.set('so.last', { s: n, a: a }); status(a); });
+      es.forEach(function (e) { if (!e.isIntersecting || pageMode) return; var a = +e.target.getAttribute('data-a'), s = +e.target.getAttribute('data-s') || n; SO.set('so.last', { s: s, a: a }); status(a, s); });
     }, { rootMargin: '-90px 0px -70% 0px' });
     document.querySelectorAll('#body [data-a][id]').forEach(function (el) { io.observe(el); });
     status(1);
   }
+  // Clean Mushaf + No Paging = one continuous Mushaf: the next sura is added below as you reach the end (no Next needed)
+  var tail = 0, busy = false;
+  function more() {
+    if (busy || pageMode || S.mode !== 'clean' || !tail || tail >= 114) return;
+    if (document.documentElement.scrollHeight - innerHeight - scrollY > 2500) return;
+    var s = tail + 1; busy = true;
+    Promise.all([getSura(s), getTj(s), bism ? null : getSura(1)]).then(function (x) {
+      busy = false; if (tail !== s - 1 || S.mode !== 'clean') return;
+      var d = x[0].ar, b1 = (x[2] || {}).ar ? x[2].ar[0] : BI, sec = document.createElement('section'); sec.className = 'sura-next'; sec.setAttribute('data-sura', s);
+      sec.innerHTML = mpill(s, 1) + '<div class="pg-title">' + SO.sname(s, 'سورة ' + ch[s - 1].name_arabic) + '</div>' + (s !== 9 && b1 ? '<p class="bismillah" lang="ar" dir="rtl">' + fmt(noNum(b1), 1, 0, true) + '</p>' : '') + flowHtml(s, d, 1, d.length, function (a) { return 'a' + s + '_' + a; });
+      $('body').appendChild(sec); tail = s;
+      if (io) sec.querySelectorAll('[data-a]').forEach(function (el) { io.observe(el); });
+      more();
+    }).catch(function () { busy = false; });
+  }
+  addEventListener('scroll', function () { if (tail) more(); }, { passive: true });
+  var visS = 0;
   function status(a, s) {
+    if (s && s !== visS && !pageMode) { visS = s; if (S.nav !== 'juz') { $('bb-name').innerHTML = arNum(s) + ' - ' + SO.sname(s, ch[s - 1].name_arabic); navFor(s); } }
     s = s || n; var c = ch[s - 1], j = idx ? SO.pos(idx, s, a) : null;
     $('st-en').textContent = s + ' · ' + c.name_simple + (j ? ' · Juz ' + j.juz + ' · Page ' + j.page : '');
     $('st-ar').textContent = arNum(s) + ' · ' + c.name_arabic + (j ? ' · الجزء ' + arNum(j.juz) + ' · صفحة ' + arNum(j.page) : '');
   }
 
   // ---------- prev / next (by Surah or Juz) ----------
+  function navFor(v) { var p = $('prev'), x = $('next');
+    p.href = v > 1 ? '?n=' + (v - 1) : '#'; p.title = v > 1 ? ch[v - 2].name_simple : ''; p.classList.toggle('off', v === 1);
+    x.href = v < 114 ? '?n=' + (v + 1) : '#'; x.title = v < 114 ? ch[v].name_simple : ''; x.classList.toggle('off', v === 114); }
   function navLinks() {
     if (pageMode) return;
     var p = $('prev'), x = $('next');
@@ -254,20 +285,19 @@
       p.href = x.href = '#'; p.title = 'Previous Juz'; x.title = 'Next Juz'; juzLabel();
       p.onclick = function (e) { e.preventDefault(); goJuz(-1); }; x.onclick = function (e) { e.preventDefault(); goJuz(1); };
     } else {
-      $('bb-name').innerHTML = arNum(n) + ' - ' + SO.sname(n, ch[n - 1].name_arabic);
-      p.href = n > 1 ? '?n=' + (n - 1) : '#'; p.title = n > 1 ? ch[n - 2].name_simple : ''; p.classList.toggle('off', n === 1);
-      x.href = n < 114 ? '?n=' + (n + 1) : '#'; x.title = n < 114 ? ch[n].name_simple : ''; x.classList.toggle('off', n === 114);
+      var v = visS || n; $('bb-name').innerHTML = arNum(v) + ' - ' + SO.sname(v, ch[v - 1].name_arabic); navFor(v);
     }
   }
 
-  function topAyah() { var els = $('body').querySelectorAll('[data-a]'); for (var i = 0; i < els.length; i++) if (els[i].getBoundingClientRect().bottom > 90) return +els[i].getAttribute('data-a'); return 1; }
-  function curJuz() { return SO.pos(idx, n, topAyah()).juz; }
+  function topAyah() { var els = $('body').querySelectorAll('.aya[data-a], .card-a[data-a]'); for (var i = 0; i < els.length; i++) if (els[i].getBoundingClientRect().bottom > 90) return [+els[i].getAttribute('data-s') || n, +els[i].getAttribute('data-a')]; return [n, 1]; }
+  function curJuz() { var t = topAyah(); return SO.pos(idx, t[0], t[1]).juz; }
   function juzLabel() { if (pageMode || S.nav !== 'juz' || !idx) return; var j = curJuz(), t = 'الجزء ' + arNum(j);
     if ($('bb-name').textContent !== t) { $('bb-name').textContent = t; if (S.auto) asLay(); }
     $('prev').classList.toggle('off', j <= 1); $('next').classList.toggle('off', j >= 30); }
   function goJuz(d) {
     var j = curJuz() + d, t = idx.juz[j - 1]; if (!t) return;
-    if (t[0] === n && $(String(t[1]))) { $(String(t[1])).scrollIntoView(); history.replaceState(null, '', '?n=' + n + '#' + t[1]); $('bar').classList.remove('hid'); juzLabel(); }
+    var el = elFor(t[0] + ':' + t[1]);
+    if (el) { el.scrollIntoView(); history.replaceState(null, '', '?n=' + t[0] + '#' + t[1]); $('bar').classList.remove('hid'); juzLabel(); }
     else location.href = '?n=' + t[0] + '#' + t[1];
   }
   var jzT = null; addEventListener('scroll', function () { if (S.nav === 'juz' && !jzT) jzT = setTimeout(function () { jzT = null; juzLabel(); }, 200); }, { passive: true });
