@@ -1051,3 +1051,5 @@ body[data-script="indopak"] .flow,body[data-script="indopak"] .card-a .ar{line-h
 .mini:hover{border-color:var(--brand);transform:translateY(-2px)}
 .mini small{font-size:.72rem;color:var(--muted)}.mini b{font-size:1rem;color:var(--brand);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mini span{font-size:.75rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rm .mini{transition:none}
+.mini3.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tile .lr-sub{display:block!important;font-size:.72rem;color:var(--muted);line-height:1.25;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

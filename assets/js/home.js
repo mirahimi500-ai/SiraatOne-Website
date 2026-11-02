@@ -1,5 +1,9 @@
 // Home: Continue tile opens the last read position (this browser only).
-(function () { var last = SO.get('so.last', null), t = document.querySelector('[data-continue]'); if (last && t) t.href = 'sura/?n=' + last.s + '#' + last.a; })();
+(function () {
+  var last = SO.get('so.last', null), t = document.querySelector('[data-continue]'); if (!last || !t) return;
+  var sub = t.querySelector('.lr-sub'); t.href = 'sura/?n=' + last.s + '#' + last.a; if (sub) sub.textContent = 'Surah ' + last.s + ' · Ayah ' + last.a;
+  SO.j('assets/data/chapters.json').then(function (d) { var c = d.chapters[last.s - 1]; if (c && sub) sub.textContent = c.name_simple + ' · Ayah ' + last.a; }).catch(function () {});
+})();
 (function () { var t = document.querySelector('[data-continue]'); if (t && t.getAttribute('href') === '') t.href = 'sura/?n=1'; })();
 
 // ----- Quick access: order, hide, add (like the app's Customize Home). Saved in this browser only.
@@ -85,12 +89,9 @@
   addEventListener('storage', function (e) { if (e.key === 'so.ploc' || e.key === 'so.pt') { S = PT.settings(); L = SO.get('so.ploc', null); last = ''; draw(); } });
 })();
 
-// ---------- Small boxes under the prayer card: Last read, Saved, Tasbih (this browser's data) ----------
+// ---------- Small boxes under the prayer card: Saved, Tasbih (this browser's data) ----------
 (function () {
-  var $ = function (id) { return document.getElementById(id); }; if (!$('mn-lr')) return;
-  var last = SO.get('so.last', null);
-  if (last) { $('mn-lr').href = 'sura/?n=' + last.s + '#' + last.a; $('mn-lr-m').textContent = 'Ayah ' + last.a; $('mn-lr-t').textContent = 'Surah ' + last.s;
-    SO.j('assets/data/chapters.json').then(function (d) { var c = d.chapters[last.s - 1]; if (c) $('mn-lr-t').textContent = c.name_simple; }).catch(function () {}); }
+  var $ = function (id) { return document.getElementById(id); }; if (!$('mn-sv')) return;
   var n = function (k, arr) { var v = SO.get(k, arr ? [] : {}); return (Array.isArray(v) ? v : Object.keys(v)).length; };
   $('mn-sv').textContent = n('so.bm', 1) + n('so.fav', 1) + n('so.hl') + n('so.notes');
   var tb = SO.get('so.tb3', null), all = 0;
