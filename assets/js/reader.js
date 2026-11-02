@@ -249,15 +249,28 @@
   function navLinks() {
     if (pageMode) return;
     var p = $('prev'), x = $('next');
-    if (S.nav === 'juz' && idx) {
-      var cur = SO.pos(idx, n, 1).juz, pj = idx.juz[cur - 2], nj = idx.juz[cur];
-      p.href = pj ? '?n=' + pj[0] + '#' + pj[1] : '#'; p.title = pj ? 'Juz ' + (cur - 1) : ''; p.classList.toggle('off', !pj);
-      x.href = nj ? '?n=' + nj[0] + '#' + nj[1] : '#'; x.title = nj ? 'Juz ' + (cur + 1) : ''; x.classList.toggle('off', !nj);
+    p.onclick = x.onclick = null;
+    if (S.nav === 'juz' && idx) { // Juz mode: the bar shows the Juz you are reading; arrows go to the previous / next Juz start
+      p.href = x.href = '#'; p.title = 'Previous Juz'; x.title = 'Next Juz'; juzLabel();
+      p.onclick = function (e) { e.preventDefault(); goJuz(-1); }; x.onclick = function (e) { e.preventDefault(); goJuz(1); };
     } else {
+      $('bb-name').innerHTML = arNum(n) + ' - ' + SO.sname(n, ch[n - 1].name_arabic);
       p.href = n > 1 ? '?n=' + (n - 1) : '#'; p.title = n > 1 ? ch[n - 2].name_simple : ''; p.classList.toggle('off', n === 1);
       x.href = n < 114 ? '?n=' + (n + 1) : '#'; x.title = n < 114 ? ch[n].name_simple : ''; x.classList.toggle('off', n === 114);
     }
   }
+
+  function topAyah() { var els = $('body').querySelectorAll('[data-a]'); for (var i = 0; i < els.length; i++) if (els[i].getBoundingClientRect().bottom > 90) return +els[i].getAttribute('data-a'); return 1; }
+  function curJuz() { return SO.pos(idx, n, topAyah()).juz; }
+  function juzLabel() { if (pageMode || S.nav !== 'juz' || !idx) return; var j = curJuz(), t = 'الجزء ' + arNum(j);
+    if ($('bb-name').textContent !== t) { $('bb-name').textContent = t; if (S.auto) asLay(); }
+    $('prev').classList.toggle('off', j <= 1); $('next').classList.toggle('off', j >= 30); }
+  function goJuz(d) {
+    var j = curJuz() + d, t = idx.juz[j - 1]; if (!t) return;
+    if (t[0] === n && $(String(t[1]))) { $(String(t[1])).scrollIntoView(); history.replaceState(null, '', '?n=' + n + '#' + t[1]); $('bar').classList.remove('hid'); juzLabel(); }
+    else location.href = '?n=' + t[0] + '#' + t[1];
+  }
+  var jzT = null; addEventListener('scroll', function () { if (S.nav === 'juz' && !jzT) jzT = setTimeout(function () { jzT = null; juzLabel(); }, 200); }, { passive: true });
 
   // ---------- ayah action sheet ----------
   var cur = null;
