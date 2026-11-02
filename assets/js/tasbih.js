@@ -46,13 +46,10 @@
     var p = phrase(), r = row(), g = r.target, n = r.count, all = 0;
     Object.keys(D.dh.rows).forEach(function (k) { all += D.dh.rows[k].total; });
     $('dh-pick').value = p[0]; $('dh-ar').textContent = p[1];
-    $('dh-src').innerHTML = '<a href="' + p[3] + '" target="_blank" rel="noopener">' + esc(p[2]) + '</a>';
     $('dh-sel').textContent = r.total; $('dh-all').textContent = all; $('dh-n').textContent = n;
     chips('dh-tg', DT, g, ' '); $('dh-tg').firstChild.remove();
     $('dh-barw').hidden = !(g > 0); $('dh-bar').style.width = (g > 0 ? (n > 0 && n % g === 0 ? 1 : (n % g) / g) * 100 : 0) + '%';
     $('dh-dec').disabled = $('dh-reset').disabled = n === 0;
-    $('dh-snd').innerHTML = D.set.beep ? '🔊' : '🔇'; $('dh-snd').setAttribute('aria-pressed', D.set.beep);
-    $('dh-vib').innerHTML = D.set.hap ? '📳' : '📴'; $('dh-vib').setAttribute('aria-pressed', D.set.hap);
   }
   function dhInc() { var r = row(); r.count++; r.total++; var g = r.target > 0 && r.count % r.target === 0; tick(g); bump($('dh-tap'), g); dhDraw(); saveSoon(); }
   function down(el, fn) { el.addEventListener('pointerdown', function (e) { if (e.button > 0) return; e.preventDefault(); fn(); }); el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } }); }
@@ -61,8 +58,6 @@
   $('dh-reset').onclick = function () { var r = row(); if (!r.count) return; if (D.set.conf && !confirm('Reset current count?\n\nThe selected Dhikr count returns to zero. Lifetime totals are kept.')) return; r.count = 0; dhDraw(); save(); };
   $('dh-pick').onchange = function () { D.dh.active = this.value; dhDraw(); save(); };
   $('dh-tg').onclick = function (e) { var b = e.target.closest('[data-t]'); if (!b) return; row().target = +b.dataset.t; dhDraw(); save(); };
-  $('dh-snd').onclick = function () { D.set.beep = !D.set.beep; save(); drawAll(); };
-  $('dh-vib').onclick = function () { D.set.hap = !D.set.hap; save(); drawAll(); };
 
   // ================= Previous saved counters =================
   function prof() { return D.sv.profiles.filter(function (p) { return p.id === D.sv.active; })[0]; }
