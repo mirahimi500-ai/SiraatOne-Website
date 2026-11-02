@@ -824,3 +824,14 @@ option,optgroup{color:var(--text);background-color:var(--surface)}
 .cl-hero .cl-hd b{line-height:1.9!important;padding:4px 0;display:block}
 .qx2 .cl-hd b{font-size:clamp(1.8rem,5vw,2.4rem)}
 .tb-top{position:relative;min-height:44px}.tb-top>h1{position:absolute;left:50%;transform:translateX(-50%);max-width:calc(100% - 190px);white-space:normal;line-height:1.2;margin:0!important;text-align:center}
+/* Duas & Adhkar in the Islamic Calendar layout */
+.duas2 .cl-hd b[lang=ar]{font-family:"Amiri",serif}
+.duas2 .d-home{max-width:none}
+.duas2 .d-tools{position:absolute}
+.duas2 .d-tools .sl-opts{display:flex;flex-direction:column;align-items:stretch;gap:.5rem}
+.duas2 .dua-list{max-width:none}
+.duas2 #d-tabs{margin:0 auto 12px}
+.d-sidea{display:flex;justify-content:space-between;padding:8px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text);text-decoration:none}
+.d-sidea[aria-current=true]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.duas2 .cl-side .ts-card{padding:16px}
+@media(min-width:900px){.duas2 .cl-cols{grid-template-columns:minmax(0,1fr) 340px}}

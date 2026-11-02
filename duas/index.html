@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261103g">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261103h">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -33,36 +33,47 @@
   </div>
 </header>
 
-<main id="main" class="wrap tool duas">
-  <header class="tool-head"><h1>Duas &amp; Adhkar</h1><p class="sub">From the SiraatOne Quran app's sourced catalog. Saved items stay in this browser.</p></header>
-  <section id="d-home" class="d-home" hidden>
-    <div class="d-home-top"><input class="search" id="d-hq" type="search" placeholder="Search all duas" autocomplete="off"><a class="btn btn-ghost sm" href="#saved">Saved</a></div>
-    <h2 class="d-h">Collections</h2>
-    <div class="d-grid" id="d-cols"></div>
-    <h2 class="d-h">Browse Prophetic &amp; Quranic Duas</h2>
-    <div class="d-grid" id="d-topics"></div>
-  </section>
-  <div id="d-view" hidden>
-  <div class="d-back"><a href="#" class="btn btn-ghost sm" id="d-backbtn">← Duas &amp; Adhkar</a><h2 id="d-title"></h2><button type="button" class="icon-btn d-menu" id="d-menu" aria-label="Dua settings" aria-expanded="false">☰</button></div>
-  <div class="tabs" role="tablist" id="d-tabs" hidden>
-    <button type="button" data-t="morning">Morning</button><button type="button" data-t="evening">Evening</button>
-  </div>
-  <div class="qx-tools d-tools">
-    <input class="search" id="d-q" type="search" placeholder="Search duas (title, meaning)" autocomplete="off">
-    <div class="sl-opts" id="d-opts">
+<main id="main" class="wrap tool duas cal2 duas2">
+  <div class="tb-top">
+    <a class="btn btn-ghost sm" href="../" id="d-backbtn">← Back</a>
+    <h1 id="d-title">Duas &amp; Adhkar</h1>
+    <button type="button" class="icon-btn" id="d-menu" aria-label="Dua settings" aria-expanded="false"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96a7.03 7.03 0 0 0-1.62-.94l-.36-2.54a.48.48 0 0 0-.48-.41h-3.84a.48.48 0 0 0-.48.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 0 0-.59.22L2.74 8.87a.48.48 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.48.48 0 0 0-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/></svg></button>
+    <div class="tb-pop d-tools" id="d-tools"><b>Settings</b>
+      <div class="sl-opts" id="d-opts">
       <select id="d-cat" aria-label="Category" hidden></select>
       <select id="d-font" aria-label="Arabic font"><option value="uthmani">Uthmani</option><option value="indopak">IndoPak</option><option value="naskh">Naskh</option></select>
       <select id="d-size" aria-label="Text size"><option value="0.9">Small</option><option value="1">Normal</option><option value="1.2">Large</option><option value="1.45">Extra large</option></select>
       <label><input type="checkbox" id="d-tr"> Transliteration</label><label><input type="checkbox" id="d-mean"> Meaning</label><label><input type="checkbox" id="d-num"> Numbers</label><label><input type="checkbox" id="d-virtue"> Virtue</label><label><input type="checkbox" id="d-when"> When to say</label><label><input type="checkbox" id="d-prac"> Practice</label><label><input type="checkbox" id="d-cnt"> Repetition counter</label><label><input type="checkbox" id="d-src"> Sources</label>
     </div>
+      <button type="button" class="btn btn-ghost sm" id="d-reset">Reset settings</button>
+    </div>
   </div>
-  <ol class="dua-list" id="d-list"><li class="empty">Loading…</li></ol>
+  <section class="cl-hero" id="d-hero"></section>
+  <div class="cl-cols">
+    <div class="cl-main">
+      <section id="d-home" class="d-home" hidden>
+        <input class="search nm-search" id="d-hq" type="search" placeholder="Search all duas — press Enter" autocomplete="off">
+        <h2 class="d-h">Collections</h2>
+        <div class="d-grid" id="d-cols"></div>
+        <h2 class="d-h">Browse Prophetic &amp; Quranic Duas</h2>
+        <div class="d-grid" id="d-topics"></div>
+      </section>
+      <div id="d-view" hidden>
+        <div class="tabs tb-mode cl-viewpill" role="tablist" id="d-tabs" hidden><button type="button" data-t="morning">Morning</button><button type="button" data-t="evening">Evening</button></div>
+        <input class="search nm-search" id="d-q" type="search" placeholder="Search in this list (title, meaning)" autocomplete="off">
+        <ol class="dua-list" id="d-list"><li class="empty">Loading…</li></ol>
+      </div>
+    </div>
+    <aside class="cl-side">
+      <div class="ts-card"><div class="ts-hh"><b>Collections</b></div><ol class="ts-list d-side" id="d-sidecols"></ol></div>
+      <div class="ts-card"><div class="ts-hh"><b>Saved duas</b><a class="btn btn-ghost sm" href="#saved">Open</a></div><p class="hint" id="d-savedn"></p></div>
+      <div class="ts-card"><div class="ts-hh"><b>About</b></div><p class="hint d-note" id="d-note"></p></div>
+    </aside>
   </div>
-  <p class="hint d-note" id="d-note"></p>
 </main>
 
-<script src="../assets/js/site.js?v=20261103g" defer></script>
-<script src="../assets/js/lib.js?v=20261103g" defer></script>
-<script src="../assets/js/duas.js?v=20261103g" defer></script>
+<script src="../assets/js/site.js?v=20261103h" defer></script>
+<script src="../assets/js/lib.js?v=20261103h" defer></script>
+<script src="../assets/js/duas.js?v=20261103h" defer></script>
 </body>
 </html>

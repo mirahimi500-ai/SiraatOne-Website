@@ -78,21 +78,34 @@
     else if (TITLE[h]) { O.tab = h === 'morning' && O.tab === 'evening' ? 'evening' : h; O.cat = ''; }
     else home = true;
     $('d-home').hidden = !home; $('d-view').hidden = home;
-    if (home) return;
+    side(); hero(home);
+    if (home) { $('d-title').textContent = 'Duas & Adhkar'; return; }
     $('d-title').textContent = O.tab === 'topic' ? (D.categoryTitles[O.cat] || '') : TITLE[O.tab];
     $('d-tabs').hidden = !(O.tab === 'morning' || O.tab === 'evening');
-    $('d-title').hidden = !$('d-tabs').hidden;
     save(); render(); window.scrollTo(0, 0);
   }
   window.addEventListener('hashchange', route);
-  $('d-backbtn').onclick = function (e) { e.preventDefault(); location.hash = ''; };
+  // Back: inside a folder -> Duas & Adhkar; on the landing page -> previous page / Home
+  $('d-backbtn').onclick = function (e) { if (location.hash.length > 1) { e.preventDefault(); location.hash = ''; } else if (history.length > 1 && document.referrer.indexOf(location.host) > -1) { e.preventDefault(); history.back(); } };
+  function count(t) { var c = D.collections; return t === 'morning' ? c.morningEvening.length : t === 'prophetic' ? c.prophetic.length : t === 'quranic' ? c.quranic.length : t === 'prayer' ? c.prayerSalah.length : 0; }
+  function side() {
+    var cur = location.hash.slice(1);
+    $('d-sidecols').innerHTML = COLS.map(function (c) { return '<li><a class="d-sidea" href="#' + c[0] + '" aria-current="' + (cur === c[0] || (c[0] === 'morning' && cur === 'evening')) + '"><span>' + esc(c[1]) + '</span><b>' + count(c[0]) + '</b></a></li>'; }).join('');
+    $('d-savedn').textContent = saved.length ? saved.length + (saved.length === 1 ? ' dua saved in this browser.' : ' duas saved in this browser.') : 'Nothing saved yet. Tap ♡ on any dua.';
+  }
+  function hero(home) {
+    var total = Object.keys(D.entries).length;
+    if (home) { $('d-hero').innerHTML = '<div class="cl-hd"><small>Duas &amp; Adhkar</small><b lang="ar" dir="rtl">الأدعية والأذكار</b><span>' + total + ' duas · 4 collections · ' + Object.keys(D.categories).length + ' topics</span><em>From the SiraatOne Quran app\'s sourced catalog</em></div><div class="cl-hn"><small>Saved</small><b>' + saved.length + '</b><span><a href="#saved">Open saved duas →</a></span></div>'; return; }
+    var n = ids().length, t = O.tab === 'topic' ? (D.categoryTitles[O.cat] || '') : TITLE[O.tab];
+    $('d-hero').innerHTML = '<div class="cl-hd"><small>' + (O.tab === 'topic' ? 'Browse topic' : O.tab === 'saved' ? 'Your list' : O.tab === 'all' ? 'Search' : 'Collection') + '</small><b>' + esc(t) + '</b><span>' + n + (n === 1 ? ' dua' : ' duas') + (O.tab === 'morning' || O.tab === 'evening' ? ' · ' + (O.tab === 'morning' ? 'Morning' : 'Evening') : '') + '</span></div><div class="cl-hn"><small>All duas</small><b>' + total + '</b><span><a href="#">All collections →</a></span></div>';
+  }
   $('d-hq').onkeydown = function (e) { if (e.key === 'Enter' && this.value.trim()) { $('d-q').value = this.value.trim(); location.hash = 'search'; } };
   SO.j('../assets/data/duas.json').then(function (d) {
     D = d; $('d-note').textContent = d.note; landing();
     $('d-font').value = O.font; $('d-size').value = String(O.size); $('d-tr').checked = O.tr; $('d-mean').checked = O.mean; $('d-num').checked = O.num; ['virtue', 'when', 'prac', 'src', 'cnt'].forEach(function (k) { $('d-' + k).checked = O[k]; });
     route();
   }).catch(function () { $('d-list').innerHTML = '<li class="empty">Could not load. Please refresh.</li>'; });
-  $('d-tabs').onclick = function (e) { var b = e.target.closest('button'); if (!b) return; O.tab = b.dataset.t; save(); render(); };
+  $('d-tabs').onclick = function (e) { var b = e.target.closest('button'); if (!b) return; O.tab = b.dataset.t; save(); render(); hero(false); };
   $('d-cat').onchange = function () { O.cat = this.value; save(); render(); };
   $('d-font').onchange = function () { O.font = this.value; save(); render(); };
   $('d-size').onchange = function () { O.size = +this.value; save(); render(); };
@@ -107,6 +120,7 @@
       c.classList.toggle('done', counts[k] >= mx); c.textContent = counts[k] >= mx ? 'Done ✓' : counts[k] + ' / ' + mx + ' — tap to count'; }
   };
   // settings menu (☰): search, font, size, transliteration, meaning, numbers
-  $('d-menu').onclick = function (e) { e.stopPropagation(); var t = document.querySelector('.d-tools'), o = t.classList.toggle('open'); this.setAttribute('aria-expanded', o); };
-  document.addEventListener('click', function (e) { var t = document.querySelector('.d-tools'); if (t && t.classList.contains('open') && !e.target.closest('.d-tools')) { t.classList.remove('open'); $('d-menu').setAttribute('aria-expanded', 'false'); } });
+  $('d-menu').onclick = function (e) { e.stopPropagation(); var t = $('d-tools'), o = t.classList.toggle('open'); this.setAttribute('aria-expanded', o); };
+  document.addEventListener('click', function (e) { var t = $('d-tools'); if (t && t.classList.contains('open') && !e.target.closest('.d-tools')) { t.classList.remove('open'); $('d-menu').setAttribute('aria-expanded', 'false'); } });
+  $('d-reset').onclick = function () { ['font', 'size', 'tr', 'mean', 'num', 'virtue', 'when', 'prac', 'src', 'cnt'].forEach(function (k) { delete O[k]; }); O = Object.assign({ font: 'uthmani', size: 1, tr: true, mean: true, num: true, virtue: true, when: true, prac: true, src: true, cnt: true }, O); save(); location.reload(); };
 })();
