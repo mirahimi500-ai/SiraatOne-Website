@@ -5,7 +5,7 @@
   if (!(n >= 1) && P >= 1 && P <= 604) n = 1; // set from the page index below
   var $ = function (id) { return document.getElementById(id); }, esc = SO.esc, root = document.documentElement;
   if (!(n >= 1 && n <= 114)) { location.replace('../read/'); return; }
-  var DEF = { mode: 'clean', script: 'uthmani', ar: 1.9, tr: 1, header: true, meaning: true, deco: true, bg: 'app', nav: 'surah', hide: true, awake: false, auto: false, speed: 3, paging: 'scroll', tajweed: true, legend: true, reciter: 'Alafasy', repeat: 'off', autoNext: true, follow: true, tapWord: true, rate: 1, vol: 1, lh: 2.3, pad: 48, tlay: 'ayah', nums: true, numsRight: false, showAr: true, showTr: true, showWbw: true, trid: 20, tfInline: false, asNext: true, asResume: true, asEta: true, wgap: 8 };
+  var DEF = { mode: 'clean', script: 'uthmani', ar: 1.9, tr: 1, header: true, meaning: true, deco: true, bg: 'app', nav: 'surah', hide: true, awake: false, auto: false, speed: 3, paging: 'scroll', tajweed: true, legend: true, reciter: 'Alafasy', repeat: 'off', autoNext: true, follow: true, tapWord: true, rate: 1, vol: 1, lh: 2.3, pad: 48, tlay: 'ayah', nums: true, numsRight: false, showAr: true, showTr: true, showWbw: true, trid: 20, tfInline: false, asNext: true, asResume: true, asEta: true };
   var S = Object.assign({}, DEF, SO.get('so.rs', {}));
   // one-time move to the new defaults (Nov 2026) for browsers that saved older settings
   if ((S.dv || 0) < 2) { S.mode = 'clean'; S.paging = 'scroll'; S.tajweed = true; S.script = 'uthmani'; S.reciter = 'Alafasy'; S.dv = 2; SO.set('so.rs', S); }
@@ -26,64 +26,25 @@
   // segments in the selected font. Uthmani (KFGQPC) only: U+0672 -> U+0670 and U+06DF -> U+06E0 (1:1, as the app does).
   // The ayah marker comes from the source's own end segment (no second marker).
   function tjSource(markup, mark) {
-    var segs = tjSegs(markup); if (!segs) return null;
-    var out = '', endTxt = '';
+    var segs = TJ.parse(markup); if (!segs) return null;
+    var uth = S.script === 'uthmani', out = '', endTxt = '';
     segs.forEach(function (g) {
       if (g.rule === 'endMarker') { endTxt = g.text.trim(); return; }
-      var t = g.text, cls = g.rule && g.rule !== 'unknown' ? g.rule : null;
+      var t = uth ? g.text.replace(/\u0672/g, '\u0670').replace(/\u06DF/g, '\u06E0') : g.text;
+      var cls = g.rule && g.rule !== 'unknown' ? g.rule : null;
       out += cls ? '<span class="tj-' + cls + '">' + esc(t) + '</span>' : esc(t);
     });
     out = out.replace(/\s+$/, '');
     if (mark && endTxt && S.nums) out += ' ' + (S.script === 'naskh' ? '' : '<span class="tj-end">' + esc(endTxt) + '</span>');
     return out;
   }
-  // 1:1 character mapping of the Tajweed source to the selected font. Uthmani (KFGQPC): as the app. Naskh / IndoPak fonts
-  // lack the source's placeholders, so they get the standard Uthmani letters (checked against sura text, e.g. 2:2, 2:29):
-  // U+0672 -> U+0670 (dagger alef), U+066E -> U+0649 (alef maksura before dagger alef).
-  function tjText(t) { return S.script === 'uthmani' ? t.replace(/\u0672/g, '\u0670').replace(/\u06DF/g, '\u06E0') : t.replace(/\u0672/g, '\u0670').replace(/\u066E/g, '\u0649'); }
-  // Segments with mapped text. Naskh / IndoPak: a coloured part must never start with a bare vowel mark (the browser would
-  // draw it on a dotted circle), so the letter it belongs to moves into the same part (letter + its marks share one colour).
-  var MK = '\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06DC\u06DF-\u06E4\u06E7\u06E8\u06EA-\u06ED', MK0 = new RegExp('^[' + MK + ']'), MKT = new RegExp('[^\\s' + MK + '][' + MK + ']*$');
-  function tjSegs(markup) {
-    var segs = TJ.parse(markup); if (!segs) return null;
-    segs = segs.map(function (g) { return { rule: g.rule, text: g.rule === 'endMarker' ? g.text : tjText(g.text) }; });
-    if (S.script === 'uthmani') return segs;
-    for (var k = 1; k < segs.length; k++) {
-      var g = segs[k], p = segs[k - 1]; if (g.rule === 'endMarker' || p.rule === 'endMarker' || !MK0.test(g.text)) continue;
-      var m = p.text.match(MKT); if (!m) continue;
-      p.text = p.text.slice(0, -m[0].length); g.text = m[0] + g.text;
-    }
-    return segs.filter(function (g) { return g.text !== ''; });
-  }
   function fmt(a, s, i, noMark) {
-    var m = tjMarkup(s, i);
-    return (m && tjSource(m, !noMark)) || esc(a);
-  }
-  function tjMarkup(s, i) {
     var m = S.tajweed && TJD[s] && TJD[s][i];
     // same single, exact repair as the app (known Quran Foundation markup defect at 32:3)
     if (m && s === 32 && i === 2) m = m.replace('<tajweed class=ham_wasl>ٱ</tajweed>فْتَرَ>ٮٰ</tajweed>هُ', '<tajweed class=ham_wasl>ٱ</tajweed>فْتَرَ<tajweed class=madda_normal>ٮٰ</tajweed>هُ');
-    return m || null;
-  }
-  // Mushaf+: the same Tajweed colours word by word. Used only when the word count matches the word-by-word data exactly
-  // (otherwise that ayah stays plain: fail-closed, never a wrong split).
-  function tjWords(s, i, count) {
-    var m = tjMarkup(s, i), segs = m && tjSegs(m); if (!segs) return null;
-    var out = [], cur = '';
-    segs.forEach(function (g) {
-      if (g.rule === 'endMarker') return;
-      var cls = g.rule && g.rule !== 'unknown' ? g.rule : null, t = g.text;
-      t.split(/(\s+)/).forEach(function (p) { if (!p) return; if (/^\s+$/.test(p)) { if (cur) { out.push(cur); cur = ''; } return; } cur += cls ? '<span class="tj-' + cls + '">' + esc(p) + '</span>' : esc(p); });
-    });
-    if (cur) out.push(cur);
-    return out.length === count ? out : null;
+    return (m && tjSource(m, !noMark)) || esc(a);
   }
 
-  // word-by-word languages list (only the ones downloaded)
-  SO.j('../assets/data/wbw-langs.json').catch(function () { return [{ code: 'en', name: 'English' }]; }).then(function (l) { var sel = $('wbw-lang'); if (!sel || !l || !l.length) return;
-    sel.innerHTML = l.map(function (x) { return '<option value="' + x.code + '">' + esc(x.name) + '</option>'; }).join(''); sel.value = S.wbwLang || 'en'; $('wbw-lang-row').hidden = false;
-    sel.onchange = function () { S.wbwLang = this.value; save(); render(); }; }).catch(function () {});
-  var RTLW = { ur: 1, fa: 1, ps: 1, ku: 1 };
   // Translations: 20 = Saheeh International (inside sura/*.json); others from assets/data/tr/<id>/<sura>.json (scripts/fetch-translations.ps1)
   var TRM = null, TRT = null;
   function trInfo() { return TRM && TRM.filter(function (t) { return t.id === +S.trid; })[0]; }
@@ -150,14 +111,11 @@
     }
     return h + '</p>';
   }
-  // Mushaf+: the ayah-end sign exactly as in the selected Mushaf text (its own number glyph, drawn by the Mushaf font)
-  function ownEnd(i) { if (!S.nums) return ''; var mk = (AR[i] || '').match(/([\u06DD]?[\u0660-\u0669\u06F0-\u06F9]+|[\uE000-\uF8FF]+)\s*$/);
-    return mk ? '<span class="end-own">' + esc(mk[1]) + '</span>' : end(i + 1); }
   function end(i) { return '<span class="end">﴿' + arNum(i) + '﴾</span>'; }
 
   // ---------- apply settings ----------
   function apply(rerender) {
-    root.style.setProperty('--ar-size', S.ar + 'rem'); root.style.setProperty('--tr-size', S.tr + 'rem'); root.style.setProperty('--lh', S.lh); root.style.setProperty('--pad', S.pad + 'px'); root.style.setProperty('--wgap', (S.wgap === undefined ? 8 : S.wgap) + 'px');
+    root.style.setProperty('--ar-size', S.ar + 'rem'); root.style.setProperty('--tr-size', S.tr + 'rem'); root.style.setProperty('--lh', S.lh); root.style.setProperty('--pad', S.pad + 'px');
     document.body.classList.toggle('nums-right', !!S.numsRight); document.body.classList.toggle('no-wbw', !S.showWbw);
     document.body.dataset.bg = S.bg;
     $('head').hidden = !S.header; $('s-meta').hidden = !S.meaning; $('s-meta').classList.toggle('sr', !S.meaning); $('s-meta').classList.toggle('s-mean', !!S.meaning);
@@ -183,7 +141,7 @@
       else if (el.type === 'checkbox') el.checked = !!S[k];
       else el.value = S[k];
     });
-    document.querySelectorAll('[data-out]').forEach(function (o) { var k = o.getAttribute('data-out'); o.textContent = k === 'rate' ? S.rate + '×' : k === 'vol' ? Math.round(S.vol * 100) + '%' : k === 'speed' ? S.speed : k === 'lh' ? (+S.lh).toFixed(1) : k === 'pad' ? S.pad + 'px' : k === 'wgap' ? S.wgap + 'px' : Math.round(S[k] * 16); });
+    document.querySelectorAll('[data-out]').forEach(function (o) { var k = o.getAttribute('data-out'); o.textContent = k === 'rate' ? S.rate + '×' : k === 'vol' ? Math.round(S.vol * 100) + '%' : k === 'speed' ? S.speed : k === 'lh' ? (+S.lh).toFixed(1) : k === 'pad' ? S.pad + 'px' : Math.round(S[k] * 16); });
     deps();
     if (ch) navLinks();
     if (rerender && sura) render();
@@ -192,8 +150,8 @@
   // grey out options that do not apply to the selected reading mode (they work again when that mode is chosen)
   function deps() {
     var m = S.mode, on = {
-      paging: m === 'clean', tlay: m === 'verse', showAr: m === 'verse', showTr: m === 'verse', tfInline: m !== 'clean',
-      wgap: m !== 'clean' && S.showWbw, showWbw: m !== 'clean', tapWord: m === 'plus', numsRight: m !== 'clean', tajweed: true, legend: !!S.tajweed,
+      paging: m === 'clean', tlay: m === 'verse', showAr: m === 'verse', showTr: m === 'verse', tfInline: m === 'verse',
+      showWbw: m === 'plus', tapWord: m === 'plus', numsRight: m !== 'clean', tajweed: m !== 'plus', legend: m !== 'plus' && S.tajweed,
       speed: S.auto, asNext: S.auto, asResume: S.auto, asEta: S.auto, meaning: S.header, deco: S.header };
     Object.keys(on).forEach(function (k) {
       document.querySelectorAll('#settings [data-set="' + k + '"]').forEach(function (el) {
@@ -259,14 +217,7 @@
   }
   function render() {
     if (pageMode) { renderPage(); return; }
-    var needW = S.mode === 'plus' || (S.mode === 'verse' && S.showWbw);
-    var go = needW && !wbw ? SO.j('../assets/data/wbw/' + n + '.json').then(function (d) { wbw = d.w; }).catch(function () { wbw = false; }) : Promise.resolve();
-    // word meanings in another language (scripts/fetch-wbw-langs.ps1); per ayah, used only if the word count matches, else English
-    go = go.then(function () { if (!wbw || !needW) return; var L = S.wbwLang || 'en'; if (wbw.lang === L) return;
-      var base = wbw.base || wbw.map(function (v) { return v.map(function (w) { return w[1]; }); });
-      return (L === 'en' ? Promise.resolve(null) : SO.j('../assets/data/wbw-' + L + '/' + n + '.json').catch(function () { return null; })).then(function (d) {
-        var t = d && d.t; wbw.forEach(function (v, i) { var g = t && t[i] && t[i].length === v.length ? t[i] : base[i]; v.forEach(function (w, j) { w[1] = g[j]; }); });
-        wbw.base = base; wbw.lang = t ? L : 'en'; }); });
+    var go = S.mode === 'plus' && !wbw ? SO.j('../assets/data/wbw/' + n + '.json').then(function (d) { wbw = d.w; }).catch(function () { wbw = false; }) : Promise.resolve();
     go.then(function () {
       var c = ch[n - 1], h = '', mode = S.mode === 'plus' && !wbw ? 'verse' : S.mode;
       $('s-bism').innerHTML = BI ? fmt(noNum(BI), 1, 0, true) : '';
@@ -277,13 +228,13 @@
         var showAr = S.showAr || !S.showTr, showTr = S.showTr && mode !== 'clean';
         h = '<ol class="cards tl-' + (mode === 'plus' ? 'ayah' : S.tlay) + '">' + AR.map(function (a, i) {
           var k = n + ':' + (i + 1), top = '<div class="c-top">' + (S.nums ? '<span class="c-num">' + (i + 1) + '</span>' : '') + marks(k) + '<button type="button" class="more" data-a="' + (i + 1) + '" aria-label="Ayah ' + k + ' actions">•••</button></div>';
-          var ar = mode === 'plus' || (mode === 'verse' && S.showWbw && wbw)
-            ? '<div class="words" lang="ar" dir="rtl">' + (function () { var tw = tjWords(n, i, wbw[i].length); return wbw[i].map(function (w, j) { return '<span class="w" data-w="' + (j + 1) + '" data-wa="' + (i + 1) + '"><span class="wa' + (tw ? ' tjw' : '') + '">' + (tw ? tw[j] : esc(w[0])) + '</span><span class="wt" dir="' + (RTLW[wbw.lang] ? 'rtl' : 'ltr') + '">' + esc(w[1] || '') + '</span></span>'; }).join(''); })() + ownEnd(i) + '</div>'
+          var ar = mode === 'plus'
+            ? '<div class="words" lang="ar" dir="rtl">' + wbw[i].map(function (w, j) { return '<span class="w" data-w="' + (j + 1) + '" data-wa="' + (i + 1) + '"><span class="wa">' + esc(w[0]) + '</span><span class="wt" dir="ltr">' + esc(w[1] || '') + '</span></span>'; }).join('') + end(i + 1) + '</div>'
             : '<p class="ar" lang="ar" dir="rtl">' + fmt(a, n, i) + (S.nums && !(S.tajweed && TJD[n] ? S.script !== 'naskh' : hasNum(a)) ? ' ' + end(i + 1) : '') + '</p>';
-          return (i === 0 || jzStart(n, i + 1) ? '<li class="mpill-li">' + mpill(n, i + 1) + '</li>' : '') + '<li class="card-a" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(k) + '>' + top + (showAr ? ar : '') + (showTr ? '<p class="tr"' + trAttr() + '>' + esc((TRT || sura.en)[i]) + '</p>' : '') + (S.tfInline && mode !== 'clean' ? '<div class="tf-inl" data-tf="' + (i + 1) + '"></div>' : '') + '</li>';
+          return (i === 0 || jzStart(n, i + 1) ? '<li class="mpill-li">' + mpill(n, i + 1) + '</li>' : '') + '<li class="card-a" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(k) + '>' + top + (showAr ? ar : '') + (showTr ? '<p class="tr"' + trAttr() + '>' + esc((TRT || sura.en)[i]) + '</p>' : '') + (S.tfInline && mode === 'verse' ? '<div class="tf-inl" data-tf="' + (i + 1) + '"></div>' : '') + '</li>';
         }).join('') + '</ol>';
       }
-      if (S.tfInline && mode !== 'clean') setTimeout(tfFill, 0);
+      if (S.tfInline && mode === 'verse') setTimeout(tfFill, 0);
       if (S.mode === 'plus' && wbw === false) h = '<p class="empty">Word-by-word is not available yet. Showing Verse List.</p>' + h;
       $('body').innerHTML = h;
       var t = parseInt(location.hash.slice(1), 10);
@@ -509,7 +460,6 @@
     var k = e.target.getAttribute('data-set'); if (!k) return;
     S[k] = e.target.type === 'checkbox' ? e.target.checked : parseFloat(e.target.value); save();
     if (k === 'tajweed') { reloadText(); return; }
-    if (k === 'showWbw') { apply(false); render(); return; } // word by word: Mushaf+ and Verse List
     if (k === 'rate' || k === 'vol') AUD.live();
     apply(['nums', 'showAr', 'showTr', 'legend'].indexOf(k) > -1);
   });
@@ -753,7 +703,7 @@
     var slug = SO.get('so.tafsir', null) || 'en-tafisr-ibn-kathir', boxes = document.querySelectorAll('.tf-inl'); if (!boxes.length) return;
     boxes.forEach(function (b) { b.textContent = 'Loading tafsir…'; });
     fj(TFB + slug + '/' + n + '.json').then(function (d) { var a = Array.isArray(d) ? d : (d.ayahs || []), by = {}; a.forEach(function (x) { by[x.ayah] = x.text; });
-      boxes.forEach(function (b) { var t = (by[b.dataset.tf] || '').trim(); b.innerHTML = t ? '<p' + (/[\u0590-\u08FF]/.test(t.slice(0, 60)) ? ' dir="rtl"' : '') + '>' + esc(t) + '</p>' : ''; }); })
+      boxes.forEach(function (b) { var t = (by[b.dataset.tf] || '').trim(); b.innerHTML = t ? '<details><summary>Tafsir</summary><p' + (/[\u0590-\u08FF]/.test(t.slice(0, 60)) ? ' dir="rtl"' : '') + '>' + esc(t) + '</p></details>' : ''; }); })
       .catch(function () { boxes.forEach(function (b) { b.textContent = 'Tafsir could not be loaded.'; }); });
   }
 })();
