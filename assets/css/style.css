@@ -666,3 +666,32 @@ body.has-tabbar{padding-bottom:72px}
 .tb-nums{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}.tb-nums div{display:flex;flex-direction:column;align-items:center;min-width:84px;padding:8px 12px;border-radius:12px;background:color-mix(in srgb,var(--brand) 8%,transparent)}.tb-nums b{font-size:1.2rem}.tb-nums small{font-size:.72rem;color:var(--muted)}
 .tb-statbox h3{font-size:.95rem;margin:16px 0 6px;color:var(--muted)}
 .tb-hist{list-style:none;padding:0;margin:0 auto;max-width:460px;text-align:left}.tb-hist li{display:grid;grid-template-columns:1fr auto;gap:0 10px;padding:8px 4px;border-bottom:1px solid var(--border)}.tb-hist li small{grid-column:1/-1;color:var(--muted);font-size:.75rem}.tb-hist li.hint{display:block;text-align:center;border:0}
+/* Tasbih v3 = app layout */
+.tasbih{max-width:980px}
+.ts-acts{display:flex;gap:6px}
+.ts-modes{right:52px;width:auto;min-width:240px}.ts-modes button,.ts-man button{background:none;border:0;text-align:left;padding:10px 12px;border-radius:10px;font:inherit;color:var(--text);cursor:pointer}.ts-modes button[aria-pressed=true]{background:color-mix(in srgb,var(--brand) 14%,transparent);color:var(--brand);font-weight:600}
+.tb-pop .tg{padding:8px 0}
+.ts-card{max-width:590px;margin:0 auto 14px;padding:16px;border-radius:16px;background:var(--surface);border:1px solid var(--border);display:flex;flex-direction:column;gap:10px;text-align:center}
+.ts-head{display:flex;align-items:center;gap:8px;text-align:left}.ts-head svg{width:22px;height:22px;fill:none;stroke:var(--brand);stroke-width:1.8}.ts-head b{flex:1;font-size:1.05rem}
+.icon-btn.sm{width:34px;height:34px;font-size:1rem}
+.ts-card .pick select{font-family:"UthmanicHafs","Amiri Quran",serif;font-size:1.1rem}
+.ts-ar{font-family:"UthmanicHafs","Amiri Quran",serif;font-size:clamp(1.25rem,4.5vw,1.65rem);line-height:1.9;margin:0}
+.ts-src{font-size:.8rem;color:var(--muted);margin:0}
+.ts-two{display:grid;grid-template-columns:1fr 1fr;gap:8px}.ts-two div,.ts-stats div{display:flex;flex-direction:column;padding:8px;border-radius:12px;background:color-mix(in srgb,var(--brand) 8%,transparent)}.ts-two small,.ts-stats small{font-size:.72rem;color:var(--muted)}.ts-two b,.ts-stats b{font-size:1.2rem}
+.ts-targets{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center}.ts-targets>span{display:flex;flex-wrap:wrap;gap:6px;align-items:center}.ts-targets>span:first-child{font-size:.85rem;color:var(--muted)}
+.ts-chip{border:1px solid var(--border);background:none;color:var(--text);border-radius:999px;padding:5px 14px;font:inherit;font-size:.85rem;cursor:pointer}.ts-chip[aria-pressed=true]{background:color-mix(in srgb,var(--brand) 18%,transparent);border-color:var(--brand);color:var(--brand);font-weight:600}
+.ts-bar{height:4px;border-radius:4px;background:color-mix(in srgb,var(--muted) 20%,transparent);overflow:hidden}.ts-bar[hidden]{display:none}.ts-bar i{display:block;height:100%;background:var(--brand);transition:width .2s ease-out}
+.ts-circle{width:min(62vw,190px);aspect-ratio:1;margin:6px auto;border-radius:50%;border:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:color-mix(in srgb,var(--brand) 18%,var(--surface));color:var(--text);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;font:inherit}
+.ts-circle.big{width:min(72vw,245px)}@media(min-width:600px){.ts-circle{width:230px}.ts-circle.big{width:300px}}
+.ts-circle span{font-size:clamp(2.7rem,11vw,3.9rem);font-weight:700;line-height:1;font-variant-numeric:tabular-nums}.ts-circle.big span{font-size:clamp(3.5rem,15vw,5.75rem)}
+.ts-circle em{font-style:normal;font-weight:600}.ts-circle small{opacity:.78;font-size:.82rem}
+.ts-circle.pulse{animation:tbp .16s ease-out}.ts-circle.hit{animation:tbh .5s ease-out}.rm .ts-circle{animation:none!important}
+.ts-ctl{display:flex;align-items:center;justify-content:center;gap:14px}
+.ts-rb{width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:1.4rem;cursor:pointer}.ts-rb:disabled,.ts-ctl .btn:disabled{opacity:.4;cursor:default}
+.ts-note{font-size:.78rem;margin:0}
+.ts-cols{display:grid;gap:18px}@media(min-width:760px){.ts-cols{grid-template-columns:6fr 5fr;align-items:start}}
+.ts-pane{display:flex;flex-direction:column;gap:12px}
+.ts-prof{display:flex;align-items:flex-end;gap:6px;position:relative}.ts-prof .pick{flex:1;margin:0}.ts-man{top:56px;width:auto;min-width:170px}.ts-man [hidden]{display:none}
+.ts-stats{flex-direction:row}.ts-stats div{flex:1}.ts-stats[hidden]{display:none}
+.ts-hh{display:flex;justify-content:space-between;align-items:center}.ts-hh [hidden]{display:none}
+#ts-dhikr[hidden],#ts-saved[hidden]{display:none}

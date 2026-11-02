@@ -1,86 +1,108 @@
-// Tasbih (like the app): the app's sourced dhikr phrases (tasbih_dhikr_catalog.dart, copied unchanged) + your own counters.
-// Target, vibrate, sound at target, confirm reset, statistics. Saved in this browser only.
+// Tasbih = the SiraatOne Quran app's Tasbih (full audit Nov 2026):
+//  Dhikr counter (tasbih_dhikr_panel.dart + tasbih_dhikr_controller.dart): 8 sourced phrases, per-phrase count/total/target, targets Off/33/34/100,
+//  reset keeps totals; Previous saved counters (tasbih_screen.dart + tasbih_controller.dart): max 12, targets none/33/34/100, history max 20 (5 shown),
+//  lifetime, targets, sessions; settings (tasbih_settings_controller.dart): haptics, beep at goal, confirm reset, show statistics - all on by default.
+//  Goal beep = the app's own tasbih_target_beep.wav. Saved in this browser only.
 (function () {
   var $ = function (id) { return document.getElementById(id); }, esc = SO.esc;
   var CAT = [
-    ['subhan_allah', 'Subhan Allah', 'سُبْحَانَ اللَّهِ', 'Sahih Muslim 596b–c (post-prayer remembrance)', 'https://sunnah.com/muslim:596b', 33],
-    ['alhamdulillah', 'Alhamdulillah', 'الْحَمْدُ لِلَّهِ', 'Sahih Muslim 596b–c (post-prayer remembrance)', 'https://sunnah.com/muslim:596b', 33],
-    ['allahu_akbar', 'Allahu Akbar', 'اللَّهُ أَكْبَرُ', 'Sahih Muslim 596b–c (post-prayer remembrance)', 'https://sunnah.com/muslim:596b', 34],
-    ['la_ilaha_illallah', 'La ilaha illallah', 'لَا إِلَٰهَ إِلَّا اللَّهُ', 'Sahih Muslim 2691 (part of the reported Tahlil)', 'https://sunnah.com/muslim:2691', 0],
-    ['subhan_allah_wa_bihamdihi', 'Subhan Allah wa bihamdihi', 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ', 'Sahih al-Bukhari 6405 (100 times daily)', 'https://sunnah.com/bukhari:6405', 100],
-    ['subhan_allah_al_azim', 'Subhan Allah al-Azim', 'سُبْحَانَ اللَّهِ الْعَظِيمِ', 'Sahih al-Bukhari 6406', 'https://sunnah.com/bukhari:6406', 0],
-    ['la_hawla', 'La hawla wa la quwwata illa billah', 'لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ', 'Sahih al-Bukhari 6384', 'https://sunnah.com/bukhari:6384', 0],
-    ['complete_tahlil', 'La ilaha illallah wahdahu', 'لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ', 'Sahih Muslim 2691 (100 times daily)', 'https://sunnah.com/muslim:2691', 100]
+    ['subhan_allah', 'سُبْحَانَ اللَّهِ', 'Sahih Muslim 596b–c (post-prayer remembrance)', 'https://sunnah.com/muslim:596b', 33],
+    ['alhamdulillah', 'الْحَمْدُ لِلَّهِ', 'Sahih Muslim 596b–c (post-prayer remembrance)', 'https://sunnah.com/muslim:596b', 33],
+    ['allahu_akbar', 'اللَّهُ أَكْبَرُ', 'Sahih Muslim 596b–c (post-prayer remembrance)', 'https://sunnah.com/muslim:596b', 34],
+    ['la_ilaha_illallah', 'لَا إِلَٰهَ إِلَّا اللَّهُ', 'Sahih Muslim 2691 (part of the reported Tahlil)', 'https://sunnah.com/muslim:2691', 0],
+    ['subhan_allah_wa_bihamdihi', 'سُبْحَانَ اللَّهِ وَبِحَمْدِهِ', 'Sahih al-Bukhari 6405 (100 times daily)', 'https://sunnah.com/bukhari:6405', 100],
+    ['subhan_allah_al_azim', 'سُبْحَانَ اللَّهِ الْعَظِيمِ', 'Sahih al-Bukhari 6406', 'https://sunnah.com/bukhari:6406', 0],
+    ['la_hawla', 'لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ', 'Sahih al-Bukhari 6384', 'https://sunnah.com/bukhari:6384', 0],
+    ['complete_tahlil', 'لَا إِلَٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ', 'Sahih Muslim 2691 (100 times daily)', 'https://sunnah.com/muslim:2691', 100]
   ];
-  var old = SO.get('so.tb', null), D = SO.get('so.tb2', null);
-  if (!D) { // first run: counters for the app phrases; keep earlier custom counters from the old page
-    D = { cur: 'subhan_allah', c: {}, own: [], vib: true, snd: true, conf: true, stats: true, days: {}, total: 0 };
-    CAT.forEach(function (x) { D.c[x[0]] = { n: 0, t: x[5] }; });
-    if (old && old.list) { old.list.forEach(function (o, i) { if (o.n || o.name !== 'Tasbih') { var id = 'own' + i; D.own.push({ id: id, name: o.name }); D.c[id] = { n: o.n || 0, t: o.target || 0 }; } });
-      ['vib', 'snd', 'conf', 'stats'].forEach(function (k) { if (k in old) D[k] = old[k]; }); D.days = old.days || {}; }
+  var DT = [0, 33, 34, 100], MAXP = 12, MAXH = 20, SETDEF = { hap: true, beep: true, conf: true, stats: true };
+  var D = SO.get('so.tb3', null);
+  if (!D) { // migrate earlier website versions (so.tb2 / so.tb)
+    var o2 = SO.get('so.tb2', null), o1 = SO.get('so.tb', null);
+    D = { mode: 'dhikr', dh: { active: CAT[0][0], rows: {} }, sv: { profiles: [], active: null, life: 0, cmp: 0, hist: [] }, set: Object.assign({}, SETDEF) };
+    if (o2) {
+      CAT.forEach(function (c) { var r = o2.c && o2.c[c[0]]; if (r) D.dh.rows[c[0]] = { count: r.n || 0, total: r.n || 0, target: DT.indexOf(r.t) > -1 ? r.t : c[4] }; });
+      (o2.own || []).forEach(function (p) { var r = (o2.c || {})[p.id] || {}; D.sv.profiles.push({ id: p.id, name: p.name, count: r.n || 0, target: r.t || null }); });
+      D.sv.life = o2.total || 0; D.sv.cmp = o2.tg || 0; D.sv.hist = (o2.hist || []).map(function (h) { return { name: h.name, count: h.n, target: null, at: h.d }; });
+      D.set = { hap: o2.vib !== false, beep: o2.snd !== false, conf: o2.conf !== false, stats: o2.stats !== false };
+    } else if (o1 && o1.list) o1.list.forEach(function (p, i) { D.sv.profiles.push({ id: 'p' + i, name: p.name, count: p.n || 0, target: p.target || null }); });
   }
-  // same features as the app: modes Dhikr / Saved counters (max 12), session history (max 20), lifetime, targets reached
-  D.mode = D.mode || 'dhikr'; D.hist = D.hist || []; D.tg = D.tg || 0; D.ownCur = D.ownCur || (D.own[0] && D.own[0].id) || null; D.dCur = D.dCur || (D.cur && D.cur.indexOf('own') !== 0 ? D.cur : 'subhan_allah');
-  if (!D.own.length) { D.own.push({ id: 'own1', name: 'Tasbih' }); D.c.own1 = D.c.own1 || { n: 0, t: 33 }; D.ownCur = 'own1'; }
-  D.cur = D.mode === 'own' ? D.ownCur : D.dCur;
-  function save() { SO.set('so.tb2', D); }
-  function today() { var d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
-  function item(id) { var a = CAT.filter(function (x) { return x[0] === id; })[0]; if (a) return { id: a[0], name: a[1], ar: a[2], src: a[3], url: a[4] };
-    var o = D.own.filter(function (x) { return x.id === id; })[0]; return o ? { id: o.id, name: o.name, own: true } : null; }
-  if (!item(D.cur)) D.cur = CAT[0][0];
-  function c() { return D.c[D.cur] || (D.c[D.cur] = { n: 0, t: 0 }); }
-  var actx; function beep() { try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); var o = actx.createOscillator(), g = actx.createGain(); o.frequency.value = 880; g.gain.value = .15; o.connect(g); g.connect(actx.destination); o.start(); o.stop(actx.currentTime + .18); } catch (e) {} }
-  var C = 2 * Math.PI * 54;
-  function ring() {
-    var x = c(), p = x.t ? (x.n % x.t || (x.n ? x.t : 0)) / x.t : 0;
-    $('tb-prog').style.strokeDasharray = C; $('tb-prog').style.strokeDashoffset = C * (1 - p);
-    $('tb-n').textContent = x.n;
-    $('tb-goal').textContent = x.t ? 'Round ' + (Math.floor(Math.max(x.n - 1, 0) / x.t) + 1) + ' · ' + (x.n % x.t || (x.n ? x.t : 0)) + ' / ' + x.t : 'No target';
-    $('tb-st').hidden = !D.stats; $('st-life').textContent = D.total || 0; $('st-today').textContent = D.days[today()] || 0; $('st-tg').textContent = D.tg; $('st-ses').textContent = D.hist.length;
-    $('tb-hist').innerHTML = D.hist.length ? D.hist.map(function (h) { return '<li><b>' + esc(h.name) + '</b><span>' + h.n + '</span><small>' + esc(h.d) + '</small></li>'; }).join('') : '<li class="hint">No sessions yet. A session is saved when you reset a counter.</li>';
-  }
-  function draw() {
-    var it = item(D.cur), x = c();
-    document.querySelectorAll('#tb-mode button').forEach(function (b) { b.setAttribute('aria-selected', b.dataset.m === D.mode); });
-    $('tb-chips').innerHTML = D.mode === 'own' ? D.own.map(function (o) { return '<button type="button" class="tb-chip" data-id="' + o.id + '" aria-pressed="' + (o.id === D.cur) + '"><span>' + esc(o.name) + '</span><small>' + (D.c[o.id] ? D.c[o.id].n : 0) + '</small></button>'; }).join('') : CAT.map(function (a) { return '<button type="button" class="tb-chip" data-id="' + a[0] + '" aria-pressed="' + (a[0] === D.cur) + '"><span lang="ar" dir="rtl">' + esc(a[2].length > 34 ? a[2].slice(0, 32) + '…' : a[2]) + '</span><small>' + esc(a[1]) + '</small></button>'; }).join('') +
-''; 
-    $('tb-ar').textContent = it.ar || ''; $('tb-ar').hidden = !it.ar; $('tb-name').textContent = it.name;
-    $('tb-src').innerHTML = it.src ? 'Source: <a href="' + it.url + '" target="_blank" rel="noopener">' + esc(it.src) + '</a>' : '';
-    var sel = $('tb-target'), std = ['0', '33', '34', '99', '100'], v = String(x.t), co = sel.querySelector('[data-custom]');
-    if (std.indexOf(v) < 0) { if (!co) { co = document.createElement('option'); co.dataset.custom = 1; sel.insertBefore(co, sel.lastChild); } co.value = v; co.textContent = v; } else if (co) co.remove();
-    sel.value = v;
-    ['vib', 'snd', 'conf', 'stats'].forEach(function (k) { $('tb-' + k).checked = !!D[k]; });
-    $('tb-ren').hidden = !it.own; $('tb-del').hidden = !it.own || D.own.length < 2; $('tb-add').hidden = D.own.length >= 12;
-    ring();
-    var a = $('tb-chips').querySelector('[aria-pressed=true]'); if (a) a.scrollIntoView({ block: 'nearest', inline: 'center' });
-  }
-  function inc() {
-    var x = c(); x.n++; D.total = (D.total || 0) + 1; D.days[today()] = (D.days[today()] || 0) + 1;
-    var hit = x.t && x.n % x.t === 0;
-    if (D.vib && navigator.vibrate) navigator.vibrate(hit ? [60, 60, 120] : 12);
-    if (hit) D.tg++;
-    if (hit && D.snd) beep();
-    var r = $('tb-tap'); r.classList.remove('pulse', 'hit'); void r.offsetWidth; r.classList.add(hit ? 'hit' : 'pulse');
-    ring(); clearTimeout(inc.t); inc.t = setTimeout(save, 250); // instant screen update, saved right after
-  }
-  // pointerdown = no click delay on phones; Enter/Space for keyboards
-  $('tb-tap').addEventListener('pointerdown', function (e) { if (e.button > 0) return; e.preventDefault(); inc(); });
-  $('tb-tap').addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inc(); } });
-  document.addEventListener('keydown', function (e) { if (e.code === 'Space' && e.target === document.body) { e.preventDefault(); inc(); } });
+  if (!D.sv.profiles.length) D.sv.profiles.push({ id: 'p' + Date.now(), name: 'Counter 1', count: 0, target: 33 });
+  if (!D.sv.profiles.some(function (p) { return p.id === D.sv.active; })) D.sv.active = D.sv.profiles[0].id;
+  function save() { SO.set('so.tb3', D); }
+  var saveT; function saveSoon() { clearTimeout(saveT); saveT = setTimeout(save, 200); }
   window.addEventListener('pagehide', save);
-  $('tb-undo').onclick = function () { var x = c(); if (x.n > 0) { x.n--; D.total = Math.max(0, (D.total || 0) - 1); save(); ring(); } };
-  $('tb-reset').onclick = function () { var x = c(); if (!D.conf || confirm('Reset this counter to 0?')) { if (x.n) { D.hist.unshift({ name: item(D.cur).name, n: x.n, d: new Date().toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) }); D.hist = D.hist.slice(0, 20); } x.n = 0; save(); draw(); } };
-  $('tb-clear').onclick = function () { if (confirm('Clear the session history?')) { D.hist = []; save(); ring(); } };
-  $('tb-rstats').onclick = function () { if (confirm('Reset all statistics (lifetime, today, targets reached)?')) { D.total = 0; D.days = {}; D.tg = 0; save(); ring(); } };
-  $('tb-mode').onclick = function (e) { var b = e.target.closest('[data-m]'); if (!b) return; D.mode = b.dataset.m; D.cur = D.mode === 'own' ? D.ownCur : D.dCur; save(); draw(); };
-  $('tb-target').onchange = function () { var v = this.value; if (v === 'c') { v = parseInt(prompt('Target number:', '33'), 10); if (!(v > 0)) { draw(); return; } } c().t = +v; save(); draw(); };
-  ['vib', 'snd', 'conf', 'stats'].forEach(function (k) { $('tb-' + k).onchange = function () { D[k] = this.checked; save(); ring(); }; });
-  $('tb-chips').onclick = function (e) { var b = e.target.closest('[data-id]'); if (!b) return; D.cur = b.dataset.id; if (D.mode === 'own') D.ownCur = D.cur; else D.dCur = D.cur; save(); draw(); };
-  $('tb-add').onclick = function () { var nm = prompt('Name for the new counter:', 'My counter ' + (D.own.length + 1)); if (!nm) return; var id = 'own' + Date.now(); D.own.push({ id: id, name: nm.slice(0, 40) }); D.c[id] = { n: 0, t: 33 }; D.mode = 'own'; D.cur = D.ownCur = id; save(); draw(); };
-  $('tb-ren').onclick = function () { var o = D.own.filter(function (x) { return x.id === D.cur; })[0]; if (!o) return; var r = prompt('New name:', o.name); if (!r) return; o.name = r.slice(0, 40); save(); draw(); };
-  $('tb-del').onclick = function () { var i = D.own.findIndex(function (x) { return x.id === D.cur; }); if (i < 0 || !confirm('Delete "' + D.own[i].name + '"?')) return; delete D.c[D.cur]; D.own.splice(i, 1); D.cur = D.ownCur = D.own[0].id; save(); draw(); };
-  $('tb-menu').onclick = function (e) { e.stopPropagation(); var o = $('tb-pop').classList.toggle('open'); this.setAttribute('aria-expanded', o); };
-  document.addEventListener('click', function (e) { if ($('tb-pop').classList.contains('open') && !e.target.closest('#tb-pop')) $('tb-pop').classList.remove('open'); });
+  // ---- feedback (as the app: light tick on tap, stronger at goal + beep) ----
+  var beepA = null; function beep() { try { beepA = beepA || new Audio('../assets/audio/tasbih-target-beep.wav'); beepA.currentTime = 0; beepA.play().catch(function () {}); } catch (e) {} }
+  function tick(goal) { if (D.set.hap && navigator.vibrate) navigator.vibrate(goal ? 60 : 8); if (goal && D.set.beep) beep(); }
+  function bump(el, goal) { el.classList.remove('pulse', 'hit'); void el.offsetWidth; el.classList.add(goal ? 'hit' : 'pulse'); }
+  function chips(box, list, cur, label) { $(box).innerHTML = (label ? '<span>' + label + '</span>' : '') + list.map(function (v) { var t = v === 0 || v === null; return '<button type="button" class="ts-chip" data-t="' + (t ? 0 : v) + '" aria-pressed="' + ((t && !cur) || v === cur) + '">' + (t ? (label ? 'Off' : 'No target') : v) + '</button>'; }).join(''); }
+
+  // ================= Dhikr counter =================
+  function phrase() { return CAT.filter(function (c) { return c[0] === D.dh.active; })[0] || CAT[0]; }
+  function row() { var p = phrase(); return D.dh.rows[p[0]] || (D.dh.rows[p[0]] = { count: 0, total: 0, target: p[4] }); }
+  $('dh-pick').innerHTML = CAT.map(function (c) { return '<option value="' + c[0] + '">' + esc(c[1]) + '</option>'; }).join('');
+  function dhDraw() {
+    var p = phrase(), r = row(), g = r.target, n = r.count, all = 0;
+    Object.keys(D.dh.rows).forEach(function (k) { all += D.dh.rows[k].total; });
+    $('dh-pick').value = p[0]; $('dh-ar').textContent = p[1];
+    $('dh-src').innerHTML = '<a href="' + p[3] + '" target="_blank" rel="noopener">' + esc(p[2]) + '</a>';
+    $('dh-sel').textContent = r.total; $('dh-all').textContent = all; $('dh-n').textContent = n;
+    chips('dh-tg', DT, g, ' '); $('dh-tg').firstChild.remove();
+    $('dh-barw').hidden = !(g > 0); $('dh-bar').style.width = (g > 0 ? (n > 0 && n % g === 0 ? 1 : (n % g) / g) * 100 : 0) + '%';
+    $('dh-dec').disabled = $('dh-reset').disabled = n === 0;
+    $('dh-snd').innerHTML = D.set.beep ? '🔊' : '🔇'; $('dh-snd').setAttribute('aria-pressed', D.set.beep);
+    $('dh-vib').innerHTML = D.set.hap ? '📳' : '📴'; $('dh-vib').setAttribute('aria-pressed', D.set.hap);
+  }
+  function dhInc() { var r = row(); r.count++; r.total++; var g = r.target > 0 && r.count % r.target === 0; tick(g); bump($('dh-tap'), g); dhDraw(); saveSoon(); }
+  function down(el, fn) { el.addEventListener('pointerdown', function (e) { if (e.button > 0) return; e.preventDefault(); fn(); }); el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } }); }
+  down($('dh-tap'), dhInc); down($('dh-inc'), dhInc);
+  $('dh-dec').onclick = function () { var r = row(); if (!r.count) return; r.count--; r.total = Math.max(0, r.total - 1); tick(false); dhDraw(); save(); };
+  $('dh-reset').onclick = function () { var r = row(); if (!r.count) return; if (D.set.conf && !confirm('Reset current count?\n\nThe selected Dhikr count returns to zero. Lifetime totals are kept.')) return; r.count = 0; dhDraw(); save(); };
+  $('dh-pick').onchange = function () { D.dh.active = this.value; dhDraw(); save(); };
+  $('dh-tg').onclick = function (e) { var b = e.target.closest('[data-t]'); if (!b) return; row().target = +b.dataset.t; dhDraw(); save(); };
+  $('dh-snd').onclick = function () { D.set.beep = !D.set.beep; save(); drawAll(); };
+  $('dh-vib').onclick = function () { D.set.hap = !D.set.hap; save(); drawAll(); };
+
+  // ================= Previous saved counters =================
+  function prof() { return D.sv.profiles.filter(function (p) { return p.id === D.sv.active; })[0]; }
+  function svDraw() {
+    var p = prof();
+    $('sv-pick').innerHTML = D.sv.profiles.map(function (x) { return '<option value="' + x.id + '"' + (x.id === p.id ? ' selected' : '') + '>' + esc(x.name) + '</option>'; }).join('');
+    chips('sv-tg', [null, 33, 34, 100], p.target);
+    $('sv-n').textContent = p.count; $('sv-goal').textContent = p.target ? 'Target ' + p.target : 'No target';
+    $('sv-dec').disabled = $('sv-reset').disabled = p.count === 0; $('sv-add').disabled = D.sv.profiles.length >= MAXP;
+    $('sv-del').hidden = D.sv.profiles.length <= 1;
+    $('sv-stats').hidden = !D.set.stats; $('sv-life').textContent = D.sv.life; $('sv-cmp').textContent = D.sv.cmp; $('sv-ses').textContent = D.sv.hist.length;
+    $('sv-clear').hidden = !D.sv.hist.length;
+    $('sv-hist').innerHTML = D.sv.hist.length ? D.sv.hist.slice(0, 5).map(function (h) { return '<li><b>' + esc(h.name) + '</b><span>' + (h.target ? h.count + ' / ' + h.target : h.count) + '</span><small>' + esc(h.at) + '</small></li>'; }).join('') : '<li class="hint">No completed sessions yet.</li>';
+  }
+  function svInc() { var p = prof(); p.count++; D.sv.life++; var g = p.target && p.count % p.target === 0; if (g) D.sv.cmp++; tick(g); bump($('sv-tap'), g); svDraw(); saveSoon(); }
+  down($('sv-tap'), svInc); down($('sv-inc'), svInc);
+  $('sv-dec').onclick = function () { var p = prof(); if (!p.count) return; p.count--; D.sv.life = Math.max(0, D.sv.life - 1); tick(false); svDraw(); save(); };
+  $('sv-reset').onclick = function () { var p = prof(); if (!p.count) return; if (D.set.conf && !confirm('Reset counter?\n\n' + p.name)) return;
+    D.sv.hist.unshift({ name: p.name, count: p.count, target: p.target, at: new Date().toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }) }); D.sv.hist = D.sv.hist.slice(0, MAXH); p.count = 0; svDraw(); save(); };
+  $('sv-pick').onchange = function () { D.sv.active = this.value; svDraw(); save(); };
+  $('sv-tg').onclick = function (e) { var b = e.target.closest('[data-t]'); if (!b) return; prof().target = +b.dataset.t || null; svDraw(); save(); };
+  $('sv-add').onclick = function () { if (D.sv.profiles.length >= MAXP) return; var nm = prompt('Add saved counter — Counter name:', 'Counter ' + (D.sv.profiles.length + 1)); if (!nm || !nm.trim()) return; var p = { id: 'p' + Date.now(), name: nm.trim().slice(0, 40), count: 0, target: 33 }; D.sv.profiles.push(p); D.sv.active = p.id; svDraw(); save(); };
+  $('sv-ren').onclick = function () { var p = prof(), nm = prompt('Rename counter:', p.name); $('sv-menu').classList.remove('open'); if (!nm || !nm.trim()) return; p.name = nm.trim().slice(0, 40); svDraw(); save(); };
+  $('sv-del').onclick = function () { var p = prof(); $('sv-menu').classList.remove('open'); if (D.sv.profiles.length <= 1 || !confirm('Delete counter?\n\n' + p.name)) return; D.sv.profiles = D.sv.profiles.filter(function (x) { return x !== p; }); D.sv.active = D.sv.profiles[0].id; svDraw(); save(); };
+  $('sv-clear').onclick = function () { if (confirm('Clear recent sessions?\n\nThis does not reset your saved counters.')) { D.sv.hist = []; svDraw(); save(); } };
+
+  // ================= mode, settings, menus =================
+  function drawAll() {
+    $('ts-dhikr').hidden = D.mode !== 'dhikr'; $('ts-saved').hidden = D.mode !== 'saved';
+    document.querySelectorAll('#ts-modes [data-mode]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.mode === D.mode); });
+    ['hap', 'beep', 'conf', 'stats'].forEach(function (k) { $('st-' + k).checked = !!D.set[k]; });
+    if (D.mode === 'dhikr') dhDraw(); else svDraw();
+  }
+  ['hap', 'beep', 'conf', 'stats'].forEach(function (k) { $('st-' + k).onchange = function () { D.set[k] = this.checked; save(); drawAll(); }; });
+  $('st-reset').onclick = function () { D.set = Object.assign({}, SETDEF); save(); drawAll(); };
+  $('ts-modes').onclick = function (e) { var b = e.target.closest('[data-mode]'); if (!b) return; D.mode = b.dataset.mode; this.classList.remove('open'); save(); drawAll(); };
+  function pop(btn, box) { btn.onclick = function (e) { e.stopPropagation(); document.querySelectorAll('.tb-pop.open').forEach(function (x) { if (x !== box) x.classList.remove('open'); }); btn.setAttribute('aria-expanded', box.classList.toggle('open')); }; }
+  pop($('tb-menu'), $('tb-pop')); pop($('ts-modebtn'), $('ts-modes')); pop($('sv-man'), $('sv-menu'));
+  document.addEventListener('click', function (e) { if (!e.target.closest('.tb-pop')) document.querySelectorAll('.tb-pop.open').forEach(function (x) { x.classList.remove('open'); }); });
+  document.addEventListener('keydown', function (e) { if (e.code === 'Space' && e.target === document.body) { e.preventDefault(); (D.mode === 'dhikr' ? dhInc : svInc)(); } });
   $('tb-back').onclick = function (e) { if (history.length > 1 && document.referrer.indexOf(location.host) > -1) { e.preventDefault(); history.back(); } };
-  draw();
+  drawAll(); save();
 })();
