@@ -1042,38 +1042,3 @@ body[data-script="indopak"] .flow,body[data-script="indopak"] .card-a .ar{line-h
 .pw-empty svg{width:26px;height:26px;flex:none;fill:none;stroke:var(--brand);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .pw-empty span{flex:1;display:flex;flex-direction:column}.pw-empty small{color:var(--muted);font-size:.8rem}.pw-empty em{font-style:normal;color:var(--muted);font-size:1.3rem}
 .pw-empty:hover{border-color:var(--brand)}
-/* H3: Home redesign — hero banner + prayer card on top, card-style Quick access below */
-.home3{padding-top:8px}
-.h3-top{display:grid;gap:16px;margin:4px 0 22px}
-@media(min-width:900px){.h3-top{grid-template-columns:minmax(0,1.9fr) minmax(300px,1fr);align-items:stretch}}
-.h3-hero{position:relative;overflow:hidden;display:grid;gap:14px;grid-template-columns:1fr;padding:24px;border-radius:22px;color:#fff;
-  background:radial-gradient(120% 140% at 100% 0%,color-mix(in srgb,var(--gold) 55%,transparent) 0,transparent 45%),linear-gradient(135deg,color-mix(in srgb,var(--brand) 92%,#000) 0%,var(--brand) 55%,color-mix(in srgb,var(--brand) 70%,#0b3d2e) 100%);
-  box-shadow:0 14px 34px -18px color-mix(in srgb,var(--brand) 70%,#000)}
-.h3-hero::after{content:"";position:absolute;right:-60px;bottom:-60px;width:220px;height:220px;border-radius:50%;border:28px solid rgba(255,255,255,.07);pointer-events:none}
-@media(min-width:640px){.h3-hero{grid-template-columns:1fr auto}}
-.h3-greet{display:flex;flex-direction:column;gap:2px}
-.h3-greet small{opacity:.85;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase}
-.h3-greet b{font-family:"Amiri",serif;font-size:clamp(1.8rem,5vw,2.6rem);line-height:1.5;color:#fff}
-.h3-greet span{font-weight:600}.h3-greet em{font-style:normal;opacity:.85;font-size:.9rem}
-.h3-ev{align-self:start;display:flex;flex-direction:column;gap:2px;padding:12px 16px;border-radius:16px;background:rgba(255,255,255,.14);backdrop-filter:blur(6px);min-width:200px}
-.h3-ev small{opacity:.85;font-size:.75rem}.h3-ev b{font-size:1.05rem;color:#fff}.h3-ev span{font-size:.85rem;opacity:.9}.h3-ev a{color:#fff;text-decoration:underline;text-underline-offset:3px}
-.h3-hero .search-big{grid-column:1/-1;margin:0}
-.h3-hero .search-big input{background:rgba(255,255,255,.96);border:0;color:#1d2a22;box-shadow:0 6px 18px -10px rgba(0,0,0,.45)}
-.h3-hero .search-big input::placeholder{color:#5d6a62}.h3-hero .search-big .s-ico{color:#5d6a62}
-:root[data-theme="dark"] .h3-hero .search-big input,.oled .h3-hero .search-big input{background:rgba(0,0,0,.35);color:#fff}
-.home3 .pw{margin:0;height:100%;box-sizing:border-box;border-radius:22px}
-.home3 .h3-qa{padding:0}
-.home3 .h3-qa .sec-row{margin-bottom:12px}.home3 .h3-qa .sec-h{margin:0}
-.home3 .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr))!important;gap:12px!important;margin:0}
-@media(min-width:640px){.home3 .tiles{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))!important}}
-.home3 .tile{--ac:var(--brand);flex-direction:row;align-items:center;text-align:left;gap:12px;padding:14px;border:1px solid var(--border);border-radius:18px;background:var(--surface);transition:transform .2s,box-shadow .2s,border-color .2s}
-.home3 .tile:nth-child(4n+2){--ac:var(--gold)}.home3 .tile:nth-child(4n+3){--ac:#3a7ca5}.home3 .tile:nth-child(4n){--ac:#8a5aa8}
-.home3 .tile:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--ac) 50%,var(--border));box-shadow:0 12px 24px -16px rgba(0,0,0,.35);background:var(--surface)}
-.home3 .tile .ico{flex:none;width:46px;height:46px;padding:11px;margin:0;border-radius:14px;color:var(--ac);background:color-mix(in srgb,var(--ac) 14%,transparent)}
-.home3 .tile b{font-size:.95rem;line-height:1.25}.home3 .tile:hover b{color:var(--text)}
-.home3 .tile span{display:block;font-size:.78rem;color:var(--muted);line-height:1.3}
-.home3 .tile>b,.home3 .tile>span{grid-column:2}
-.home3 .tile{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;column-gap:12px;row-gap:2px}
-.home3 .tile .ico{grid-row:1/3}
-.home3 .tile .qa-t{grid-column:1/-1}
-.rm .home3 .tile{transition:none}

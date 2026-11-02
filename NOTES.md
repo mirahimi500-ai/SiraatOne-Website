@@ -202,3 +202,4 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - PW1: Home prayer-times widget (next prayer + countdown + today's 6 times, Use my location / Search a city when not set); shared calc moved to assets/js/prayer-core.js (used by Prayer page + Home).
 - PW2: Home prayer widget moved to the right column as a compact card, replacing Last read / Saved / Tasbih cards (removed from code); no location -> 'Location required' link to prayer/.
 - H3: Home redesign (same content): green gradient hero with Hijri date, next Islamic day chip and search inside; Prayer card beside it (stacked on phone); Quick access as card tiles with coloured icon bubbles and subtitles (auto-fill grid), edit mode unchanged.
+- H3 reverted (user): Home back to PW2 layout (hero + search, Quick access, prayer card in right column).
