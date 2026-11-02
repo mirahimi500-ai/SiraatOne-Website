@@ -430,9 +430,24 @@
   }
   function asUi() {
     var bar = $('asbar'); bar.hidden = !S.auto; document.body.classList.toggle('as-on', !!S.auto); bar.classList.toggle('run', asRun);
+    asLay();
     $('as-spd').textContent = S.speed; $('as-eta').textContent = asRun && S.asEta ? (eta() || '–') : 'speed';
     $('as-play').setAttribute('aria-label', asRun ? 'Pause' : 'Play'); $('as-slow').disabled = S.speed <= 1; $('as-fast').disabled = S.speed >= 20;
   }
+  // place the controls in the free space between the sura name and settings; on narrow phones the arrows step aside
+  // (their space stays, so the name does not move): − ▶ + on the right, speed and ✕ on the left
+  function asLay() {
+    var bar = $('bar'), a = $('asbar'), l = $('asl'), on = !!S.auto; l.hidden = true; document.body.classList.remove('as-split'); if (!on) return;
+    var B = bar.getBoundingClientRect(), R = function (el) { return el.getBoundingClientRect(); };
+    var nx = R($('next')), nm = R($('bb-name')), g = R($('open-set')), bk = R(bar.querySelector('a.bb-btn')), split = g.left - nx.right - 12 < 200;
+    var L = (split ? nm.right : nx.right) + 6, w = g.left - 6 - L;
+    a.style.left = (L - B.left) + 'px'; a.style.width = Math.max(0, w) + 'px';
+    a.style.setProperty('--asm', Math.min(38, Math.floor(w * .38)) + 'px'); a.style.setProperty('--asb', Math.min(34, Math.floor((w - Math.min(38, w * .38) - 8) / 2)) + 'px');
+    var info = bar.querySelector('.as-info'), x = $('as-close');
+    if (split) { document.body.classList.add('as-split'); l.hidden = false; l.style.left = (bk.right + 6 - B.left) + 'px'; l.style.width = Math.max(0, nm.left - bk.right - 12) + 'px'; l.appendChild(info); l.appendChild(x); }
+    else { a.appendChild(info); a.appendChild(x); }
+  }
+  addEventListener('resize', function () { if (S.auto) asLay(); }); if (document.fonts) document.fonts.ready.then(function () { if (S.auto) asLay(); });
   function holdAwake(on) { if (on && !asLock && navigator.wakeLock) navigator.wakeLock.request('screen').then(function (l) { asLock = l; }).catch(function () {}); if (!on && asLock) { asLock.release(); asLock = null; } }
   function finish() {
     asRun = false; asUi(); holdAwake(false); $('bar').classList.remove('hid');
@@ -442,7 +457,8 @@
   }
   function step(t) {
     var dt = last ? Math.min(100, t - last) / 1000 : 0; last = t;
-    acc += pps() * dt; if (acc >= 1) { var px = Math.floor(acc); scrollBy(0, px); acc -= px; }
+    if (Math.abs(scrollY - acc) > 3) acc = scrollY; // start / resume from where the page is
+    acc += pps() * dt; var dpr = devicePixelRatio || 1; scrollTo(0, Math.round(acc * dpr) / dpr); // sub-pixel steps: very smooth
     if (atEnd()) { raf = null; finish(); return; }
     if (S.asEta && (t | 0) % 500 < 20) $('as-eta').textContent = eta() || '–';
     raf = requestAnimationFrame(step);
@@ -452,7 +468,7 @@
     if ((!S.auto || !asRun) && raf) { cancelAnimationFrame(raf); raf = null; holdAwake(false); }
     asUi();
   }
-  function asPlay(on) { clearTimeout(resumeT); clearTimeout(endT); clearTimeout(hideT); asRun = on === undefined ? !asRun : on; if (asRun && atEnd()) scrollTo(0, 0); if (!asRun) $('bar').classList.remove('hid'); autoScroll(); asHide(); }
+  function asPlay(on) { acc = scrollY; clearTimeout(resumeT); clearTimeout(endT); clearTimeout(hideT); asRun = on === undefined ? !asRun : on; if (asRun && atEnd()) scrollTo(0, 0); if (!asRun) $('bar').classList.remove('hid'); autoScroll(); asHide(); }
   function asSpeed(d) { S.speed = Math.max(1, Math.min(20, (+S.speed || 5) + d)); save(); asUi(); var o = document.querySelector('[data-out="speed"]'); if (o) o.textContent = S.speed; var r = document.querySelector('[data-set="speed"]'); if (r) r.value = S.speed; }
   $('as-play').onclick = function () { asPlay(); };
   $('as-slow').onclick = function () { asSpeed(-1); asHide(); }; $('as-fast').onclick = function () { asSpeed(1); asHide(); };

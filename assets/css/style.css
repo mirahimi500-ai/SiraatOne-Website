@@ -907,8 +907,12 @@ html{scroll-behavior:auto}
 .as-ctl[hidden]{display:none}
 .as-ctl .as-b{width:34px;height:34px;font-size:1.15rem}.as-ctl .as-b.main{width:38px;height:38px}.as-ctl .as-b svg{width:18px;height:18px}
 .as-ctl .as-info{min-width:38px}.as-ctl.run .as-b.main{box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 30%,transparent)}
-/* auto scroll: its own row on top of the toolbar, so the sura name never moves; hides with the toolbar */
-.bottombar{flex-wrap:wrap}.as-ctl{order:-1;flex:0 0 100%;justify-content:center;gap:10px;margin:0 0 6px;padding:4px 6px;border-radius:14px}
+/* auto scroll sits inside the toolbar between the sura name and settings; nothing else moves (the name is always centred) */
+.bottombar .bb-mid{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+.as-ctl,.as-l{position:absolute;top:0;bottom:0;display:flex;align-items:center;justify-content:center;gap:4px;padding:0;background:none;border-radius:0;animation:asIn .35s ease}
+.as-l[hidden]{display:none!important}@keyframes asIn{from{opacity:0}to{opacity:1}}
+body.as-split .bb-mid #prev,body.as-split .bb-mid #next{visibility:hidden}.as-l small{display:none}body.as-split .bb-mid{pointer-events:none}body.as-split .bb-mid #bb-name{pointer-events:auto}.as-l .as-info{min-width:24px}
+.as-ctl .as-b,.as-l .as-b{width:var(--asb,34px);height:34px;flex:none}.as-ctl .as-b.main{width:var(--asm,38px);height:38px}
 .as-ctl .i-pause,.as-ctl.run .i-play{display:none}.as-ctl.run .i-pause{display:block}
 .as-ctl .as-b.as-x{border-color:transparent;background:transparent;color:var(--muted);margin-left:6px}.as-ctl .as-b.as-x svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
 .rm .bottombar,.rm .site-header{transition:none}
