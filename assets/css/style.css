@@ -858,3 +858,11 @@ option,optgroup{color:var(--text);background-color:var(--surface)}
 .pv2 .cl-side .ts-card{padding:16px}
 @media(min-width:900px){.pv2 .cl-cols{grid-template-columns:minmax(0,1fr) 340px}}
 .pv2 .pv-sec[hidden]{display:none!important}
+/* App pages in the Islamic Calendar layout */
+.app2 .cl-hd b{font-family:inherit;font-size:clamp(1.5rem,4vw,2.2rem)}
+.ap-cta{display:flex;flex-direction:column;gap:8px;align-items:flex-end;justify-content:center}@media(max-width:600px){.ap-cta{align-items:stretch}}
+.ap-feat{max-width:none;margin:0;text-align:left}
+.ap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.ap-f{padding:14px;border-radius:12px;background:color-mix(in srgb,var(--brand) 6%,transparent);border:1px solid var(--border)}.ap-f h3{margin:0 0 4px;font-size:1rem}.ap-f p{margin:0;color:var(--muted);font-size:.92rem}
+.app2 .cl-side .ts-card{padding:16px;text-align:left}
+@media(min-width:900px){.app2 .cl-cols{grid-template-columns:minmax(0,1fr) 340px}}

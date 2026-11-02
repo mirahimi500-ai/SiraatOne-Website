@@ -163,3 +163,4 @@ SP2: Support in Islamic Calendar layout (hero contact, pill Common questions/Bec
 PV2: Privacy in Islamic Calendar layout; policy text unchanged (verified key passages), pill Quran/Azan/This website (all sections visible without JS), Changes + Contact as side cards, #quran/#azan/#website anchors kept. Version 20261103k.
 Fix: privacy pill - card display rule overrode [hidden]; now one policy visible at a time (tested real visibility). Version 20261103l.
 TM2: Terms & Credits in Islamic Calendar layout, text unchanged; pill Using this website / Credits & sources; side For copyright owners + Contact. PASS (real visibility). Version 20261103m.
+AP2: Quran app + Azan app pages in Islamic Calendar layout (hero + Play button, features grid, side Content sources/Phones + Help & policies). Text unchanged. Version 20261103n.
