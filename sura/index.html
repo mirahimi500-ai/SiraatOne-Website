@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261103s">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261103t">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -58,6 +58,14 @@
     <button class="bb-btn" id="as-btn" type="button" hidden aria-label="Start auto scroll" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M12 4v13M6.5 12.5L12 18l5.5-5.5"/><path d="M5 21h14"/></svg></button>
     <button class="bb-btn" id="open-set" type="button" aria-label="Reader settings"><svg viewBox="0 0 24 24" class="gear"><path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96a7.03 7.03 0 0 0-1.62-.94l-.36-2.54a.48.48 0 0 0-.48-.41h-3.84a.48.48 0 0 0-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 0 0-.59.22L2.74 8.87a.48.48 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.48.48 0 0 0-.12-.61zM12 15.6a3.6 3.6 0 1 1 0-7.2 3.6 3.6 0 0 1 0 7.2z"/></svg></button>
   </nav>
+  <div class="as-bar" id="asbar" hidden role="toolbar" aria-label="Auto scroll">
+    <button type="button" class="as-b" id="as-slow" aria-label="Slower">−</button>
+    <button type="button" class="as-b main" id="as-play" aria-label="Pause"><svg viewBox="0 0 24 24" class="fillico"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg></button>
+    <button type="button" class="as-b" id="as-fast" aria-label="Faster">+</button>
+    <span class="as-info"><b id="as-spd">5</b><small>speed</small></span>
+    <span class="as-info" id="as-etaw"><b id="as-eta">–</b><small>left</small></span>
+    <button type="button" class="as-b" id="as-stop" aria-label="Stop auto scroll">×</button>
+  </div>
   <div class="audiobar" id="abar" hidden>
     <button type="button" class="ab" id="ab-prev" aria-label="Previous ayah"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
     <button type="button" class="ab main" id="ab-toggle" aria-label="Pause"><svg viewBox="0 0 24 24" class="fillico"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg></button>
@@ -195,7 +203,11 @@
             <label class="tg">Show compact reading status<input type="checkbox" data-set="compact"></label>
             <label class="tg">Keep screen awake<input type="checkbox" data-set="awake"></label>
             <label class="tg">Auto scroll<input type="checkbox" data-set="auto"></label>
-            <label class="sl">Auto scroll speed <b data-out="speed"></b><input type="range" min="1" max="10" step="1" data-set="speed"></label>
+            <label class="sl">Auto scroll speed <b data-out="speed"></b><input type="range" min="1" max="20" step="1" data-set="speed"></label>
+            <label class="tg">Continue to the next surah / page<input type="checkbox" data-set="asNext"></label>
+            <label class="tg">Resume after scrolling by hand<input type="checkbox" data-set="asResume"></label>
+            <label class="tg">Show time left<input type="checkbox" data-set="asEta"></label>
+            <p class="hint">When Auto scroll is on, the ↓ button in the bottom bar opens the scroll controls: play/pause, slower, faster and stop. Keys: S start/pause · − / + speed · Esc stop.</p>
             <h3>Backup</h3>
             <p class="hint">Save your bookmarks, favorites, highlights, notes, tasbih, settings and other data from this browser to a file, or restore them from a file.</p>
             <div class="bk-row"><button type="button" class="btn btn-ghost" id="bk-export">Export backup</button><label class="btn btn-ghost" for="bk-file">Import backup</label><input type="file" id="bk-file" accept=".json,application/json" hidden></div>
@@ -208,9 +220,9 @@
   </div>
 </main>
 
-<script src="../assets/js/site.js?v=20261103s" defer></script>
-<script src="../assets/js/lib.js?v=20261103s" defer></script>
-<script src="../assets/js/tajweed.js?v=20261103s" defer></script>
-<script src="../assets/js/reader.js?v=20261103s" defer></script>
+<script src="../assets/js/site.js?v=20261103t" defer></script>
+<script src="../assets/js/lib.js?v=20261103t" defer></script>
+<script src="../assets/js/tajweed.js?v=20261103t" defer></script>
+<script src="../assets/js/reader.js?v=20261103t" defer></script>
 </body>
 </html>

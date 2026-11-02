@@ -5,7 +5,7 @@
   if (!(n >= 1) && P >= 1 && P <= 604) n = 1; // set from the page index below
   var $ = function (id) { return document.getElementById(id); }, esc = SO.esc, root = document.documentElement;
   if (!(n >= 1 && n <= 114)) { location.replace('../read/'); return; }
-  var DEF = { mode: 'clean', script: 'uthmani', ar: 1.9, tr: 1, header: true, meaning: true, deco: true, bg: 'app', nav: 'surah', hide: true, compact: true, awake: false, auto: false, speed: 3, paging: 'scroll', tajweed: true, legend: true, reciter: 'Alafasy', repeat: 'off', autoNext: true, follow: true, tapWord: true, rate: 1, vol: 1, lh: 2.3, pad: 48, tlay: 'ayah', nums: true, numsRight: false, showAr: true, showTr: true, showWbw: true, trid: 20, tfInline: false };
+  var DEF = { mode: 'clean', script: 'uthmani', ar: 1.9, tr: 1, header: true, meaning: true, deco: true, bg: 'app', nav: 'surah', hide: true, compact: true, awake: false, auto: false, speed: 3, paging: 'scroll', tajweed: true, legend: true, reciter: 'Alafasy', repeat: 'off', autoNext: true, follow: true, tapWord: true, rate: 1, vol: 1, lh: 2.3, pad: 48, tlay: 'ayah', nums: true, numsRight: false, showAr: true, showTr: true, showWbw: true, trid: 20, tfInline: false, asNext: true, asResume: true, asEta: true };
   var S = Object.assign({}, DEF, SO.get('so.rs', {}));
   // one-time move to the new defaults (Nov 2026) for browsers that saved older settings
   if ((S.dv || 0) < 2) { S.mode = 'clean'; S.paging = 'scroll'; S.tajweed = true; S.script = 'uthmani'; S.reciter = 'Alafasy'; S.dv = 2; SO.set('so.rs', S); }
@@ -131,7 +131,7 @@
     var m = S.mode, on = {
       paging: m === 'clean', tlay: m === 'verse', showAr: m === 'verse', showTr: m === 'verse', tfInline: m === 'verse',
       showWbw: m === 'plus', tapWord: m === 'plus', numsRight: m !== 'clean', tajweed: m !== 'plus', legend: m !== 'plus' && S.tajweed,
-      speed: S.auto, meaning: S.header, deco: S.header };
+      speed: S.auto, asNext: S.auto, asResume: S.auto, asEta: S.auto, meaning: S.header, deco: S.header };
     Object.keys(on).forEach(function (k) {
       document.querySelectorAll('#settings [data-set="' + k + '"]').forEach(function (el) {
         var box = el.closest('.tg, .sl, .pick') || el, h = box.previousElementSibling;
@@ -408,15 +408,61 @@
     if (!S.awake && lock) { lock.release(); lock = null; }
   }
   document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') wake(); });
-  var raf = null, acc = 0;
-  var asRun = false;
-  function autoScroll() {
-    var b = $('as-btn'); if (b) { b.hidden = !S.auto; b.setAttribute('aria-pressed', asRun && S.auto); b.setAttribute('aria-label', asRun ? 'Pause auto scroll' : 'Start auto scroll'); }
-    if (S.auto && asRun && !raf) { var step = function () { acc += S.speed * 0.12; if (acc >= 1) { scrollBy(0, Math.floor(acc)); acc -= Math.floor(acc); } raf = requestAnimationFrame(step); }; raf = requestAnimationFrame(step); }
-    if ((!S.auto || !asRun) && raf) { cancelAnimationFrame(raf); raf = null; }
+  // ---------- Auto scroll (advanced) ----------
+  // Speed 1-20 = 6-120 pixels per second, time based (same speed on every screen), smooth sub-pixel steps.
+  // Bottom-bar ↓ opens the control bar: play/pause, slower, faster, speed, time left, stop. Scrolling by hand pauses
+  // (and resumes after 3 s if chosen). At the end it continues to the next surah / page if chosen. Screen kept awake while running.
+  var raf = null, acc = 0, asRun = false, last = 0, resumeT = null, asLock = null, endT = null;
+  function pps() { return 6 + (Math.max(1, Math.min(20, +S.speed || 5)) - 1) * 6; }
+  function atEnd() { return innerHeight + scrollY >= document.documentElement.scrollHeight - 4; }
+  function eta() {
+    if (!S.asEta) return '';
+    var s2 = Math.max(0, (document.documentElement.scrollHeight - innerHeight - scrollY) / pps()), m = Math.floor(s2 / 60), r = Math.round(s2 % 60);
+    return m ? m + ' min' + (r ? ' ' + r + ' s' : '') : r + ' s';
   }
-  ['wheel', 'touchstart'].forEach(function (ev) { addEventListener(ev, function (e) { if (asRun && !(e.target.closest && e.target.closest('#bar, #settings'))) { asRun = false; autoScroll(); } }, { passive: true }); }); // reading by hand pauses it
-  $('as-btn').onclick = function () { asRun = !asRun; autoScroll(); };
+  function asUi() {
+    var b = $('as-btn'); b.hidden = !S.auto; b.setAttribute('aria-pressed', asRun && S.auto); b.setAttribute('aria-label', asRun ? 'Auto scroll controls (running)' : 'Auto scroll');
+    var bar = $('asbar'); bar.hidden = !S.auto || !bar.dataset.open; document.body.classList.toggle('as-open', !bar.hidden);
+    $('as-spd').textContent = S.speed; $('as-etaw').hidden = !S.asEta; $('as-eta').textContent = eta() || '–';
+    $('as-play').innerHTML = asRun ? '<svg viewBox="0 0 24 24" class="fillico"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>' : '<svg viewBox="0 0 24 24" class="fillico"><path d="M8 5.5v13l11-6.5z"/></svg>';
+    $('as-play').setAttribute('aria-label', asRun ? 'Pause' : 'Play'); $('as-slow').disabled = S.speed <= 1; $('as-fast').disabled = S.speed >= 20;
+  }
+  function holdAwake(on) { if (on && !asLock && navigator.wakeLock) navigator.wakeLock.request('screen').then(function (l) { asLock = l; }).catch(function () {}); if (!on && asLock) { asLock.release(); asLock = null; } }
+  function finish() {
+    asRun = false; asUi(); holdAwake(false);
+    if (!S.asNext) return;
+    endT = setTimeout(function () { try { sessionStorage.setItem('so.asgo', '1'); } catch (e) {}
+      if (pageMode && P < 604) location.href = '?p=' + (P + 1); else if (!pageMode && n < 114) location.href = '?n=' + (n + 1); }, 1500);
+  }
+  function step(t) {
+    var dt = last ? Math.min(100, t - last) / 1000 : 0; last = t;
+    acc += pps() * dt; if (acc >= 1) { var px = Math.floor(acc); scrollBy(0, px); acc -= px; }
+    if (atEnd()) { raf = null; finish(); return; }
+    if ((t | 0) % 500 < 20) $('as-eta').textContent = eta() || '–';
+    raf = requestAnimationFrame(step);
+  }
+  function autoScroll() {
+    if (S.auto && asRun && !raf) { last = 0; raf = requestAnimationFrame(step); holdAwake(true); }
+    if ((!S.auto || !asRun) && raf) { cancelAnimationFrame(raf); raf = null; holdAwake(false); }
+    asUi();
+  }
+  function asPlay(on) { clearTimeout(resumeT); clearTimeout(endT); asRun = on === undefined ? !asRun : on; if (asRun && atEnd()) scrollTo(0, 0); autoScroll(); }
+  function asSpeed(d) { S.speed = Math.max(1, Math.min(20, (+S.speed || 5) + d)); save(); asUi(); var o = document.querySelector('[data-out="speed"]'); if (o) o.textContent = S.speed; var r = document.querySelector('[data-set="speed"]'); if (r) r.value = S.speed; }
+  $('as-btn').onclick = function () { var bar = $('asbar'); if (bar.dataset.open) { delete bar.dataset.open; asPlay(false); } else { bar.dataset.open = '1'; asPlay(true); } };
+  $('as-play').onclick = function () { asPlay(); };
+  $('as-slow').onclick = function () { asSpeed(-1); }; $('as-fast').onclick = function () { asSpeed(1); };
+  $('as-stop').onclick = function () { delete $('asbar').dataset.open; asPlay(false); };
+  ['wheel', 'touchstart', 'keydown'].forEach(function (ev) { addEventListener(ev, function (e) {
+    if (ev === 'keydown') { if (!S.auto || /INPUT|SELECT|TEXTAREA/.test(e.target.tagName) || !$('settings').hidden) return;
+      if (e.key === 's' || e.key === 'S') { $('asbar').dataset.open = '1'; asPlay(); e.preventDefault(); return; }
+      if (e.key === '+' || e.key === '=') { asSpeed(1); return; } if (e.key === '-') { asSpeed(-1); return; }
+      if (e.key === 'Escape' && asRun) { $('as-stop').click(); return; }
+      if (!/^(ArrowUp|ArrowDown|PageUp|PageDown|Home|End| )$/.test(e.key)) return; }
+    if (!asRun || (e.target.closest && e.target.closest('#bar, #asbar, #settings'))) return;
+    asPlay(false); if (S.asResume) resumeT = setTimeout(function () { if ($('asbar').dataset.open) asPlay(true); }, 3000); // reading by hand pauses it
+  }, { passive: ev !== 'keydown' }); });
+  // started from the previous surah / page: keep going
+  (function () { var go = null; try { go = sessionStorage.getItem('so.asgo'); sessionStorage.removeItem('so.asgo'); } catch (e) {} if (go && S.auto) setTimeout(function () { $('asbar').dataset.open = '1'; asPlay(true); }, 1200); })();
 
   // ---------- Tafsir (same source as the app: spa5k/tafsir_api via jsDelivr), loaded when asked, shown unchanged ----------
   var TFB = 'https://cdn.jsdelivr.net/gh/spa5k/tafsir_api@main/tafsir/', TFL = null, tfKey = null;
