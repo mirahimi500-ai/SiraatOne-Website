@@ -187,3 +187,4 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - PV1 reverted (user: not professional/accurate). Settings back to SET1 state.
 - MP+1: Mushaf+ Tajweed word by word (only when word count matches word-by-word data, else plain); tafsir under each ayah also in Mushaf+; Tajweed setting no longer greyed in Mushaf+.
 - WBW2: word-by-word language choice (Settings > Reading, shown once scripts/fetch-wbw-langs.ps1 has run; per-ayah English fallback if word counts differ; RTL glosses for ur/fa/ps/ku). LH1: line height slider works in every mode/font (Mushaf+ row spacing, IndoPak, page mode).
+- WBW3: own 'Word by word' section in Settings > Reading (toggle + language); always enabled; turning on switches to Mushaf+.

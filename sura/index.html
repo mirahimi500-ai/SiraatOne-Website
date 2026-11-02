@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261104k">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261104l">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -149,9 +149,11 @@
             <div class="seg" data-set="tlay"><button data-v="columns">Columns</button><button data-v="ayah">Ayah by Ayah</button><button data-v="list">Verse List</button></div>
             <label class="tg">Show Arabic with translation<input type="checkbox" data-set="showAr"></label>
             <label class="tg">Show ayah translation<input type="checkbox" data-set="showTr"></label>
-            <label class="tg">Show word-by-word meanings (Mushaf+)<input type="checkbox" data-set="showWbw"></label>
-            <label class="sl" id="wbw-lang-row" hidden>Word-by-word language<select id="wbw-lang"></select></label>
             <label class="tg">Show tafsir under each ayah (Mushaf+, Verse List)<input type="checkbox" data-set="tfInline"></label>
+            <h3>Word by word</h3>
+            <label class="tg">Word-by-word meanings<input type="checkbox" data-set="showWbw"></label>
+            <label class="sl" id="wbw-lang-row" hidden>Word-by-word language<select id="wbw-lang"></select></label>
+            <p class="hint">Shown under each word in Mushaf+. Turning it on opens Mushaf+.</p>
             <p class="hint">Options that do not apply to the selected reading mode are greyed out.</p>
           </section>
           <section data-pane="text" hidden>
@@ -219,9 +221,9 @@
   </div>
 </main>
 
-<script src="../assets/js/site.js?v=20261104k" defer></script>
-<script src="../assets/js/lib.js?v=20261104k" defer></script>
-<script src="../assets/js/tajweed.js?v=20261104k" defer></script>
-<script src="../assets/js/reader.js?v=20261104k" defer></script>
+<script src="../assets/js/site.js?v=20261104l" defer></script>
+<script src="../assets/js/lib.js?v=20261104l" defer></script>
+<script src="../assets/js/tajweed.js?v=20261104l" defer></script>
+<script src="../assets/js/reader.js?v=20261104l" defer></script>
 </body>
 </html>

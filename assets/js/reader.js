@@ -173,7 +173,7 @@
   function deps() {
     var m = S.mode, on = {
       paging: m === 'clean', tlay: m === 'verse', showAr: m === 'verse', showTr: m === 'verse', tfInline: m !== 'clean',
-      showWbw: m === 'plus', tapWord: m === 'plus', numsRight: m !== 'clean', tajweed: true, legend: !!S.tajweed,
+      showWbw: true, tapWord: m === 'plus', numsRight: m !== 'clean', tajweed: true, legend: !!S.tajweed,
       speed: S.auto, asNext: S.auto, asResume: S.auto, asEta: S.auto, meaning: S.header, deco: S.header };
     Object.keys(on).forEach(function (k) {
       document.querySelectorAll('#settings [data-set="' + k + '"]').forEach(function (el) {
@@ -488,6 +488,7 @@
     var k = e.target.getAttribute('data-set'); if (!k) return;
     S[k] = e.target.type === 'checkbox' ? e.target.checked : parseFloat(e.target.value); save();
     if (k === 'tajweed') { reloadText(); return; }
+    if (k === 'showWbw' && S.showWbw && S.mode !== 'plus') { apply(false); document.querySelector('#settings .seg[data-set="mode"] [data-v="plus"]').click(); return; } // word by word lives in Mushaf+
     if (k === 'rate' || k === 'vol') AUD.live();
     apply(['nums', 'showAr', 'showTr', 'legend'].indexOf(k) > -1);
   });
