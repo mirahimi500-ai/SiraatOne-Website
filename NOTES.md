@@ -189,3 +189,4 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - WBW2: word-by-word language choice (Settings > Reading, shown once scripts/fetch-wbw-langs.ps1 has run; per-ayah English fallback if word counts differ; RTL glosses for ur/fa/ps/ku). LH1: line height slider works in every mode/font (Mushaf+ row spacing, IndoPak, page mode).
 - WBW3: own 'Word by word' section in Settings > Reading (toggle + language); always enabled; turning on switches to Mushaf+.
 - WBW4: fetch-wbw-langs.ps1 fixed: QF v4 word language param is 'language' (verified ur on 1:2).
+- WBW5: Mushaf+ tajweed words in selected Mushaf font (fixes broken letters); RTL word meanings in system Arabic font, bigger.
