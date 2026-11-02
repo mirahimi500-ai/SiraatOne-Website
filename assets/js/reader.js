@@ -193,7 +193,7 @@
   function deps() {
     var m = S.mode, on = {
       paging: m === 'clean', tlay: m === 'verse', showAr: m === 'verse', showTr: m === 'verse', tfInline: m !== 'clean',
-      wgap: m === 'plus' && S.showWbw, showWbw: true, tapWord: m === 'plus', numsRight: m !== 'clean', tajweed: true, legend: !!S.tajweed,
+      wgap: m !== 'clean' && S.showWbw, showWbw: m !== 'clean', tapWord: m === 'plus', numsRight: m !== 'clean', tajweed: true, legend: !!S.tajweed,
       speed: S.auto, asNext: S.auto, asResume: S.auto, asEta: S.auto, meaning: S.header, deco: S.header };
     Object.keys(on).forEach(function (k) {
       document.querySelectorAll('#settings [data-set="' + k + '"]').forEach(function (el) {
@@ -259,9 +259,10 @@
   }
   function render() {
     if (pageMode) { renderPage(); return; }
-    var go = S.mode === 'plus' && !wbw ? SO.j('../assets/data/wbw/' + n + '.json').then(function (d) { wbw = d.w; }).catch(function () { wbw = false; }) : Promise.resolve();
+    var needW = S.mode === 'plus' || (S.mode === 'verse' && S.showWbw);
+    var go = needW && !wbw ? SO.j('../assets/data/wbw/' + n + '.json').then(function (d) { wbw = d.w; }).catch(function () { wbw = false; }) : Promise.resolve();
     // word meanings in another language (scripts/fetch-wbw-langs.ps1); per ayah, used only if the word count matches, else English
-    go = go.then(function () { if (!wbw || S.mode !== 'plus') return; var L = S.wbwLang || 'en'; if (wbw.lang === L) return;
+    go = go.then(function () { if (!wbw || !needW) return; var L = S.wbwLang || 'en'; if (wbw.lang === L) return;
       var base = wbw.base || wbw.map(function (v) { return v.map(function (w) { return w[1]; }); });
       return (L === 'en' ? Promise.resolve(null) : SO.j('../assets/data/wbw-' + L + '/' + n + '.json').catch(function () { return null; })).then(function (d) {
         var t = d && d.t; wbw.forEach(function (v, i) { var g = t && t[i] && t[i].length === v.length ? t[i] : base[i]; v.forEach(function (w, j) { w[1] = g[j]; }); });
@@ -276,7 +277,7 @@
         var showAr = S.showAr || !S.showTr, showTr = S.showTr && mode !== 'clean';
         h = '<ol class="cards tl-' + (mode === 'plus' ? 'ayah' : S.tlay) + '">' + AR.map(function (a, i) {
           var k = n + ':' + (i + 1), top = '<div class="c-top">' + (S.nums ? '<span class="c-num">' + (i + 1) + '</span>' : '') + marks(k) + '<button type="button" class="more" data-a="' + (i + 1) + '" aria-label="Ayah ' + k + ' actions">•••</button></div>';
-          var ar = mode === 'plus'
+          var ar = mode === 'plus' || (mode === 'verse' && S.showWbw && wbw)
             ? '<div class="words" lang="ar" dir="rtl">' + (function () { var tw = tjWords(n, i, wbw[i].length); return wbw[i].map(function (w, j) { return '<span class="w" data-w="' + (j + 1) + '" data-wa="' + (i + 1) + '"><span class="wa' + (tw ? ' tjw' : '') + '">' + (tw ? tw[j] : esc(w[0])) + '</span><span class="wt" dir="' + (RTLW[wbw.lang] ? 'rtl' : 'ltr') + '">' + esc(w[1] || '') + '</span></span>'; }).join(''); })() + ownEnd(i) + '</div>'
             : '<p class="ar" lang="ar" dir="rtl">' + fmt(a, n, i) + (S.nums && !(S.tajweed && TJD[n] ? S.script !== 'naskh' : hasNum(a)) ? ' ' + end(i + 1) : '') + '</p>';
           return (i === 0 || jzStart(n, i + 1) ? '<li class="mpill-li">' + mpill(n, i + 1) + '</li>' : '') + '<li class="card-a" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(k) + '>' + top + (showAr ? ar : '') + (showTr ? '<p class="tr"' + trAttr() + '>' + esc((TRT || sura.en)[i]) + '</p>' : '') + (S.tfInline && mode !== 'clean' ? '<div class="tf-inl" data-tf="' + (i + 1) + '"></div>' : '') + '</li>';
@@ -508,7 +509,7 @@
     var k = e.target.getAttribute('data-set'); if (!k) return;
     S[k] = e.target.type === 'checkbox' ? e.target.checked : parseFloat(e.target.value); save();
     if (k === 'tajweed') { reloadText(); return; }
-    if (k === 'showWbw' && S.showWbw && S.mode !== 'plus') { apply(false); document.querySelector('#settings .seg[data-set="mode"] [data-v="plus"]').click(); return; } // word by word lives in Mushaf+
+    if (k === 'showWbw') { apply(false); render(); return; } // word by word: Mushaf+ and Verse List
     if (k === 'rate' || k === 'vol') AUD.live();
     apply(['nums', 'showAr', 'showTr', 'legend'].indexOf(k) > -1);
   });
@@ -752,7 +753,7 @@
     var slug = SO.get('so.tafsir', null) || 'en-tafisr-ibn-kathir', boxes = document.querySelectorAll('.tf-inl'); if (!boxes.length) return;
     boxes.forEach(function (b) { b.textContent = 'Loading tafsir…'; });
     fj(TFB + slug + '/' + n + '.json').then(function (d) { var a = Array.isArray(d) ? d : (d.ayahs || []), by = {}; a.forEach(function (x) { by[x.ayah] = x.text; });
-      boxes.forEach(function (b) { var t = (by[b.dataset.tf] || '').trim(); b.innerHTML = t ? '<details><summary>Tafsir</summary><p' + (/[\u0590-\u08FF]/.test(t.slice(0, 60)) ? ' dir="rtl"' : '') + '>' + esc(t) + '</p></details>' : ''; }); })
+      boxes.forEach(function (b) { var t = (by[b.dataset.tf] || '').trim(); b.innerHTML = t ? '<p' + (/[\u0590-\u08FF]/.test(t.slice(0, 60)) ? ' dir="rtl"' : '') + '>' + esc(t) + '</p>' : ''; }); })
       .catch(function () { boxes.forEach(function (b) { b.textContent = 'Tafsir could not be loaded.'; }); });
   }
 })();
