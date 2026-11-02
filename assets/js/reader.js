@@ -400,7 +400,7 @@
   // ---------- behavior: hide toolbar, keep awake, auto scroll ----------
   var lastY = scrollY;
   addEventListener('scroll', function () {
-    var y = scrollY, dy = y - lastY; if (asRun) { lastY = y; return; } if (Math.abs(dy) < 6) return; // auto scroll handles the bar itself; ignore tiny moves: no flicker
+    var y = scrollY, dy = y - lastY; if (asRun || Math.abs(dy) > 400) { lastY = y; return; } if (Math.abs(dy) < 6) return; // jumps (opening a Juz / ayah link) never hide the toolbar // auto scroll handles the bar itself; ignore tiny moves: no flicker
     if (S.hide) $('bar').classList.toggle('hid', dy > 0 && y > 120); else $('bar').classList.remove('hid'); lastY = y;
   }, { passive: true });
   // tap an empty part of the page to show / hide the toolbar (like the app); taps on ayahs and words keep their own actions

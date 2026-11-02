@@ -173,3 +173,4 @@ AS2: advanced auto scroll: control bar (play/pause, slower, faster, speed 1-20 =
 AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom toolbar (no floating pill); toolbar hides while scrolling with a smooth slide/fade, tap an empty part of the page to show/hide it, hand scroll pauses and shows it; tiny scroll moves ignored (no flicker). Phone width: prev/next hidden when auto scroll is on so the bar fits. PASS headless (390 px). Version 20261103u.
 - AS4: pause fix (icon swap no longer detaches tap target), auto scroll row above toolbar (sura name fixed), X turns auto scroll off, bar auto-hides 3 s while running, first tap brings it back.
 - AS5: auto scroll inline between sura name and settings (name always centred, never moves); phones: arrows step aside, − ▶ + right, speed + ✕ left; sub-pixel smooth scrolling.
+- AS6: opening a Juz/ayah link (jump scroll) no longer hides the reader toolbar.
