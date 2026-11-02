@@ -751,3 +751,4 @@ option,optgroup{color:var(--text);background-color:var(--surface)}
 .tb-mode button[aria-selected=true],.cl-viewpill button[aria-selected=true],#d-tabs button[aria-selected=true],.duas #d-title{color:var(--brand-ink)}
 .lib-add[aria-pressed=true]{color:var(--brand-ink)}
 .cl-evs a,.cl-src a{color:var(--link)}
+.cl-c.sel .dots i{background:var(--brand-ink)!important;box-shadow:0 0 0 1px color-mix(in srgb,var(--brand) 60%,#000)}.cl-c.today:not(.sel) .dots i{box-shadow:0 0 0 1px var(--surface)}
