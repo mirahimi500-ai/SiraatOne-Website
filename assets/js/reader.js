@@ -238,7 +238,7 @@
       if (S.mode === 'plus' && wbw === false) h = '<p class="empty">Word-by-word is not available yet. Showing Verse List.</p>' + h;
       $('body').innerHTML = h;
       var t = parseInt(location.hash.slice(1), 10);
-      if (t > 1 && $(String(t))) $(String(t)).scrollIntoView();
+      if (t > 1 && $(String(t))) jumpTo($(String(t))); else scrollTo(0, 0);
       SO.set('so.last', { s: n, a: t > 0 && t <= c.verses ? t : 1 });
       tail = n; observe(); more();
     });
@@ -282,7 +282,24 @@
   }
 
   // ---------- prev / next (by Surah or Juz) ----------
+  // jump to the start of a sura / Juz: its info pill (and frame) sits just under the top pill; the toolbar stays shown
+  try { history.scrollRestoration = 'manual'; } catch (e) {}
+  var navLock = 0;
+  function jumpTo(el) {
+    var t = el.parentNode && el.parentNode.classList.contains('flow') && el === el.parentNode.firstElementChild ? el.parentNode : el, pv;
+    while ((pv = t.previousElementSibling) && /(^| )(mpill|mpill-li|sura-head|bismillah)( |$)/.test(pv.className)) t = pv;
+    navLock = Date.now() + 1200; $('bar').classList.remove('hid');
+    if (t === $('body').firstElementChild && !pageMode) { scrollTo(0, 0); return; }
+    // the site header may slide in/out after the jump, so place by where the top pill will settle
+    var fix = function () { var hd = document.querySelector('.site-header'), st = $('status'),
+      pillB = (document.body.classList.contains('hdr-hid') || !hd ? 8 : hd.offsetHeight + 8) + st.offsetHeight;
+      scrollTo(0, Math.max(0, t.getBoundingClientRect().top + scrollY - pillB - 10)); };
+    fix(); setTimeout(fix, 60); setTimeout(fix, 450);
+  }
+  function goSura(v, e) { if (v === n && !pageMode) { e.preventDefault(); navLock = Date.now() + 1200; scrollTo(0, 0); history.replaceState(null, '', '?n=' + n); return; } var sec = document.querySelector('.sura-next[data-sura="' + v + '"]'); if (!sec) return;
+    e.preventDefault(); jumpTo(sec.firstElementChild); history.replaceState(null, '', '?n=' + v); status(1, v); }
   function navFor(v) { var p = $('prev'), x = $('next');
+    p.onclick = function (e) { goSura(v - 1, e); }; x.onclick = function (e) { goSura(v + 1, e); };
     p.href = v > 1 ? '?n=' + (v - 1) : '#'; p.title = v > 1 ? ch[v - 2].name_simple : ''; p.classList.toggle('off', v === 1);
     x.href = v < 114 ? '?n=' + (v + 1) : '#'; x.title = v < 114 ? ch[v].name_simple : ''; x.classList.toggle('off', v === 114); }
   function navLinks() {
@@ -305,7 +322,7 @@
   function goJuz(d) {
     var j = curJuz() + d, t = idx.juz[j - 1]; if (!t) return;
     var el = elFor(t[0] + ':' + t[1]);
-    if (el) { el.scrollIntoView(); history.replaceState(null, '', '?n=' + t[0] + '#' + t[1]); $('bar').classList.remove('hid'); juzLabel(); }
+    if (el) { jumpTo(el); history.replaceState(null, '', '?n=' + t[0] + '#' + t[1]); status(t[1], t[0]); $('bar').classList.remove('hid'); juzLabel(); }
     else location.href = '?n=' + t[0] + '#' + t[1];
   }
   var jzT = null; addEventListener('scroll', function () { if (S.nav === 'juz' && !jzT) jzT = setTimeout(function () { jzT = null; juzLabel(); }, 200); }, { passive: true });
@@ -451,7 +468,7 @@
   // ---------- behavior: hide toolbar, keep awake, auto scroll ----------
   var lastY = scrollY;
   addEventListener('scroll', function () {
-    var y = scrollY, dy = y - lastY; if (asRun || Math.abs(dy) > 400) { lastY = y; return; } if (Math.abs(dy) < 6) return; // jumps (opening a Juz / ayah link) never hide the toolbar // auto scroll handles the bar itself; ignore tiny moves: no flicker
+    var y = scrollY, dy = y - lastY; if (asRun || Math.abs(dy) > 400 || Date.now() < navLock) { lastY = y; return; } if (Math.abs(dy) < 6) return; // jumps (opening a Juz / ayah link) never hide the toolbar // auto scroll handles the bar itself; ignore tiny moves: no flicker
     if (S.hide) $('bar').classList.toggle('hid', dy > 0 && y > 120); else $('bar').classList.remove('hid'); lastY = y;
   }, { passive: true });
   // tap an empty part of the page to show / hide the toolbar (like the app); taps on ayahs and words keep their own actions
