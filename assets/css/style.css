@@ -850,3 +850,10 @@ option,optgroup{color:var(--text);background-color:var(--surface)}
 .sp-q summary::after{content:"";flex:0 0 auto;width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .2s;margin-right:4px}
 .sp-q[open] summary::after{transform:rotate(-135deg)}
 .sp-q:last-of-type{border-bottom:0}
+/* Privacy in the Islamic Calendar layout (policy text unchanged) */
+.pv2 .cl-hd b{font-family:inherit;font-size:clamp(1.3rem,3.5vw,1.8rem)}
+.pv2 .pv-sec{max-width:none;margin:0;text-align:left;display:block}.pv-sec[hidden]{display:none}
+.pv2 .ts-card.doc{text-align:left;display:block}.pv2 .ts-card.doc h2{margin-top:0;font-size:1.25rem}.pv2 .ts-card.doc h3{font-size:1rem;margin:1.1rem 0 .3rem}
+.pv2 .summary{padding:12px 14px;border-radius:12px;background:color-mix(in srgb,var(--brand) 8%,transparent)}
+.pv2 .cl-side .ts-card{padding:16px}
+@media(min-width:900px){.pv2 .cl-cols{grid-template-columns:minmax(0,1fr) 340px}}

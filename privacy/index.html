@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261103j">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261103k">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -33,16 +33,20 @@
   </div>
 </header>
 
-<main id="main" class="doc">
-  <h1>Privacy Policy</h1>
-  <p class="muted">Developer: SiraatOne · Effective date: 26 October 2026</p>
-  <div class="toc">
-    <a class="btn btn-ghost" href="#quran">SiraatOne Quran</a>
-    <a class="btn btn-ghost" href="#azan">SiraatOne Azan</a>
+<main id="main" class="wrap tool cal2 pv2">
+  <div class="tb-top">
+    <a class="btn btn-ghost sm" href="../" id="pv-back">← Back</a>
+    <h1>Privacy Policy</h1>
+    <span class="tb-spacer" aria-hidden="true"></span>
   </div>
-
-  <!-- ===== Quran ===== -->
-  <h2 id="quran">SiraatOne Quran (Android)</h2>
+  <section class="cl-hero">
+    <div class="cl-hd"><small>SiraatOne</small><b>Your data stays with you</b><span>No accounts, no ads, no analytics. Settings and saved items stay on your device or in your browser.</span><em>Developer: SiraatOne · Effective date: 26 October 2026</em></div>
+    <div class="cl-hn"><small>Questions</small><b><a href="mailto:siraatone1@gmail.com">siraatone1@gmail.com</a></b><span><a href="../terms/">Terms &amp; Credits →</a></span></div>
+  </section>
+  <div class="tb-mode cl-viewpill" id="pv-pill"><button type="button" data-p="quran">SiraatOne Quran</button><button type="button" data-p="azan">SiraatOne Azan</button><button type="button" data-p="website">This website</button></div>
+  <div class="cl-cols">
+    <div class="cl-main">
+      <a id="quran"></a><section class="ts-card pv-sec doc" id="pv-quran"><h2>SiraatOne Quran (Android)</h2>
   <p class="summary"><strong>In short:</strong> no account or sign-in; no advertising, analytics or crash-reporting libraries; the app does not access your location; your bookmarks, notes and settings stay on your device.</p>
 
   <h3>Information we collect</h3>
@@ -79,8 +83,8 @@
   <h3>Deleting your data</h3>
   <p>Because no personal data is stored on our servers, there is nothing for us to delete. To remove everything, clear the app's storage in Android Settings or uninstall the app.</p>
 
-  <!-- ===== Azan ===== -->
-  <h2 id="azan">SiraatOne Azan (Android, TV and tablet)</h2>
+</section>
+      <a id="azan"></a><section class="ts-card pv-sec doc" id="pv-azan"><h2>SiraatOne Azan (Android, TV and tablet)</h2>
   <p class="summary"><strong>In short:</strong> no account or sign-in; no advertising, analytics or crash-reporting libraries; your location is used only to calculate prayer times; your settings stay on your device.</p>
 
   <h3>Information we collect</h3>
@@ -116,18 +120,33 @@
   <h3>Deleting your data</h3>
   <p>No personal data is stored on our servers. To remove everything, clear the app's storage in Android Settings or uninstall the app.</p>
 
-  <!-- ===== Shared ===== -->
-  <h2 id="website">This website</h2>
+</section>
+      <a id="website"></a><section class="ts-card pv-sec doc" id="pv-website"><h2>This website</h2>
   <p class="muted">Website section last updated: 1 November 2026</p>
   <p>siraatone.com has no accounts, forms, cookies, ads or analytics. It remembers your reading settings, last position, bookmarks, highlights and notes only in your own browser (never sent to us). A backup file you export is saved only where you choose. When you press play, recitation audio streams from the Quran Foundation recitation sources (verses.quran.foundation, audio.qurancdn.com, mirrors.quranicaudio.com), which receives your IP address like any web request. If you choose a full-surah reciter, the audio streams from MP3Quran.net in the same way. When you open a tafsir, it loads from jsDelivr (cdn.jsdelivr.net, the spa5k/tafsir_api files). The Hadith page loads hadiths live from HadeethEnc.com in the same way. The site is hosted on GitHub Pages; like any web host, it receives your IP address and basic request information.</p>
 
-  <h2 id="changes">Changes to this policy</h2>
+  </section>
+    </div>
+    <aside class="cl-side">
+      <div class="ts-card doc" id="changes"><h2>Changes to this policy</h2>
   <p>If this policy changes, the new version will be posted on this page with a new effective date.</p>
 
-  <h2 id="contact">Contact</h2>
+  </div>
+      <div class="ts-card doc" id="contact"><h2>Contact</h2>
   <p>Questions about this policy: <a href="mailto:siraatone1@gmail.com">siraatone1@gmail.com</a></p>
+</div>
+    </aside>
+  </div>
 </main>
 
-<script src="../assets/js/site.js?v=20261103j" defer></script>
+<script src="../assets/js/site.js?v=20261103k" defer></script>
+<script>
+(function(){var pill=document.getElementById('pv-pill'),K=['quran','azan','website'];
+function show(x){K.forEach(function(k){document.getElementById('pv-'+k).hidden=k!==x});pill.querySelectorAll('[data-p]').forEach(function(b){b.setAttribute('aria-selected',b.dataset.p===x)})}
+function fromHash(){var h=location.hash.slice(1);return K.indexOf(h)>-1?h:'quran'}
+pill.onclick=function(e){var b=e.target.closest('[data-p]');if(!b)return;show(b.dataset.p);history.replaceState(null,'','#'+b.dataset.p)};
+show(fromHash());window.addEventListener('hashchange',function(){show(fromHash())});
+document.getElementById('pv-back').onclick=function(e){if(history.length>1&&document.referrer.indexOf(location.host)>-1){e.preventDefault();history.back()}};})();
+</script>
 </body>
 </html>
