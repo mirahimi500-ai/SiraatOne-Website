@@ -41,22 +41,22 @@
   // ================= Dhikr counter =================
   function phrase() { return CAT.filter(function (c) { return c[0] === D.dh.active; })[0] || CAT[0]; }
   function row() { var p = phrase(); return D.dh.rows[p[0]] || (D.dh.rows[p[0]] = { count: 0, total: 0, target: p[4] }); }
-  $('dh-pick').innerHTML = CAT.map(function (c) { return '<option value="' + c[0] + '">' + esc(c[1]) + '</option>'; }).join('');
   function dhDraw() {
     var p = phrase(), r = row(), g = r.target, n = r.count, all = 0;
     Object.keys(D.dh.rows).forEach(function (k) { all += D.dh.rows[k].total; });
-    $('dh-pick').value = p[0]; $('dh-ar').textContent = p[1];
+    $('dh-ar').textContent = p[1];
+    $('dh-list').innerHTML = CAT.map(function (c) { var rr = D.dh.rows[c[0]] || { count: 0 }; return '<li><button type="button" data-id="' + c[0] + '" aria-pressed="' + (c[0] === p[0]) + '"><span lang="ar" dir="rtl">' + esc(c[1]) + '</span><b>' + rr.count + '</b></button></li>'; }).join('');
     $('dh-sel').textContent = r.total; $('dh-all').textContent = all; $('dh-n').textContent = n;
     chips('dh-tg', DT, g, ' '); $('dh-tg').firstChild.remove();
     $('dh-barw').hidden = !(g > 0); $('dh-bar').style.width = (g > 0 ? (n > 0 && n % g === 0 ? 1 : (n % g) / g) * 100 : 0) + '%';
     $('dh-dec').disabled = $('dh-reset').disabled = n === 0;
   }
-  function dhInc() { var r = row(); r.count++; r.total++; var g = r.target > 0 && r.count % r.target === 0; tick(g); bump($('dh-tap'), g); dhDraw(); saveSoon(); }
+  function dhInc() { var r = row(); r.count++; r.total++; var g = r.target > 0 && r.count % r.target === 0; tick(g); bump($('dh-tap'), g); dhDraw(); hero(); saveSoon(); }
   function down(el, fn) { el.addEventListener('pointerdown', function (e) { if (e.button > 0) return; e.preventDefault(); fn(); }); el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } }); }
   down($('dh-tap'), dhInc); down($('dh-inc'), dhInc);
   $('dh-dec').onclick = function () { var r = row(); if (!r.count) return; r.count--; r.total = Math.max(0, r.total - 1); tick(false); dhDraw(); save(); };
   $('dh-reset').onclick = function () { var r = row(); if (!r.count) return; if (D.set.conf && !confirm('Reset current count?\n\nThe selected Dhikr count returns to zero. Lifetime totals are kept.')) return; r.count = 0; dhDraw(); save(); };
-  $('dh-pick').onchange = function () { D.dh.active = this.value; dhDraw(); save(); };
+  $('dh-list').onclick = function (e) { var b = e.target.closest('[data-id]'); if (!b) return; D.dh.active = b.dataset.id; dhDraw(); hero(); save(); };
   $('dh-tg').onclick = function (e) { var b = e.target.closest('[data-t]'); if (!b) return; row().target = +b.dataset.t; dhDraw(); save(); };
 
   // ================= Previous saved counters =================
@@ -72,7 +72,7 @@
     $('sv-clear').hidden = !D.sv.hist.length;
     $('sv-hist').innerHTML = D.sv.hist.length ? D.sv.hist.slice(0, 5).map(function (h) { return '<li><b>' + esc(h.name) + '</b><span>' + (h.target ? h.count + ' / ' + h.target : h.count) + '</span><small>' + esc(h.at) + '</small></li>'; }).join('') : '<li class="hint">No completed sessions yet.</li>';
   }
-  function svInc() { var p = prof(); p.count++; D.sv.life++; var g = p.target && p.count % p.target === 0; if (g) D.sv.cmp++; tick(g); bump($('sv-tap'), g); svDraw(); saveSoon(); }
+  function svInc() { var p = prof(); p.count++; D.sv.life++; var g = p.target && p.count % p.target === 0; if (g) D.sv.cmp++; tick(g); bump($('sv-tap'), g); svDraw(); hero(); saveSoon(); }
   down($('sv-tap'), svInc); down($('sv-inc'), svInc);
   $('sv-dec').onclick = function () { var p = prof(); if (!p.count) return; p.count--; D.sv.life = Math.max(0, D.sv.life - 1); tick(false); svDraw(); save(); };
   $('sv-reset').onclick = function () { var p = prof(); if (!p.count) return; if (D.set.conf && !confirm('Reset counter?\n\n' + p.name)) return;
@@ -87,15 +87,23 @@
   // ================= mode, settings, menus =================
   function drawAll() {
     $('ts-dhikr').hidden = D.mode !== 'dhikr'; $('ts-saved').hidden = D.mode !== 'saved';
-    document.querySelectorAll('#ts-modes [data-mode]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.mode === D.mode); });
+    document.querySelectorAll('#ts-pill [data-mode]').forEach(function (b) { b.setAttribute('aria-selected', b.dataset.mode === D.mode); });
     ['hap', 'beep', 'conf', 'stats'].forEach(function (k) { $('st-' + k).checked = !!D.set[k]; });
     if (D.mode === 'dhikr') dhDraw(); else svDraw();
+    hero();
+  }
+  function hero() { // summary card, same style as the Islamic Calendar's "Islamic Today"
+    var h;
+    if (D.mode === 'dhikr') { var p = phrase(), r = row(), all = 0; Object.keys(D.dh.rows).forEach(function (k) { all += D.dh.rows[k].total; });
+      h = '<div class="cl-hd"><small>Dhikr counter</small><b lang="ar" dir="rtl">' + esc(p[1].length > 40 ? p[1].slice(0, 38) + '…' : p[1]) + '</b><span>' + r.count + (r.target ? ' / ' + r.target : '') + ' this round</span></div><div class="cl-hn"><small>Totals</small><b>' + r.total + ' selected</b><span>' + all + ' total Tasbih</span></div>'; }
+    else { var q = prof(); h = '<div class="cl-hd"><small>Saved counter</small><b>' + esc(q.name) + '</b><span>' + q.count + (q.target ? ' / ' + q.target : '') + '</span></div><div class="cl-hn"><small>Lifetime</small><b>' + D.sv.life + '</b><span>' + D.sv.cmp + ' targets · ' + D.sv.hist.length + ' sessions</span></div>'; }
+    $('ts-hero').innerHTML = h;
   }
   ['hap', 'beep', 'conf', 'stats'].forEach(function (k) { $('st-' + k).onchange = function () { D.set[k] = this.checked; save(); drawAll(); }; });
   $('st-reset').onclick = function () { D.set = Object.assign({}, SETDEF); save(); drawAll(); };
-  $('ts-modes').onclick = function (e) { var b = e.target.closest('[data-mode]'); if (!b) return; D.mode = b.dataset.mode; this.classList.remove('open'); save(); drawAll(); };
+  $('ts-pill').onclick = function (e) { var b = e.target.closest('[data-mode]'); if (!b) return; D.mode = b.dataset.mode; save(); drawAll(); };
   function pop(btn, box) { btn.onclick = function (e) { e.stopPropagation(); document.querySelectorAll('.tb-pop.open').forEach(function (x) { if (x !== box) x.classList.remove('open'); }); btn.setAttribute('aria-expanded', box.classList.toggle('open')); }; }
-  pop($('tb-menu'), $('tb-pop')); pop($('ts-modebtn'), $('ts-modes')); pop($('sv-man'), $('sv-menu'));
+  pop($('tb-menu'), $('tb-pop')); pop($('sv-man'), $('sv-menu'));
   document.addEventListener('click', function (e) { if (!e.target.closest('.tb-pop')) document.querySelectorAll('.tb-pop.open').forEach(function (x) { x.classList.remove('open'); }); });
   document.addEventListener('keydown', function (e) { if (e.code === 'Space' && e.target === document.body) { e.preventDefault(); (D.mode === 'dhikr' ? dhInc : svInc)(); } });
   $('tb-back').onclick = function (e) { if (history.length > 1 && document.referrer.indexOf(location.host) > -1) { e.preventDefault(); history.back(); } };

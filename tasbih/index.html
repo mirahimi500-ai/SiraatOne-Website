@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261102x">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261102y">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -38,10 +38,8 @@
     <a class="btn btn-ghost sm" href="../" id="tb-back">← Back</a>
     <h1>Tasbih</h1>
     <div class="ts-acts">
-      <button type="button" class="icon-btn" id="ts-modebtn" aria-label="Select Tasbih mode" aria-expanded="false"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h10"/></svg></button>
       <button type="button" class="icon-btn" id="tb-menu" aria-label="Settings" aria-expanded="false"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96a7.03 7.03 0 0 0-1.62-.94l-.36-2.54a.48.48 0 0 0-.48-.41h-3.84a.48.48 0 0 0-.48.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 0 0-.59.22L2.74 8.87a.48.48 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.48.48 0 0 0-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/></svg></button>
     </div>
-    <div class="tb-pop ts-modes" id="ts-modes"><button type="button" data-mode="dhikr">Dhikr counter</button><button type="button" data-mode="saved">Previous saved counters</button></div>
     <div class="tb-pop" id="tb-pop">
       <b>Settings</b>
       <label class="tg">Haptic feedback<input type="checkbox" id="st-hap"></label>
@@ -52,39 +50,43 @@
     </div>
   </div>
 
+  <section class="cl-hero ts-hero" id="ts-hero"></section>
+  <div class="tb-mode cl-viewpill" id="ts-pill"><button type="button" data-mode="dhikr">Dhikr counter</button><button type="button" data-mode="saved">Previous saved counters</button></div>
+
   <!-- Dhikr counter (the app's default Tasbih panel) -->
-  <section class="ts-card" id="ts-dhikr">
-    <div class="ts-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V10m0-.5a1.5 1.5 0 0 1 3 0v1m0 0a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1.5a6 6 0 0 1-4.6-2.2L4 14.5a1.6 1.6 0 0 1 2.4-2.1L9 15"/></svg><b>Tasbih</b></div>
-    <label class="pick">Dhikr<select id="dh-pick" dir="rtl"></select></label>
-    <p class="ts-ar" id="dh-ar" lang="ar" dir="rtl"></p>
-    <div class="ts-two"><div><small>Selected total</small><b id="dh-sel">0</b></div><div><small>Total Tasbih</small><b id="dh-all">0</b></div></div>
-    <div class="ts-targets"><span>Personal target</span><span id="dh-tg"></span></div>
-    <div class="ts-bar" id="dh-barw"><i id="dh-bar"></i></div>
-    <button type="button" class="ts-circle" id="dh-tap" aria-label="Increment counter"><span id="dh-n">0</span><small>Tap to count</small></button>
-    <div class="ts-ctl"><button type="button" class="ts-rb" id="dh-dec" aria-label="Decrease">−</button><button type="button" class="btn btn-ghost sm" id="dh-reset">↺ Reset</button><button type="button" class="ts-rb" id="dh-inc" aria-label="Increase">+</button></div>
-    <p class="hint ts-note">Personal goal feedback is optional. A target is not a prescribed count for every phrase. Previous generic counters remain available separately.</p>
-  </section>
+  <div class="cl-cols" id="ts-dhikr">
+    <div class="cl-main ts-card ts-maincard">
+      <p class="ts-ar" id="dh-ar" lang="ar" dir="rtl"></p>
+      <div class="ts-targets"><span>Personal target</span><span id="dh-tg"></span></div>
+      <div class="ts-bar" id="dh-barw"><i id="dh-bar"></i></div>
+      <button type="button" class="ts-circle big" id="dh-tap" aria-label="Increment counter"><span id="dh-n">0</span><small>Tap to count</small></button>
+      <div class="ts-ctl"><button type="button" class="ts-rb" id="dh-dec" aria-label="Decrease">−</button><button type="button" class="btn btn-ghost sm" id="dh-reset">↺ Reset</button><button type="button" class="ts-rb" id="dh-inc" aria-label="Increase">+</button></div>
+      <p class="hint ts-note">Personal goal feedback is optional. A target is not a prescribed count for every phrase. Previous generic counters remain available separately.</p>
+    </div>
+    <aside class="cl-side">
+      <div class="ts-card"><div class="ts-hh"><b>Dhikr</b></div><ol class="ts-list" id="dh-list"></ol></div>
+      <div class="ts-card"><div class="ts-hh"><b>Totals</b></div><div class="ts-stats"><div><small>Selected total</small><b id="dh-sel">0</b></div><div><small>Total Tasbih</small><b id="dh-all">0</b></div></div></div>
+    </aside>
+  </div>
 
   <!-- Previous saved counters -->
-  <section id="ts-saved" hidden>
-    <div class="ts-cols">
-      <div class="ts-pane">
-        <div class="ts-prof"><label class="pick">Saved counter<select id="sv-pick"></select></label><button type="button" class="icon-btn" id="sv-add" aria-label="Add saved counter">+</button><button type="button" class="icon-btn" id="sv-man" aria-label="Manage saved counter">⋮</button>
-          <div class="tb-pop ts-man" id="sv-menu"><button type="button" id="sv-ren">✎ Rename</button><button type="button" id="sv-del">🗑 Delete</button></div></div>
-        <div class="ts-targets" id="sv-tg"></div>
-        <button type="button" class="ts-circle big" id="sv-tap" aria-label="Increment counter"><span id="sv-n">0</span><em id="sv-goal"></em><small>Tap to count</small></button>
-        <div class="ts-ctl"><button type="button" class="ts-rb" id="sv-dec" aria-label="Decrease">−</button><button type="button" class="btn btn-ghost sm" id="sv-reset">↺ Reset</button><button type="button" class="ts-rb" id="sv-inc" aria-label="Increase">+</button></div>
-      </div>
-      <div class="ts-pane">
-        <div class="ts-card ts-stats" id="sv-stats"><div><small>Lifetime</small><b id="sv-life">0</b></div><div><small>Targets</small><b id="sv-cmp">0</b></div><div><small>Sessions</small><b id="sv-ses">0</b></div></div>
-        <div class="ts-card"><div class="ts-hh"><b>Recent sessions</b><button type="button" class="btn btn-ghost sm" id="sv-clear">Clear</button></div><ol class="tb-hist" id="sv-hist"></ol></div>
-      </div>
+  <div class="cl-cols" id="ts-saved" hidden>
+    <div class="cl-main ts-card ts-maincard">
+      <div class="ts-prof"><label class="pick">Saved counter<select id="sv-pick"></select></label><button type="button" class="icon-btn" id="sv-add" aria-label="Add saved counter">+</button><button type="button" class="icon-btn" id="sv-man" aria-label="Manage saved counter">⋮</button>
+        <div class="tb-pop ts-man" id="sv-menu"><button type="button" id="sv-ren">✎ Rename</button><button type="button" id="sv-del">🗑 Delete</button></div></div>
+      <div class="ts-targets" id="sv-tg"></div>
+      <button type="button" class="ts-circle big" id="sv-tap" aria-label="Increment counter"><span id="sv-n">0</span><em id="sv-goal"></em><small>Tap to count</small></button>
+      <div class="ts-ctl"><button type="button" class="ts-rb" id="sv-dec" aria-label="Decrease">−</button><button type="button" class="btn btn-ghost sm" id="sv-reset">↺ Reset</button><button type="button" class="ts-rb" id="sv-inc" aria-label="Increase">+</button></div>
     </div>
-  </section>
+    <aside class="cl-side">
+      <div class="ts-card ts-stats" id="sv-stats"><div><small>Lifetime</small><b id="sv-life">0</b></div><div><small>Targets</small><b id="sv-cmp">0</b></div><div><small>Sessions</small><b id="sv-ses">0</b></div></div>
+      <div class="ts-card"><div class="ts-hh"><b>Recent sessions</b><button type="button" class="btn btn-ghost sm" id="sv-clear">Clear</button></div><ol class="tb-hist" id="sv-hist"></ol></div>
+    </aside>
+  </div>
 </main>
 
-<script src="../assets/js/site.js?v=20261102x" defer></script>
-<script src="../assets/js/lib.js?v=20261102x" defer></script>
-<script src="../assets/js/tasbih.js?v=20261102x" defer></script>
+<script src="../assets/js/site.js?v=20261102y" defer></script>
+<script src="../assets/js/lib.js?v=20261102y" defer></script>
+<script src="../assets/js/tasbih.js?v=20261102y" defer></script>
 </body>
 </html>

@@ -752,3 +752,14 @@ option,optgroup{color:var(--text);background-color:var(--surface)}
 .lib-add[aria-pressed=true]{color:var(--brand-ink)}
 .cl-evs a,.cl-src a{color:var(--link)}
 .cl-c.sel .dots i{background:var(--brand-ink)!important;box-shadow:0 0 0 1px color-mix(in srgb,var(--brand) 60%,#000)}.cl-c.today:not(.sel) .dots i{box-shadow:0 0 0 1px var(--surface)}
+/* Tasbih in the Islamic Calendar layout */
+.tasbih{max-width:1180px}
+.ts-hero .cl-hd b[lang=ar]{font-family:"UthmanicHafs","Amiri Quran",serif}
+.ts-maincard{max-width:none;margin:0}
+#ts-dhikr[hidden],#ts-saved[hidden]{display:none}
+.ts-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px}
+.ts-list button{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font:inherit;cursor:pointer;text-align:right}
+.ts-list button span{flex:1;font-family:"UthmanicHafs","Amiri Quran",serif;font-size:1.1rem;line-height:1.7}
+.ts-list button b{min-width:2.2em;text-align:center;font-variant-numeric:tabular-nums;color:var(--muted)}
+.ts-list button[aria-pressed=true]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}.ts-list button[aria-pressed=true] b{color:var(--brand-ink)}
+.tasbih .cl-viewpill{margin:0 auto 14px}
