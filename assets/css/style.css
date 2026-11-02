@@ -807,3 +807,14 @@ option,optgroup{color:var(--text);background-color:var(--surface)}
 .home2 .last-read .btn{width:100%;justify-content:center;text-align:center}
 .home2 .last-read .lr-txt{display:flex;flex-direction:column;gap:2px}
 @media(min-width:900px){.home2 .cl-cols{grid-template-columns:minmax(0,1fr) 380px}}
+/* Quran index in the Islamic Calendar layout */
+.qx2 .cl-hd b{font-family:"Amiri Quran","Amiri",serif}
+.qx2 .qx-pill{position:static;border:0;margin:0 auto 14px;background:color-mix(in srgb,var(--muted) 14%,transparent)}
+.qx2 .qx-pill button{border:0;border-radius:999px;padding:8px 18px}
+.qx2 .qx-mainc{position:relative}
+.qx2 #tools.pop{top:0;right:0}
+.qx2 .qx-quick{display:flex;flex-wrap:wrap;gap:6px}
+.qx2 .cl-side .ts-card{padding:16px;overflow:hidden}.qx2 .cl-side .ts-stats{width:100%;box-sizing:border-box;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.qx2 .ts-stats a{display:flex;flex-direction:column;padding:8px;border-radius:12px;background:color-mix(in srgb,var(--brand) 8%,transparent);color:var(--text);text-decoration:none;min-width:0}.qx2 .ts-stats a small{font-size:.72rem;color:var(--muted)}.qx2 .ts-stats a b{font-size:1.2rem}
+@media(min-width:900px){.qx2 .cl-cols{grid-template-columns:minmax(0,1fr) 340px}}
+.qx2 .tb-top #qx-menu[hidden]{display:inline-flex!important;visibility:hidden}

@@ -63,7 +63,7 @@
     tab = t;
     Array.prototype.forEach.call(document.querySelectorAll('[data-tab]'), function (b) { b.setAttribute('aria-selected', b.getAttribute('data-tab') === t); });
     if (push) history.replaceState(null, '', '#' + t);
-    tools.innerHTML = ''; var out; tools.classList.toggle('pop', t === 'surah'); tools.classList.remove('open'); document.getElementById('qx-menu').hidden = t !== 'surah'; document.getElementById('quick').hidden = t !== 'surah'; document.getElementById('qx-title').textContent = t === 'surah' ? 'The Holy Quran' : { juz: 'Juz', hizb: 'Hizb', page: 'Page', search: 'Search', bookmarks: 'Bookmarks', highlights: 'Highlights', favorites: 'Favorites', notes: 'Notes' }[t] || ''; document.getElementById('qx-sub').hidden = t !== 'surah';
+    tools.innerHTML = ''; var out; tools.classList.toggle('pop', t === 'surah'); tools.classList.remove('open'); document.getElementById('qx-menu').hidden = t !== 'surah'; document.getElementById('qx-title').textContent = t === 'surah' ? 'The Holy Quran' : { juz: 'Juz', hizb: 'Hizb', page: 'Page', search: 'Search', bookmarks: 'Bookmarks', highlights: 'Highlights', favorites: 'Favorites', notes: 'Notes' }[t] || ''; document.getElementById('qx-sub').hidden = t !== 'surah';
     if (t === 'surah' || t === 'search') {
       tools.innerHTML = '<input class="search" id="f" type="search" autocomplete="off" placeholder="' + (t === 'surah' ? 'Filter by name, meaning or number' : 'Search the Quran (English or Arabic)') + '">';
       if (t === 'surah') tools.innerHTML += '<div class="sl-opts">' +
@@ -101,4 +101,14 @@
   }).catch(function () { panel.innerHTML = empty('Could not load. Please refresh.'); });
   document.getElementById('qx-menu').onclick = function (e) { e.stopPropagation(); var o = tools.classList.toggle('open'); this.setAttribute('aria-expanded', o); };
   document.addEventListener('click', function (e) { if (tools.classList.contains('open') && !e.target.closest('#tools')) tools.classList.remove('open'); });
+  // side cards + last read (Islamic Calendar layout)
+  (function () {
+    var cnt = function (k, a) { var v = SO.get(k, a ? [] : {}); return (Array.isArray(v) ? v : Object.keys(v)).length; };
+    document.getElementById('qx-saved').innerHTML = [['Bookmarks', cnt('so.bm', 1), 'bookmarks'], ['Favorites', cnt('so.fav', 1), 'favorites'], ['Highlights', cnt('so.hl'), 'highlights'], ['Notes', cnt('so.notes'), 'notes']].map(function (r) { return '<a href="../saved/#' + r[2] + '"><small>' + r[0] + '</small><b>' + r[1] + '</b></a>'; }).join('');
+    var l = SO.get('so.last', null); if (!l) return;
+    SO.j('../assets/data/chapters.json').then(function (d) { var c = d.chapters[l.s - 1]; if (!c) return;
+      document.getElementById('qx-lr').textContent = c.name_simple + ' · Ayah ' + l.a;
+      document.getElementById('qx-lr2').innerHTML = 'Surah ' + l.s + ' · <a href="../sura/?n=' + l.s + '#' + l.a + '">Continue reading →</a>'; });
+  })();
+  document.getElementById('qx-back').onclick = function (e) { if (history.length > 1 && document.referrer.indexOf(location.host) > -1) { e.preventDefault(); history.back(); } };
 })();
