@@ -889,7 +889,7 @@ option,optgroup{color:var(--text);background-color:var(--surface)}
 #settings .seg button:disabled{cursor:default}
 .s-mean{display:block;text-align:center;color:var(--muted);margin:.2rem 0 .4rem}
 .tf-inl details{margin-top:.6rem;padding:8px 12px;border-radius:10px;background:color-mix(in srgb,var(--gold,#C9A227) 10%,transparent)}.tf-inl summary{cursor:pointer;font-weight:600;color:var(--link)}.tf-inl p{white-space:pre-line;margin:.4rem 0 0;font-size:calc(var(--tr-size,1rem)*.95)}
-#as-btn[hidden]{display:none!important}#as-btn[aria-pressed=true]{background:var(--brand);color:var(--brand-ink);border-radius:50%}
+
 /* auto scroll control bar */
 .as-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom));z-index:31;display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--border);box-shadow:0 8px 28px rgba(0,0,0,.18)}
 .as-bar[hidden]{display:none}
@@ -898,3 +898,14 @@ option,optgroup{color:var(--text);background-color:var(--surface)}
 .as-b:disabled{opacity:.4;cursor:default}
 .as-info{display:flex;flex-direction:column;align-items:center;min-width:46px;line-height:1.1}.as-info b{font-variant-numeric:tabular-nums}.as-info small{font-size:.65rem;color:var(--muted)}.as-info[hidden]{display:none}
 body.audio-on .as-bar{bottom:calc(140px + env(safe-area-inset-bottom))}
+/* auto scroll controls inside the bottom toolbar; toolbar slides smoothly */
+.bottombar{transition:transform .35s cubic-bezier(.2,.7,.2,1),opacity .35s;will-change:transform}
+.bottombar.hid{transform:translateY(110%);opacity:0}
+.site-header{transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+html{scroll-behavior:auto}
+.as-ctl{display:flex;align-items:center;gap:4px;padding:2px 6px;border-radius:999px;background:color-mix(in srgb,var(--brand) 8%,transparent)}
+.as-ctl[hidden]{display:none}
+.as-ctl .as-b{width:34px;height:34px;font-size:1.15rem}.as-ctl .as-b.main{width:38px;height:38px}.as-ctl .as-b svg{width:18px;height:18px}
+.as-ctl .as-info{min-width:38px}.as-ctl.run .as-b.main{box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 30%,transparent)}
+@media(max-width:520px){body.as-on .bb-mid #prev,body.as-on .bb-mid #next{display:none}.as-ctl .as-info small{display:none}}
+.rm .bottombar,.rm .site-header{transition:none}
