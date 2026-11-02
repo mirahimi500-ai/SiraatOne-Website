@@ -772,3 +772,16 @@ option,optgroup{color:var(--text);background-color:var(--surface)}
 .nm-dmean{margin:0 0 .4rem;font-size:1.05rem}
 #refs-card[hidden]{display:none}#refs-card .refs p{font-size:.85rem;margin:.3rem 0}
 @media(min-width:900px){.names2 .name-grid.nv-cards{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))!important}}
+/* Saved ayahs page (calendar layout) */
+.saved2 .cl-viewpill{flex-wrap:wrap}
+.sv2-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+.sv2-item{padding:14px 16px;border-radius:14px;background:var(--surface);border:1px solid var(--border);border-left:5px solid var(--hl,var(--brand))}
+.sv2-top{display:flex;align-items:center;gap:8px}.sv2-top a{flex:1;color:var(--text);text-decoration:none}.sv2-top a span{color:var(--muted);font-size:.85rem}
+.sv2-dot{width:12px;height:12px;border-radius:50%;background:var(--hl)}
+.sv2-rm{border:0;background:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:4px 8px;border-radius:8px}.sv2-rm:hover{color:#E53935;background:color-mix(in srgb,#E53935 10%,transparent)}
+.sv2-ar{font-family:"UthmanicHafs","Amiri Quran",serif;font-size:calc(1.6rem*var(--sv-size,1));line-height:2;margin:.4rem 0;text-align:right}
+.sv2-en{margin:.2rem 0;color:var(--text)}.sv2-note{margin:.4rem 0 0;padding:8px 10px;border-radius:10px;background:color-mix(in srgb,var(--gold,#C9A227) 12%,transparent);font-size:.9rem}
+.sv2-stats{display:grid!important;grid-template-columns:1fr 1fr;gap:8px}
+.sv2-surahs{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:4px;max-height:320px;overflow:auto}
+.sv2-surahs button{width:100%;display:flex;justify-content:space-between;padding:6px 10px;border-radius:8px;border:0;background:none;color:var(--text);font:inherit;cursor:pointer}
+.sv2-surahs button:hover{background:color-mix(in srgb,var(--brand) 8%,transparent)}.sv2-surahs button[aria-pressed=true]{background:var(--brand);color:var(--brand-ink)}

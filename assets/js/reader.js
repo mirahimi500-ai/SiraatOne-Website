@@ -509,7 +509,7 @@
     if (!keys.length) return h + '<p class="hint qp-empty">Nothing saved yet.</p>';
     return h + keys.map(function (k) { var p = k.split(':'), sub = 'Ayah ' + p[1] + (sec === 'notes' && notes[k] ? ' • ' + notes[k] : '');
       return '<a class="qp-row qp-saved" href="?n=' + p[0] + '#' + p[1] + '"><span class="qp-ar" lang="ar" dir="rtl">' + SO.sname(+p[0], esc(ch[p[0] - 1].name_arabic)) + '</span><small>' + esc(sub) + '</small></a>'; }).join('') +
-      '<a class="btn btn-ghost sm qp-all" href="../read/#' + { bm: 'bookmarks', hl: 'highlights', notes: 'notes', fav: 'favorites' }[sec] + '">View all saved</a>';
+      '<a class="btn btn-ghost sm qp-all" href="../saved/#' + { bm: 'bookmarks', hl: 'highlights', notes: 'notes', fav: 'favorites' }[sec] + '">View all saved</a>';
   }
   function qpRender() {
     document.querySelectorAll('.qp-icons [data-q]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.q === QS); });
