@@ -48,3 +48,27 @@
   document.addEventListener('click', function (e) { var b = e.target.closest('[data-add]'); if (!b) return; order.push(b.getAttribute('data-add')); SO.set('so.qa', order); tools(true); draw(); });
   draw();
 })();
+
+// ----- Home summary cards (Islamic Calendar style): Hijri today + next Islamic day, Saved counts, Tasbih. Same browser data and settings as those pages.
+(function () {
+  var $ = function (id) { return document.getElementById(id); }; if (!$('hm-hijri')) return;
+  var C = Object.assign({ cal: 'islamic-umalqura', adj: 0 }, SO.get('so.cal2', {}));
+  var HM_EN = ['Muharram', 'Safar', "Rabi' al-Awwal", "Rabi' al-Akhir", 'Jumada al-Ula', 'Jumada al-Akhirah', 'Rajab', "Sha'ban", 'Ramadan', 'Shawwal', "Dhu al-Qa'dah", 'Dhu al-Hijjah'];
+  var HM_AR = ['محرم', 'صفر', 'ربيع الأول', 'ربيع الآخر', 'جمادى الأولى', 'جمادى الآخرة', 'رجب', 'شعبان', 'رمضان', 'شوال', 'ذو القعدة', 'ذو الحجة'];
+  var EV = [[1, 1, 'Islamic New Year'], [1, 10, 'Ashura'], [9, 1, 'Ramadan begins'], [10, 1, 'Eid al-Fitr'], [12, 9, 'Day of Arafah'], [12, 10, 'Eid al-Adha']]; // dates as on the Islamic Calendar page
+  try {
+    var f = new Intl.DateTimeFormat('en-u-ca-' + C.cal + '-nu-latn', { timeZone: 'UTC', day: 'numeric', month: 'numeric', year: 'numeric' });
+    var H = function (d) { var o = {}; f.formatToParts(new Date(d.getTime() + C.adj * 864e5)).forEach(function (p) { o[p.type] = p.value; }); return { y: +parseInt(o.year, 10), m: +o.month, d: +o.day }; };
+    var n = new Date(), t = new Date(Date.UTC(n.getFullYear(), n.getMonth(), n.getDate())), h = H(t);
+    $('hm-hijri').textContent = Number(h.d).toLocaleString('ar-EG') + ' ' + HM_AR[h.m - 1] + ' ' + Number(h.y).toLocaleString('ar-EG', { useGrouping: false }) + ' هـ';
+    $('hm-hijri-en').textContent = h.d + ' ' + HM_EN[h.m - 1] + ' ' + h.y + ' AH';
+    $('hm-greg').textContent = t.toLocaleDateString(undefined, { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    for (var i = 0; i < 400; i++) { var d = new Date(t.getTime() + i * 864e5), x = H(d), e = EV.filter(function (v) { return v[0] === x.m && v[1] === x.d; })[0];
+      if (e) { $('hm-next').textContent = e[2]; $('hm-next-d').innerHTML = (i === 0 ? 'Today' : 'in ' + i + (i === 1 ? ' day' : ' days')) + ' · ' + x.d + ' ' + HM_EN[x.m - 1] + ' · <a href="calendar/">Calendar →</a>'; break; } }
+  } catch (e) {}
+  var cnt = function (k, arr) { var v = SO.get(k, arr ? [] : {}); return (Array.isArray(v) ? v : Object.keys(v)).length; };
+  $('hm-saved').innerHTML = [['Bookmarks', cnt('so.bm', 1), 'bookmarks'], ['Favorites', cnt('so.fav', 1), 'favorites'], ['Highlights', cnt('so.hl'), 'highlights'], ['Notes', cnt('so.notes'), 'notes']].map(function (r) { return '<a href="saved/#' + r[2] + '"><small>' + r[0] + '</small><b>' + r[1] + '</b></a>'; }).join('');
+  var tb = SO.get('so.tb3', null), all = 0, life = 0;
+  if (tb) { Object.keys(tb.dh.rows || {}).forEach(function (k) { all += tb.dh.rows[k].total || 0; }); life = tb.sv ? tb.sv.life : 0; }
+  $('hm-tb').innerHTML = '<div><small>Dhikr total</small><b>' + all + '</b></div><div><small>Saved counters</small><b>' + life + '</b></div>';
+})();

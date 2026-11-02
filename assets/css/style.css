@@ -785,3 +785,12 @@ option,optgroup{color:var(--text);background-color:var(--surface)}
 .sv2-surahs{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:4px;max-height:320px;overflow:auto}
 .sv2-surahs button{width:100%;display:flex;justify-content:space-between;padding:6px 10px;border-radius:8px;border:0;background:none;color:var(--text);font:inherit;cursor:pointer}
 .sv2-surahs button:hover{background:color-mix(in srgb,var(--brand) 8%,transparent)}.sv2-surahs button[aria-pressed=true]{background:var(--brand);color:var(--brand-ink)}
+/* Home in the Islamic Calendar layout */
+.home2 .cl-hd b{font-family:"Amiri",serif}
+.home2 .search-big{margin:0 0 16px}
+.home2 .tiles{margin-top:6px}
+.home2 .last-read{flex-direction:column;align-items:stretch;text-align:left;gap:10px}
+.home2 .last-read .lr-ico{display:none}
+.home2 .ts-stats a{display:flex;flex-direction:column;padding:8px;border-radius:12px;background:color-mix(in srgb,var(--brand) 8%,transparent);color:var(--text);text-decoration:none}
+.home2 .ts-stats a small{font-size:.72rem;color:var(--muted)}.home2 .ts-stats a b{font-size:1.2rem}
+.home2 .cl-side .ts-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
