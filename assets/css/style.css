@@ -1025,17 +1025,55 @@ body[data-script="indopak"] .flow,body[data-script="indopak"] .card-a .ar{line-h
 .pt-extra li{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}.pt-extra li:last-child{border:0}
 .pt-adj{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
 @media(max-width:520px){.pt-row{padding:10px 12px;gap:8px}.pt-row time{font-size:1.1rem}}
-/* PW1: Home prayer-times widget */
-.pw{max-width:none;margin:0 0 18px;padding:18px;background:linear-gradient(135deg,color-mix(in srgb,var(--brand) 14%,var(--surface)),var(--surface) 70%)}
-.pw-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}.pw-top b{font-size:1.05rem}.pw-top span{color:var(--muted);font-size:.85rem;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pw-next{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin-bottom:14px}
-.pw-next small{flex-basis:100%;color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em}
-.pw-next b{font-size:clamp(1.6rem,5vw,2.2rem);color:var(--brand);line-height:1.2}.pw-next b span{font-family:"Amiri",serif;font-size:.75em;color:var(--muted);margin-left:.2em}
-.pw-at{font-size:1.4rem;font-weight:700;font-variant-numeric:tabular-nums}.pw-left{color:var(--muted);font-variant-numeric:tabular-nums}
-.pw-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
-.pw-list li{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 4px;border-radius:12px;background:var(--surface);border:1px solid var(--border)}
-.pw-list small{font-size:.78rem;color:var(--muted)}.pw-list b{font-size:.95rem;font-variant-numeric:tabular-nums;white-space:nowrap}
-.pw-list li.past{opacity:.55}.pw-list li.sun b{font-weight:500}
-.pw-list li.now{background:var(--brand);border-color:var(--brand)}.pw-list li.now small,.pw-list li.now b{color:var(--brand-ink)}
-.pw-empty p{margin:0 0 12px;color:var(--muted)}.pw-btns{display:flex;gap:8px;flex-wrap:wrap}
-@media(max-width:560px){.pw-list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* PW2: Home prayer-times widget (right column, compact) */
+.pw{max-width:none;margin:0 0 14px;padding:16px;background:linear-gradient(160deg,color-mix(in srgb,var(--brand) 12%,var(--surface)),var(--surface) 65%)}
+.pw-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.pw-top b{font-size:1rem}
+.pw-next{display:flex;flex-direction:column;gap:2px;margin-bottom:12px}
+.pw-next small{color:var(--muted);font-size:.75rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pw-next>div{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.pw-next b{font-size:1.7rem;color:var(--brand);line-height:1.2}.pw-at{font-size:1.25rem;font-weight:700;font-variant-numeric:tabular-nums}
+.pw-left{color:var(--muted);font-size:.85rem;font-variant-numeric:tabular-nums}
+.pw-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.pw-list li{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:10px}
+.pw-list li span{color:var(--muted);font-size:.9rem}.pw-list li b{font-variant-numeric:tabular-nums;font-size:.95rem}
+.pw-list li.past{opacity:.5}.pw-list li.sun b{font-weight:500}
+.pw-list li.now{background:var(--brand)}.pw-list li.now span,.pw-list li.now b{color:var(--brand-ink)}
+.pw-empty{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;border:1px dashed var(--border);color:inherit;text-decoration:none}
+.pw-empty svg{width:26px;height:26px;flex:none;fill:none;stroke:var(--brand);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.pw-empty span{flex:1;display:flex;flex-direction:column}.pw-empty small{color:var(--muted);font-size:.8rem}.pw-empty em{font-style:normal;color:var(--muted);font-size:1.3rem}
+.pw-empty:hover{border-color:var(--brand)}
+/* H3: Home redesign — hero banner + prayer card on top, card-style Quick access below */
+.home3{padding-top:8px}
+.h3-top{display:grid;gap:16px;margin:4px 0 22px}
+@media(min-width:900px){.h3-top{grid-template-columns:minmax(0,1.9fr) minmax(300px,1fr);align-items:stretch}}
+.h3-hero{position:relative;overflow:hidden;display:grid;gap:14px;grid-template-columns:1fr;padding:24px;border-radius:22px;color:#fff;
+  background:radial-gradient(120% 140% at 100% 0%,color-mix(in srgb,var(--gold) 55%,transparent) 0,transparent 45%),linear-gradient(135deg,color-mix(in srgb,var(--brand) 92%,#000) 0%,var(--brand) 55%,color-mix(in srgb,var(--brand) 70%,#0b3d2e) 100%);
+  box-shadow:0 14px 34px -18px color-mix(in srgb,var(--brand) 70%,#000)}
+.h3-hero::after{content:"";position:absolute;right:-60px;bottom:-60px;width:220px;height:220px;border-radius:50%;border:28px solid rgba(255,255,255,.07);pointer-events:none}
+@media(min-width:640px){.h3-hero{grid-template-columns:1fr auto}}
+.h3-greet{display:flex;flex-direction:column;gap:2px}
+.h3-greet small{opacity:.85;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase}
+.h3-greet b{font-family:"Amiri",serif;font-size:clamp(1.8rem,5vw,2.6rem);line-height:1.5;color:#fff}
+.h3-greet span{font-weight:600}.h3-greet em{font-style:normal;opacity:.85;font-size:.9rem}
+.h3-ev{align-self:start;display:flex;flex-direction:column;gap:2px;padding:12px 16px;border-radius:16px;background:rgba(255,255,255,.14);backdrop-filter:blur(6px);min-width:200px}
+.h3-ev small{opacity:.85;font-size:.75rem}.h3-ev b{font-size:1.05rem;color:#fff}.h3-ev span{font-size:.85rem;opacity:.9}.h3-ev a{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.h3-hero .search-big{grid-column:1/-1;margin:0}
+.h3-hero .search-big input{background:rgba(255,255,255,.96);border:0;color:#1d2a22;box-shadow:0 6px 18px -10px rgba(0,0,0,.45)}
+.h3-hero .search-big input::placeholder{color:#5d6a62}.h3-hero .search-big .s-ico{color:#5d6a62}
+:root[data-theme="dark"] .h3-hero .search-big input,.oled .h3-hero .search-big input{background:rgba(0,0,0,.35);color:#fff}
+.home3 .pw{margin:0;height:100%;box-sizing:border-box;border-radius:22px}
+.home3 .h3-qa{padding:0}
+.home3 .h3-qa .sec-row{margin-bottom:12px}.home3 .h3-qa .sec-h{margin:0}
+.home3 .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr))!important;gap:12px!important;margin:0}
+@media(min-width:640px){.home3 .tiles{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))!important}}
+.home3 .tile{--ac:var(--brand);flex-direction:row;align-items:center;text-align:left;gap:12px;padding:14px;border:1px solid var(--border);border-radius:18px;background:var(--surface);transition:transform .2s,box-shadow .2s,border-color .2s}
+.home3 .tile:nth-child(4n+2){--ac:var(--gold)}.home3 .tile:nth-child(4n+3){--ac:#3a7ca5}.home3 .tile:nth-child(4n){--ac:#8a5aa8}
+.home3 .tile:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--ac) 50%,var(--border));box-shadow:0 12px 24px -16px rgba(0,0,0,.35);background:var(--surface)}
+.home3 .tile .ico{flex:none;width:46px;height:46px;padding:11px;margin:0;border-radius:14px;color:var(--ac);background:color-mix(in srgb,var(--ac) 14%,transparent)}
+.home3 .tile b{font-size:.95rem;line-height:1.25}.home3 .tile:hover b{color:var(--text)}
+.home3 .tile span{display:block;font-size:.78rem;color:var(--muted);line-height:1.3}
+.home3 .tile>b,.home3 .tile>span{grid-column:2}
+.home3 .tile{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;column-gap:12px;row-gap:2px}
+.home3 .tile .ico{grid-row:1/3}
+.home3 .tile .qa-t{grid-column:1/-1}
+.rm .home3 .tile{transition:none}

@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="assets/css/style.css?v=20261104x">
+<link rel="stylesheet" href="assets/css/style.css?v=20261104z">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -33,24 +33,24 @@
   </div>
 </header>
 
-<main id="main" class="wrap dash cal2 home2">
-  <section class="cl-hero home-hero">
-    <div class="cl-hd"><small>Assalamu Alaikum</small><b lang="ar" dir="rtl" id="hm-hijri">&nbsp;</b><span id="hm-hijri-en"></span><em id="hm-greg"></em></div>
-    <div class="cl-hn"><small>Next Islamic day</small><b id="hm-next">—</b><span id="hm-next-d"><a href="calendar/">Open the Islamic Calendar →</a></span></div>
-  </section>
-  <form class="search-big" action="read/" role="search">
-    <svg class="ico s-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
-    <label class="sr" for="home-q">Search the Quran</label>
-    <input id="home-q" name="q" type="search" placeholder="Search a sura or words in the Quran" autocomplete="off">
-    <input type="hidden" name="tab" value="search">
+<main id="main" class="wrap dash cal2 home2 home3">
+  <div class="h3-top">
+    <section class="h3-hero" aria-label="Today">
+      <div class="h3-greet"><small>Assalamu Alaikum</small><b lang="ar" dir="rtl" id="hm-hijri">&nbsp;</b><span id="hm-hijri-en"></span><em id="hm-greg"></em></div>
+      <div class="h3-ev"><small>Next Islamic day</small><b id="hm-next">—</b><span id="hm-next-d"><a href="calendar/">Open the Islamic Calendar →</a></span></div>
+      <form class="search-big" action="read/" role="search">
+          <svg class="ico s-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+          <label class="sr" for="home-q">Search the Quran</label>
+          <input id="home-q" name="q" type="search" placeholder="Search a sura or words in the Quran" autocomplete="off">
+          <input type="hidden" name="tab" value="search">
   </form>
-  <div class="cl-cols">
-    <div class="cl-main">
-  <section class="pw ts-card" id="pw" aria-label="Prayer times">
-    <div class="pw-top"><b>Prayer Times</b><span id="pw-loc"></span><a class="btn btn-ghost sm" href="prayer/">Open ›</a></div>
-    <div id="pw-body"></div>
-  </section>
-  <section aria-labelledby="qa-h">
+    </section>
+    <section class="pw ts-card" id="pw" aria-label="Prayer times">
+        <div class="pw-top"><b>Prayer Times</b><a class="btn btn-ghost sm" href="prayer/">Open ›</a></div>
+        <div id="pw-body"></div>
+      </section>
+  </div>
+  <section class="h3-qa" aria-labelledby="qa-h">
     <div class="sec-row"><h2 id="qa-h" class="sec-h">Quick access</h2><button type="button" class="btn btn-ghost sm" id="qa-edit">Edit</button></div>
     <div class="tiles">
       <a class="tile" data-id="read" href="read/" ><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5.5 4 8.5 4 12 6c3.5-2 6.5-2 9-.5V19c-2.5-1.5-5.5-1.5-9 .5-3.5-2-6.5-2-9-.5z"/><path d="M12 6v13.5"/></svg><b>Read Quran</b><span>114 suras with translation</span></a>
@@ -67,25 +67,12 @@
       <a class="tile" data-id="prayer" href="prayer/"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><b>Prayer times & Azan</b><span>Times, Azan &amp; Qibla</span></a>
     </div>
   </section>
-    </div>
-    <aside class="cl-side">
-  <section class="last-read ts-card" id="last-read" aria-label="Last read">
-    <span class="lr-ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5.5 4 8.5 4 12 6c3.5-2 6.5-2 9-.5V19c-2.5-1.5-5.5-1.5-9 .5-3.5-2-6.5-2-9-.5z"/><path d="M12 6v13.5"/></svg></span>
-    <div class="lr-txt"><small>Last read</small><b id="lr-title">Start with Al-Fatihah</b><span id="lr-meta">Surah 1 · Ayah 1</span></div>
-    <a class="btn btn-primary" id="lr-go" href="sura/?n=1">Start reading</a>
-  </section>
-      <div class="ts-card"><div class="ts-hh"><b>Saved</b><a class="btn btn-ghost sm" href="saved/#bookmarks">Open</a></div><div class="ts-stats sv2-stats" id="hm-saved"></div></div>
-      <div class="ts-card"><div class="ts-hh"><b>Tasbih</b><a class="btn btn-ghost sm" href="tasbih/">Open</a></div><div class="ts-stats" id="hm-tb"></div></div>
-    </aside>
-  </div>
-
-
 </main>
 
-<script src="assets/js/site.js?v=20261104x" defer></script>
-<script src="assets/js/lib.js?v=20261104x" defer></script>
+<script src="assets/js/site.js?v=20261104z" defer></script>
+<script src="assets/js/lib.js?v=20261104z" defer></script>
 <script src="assets/js/vendor/adhan.umd.min.js?v=4.4.3" defer></script>
-<script src="assets/js/prayer-core.js?v=20261104x" defer></script>
-<script src="assets/js/home.js?v=20261104x" defer></script>
+<script src="assets/js/prayer-core.js?v=20261104z" defer></script>
+<script src="assets/js/home.js?v=20261104z" defer></script>
 </body>
 </html>

@@ -1,18 +1,5 @@
-// Home: Last Read card + Continue tile. Reads only this browser's saved position.
-(function () {
-  var last = SO.get('so.last', null); if (!last) return;
-  Promise.all([SO.j('assets/data/chapters.json'), SO.j('assets/data/index.json').catch(function () { return null; })]).then(function (r) {
-    var c = r[0].chapters[last.s - 1]; if (!c) return;
-    var url = 'sura/?n=' + last.s + '#' + last.a;
-    document.getElementById('lr-title').textContent = c.name_simple + ' · Ayah ' + last.a;
-    var m = 'Surah ' + last.s;
-    if (r[1]) { var p = SO.pos(r[1], last.s, last.a); m += ' · Page ' + p.page + ' · Juz ' + p.juz; }
-    document.getElementById('lr-meta').textContent = m;
-    var go = document.getElementById('lr-go'); go.href = url; go.textContent = 'Continue';
-    var t = document.querySelector('[data-continue]'); if (t) t.href = url;
-  });
-  var t = document.querySelector('[data-continue]'); if (t) t.href = 'sura/?n=' + last.s + '#' + last.a;
-})();
+// Home: Continue tile opens the last read position (this browser only).
+(function () { var last = SO.get('so.last', null), t = document.querySelector('[data-continue]'); if (last && t) t.href = 'sura/?n=' + last.s + '#' + last.a; })();
 (function () { var t = document.querySelector('[data-continue]'); if (t && t.getAttribute('href') === '') t.href = 'sura/?n=1'; })();
 
 // ----- Quick access: order, hide, add (like the app's Customize Home). Saved in this browser only.
@@ -66,11 +53,6 @@
     for (var i = 0; i < 400; i++) { var d = new Date(t.getTime() + i * 864e5), x = H(d), e = EV.filter(function (v) { return v[0] === x.m && v[1] === x.d; })[0];
       if (e) { $('hm-next').textContent = e[2]; $('hm-next-d').innerHTML = (i === 0 ? 'Today' : 'in ' + i + (i === 1 ? ' day' : ' days')) + ' · ' + x.d + ' ' + HM_EN[x.m - 1] + ' · <a href="calendar/">Calendar →</a>'; break; } }
   } catch (e) {}
-  var cnt = function (k, arr) { var v = SO.get(k, arr ? [] : {}); return (Array.isArray(v) ? v : Object.keys(v)).length; };
-  $('hm-saved').innerHTML = [['Bookmarks', cnt('so.bm', 1), 'bookmarks'], ['Favorites', cnt('so.fav', 1), 'favorites'], ['Highlights', cnt('so.hl'), 'highlights'], ['Notes', cnt('so.notes'), 'notes']].map(function (r) { return '<a href="saved/#' + r[2] + '"><small>' + r[0] + '</small><b>' + r[1] + '</b></a>'; }).join('');
-  var tb = SO.get('so.tb3', null), all = 0, life = 0;
-  if (tb) { Object.keys(tb.dh.rows || {}).forEach(function (k) { all += tb.dh.rows[k].total || 0; }); life = tb.sv ? tb.sv.life : 0; }
-  $('hm-tb').innerHTML = '<div><small>Dhikr total</small><b>' + all + '</b></div><div><small>Saved counters</small><b>' + life + '</b></div>';
 })();
 
 // ---------- Prayer Times widget (same calculation and settings as the Prayer Times page) ----------
@@ -79,27 +61,19 @@
   if (!window.PT || !PT.ok) { document.getElementById('pw').hidden = true; return; }
   var esc = SO.esc, S = PT.settings(), L = SO.get('so.ploc', null), last = '';
   function empty() {
-    document.getElementById('pw-loc').textContent = '';
-    body.innerHTML = '<div class="pw-empty"><p>See today\'s prayer times and the time left until the next prayer.</p><div class="pw-btns"><button type="button" class="btn btn-primary sm" id="pw-gps">Use my location</button><a class="btn btn-ghost sm" href="prayer/">Search a city</a></div></div>';
-    document.getElementById('pw-gps').onclick = function () {
-      var b = this; if (!navigator.geolocation) { location.href = 'prayer/'; return; } b.textContent = 'Finding you…';
-      navigator.geolocation.getCurrentPosition(function (p) {
-        L = { lat: +p.coords.latitude.toFixed(4), lng: +p.coords.longitude.toFixed(4), name: 'My location', tz: Intl.DateTimeFormat().resolvedOptions().timeZone };
-        SO.set('so.ploc', L); last = ''; draw();
-      }, function () { location.href = 'prayer/'; }, { timeout: 15000, maximumAge: 6e5 });
-    };
+    body.innerHTML = '<a class="pw-empty" href="prayer/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.6-6-11a6 6 0 0 1 12 0c0 5.4-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg><span><b>Location required</b><small>Set your location to see prayer times</small></span><em>›</em></a>';
   }
   function draw() {
     if (!L) { empty(); return; }
     var now = new Date(), nx = PT.next(S, L, now), t = PT.ymd(L, now), pt = PT.times(S, L, t.year, t.month, t.day);
     var key = nx.k + nx.d;
     if (key !== last) {
-      last = key; document.getElementById('pw-loc').textContent = L.name;
-      body.innerHTML = '<div class="pw-next"><small>Next prayer</small><b>' + PT.label(nx.k, nx.y, nx.m, nx.d) + ' <span lang="ar" dir="rtl">' + PT.AR[nx.k] + '</span></b>' +
-        '<span class="pw-at">' + PT.fmt(S, L, nx.at) + '</span><span class="pw-left" id="pw-left"></span></div>' +
+      last = key;
+      body.innerHTML = '<div class="pw-next"><small>' + esc(L.name) + ' · next prayer</small><div><b>' + PT.label(nx.k, nx.y, nx.m, nx.d) + '</b><span class="pw-at">' + PT.fmt(S, L, nx.at) + '</span></div>' +
+        '<span class="pw-left" id="pw-left"></span></div>' +
         '<ol class="pw-list">' + PT.P.map(function (k) {
           var cls = (k === nx.k && nx.d === t.day ? 'now' : pt[k] < now ? 'past' : '') + (k === 'sunrise' ? ' sun' : '');
-          return '<li class="' + cls + '"><small>' + PT.label(k, t.year, t.month, t.day) + '</small><b>' + PT.fmt(S, L, pt[k]) + '</b></li>';
+          return '<li class="' + cls + '"><span>' + PT.label(k, t.year, t.month, t.day) + '</span><b>' + PT.fmt(S, L, pt[k]) + '</b></li>';
         }).join('') + '</ol>';
     }
     var el = document.getElementById('pw-left'); if (el) el.textContent = 'in ' + PT.left(nx.at - now);
