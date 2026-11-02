@@ -39,10 +39,27 @@
     return out;
   }
   function fmt(a, s, i, noMark) {
+    var m = tjMarkup(s, i);
+    return (m && tjSource(m, !noMark)) || esc(a);
+  }
+  function tjMarkup(s, i) {
     var m = S.tajweed && TJD[s] && TJD[s][i];
     // same single, exact repair as the app (known Quran Foundation markup defect at 32:3)
     if (m && s === 32 && i === 2) m = m.replace('<tajweed class=ham_wasl>ٱ</tajweed>فْتَرَ>ٮٰ</tajweed>هُ', '<tajweed class=ham_wasl>ٱ</tajweed>فْتَرَ<tajweed class=madda_normal>ٮٰ</tajweed>هُ');
-    return (m && tjSource(m, !noMark)) || esc(a);
+    return m || null;
+  }
+  // Mushaf+: the same Tajweed colours word by word. Used only when the word count matches the word-by-word data exactly
+  // (otherwise that ayah stays plain: fail-closed, never a wrong split).
+  function tjWords(s, i, count) {
+    var m = tjMarkup(s, i), segs = m && TJ.parse(m); if (!segs) return null;
+    var uth = S.script === 'uthmani', out = [], cur = '';
+    segs.forEach(function (g) {
+      if (g.rule === 'endMarker') return;
+      var cls = g.rule && g.rule !== 'unknown' ? g.rule : null, t = uth ? g.text.replace(/\u0672/g, '\u0670').replace(/\u06DF/g, '\u06E0') : g.text;
+      t.split(/(\s+)/).forEach(function (p) { if (!p) return; if (/^\s+$/.test(p)) { if (cur) { out.push(cur); cur = ''; } return; } cur += cls ? '<span class="tj-' + cls + '">' + esc(p) + '</span>' : esc(p); });
+    });
+    if (cur) out.push(cur);
+    return out.length === count ? out : null;
   }
 
   // Translations: 20 = Saheeh International (inside sura/*.json); others from assets/data/tr/<id>/<sura>.json (scripts/fetch-translations.ps1)
@@ -150,8 +167,8 @@
   // grey out options that do not apply to the selected reading mode (they work again when that mode is chosen)
   function deps() {
     var m = S.mode, on = {
-      paging: m === 'clean', tlay: m === 'verse', showAr: m === 'verse', showTr: m === 'verse', tfInline: m === 'verse',
-      showWbw: m === 'plus', tapWord: m === 'plus', numsRight: m !== 'clean', tajweed: m !== 'plus', legend: m !== 'plus' && S.tajweed,
+      paging: m === 'clean', tlay: m === 'verse', showAr: m === 'verse', showTr: m === 'verse', tfInline: m !== 'clean',
+      showWbw: m === 'plus', tapWord: m === 'plus', numsRight: m !== 'clean', tajweed: true, legend: !!S.tajweed,
       speed: S.auto, asNext: S.auto, asResume: S.auto, asEta: S.auto, meaning: S.header, deco: S.header };
     Object.keys(on).forEach(function (k) {
       document.querySelectorAll('#settings [data-set="' + k + '"]').forEach(function (el) {
@@ -229,12 +246,12 @@
         h = '<ol class="cards tl-' + (mode === 'plus' ? 'ayah' : S.tlay) + '">' + AR.map(function (a, i) {
           var k = n + ':' + (i + 1), top = '<div class="c-top">' + (S.nums ? '<span class="c-num">' + (i + 1) + '</span>' : '') + marks(k) + '<button type="button" class="more" data-a="' + (i + 1) + '" aria-label="Ayah ' + k + ' actions">•••</button></div>';
           var ar = mode === 'plus'
-            ? '<div class="words" lang="ar" dir="rtl">' + wbw[i].map(function (w, j) { return '<span class="w" data-w="' + (j + 1) + '" data-wa="' + (i + 1) + '"><span class="wa">' + esc(w[0]) + '</span><span class="wt" dir="ltr">' + esc(w[1] || '') + '</span></span>'; }).join('') + end(i + 1) + '</div>'
+            ? '<div class="words" lang="ar" dir="rtl">' + (function () { var tw = tjWords(n, i, wbw[i].length); return wbw[i].map(function (w, j) { return '<span class="w" data-w="' + (j + 1) + '" data-wa="' + (i + 1) + '"><span class="wa">' + (tw ? tw[j] : esc(w[0])) + '</span><span class="wt" dir="ltr">' + esc(w[1] || '') + '</span></span>'; }).join(''); })() + end(i + 1) + '</div>'
             : '<p class="ar" lang="ar" dir="rtl">' + fmt(a, n, i) + (S.nums && !(S.tajweed && TJD[n] ? S.script !== 'naskh' : hasNum(a)) ? ' ' + end(i + 1) : '') + '</p>';
-          return (i === 0 || jzStart(n, i + 1) ? '<li class="mpill-li">' + mpill(n, i + 1) + '</li>' : '') + '<li class="card-a" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(k) + '>' + top + (showAr ? ar : '') + (showTr ? '<p class="tr"' + trAttr() + '>' + esc((TRT || sura.en)[i]) + '</p>' : '') + (S.tfInline && mode === 'verse' ? '<div class="tf-inl" data-tf="' + (i + 1) + '"></div>' : '') + '</li>';
+          return (i === 0 || jzStart(n, i + 1) ? '<li class="mpill-li">' + mpill(n, i + 1) + '</li>' : '') + '<li class="card-a" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(k) + '>' + top + (showAr ? ar : '') + (showTr ? '<p class="tr"' + trAttr() + '>' + esc((TRT || sura.en)[i]) + '</p>' : '') + (S.tfInline && mode !== 'clean' ? '<div class="tf-inl" data-tf="' + (i + 1) + '"></div>' : '') + '</li>';
         }).join('') + '</ol>';
       }
-      if (S.tfInline && mode === 'verse') setTimeout(tfFill, 0);
+      if (S.tfInline && mode !== 'clean') setTimeout(tfFill, 0);
       if (S.mode === 'plus' && wbw === false) h = '<p class="empty">Word-by-word is not available yet. Showing Verse List.</p>' + h;
       $('body').innerHTML = h;
       var t = parseInt(location.hash.slice(1), 10);
