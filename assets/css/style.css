@@ -878,3 +878,9 @@ option,optgroup{color:var(--text);background-color:var(--surface)}
 .lib2 .tiles{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))!important;margin-top:10px}
 .lib2 .cl-side .ts-card{padding:16px;text-align:left}
 @media(min-width:900px){.lib2 .cl-cols{grid-template-columns:minmax(0,1fr) 320px}}
+/* layout fixes (App Library screenshot): hero + cards always padded, App badge before the + Home button */
+.cl-hero{padding:22px 26px!important}
+.lib2 .lib-card{padding:18px 20px!important}
+.lib2 .tile{display:flex;flex-direction:column;align-items:center}
+.lib2 .tile em{order:2;margin:2px 0 0}
+.lib2 .tile .lib-add{order:3}

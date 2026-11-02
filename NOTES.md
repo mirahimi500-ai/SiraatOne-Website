@@ -166,3 +166,4 @@ TM2: Terms & Credits in Islamic Calendar layout, text unchanged; pill Using this
 AP2: Quran app + Azan app pages in Islamic Calendar layout (hero + Play button, features grid, side Content sources/Phones + Help & policies). Text unchanged. Version 20261103n.
 HD3: Hadith in Islamic Calendar layout (top bar Back/⚙, hero الأحاديث النبوية + saved count, pill Collections/Saved, breadcrumbs + list, side Source/Note). Version 20261103o.
 LB2: App Library in Islamic Calendar layout (hero count + on-Home count, tiles card with + Home, side Quick access help + Android apps). Version 20261103p.
+Fix (2026-11-03): all hero cards + App Library card padded (no text touching card edge, checked on 13 pages), App badge above + Home button. Version 20261103q.
