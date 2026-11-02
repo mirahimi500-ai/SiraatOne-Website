@@ -184,3 +184,4 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - HDR1: top site bar = floating pill (all pages), bold logo, pill nav links; slow smooth hide (0.7s) on scroll down, status/tabs/bottom bar follow same motion.
 - HDR2: top bar hides as a visible slide-up (0.9s, fade only at the end), slides back down on scroll up.
 - PV1: Settings live preview (real ayahs of current sura, follows every setting: mode, font, tajweed, sizes, spacing, margins, header/meaning/decoration, numbers, translation, background) at top of Reading/Text/Look; thumbnails on Reading mode, Paging, Translation layout, Quran font, Repeat, Next/previous.
+- PV1 reverted (user: not professional/accurate). Settings back to SET1 state.

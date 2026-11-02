@@ -972,19 +972,3 @@ body.hdr-hid .status{top:8px}
 body.hdr-hid .site-header{transition:transform .9s cubic-bezier(.65,0,.35,1),opacity .2s linear .7s}
 .status,.tabs{transition:top .9s cubic-bezier(.65,0,.35,1),transform .45s cubic-bezier(.2,.7,.2,1),opacity .45s}
 .rm .site-header,.rm body.hdr-hid .site-header{transition:none}
-/* PV1: Settings live preview + choice thumbnails */
-#settings .pv{position:sticky;top:0;z-index:2;margin:0 0 14px;border:1px solid var(--border);border-radius:14px;background:var(--bg);max-height:210px;overflow:hidden;box-shadow:0 6px 14px -10px rgba(0,0,0,.35)}
-#settings .pv:empty{display:none}
-#settings .pv::after{content:"";position:absolute;left:0;right:0;bottom:0;height:28px;background:linear-gradient(transparent,var(--bg));pointer-events:none}
-#settings .pv-tag{position:absolute;top:6px;left:10px;font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);z-index:1}
-#settings .pv-in{padding-top:20px;padding-bottom:10px}
-#settings .pv-head{text-align:center}#settings .pv-head .sura-head{padding:0}#settings .pv-head .frame{max-width:230px}#settings .pv-head small{display:block;color:var(--muted);font-size:.72rem}
-#settings .pv .flow,#settings .pv .ar{margin:4px 0;font-family:var(--quran);font-size:var(--ar-size);line-height:var(--lh)}
-#settings .pv .tr{margin:2px 0 6px;font-size:var(--tr-size);color:var(--muted);text-align:left}
-#settings .pv-card{border-bottom:1px solid var(--border);padding:4px 0}#settings .pv-card:last-child{border:0}
-.seg button.has-th{display:flex;flex-direction:column;align-items:center;gap:4px}
-.seg .th{display:flex;align-items:center;justify-content:center;height:34px}
-.seg .th svg{width:46px;height:30px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;opacity:.85}
-.seg .th-ar{font-size:1.25rem;line-height:1;white-space:nowrap}
-#settings .pv{max-height:230px}#settings .pv-head .frame{max-width:150px}
-@media (max-width:699px){#settings .pv{max-height:190px}#settings .pv-head .frame{max-width:120px}}
