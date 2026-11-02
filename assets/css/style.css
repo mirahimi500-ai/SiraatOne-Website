@@ -797,3 +797,13 @@ option,optgroup{color:var(--text);background-color:var(--surface)}
 /* full width (edge to edge) for all calendar-style pages */
 .cal2,.tasbih,.names2,.saved2,.home2{max-width:none!important;width:100%}
 @media(min-width:1400px){.cl-cols{grid-template-columns:minmax(0,3fr) minmax(340px,1fr)}}
+/* Home fixes (from screenshot): hero padding, tile grid without a lonely last row, cards that fit */
+.home2 .cl-hero{padding:22px 26px!important}
+.home2 .cl-main section{padding:0}
+.home2 .tiles{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))!important;gap:14px 10px}
+.home2 .cl-side .ts-card{padding:16px;overflow:hidden}
+.home2 .cl-side .ts-stats{width:100%;box-sizing:border-box}
+.home2 .cl-side .ts-stats>*{min-width:0;box-sizing:border-box}
+.home2 .last-read .btn{width:100%;justify-content:center;text-align:center}
+.home2 .last-read .lr-txt{display:flex;flex-direction:column;gap:2px}
+@media(min-width:900px){.home2 .cl-cols{grid-template-columns:minmax(0,1fr) 380px}}
