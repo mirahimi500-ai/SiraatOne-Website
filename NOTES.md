@@ -190,3 +190,4 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - WBW3: own 'Word by word' section in Settings > Reading (toggle + language); always enabled; turning on switches to Mushaf+.
 - WBW4: fetch-wbw-langs.ps1 fixed: QF v4 word language param is 'language' (verified ur on 1:2).
 - WBW5: Mushaf+ tajweed words in selected Mushaf font (fixes broken letters); RTL word meanings in system Arabic font, bigger.
+- WBW6: Mushaf+ ayah sign taken from the selected Mushaf text (own number glyph, Mushaf font) instead of ﴿﴾; slider 'Word meaning spacing (Mushaf+)' 0-30px (default 8).
