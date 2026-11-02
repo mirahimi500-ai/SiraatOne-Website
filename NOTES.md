@@ -161,3 +161,5 @@ Fix (2026-11-03): tb-top title exactly centred (wraps, never cut), gear no longe
 DU5: Duas & Adhkar (landing + every collection/topic/saved/search) in Islamic Calendar layout: top bar Back(folder->landing)/title/⚙ settings, hero (landing totals or folder count), Morning/Evening pill, main grids/list + side cards Collections/Saved/About. PASS headless. Version 20261103h.
 SP2: Support in Islamic Calendar layout (hero contact, pill Common questions/Become a Tester, FAQ accordion + website backup Q, side Contact/Our apps/Policies). Version 20261103i.
 PV2: Privacy in Islamic Calendar layout; policy text unchanged (verified key passages), pill Quran/Azan/This website (all sections visible without JS), Changes + Contact as side cards, #quran/#azan/#website anchors kept. Version 20261103k.
+Fix: privacy pill - card display rule overrode [hidden]; now one policy visible at a time (tested real visibility). Version 20261103l.
+TM2: Terms & Credits in Islamic Calendar layout, text unchanged; pill Using this website / Credits & sources; side For copyright owners + Contact. PASS (real visibility). Version 20261103m.

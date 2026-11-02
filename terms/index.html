@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261103l">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261103m">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -33,11 +33,20 @@
   </div>
 </header>
 
-<main id="main" class="doc">
-  <h1>Terms &amp; Credits</h1>
-  <p class="muted">Effective date: 1 November 2026</p>
-
-  <h2 id="terms">Using this website</h2>
+<main id="main" class="wrap tool cal2 pv2 tm2">
+  <div class="tb-top">
+    <a class="btn btn-ghost sm" href="../" id="tm-back">← Back</a>
+    <h1>Terms &amp; Credits</h1>
+    <span class="tb-spacer" aria-hidden="true"></span>
+  </div>
+  <section class="cl-hero">
+    <div class="cl-hd"><small>siraatone.com</small><b>Free to use, from named sources</b><span>Quran, translations, recitations, hadith and duas come only from the sources credited here, unchanged.</span><em>Effective date: 1 November 2026</em></div>
+    <div class="cl-hn"><small>Privacy</small><b><a href="../privacy/#website">Privacy policy →</a></b><span>No accounts, ads or tracking</span></div>
+  </section>
+  <div class="tb-mode cl-viewpill" id="tm-pill"><button type="button" data-p="terms">Using this website</button><button type="button" data-p="credits">Credits &amp; sources</button></div>
+  <div class="cl-cols">
+    <div class="cl-main">
+      <a id="terms"></a><section class="ts-card pv-sec doc" id="pv-terms"><h2>Using this website</h2>
   <ul>
     <li>siraatone.com is free to use. It has no accounts, ads or paid features.</li>
     <li>The content is for reading, learning and remembrance. It is <b>not</b> a source of religious rulings (fatwa). For rulings, please ask a qualified scholar.</li>
@@ -46,7 +55,8 @@
     <li>Your settings, bookmarks and notes stay in your own browser. See the <a href="../privacy/#website">privacy policy</a>.</li>
   </ul>
 
-  <h2 id="credits">Credits and sources</h2>
+  </section>
+      <a id="credits"></a><section class="ts-card pv-sec doc" id="pv-credits"><h2>Credits and sources</h2>
   <h3>Quran text</h3>
   <p>Arabic text (Uthmani, KFGQPC Hafs and IndoPak scripts), word-by-word meanings, Tajweed text, and juz, hizb and page divisions: <a href="https://quran.foundation" rel="noopener">Quran Foundation</a> (api.quran.com). Saved once and checked: 114 suras, 6236 ayahs.</p>
 
@@ -78,13 +88,28 @@
   <h3>Logo, header frames and design</h3>
   <p>&copy; SiraatOne.</p>
 
-  <h2 id="owners">For copyright owners</h2>
+  </section>
+    </div>
+    <aside class="cl-side">
+      <div class="ts-card doc" id="owners"><h2>For copyright owners</h2>
   <p>If you own any content shown here and want it credited differently, updated or removed, please email <a href="mailto:siraatone1@gmail.com?subject=Copyright%20-%20siraatone.com">siraatone1@gmail.com</a>. We will reply and act promptly.</p>
 
-  <h2 id="contact">Contact</h2>
+  </div>
+      <div class="ts-card doc" id="contact"><h2>Contact</h2>
   <p><a href="mailto:siraatone1@gmail.com">siraatone1@gmail.com</a></p>
+</div>
+    </aside>
+  </div>
 </main>
 
-<script src="../assets/js/site.js?v=20261103l" defer></script>
+<script src="../assets/js/site.js?v=20261103m" defer></script>
+<script>
+(function(){var pill=document.getElementById('tm-pill'),K=['terms','credits'];
+function show(x){K.forEach(function(k){document.getElementById('pv-'+k).hidden=k!==x});pill.querySelectorAll('[data-p]').forEach(function(b){b.setAttribute('aria-selected',b.dataset.p===x)})}
+function fromHash(){var h=location.hash.slice(1);return K.indexOf(h)>-1?h:'terms'}
+pill.onclick=function(e){var b=e.target.closest('[data-p]');if(!b)return;show(b.dataset.p);history.replaceState(null,'','#'+b.dataset.p)};
+show(fromHash());window.addEventListener('hashchange',function(){show(fromHash())});
+document.getElementById('tm-back').onclick=function(e){if(history.length>1&&document.referrer.indexOf(location.host)>-1){e.preventDefault();history.back()}};})();
+</script>
 </body>
 </html>
