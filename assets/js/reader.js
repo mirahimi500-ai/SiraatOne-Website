@@ -62,6 +62,11 @@
     return out.length === count ? out : null;
   }
 
+  // word-by-word languages list (only the ones downloaded)
+  SO.j('../assets/data/wbw-langs.json').then(function (l) { var sel = $('wbw-lang'); if (!sel || !l || l.length < 2) return;
+    sel.innerHTML = l.map(function (x) { return '<option value="' + x.code + '">' + esc(x.name) + '</option>'; }).join(''); sel.value = S.wbwLang || 'en'; $('wbw-lang-row').hidden = false;
+    sel.onchange = function () { S.wbwLang = this.value; save(); render(); }; }).catch(function () {});
+  var RTLW = { ur: 1, fa: 1, ps: 1, ku: 1 };
   // Translations: 20 = Saheeh International (inside sura/*.json); others from assets/data/tr/<id>/<sura>.json (scripts/fetch-translations.ps1)
   var TRM = null, TRT = null;
   function trInfo() { return TRM && TRM.filter(function (t) { return t.id === +S.trid; })[0]; }
@@ -235,6 +240,12 @@
   function render() {
     if (pageMode) { renderPage(); return; }
     var go = S.mode === 'plus' && !wbw ? SO.j('../assets/data/wbw/' + n + '.json').then(function (d) { wbw = d.w; }).catch(function () { wbw = false; }) : Promise.resolve();
+    // word meanings in another language (scripts/fetch-wbw-langs.ps1); per ayah, used only if the word count matches, else English
+    go = go.then(function () { if (!wbw || S.mode !== 'plus') return; var L = S.wbwLang || 'en'; if (wbw.lang === L) return;
+      var base = wbw.base || wbw.map(function (v) { return v.map(function (w) { return w[1]; }); });
+      return (L === 'en' ? Promise.resolve(null) : SO.j('../assets/data/wbw-' + L + '/' + n + '.json').catch(function () { return null; })).then(function (d) {
+        var t = d && d.t; wbw.forEach(function (v, i) { var g = t && t[i] && t[i].length === v.length ? t[i] : base[i]; v.forEach(function (w, j) { w[1] = g[j]; }); });
+        wbw.base = base; wbw.lang = t ? L : 'en'; }); });
     go.then(function () {
       var c = ch[n - 1], h = '', mode = S.mode === 'plus' && !wbw ? 'verse' : S.mode;
       $('s-bism').innerHTML = BI ? fmt(noNum(BI), 1, 0, true) : '';
@@ -246,7 +257,7 @@
         h = '<ol class="cards tl-' + (mode === 'plus' ? 'ayah' : S.tlay) + '">' + AR.map(function (a, i) {
           var k = n + ':' + (i + 1), top = '<div class="c-top">' + (S.nums ? '<span class="c-num">' + (i + 1) + '</span>' : '') + marks(k) + '<button type="button" class="more" data-a="' + (i + 1) + '" aria-label="Ayah ' + k + ' actions">•••</button></div>';
           var ar = mode === 'plus'
-            ? '<div class="words" lang="ar" dir="rtl">' + (function () { var tw = tjWords(n, i, wbw[i].length); return wbw[i].map(function (w, j) { return '<span class="w" data-w="' + (j + 1) + '" data-wa="' + (i + 1) + '"><span class="wa">' + (tw ? tw[j] : esc(w[0])) + '</span><span class="wt" dir="ltr">' + esc(w[1] || '') + '</span></span>'; }).join(''); })() + end(i + 1) + '</div>'
+            ? '<div class="words" lang="ar" dir="rtl">' + (function () { var tw = tjWords(n, i, wbw[i].length); return wbw[i].map(function (w, j) { return '<span class="w" data-w="' + (j + 1) + '" data-wa="' + (i + 1) + '"><span class="wa">' + (tw ? tw[j] : esc(w[0])) + '</span><span class="wt" dir="' + (RTLW[wbw.lang] ? 'rtl' : 'ltr') + '">' + esc(w[1] || '') + '</span></span>'; }).join(''); })() + end(i + 1) + '</div>'
             : '<p class="ar" lang="ar" dir="rtl">' + fmt(a, n, i) + (S.nums && !(S.tajweed && TJD[n] ? S.script !== 'naskh' : hasNum(a)) ? ' ' + end(i + 1) : '') + '</p>';
           return (i === 0 || jzStart(n, i + 1) ? '<li class="mpill-li">' + mpill(n, i + 1) + '</li>' : '') + '<li class="card-a" id="' + (i + 1) + '" data-a="' + (i + 1) + '"' + hl(k) + '>' + top + (showAr ? ar : '') + (showTr ? '<p class="tr"' + trAttr() + '>' + esc((TRT || sura.en)[i]) + '</p>' : '') + (S.tfInline && mode !== 'clean' ? '<div class="tf-inl" data-tf="' + (i + 1) + '"></div>' : '') + '</li>';
         }).join('') + '</ol>';
