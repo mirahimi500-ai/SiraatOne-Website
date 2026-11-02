@@ -251,7 +251,7 @@
         else if (jzStart(s, g[1])) h += mpill(s, g[1]);
         h += flowHtml(s, d.ar, g[1], g[2], function (a) { return 'a' + s + '_' + a; });
       });
-      $('body').innerHTML = '<div class="mpage">' + legend() + h + '<div class="pg-num">' + arNum(P) + '</div></div>';
+      $('body').innerHTML = '<div class="mpage">' + h + '<div class="pg-num">' + arNum(P) + '</div></div>';
       $('bb-name').textContent = 'صفحة ' + arNum(P);
       var pr = $('prev'), nx = $('next');
       pr.href = P > 1 ? '?p=' + (P - 1) : '#'; pr.classList.toggle('off', P === 1); pr.title = P > 1 ? 'Page ' + (P - 1) : '';
@@ -288,7 +288,6 @@
       }
       if (S.tfInline && mode !== 'clean') setTimeout(tfFill, 0);
       if (S.mode === 'plus' && wbw === false) h = '<p class="empty">Word-by-word is not available yet. Showing Verse List.</p>' + h;
-      h = legend() + h; // Tajweed colour key at the top of the sura when chosen
       $('body').innerHTML = h;
       var t = parseInt(location.hash.slice(1), 10);
       if (t > 1 && $(String(t))) jumpTo($(String(t))); else scrollTo(0, 0);
