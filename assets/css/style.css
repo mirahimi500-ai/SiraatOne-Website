@@ -345,8 +345,8 @@ body[data-bg="night"]{--frame-c:var(--gold)}
 .frame-name{color:var(--frame-c,var(--brand))}
 .frame-name .g{font-size:2.9em}
 .frame-name .t{font-size:1.4em}
-/* Frame = text colour (opposite of background, always visible) */
-body{--frame-c:var(--text)!important}
+/* Surah name frame = theme green (light: deep green, dark: light green; each page background uses its own accent) */
+body{--frame-c:var(--brand)!important}
 .fimg{background-color:var(--frame-c);-webkit-mask-position:center;mask-position:center;-webkit-mask-mode:alpha;mask-mode:alpha}
 .fimg.raw{background-color:transparent;background-size:100% 100%;background-repeat:no-repeat}
 /* ===== Stage A1: app page backgrounds (11), spacing, layouts, highlights ===== */
@@ -1053,8 +1053,3 @@ body[data-script="indopak"] .flow,body[data-script="indopak"] .card-a .ar{line-h
 .rm .mini{transition:none}
 .mini3.two{grid-template-columns:repeat(2,minmax(0,1fr))}
 .tile .lr-sub{display:block!important;font-size:.72rem;color:var(--muted);line-height:1.25;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-/* MG1: default Mushaf background (App Theme) is a soft green, matching the site; light and dark; OLED stays black */
-body[data-bg="app"]{--bg:#EDF3E7;--surface:#F5F9F0;--border:color-mix(in srgb,#8FA898 42%,transparent)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body[data-bg="app"]{--bg:#0E1813;--surface:#15221B;--border:#24352B}}
-:root[data-theme="dark"] body[data-bg="app"]{--bg:#0E1813;--surface:#15221B;--border:#24352B}
-:root.oled body[data-bg="app"]{--bg:#000;--surface:#0B0F0C}
