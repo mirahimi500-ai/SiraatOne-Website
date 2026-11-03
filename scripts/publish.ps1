@@ -7,7 +7,7 @@ git add -A
 git commit -m $m | Out-Null
 git push
 $ver = ([regex]::Match((Get-Content index.html -Raw), '\?v=(\d{8}[a-z]?)')).Groups[1].Value
-$url = 'https://mirahimi500-ai.github.io/SiraatOne-Website/'
+$url = 'https://www.siraatone.com/'
 Write-Host "Waiting for GitHub Pages (version $ver)..."
 for ($i = 0; $i -lt 30; $i++) {
   Start-Sleep 10
