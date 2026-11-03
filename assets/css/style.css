@@ -1053,3 +1053,4 @@ body[data-script="indopak"] .flow,body[data-script="indopak"] .card-a .ar{line-h
 .rm .mini{transition:none}
 .mini3.two{grid-template-columns:repeat(2,minmax(0,1fr))}
 .tile .lr-sub{display:block!important;font-size:.72rem;color:var(--muted);line-height:1.25;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pt-sug{margin:.2rem 0 .6rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.pt-sug[hidden]{display:none}

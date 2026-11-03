@@ -208,3 +208,4 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - LR1: Continue tile renamed 'Last read' with continue-reading icon and sura · ayah subtitle (Home + App Library); small Last read box removed (Saved + Tasbih boxes remain, 2 columns).
 - MG1: default Mushaf background (App Theme, renamed 'SiraatOne Green (default)') is soft green: light #EDF3E7, dark #0E1813, OLED black.
 - MG1 reverted (user meant the frame). FR1: Surah name frame + name use the theme green (--brand): light #2E7D32, dark #66BB6A, each background its own accent.
+- REV1 (items 1-5): Terms credits (Adhan MIT, Open-Meteo/GeoNames CC BY 4.0); Prayer page: Ishraq/Duha range (sunrise+20 .. Dhuhr-10), 'Avoid voluntary prayer' card (app margins, labelled), usual-method suggestion by country (city cc or timezone; only on tap); 'Prayer Times' in top menu on all pages.

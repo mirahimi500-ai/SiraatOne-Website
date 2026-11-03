@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#2E7D32">
 <link rel="icon" href="../assets/img/logo.png">
 <script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261105f">
+<link rel="stylesheet" href="../assets/css/style.css?v=20261105g">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -24,6 +24,7 @@
     <nav id="site-nav" class="nav" aria-label="Main">
       <a href="../">Home</a>
       <a href="../read/">Quran</a>
+      <a href="../prayer/" aria-current="page">Prayer Times</a>
       <a href="../quran/">Quran app</a>
       <a href="../azan/">Azan app</a>
       <a href="../support/">Support</a>
@@ -68,6 +69,7 @@
     <aside class="cl-side">
       <div class="ts-card"><div class="ts-hh"><b>Location</b></div>
         <p class="pt-loc" id="pt-loc">Not set</p>
+        <p class="hint pt-sug" id="pt-sug" hidden></p>
         <button type="button" class="btn sm" id="pt-gps">Use my location</button>
         <label class="pick">Or search a city<input type="search" id="pt-q" placeholder="e.g. London, Kabul, Makkah" autocomplete="off"></label>
         <ol class="ts-list d-side pt-res" id="pt-res"></ol>
@@ -80,6 +82,8 @@
         <p class="hint" id="pa-note">The Azan plays and a notification shows at each prayer time while this page is open. For Azan when the browser is closed, use the SiraatOne Azan app.</p>
       </div>
       <div class="ts-card"><div class="ts-hh"><b>Other times &amp; Qibla</b></div><ol class="ts-list pt-extra" id="pt-extra"></ol></div>
+      <div class="ts-card"><div class="ts-hh"><b>Avoid voluntary prayer</b></div><ol class="ts-list pt-extra" id="pt-avoid"></ol>
+        <p class="hint">Safety margins as in the SiraatOne Azan app. The Sunnah defines these times by the sun's position (rising, at its height, setting), not by fixed minutes.</p></div>
     </aside>
   </div>
 
@@ -89,15 +93,15 @@
     <p><b>Calculation method</b> sets the sun angles for Fajr and Isha used by each authority. Choose the one used by the mosques where you live.</p>
     <p><b>Asr</b>: Standard (Shafiʿi, Maliki, Hanbali) begins when an object's shadow equals its length; Hanafi when the shadow is twice its length.</p>
     <p><b>High latitudes</b>: for places where twilight does not end in summer, Fajr and Isha use a portion of the night.</p>
-    <p><b>Other times</b>: Ishraq / Duha is shown from 20 minutes after sunrise (the same safety margin as the SiraatOne Azan app). The night runs from Maghrib to the next Fajr; Qiyam al-Layl is shown at the start of its last third.</p>
+    <p><b>Other times</b>: Ishraq / Duha is shown from 20 minutes after sunrise until 10 minutes before Dhuhr, and voluntary prayer is avoided after sunrise, at zawal and before sunset (the same safety margins as the SiraatOne Azan app). The night runs from Maghrib to the next Fajr; Qiyam al-Layl is shown at the start of its last third.</p>
     <p class="hint">Calculated times are estimates. Always follow your local mosque or Islamic authority when they differ.</p>
   </div></div></div>
 </main>
 
-<script src="../assets/js/site.js?v=20261105f" defer></script>
-<script src="../assets/js/lib.js?v=20261105f" defer></script>
+<script src="../assets/js/site.js?v=20261105g" defer></script>
+<script src="../assets/js/lib.js?v=20261105g" defer></script>
 <script src="../assets/js/vendor/adhan.umd.min.js?v=4.4.3" defer></script>
-<script src="../assets/js/prayer-core.js?v=20261105f" defer></script>
-<script src="../assets/js/prayer.js?v=20261105f" defer></script>
+<script src="../assets/js/prayer-core.js?v=20261105g" defer></script>
+<script src="../assets/js/prayer.js?v=20261105g" defer></script>
 </body>
 </html>

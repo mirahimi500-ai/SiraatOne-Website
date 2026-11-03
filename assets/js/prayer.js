@@ -45,6 +45,8 @@
   function draw() {
     document.querySelectorAll('#pt-view button').forEach(function (b) { b.setAttribute('aria-selected', b.dataset.v === S.view); });
     $('pt-day').hidden = S.view !== 'day'; $('pt-month').hidden = S.view !== 'month';
+    var sg = PT.suggest(L), mo = sg && $('ps-m').querySelector('option[value="' + sg + '"]');
+    $('pt-sug').hidden = !(mo && sg !== S.m); if (mo) $('pt-sug').innerHTML = 'Usually used here: <b>' + esc(mo.textContent) + '</b> <button type="button" class="btn btn-ghost sm" data-sug="' + sg + '">Use it</button>';
     $('pt-loc').innerHTML = L ? '<b>' + esc(L.name) + '</b><small>' + L.lat.toFixed(3) + ', ' + L.lng.toFixed(3) + ' · ' + esc(tz()) + '</small>' : 'Not set';
     if (!L) {
       $('pt-hero').innerHTML = '<div class="cl-hd"><small>Prayer Times</small><b>Set your location</b><span>Use your location or search a city to see today\'s prayer times.</span></div>';
@@ -79,7 +81,8 @@
     var t = ymd(new Date()), pt = times(t.year, t.month, t.day), sn = new A.SunnahTimes(pt), q = A.Qibla(new A.Coordinates(L.lat, L.lng));
     var dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
     var ex = PT.extras(S, L, t.year, t.month, t.day);
-    $('pt-extra').innerHTML = '<li><span>Ishraq / Duha begins</span><b>' + tFmt(ex.ishraq) + '</b></li><li><span>Middle of the night</span><b>' + tFmt(sn.middleOfTheNight) + '</b></li><li><span>Qiyam al-Layl (last third)</span><b>' + tFmt(sn.lastThirdOfTheNight) + '</b></li>' +
+    $('pt-avoid').innerHTML = ex.avoid.map(function (a) { return '<li><span>' + a[0] + '</span><b>' + tFmt(a[1]) + ' – ' + tFmt(a[2]) + '</b></li>'; }).join('');
+    $('pt-extra').innerHTML = '<li><span>Ishraq / Duha</span><b>' + tFmt(ex.ishraq) + ' – ' + tFmt(ex.duhaEnd) + '</b></li><li><span>Middle of the night</span><b>' + tFmt(sn.middleOfTheNight) + '</b></li><li><span>Qiyam al-Layl (last third)</span><b>' + tFmt(sn.lastThirdOfTheNight) + '</b></li>' +
       '<li><span>Qibla direction</span><b>' + q.toFixed(1) + '° ' + dirs[Math.round(q / 45) % 8] + '</b></li>';
   }
   var lastK = '';
@@ -137,9 +140,10 @@
     }, 350);
   };
   $('pt-res').onclick = function (e) { var b = e.target.closest('[data-r]'); if (!b) return; var x = RES[+b.dataset.r];
-    setLoc({ lat: +x.latitude.toFixed(4), lng: +x.longitude.toFixed(4), name: x.name + (x.country ? ', ' + x.country : ''), tz: x.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone });
+    setLoc({ lat: +x.latitude.toFixed(4), lng: +x.longitude.toFixed(4), name: x.name + (x.country ? ', ' + x.country : ''), cc: x.country_code || '', tz: x.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone });
     $('pt-res').innerHTML = ''; $('pt-q').value = ''; };
 
+  $('pt-sug').onclick = function (e) { var b = e.target.closest('[data-sug]'); if (!b) return; S.m = b.dataset.sug; save(); form(); lastK = ''; draw(); };
   // ---------- controls ----------
   $('pt-view').onclick = function (e) { var b = e.target.closest('[data-v]'); if (!b) return; S.view = b.dataset.v; save(); draw(); };
   $('pt-list').onclick = function (e) { var b = e.target.closest('[data-bell]'); if (!b) return; var k = b.dataset.bell; S.on[k] = !S.on[k]; save(); drawDay(); };

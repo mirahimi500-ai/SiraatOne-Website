@@ -36,6 +36,17 @@ var PT = (function () {
   // Other times, as in the SiraatOne Azan app: Ishraq/Duha from 20 min after sunrise (the app's safety margin);
   // the night is Maghrib -> next Fajr: middle of the night, and Qiyam = start of its last third (Adhan SunnahTimes).
   function extras(S, L, y, m, d) { var pt = times(S, L, y, m, d), sn = new A.SunnahTimes(pt);
-    return { ishraq: new Date(pt.sunrise.getTime() + 20 * 60000), midnight: sn.middleOfTheNight, qiyam: sn.lastThirdOfTheNight }; }
-  return { extras: extras, ok: !!A, DEF: DEF, P: P, FIVE: FIVE, NAME: NAME, AR: AR, settings: settings, params: params, tz: tz, ymd: ymd, times: times, fmt: fmt, isFri: isFri, label: label, next: next, left: left };
+    var M = 60000;
+    return { ishraq: new Date(pt.sunrise.getTime() + 20 * M), duhaEnd: new Date(pt.dhuhr.getTime() - 10 * M), midnight: sn.middleOfTheNight, qiyam: sn.lastThirdOfTheNight,
+      // times to avoid voluntary prayer, with the app's safety margins (20 min after sunrise, 10 min before Dhuhr and Maghrib)
+      avoid: [['After sunrise', pt.sunrise, new Date(pt.sunrise.getTime() + 20 * M)], ['Zawal (sun at its height)', new Date(pt.dhuhr.getTime() - 10 * M), pt.dhuhr],
+        ['Before sunset', new Date(pt.maghrib.getTime() - 10 * M), pt.maghrib]] }; }
+  // usual calculation method by country (shown only as a suggestion)
+  var CC = { US: 'ISNA', CA: 'ISNA', SA: 'UmmAlQura', AE: 'Dubai', KW: 'Kuwait', QA: 'Qatar', PK: 'Karachi', IN: 'Karachi', BD: 'Karachi', AF: 'Karachi',
+    EG: 'Egyptian', MY: 'Singapore', SG: 'Singapore', ID: 'Singapore', BN: 'Singapore', TR: 'Turkey', IR: 'Tehran' };
+  var TZC = { 'Asia/Karachi': 'PK', 'Asia/Kolkata': 'IN', 'Asia/Calcutta': 'IN', 'Asia/Dhaka': 'BD', 'Asia/Kabul': 'AF', 'Asia/Riyadh': 'SA', 'Asia/Dubai': 'AE', 'Asia/Kuwait': 'KW',
+    'Asia/Qatar': 'QA', 'Africa/Cairo': 'EG', 'Asia/Kuala_Lumpur': 'MY', 'Asia/Singapore': 'SG', 'Asia/Jakarta': 'ID', 'Asia/Brunei': 'BN', 'Europe/Istanbul': 'TR', 'Asia/Tehran': 'IR' };
+  function suggest(L) { if (!L) return null; var cc = L.cc || TZC[L.tz] || (/^America\/(New_York|Chicago|Denver|Los_Angeles|Phoenix|Anchorage|Detroit|Indiana|Kentucky|Boise|Toronto|Vancouver|Edmonton|Winnipeg|Halifax|Regina|St_Johns)/.test(L.tz || '') ? 'US' : null);
+    return cc && CC[cc] ? CC[cc] : null; }
+  return { extras: extras, suggest: suggest, ok: !!A, DEF: DEF, P: P, FIVE: FIVE, NAME: NAME, AR: AR, settings: settings, params: params, tz: tz, ymd: ymd, times: times, fmt: fmt, isFri: isFri, label: label, next: next, left: left };
 })();
