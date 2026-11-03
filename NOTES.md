@@ -209,3 +209,4 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - MG1: default Mushaf background (App Theme, renamed 'SiraatOne Green (default)') is soft green: light #EDF3E7, dark #0E1813, OLED black.
 - MG1 reverted (user meant the frame). FR1: Surah name frame + name use the theme green (--brand): light #2E7D32, dark #66BB6A, each background its own accent.
 - REV1 (items 1-5): Terms credits (Adhan MIT, Open-Meteo/GeoNames CC BY 4.0); Prayer page: Ishraq/Duha range (sunrise+20 .. Dhuhr-10), 'Avoid voluntary prayer' card (app margins, labelled), usual-method suggestion by country (city cc or timezone; only on tap); 'Prayer Times' in top menu on all pages.
+- SEO/PWA (items 6-7): manifest.webmanifest (installable, Chrome: 0 installability errors), icons 192/512/180 from Play icon, og.png 1200x630, Open Graph/Twitter tags on all pages (siraatone.com URLs), robots.txt, sitemap.xml (15 pages + 114 suras).
