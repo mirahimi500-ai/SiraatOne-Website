@@ -319,7 +319,7 @@
       busy = false; if (tail !== s - 1 || S.mode !== 'clean') return;
       var d = x[0].ar, b1 = (x[2] || {}).ar ? x[2].ar[0] : BI, sec = document.createElement('section'); sec.className = 'sura-next'; sec.setAttribute('data-sura', s);
       sec.innerHTML = mpill(s, 1) + frameHtml(s, b1) + flowHtml(s, d, 1, d.length, function (a) { return 'a' + s + '_' + a; });
-      $('body').appendChild(sec); tail = s;
+      $('body').appendChild(sec); tail = s; if (AUD.prep) AUD.prep(s);
       if (io) sec.querySelectorAll('[data-a]').forEach(function (el) { io.observe(el); });
       more();
     }).catch(function () { busy = false; });
@@ -466,6 +466,21 @@
     // full-surah reciters (MP3Quran.net, same filter as the app: Hafs, https, all 114 suras) from assets/data/reciters.json
     var REC = {}; function full() { return /^m:/.test(S.reciter) && REC[S.reciter]; }
     var url = function (s, a) { var r = full(); if (r) return r.server + ('00' + s).slice(-3) + '.mp3'; return (BASE[S.reciter] || BASE.Alafasy) + ('00' + s).slice(-3) + ('00' + a).slice(-3) + '.mp3'; };
+    // GAPLESS1: Alafasy and Husary play the whole surah as one file (Quran Foundation / Quran.com audio) and follow the ayahs
+    // with the official ayah start times saved in assets/data/timing/<reciter>/<n>.json (scripts/fetch-recitation-timings.ps1).
+    // If a timing file or the surah audio cannot load, the player falls back to one file per ayah.
+    var TM = {}, curT = null, tickT = null, bad = {};
+    function timed() { return !full() && (S.reciter === 'Alafasy' || S.reciter === 'Husary') && !bad[S.reciter]; }
+    function prep(sn) { if (!timed()) return; var k = S.reciter + '/' + sn; if (TM[k] !== undefined) return;
+      TM[k] = null; SO.j('../assets/data/timing/' + k + '.json').then(function (d) { if (d && d.u && d.t && d.t.length) TM[k] = d; }).catch(function () {}); }
+    function tget(sn) { return timed() ? TM[S.reciter + '/' + sn] || null : null; }
+    function tick() {
+      if (qi < 0 || !curT || !playing || !q[qi]) return; var it = q[qi], a = it[1], ms = el.currentTime * 1000, nxt = a < curT.t.length ? curT.t[a] : Infinity;
+      if (ms < nxt - 40) return;
+      if (S.repeat === 'ayah') { el.currentTime = (a === 1 ? 0 : curT.t[a - 1]) / 1000; return; }
+      var nk = q[qi + 1]; if (nk && nk[0] === it[0] && nk[1] === a + 1) { qi++; mark(true); ui(); SO.set('so.last', { s: it[0], a: a + 1 }); pre(); return; }
+      if (a < curT.t.length) { el.pause(); onEnd(); }
+    }
     SO.j('../assets/data/reciters.json').then(function (d) {
       d.reciters.forEach(function (r) { REC['m:' + r.id] = r; names['m:' + r.id] = r.name; });
       var sel = $('rec-full'); $('rec-box').hidden = false;
@@ -493,7 +508,9 @@
     }
     function play(i) {
       if (i < 0 || i >= q.length) return stop();
-      qi = i; var u = url(q[i][0], q[i][1]);
+      var T = q[i][1] ? tget(q[i][0]) : null; prep(q[i][0]);
+      if (T) return playT(i, T);
+      curT = null; qi = i; var u = url(q[i][0], q[i][1]);
       if (nx.src === u && !nx.error) { var t = el; el = nx; nx = t; nx.pause(); } else { nx.pause(); el.src = u; } // GAP1: the preloaded next ayah starts at once
       try { el.currentTime = 0; } catch (e) {}
       el.playbackRate = S.rate; el.volume = S.vol;
@@ -501,11 +518,25 @@
       mark(true); ui(); if (q[i][1]) SO.set('so.last', { s: q[i][0], a: q[i][1] });
       pre();
     }
+    function playT(i, T) {
+      qi = i; curT = T; var it = q[i], from = it[1] === 1 ? 0 : T.t[it[1] - 1] / 1000;
+      if (el.src === T.u && el.readyState > 0) { if (Math.abs(el.currentTime - from) > 0.25) el.currentTime = from; }
+      else { if (nx.src === T.u && !nx.error) { var t = el; el = nx; nx = t; } else el.src = T.u; nx.pause();
+        if (el.readyState > 0) el.currentTime = from; else if (from) { el._seek = from; } }
+      el.playbackRate = S.rate; el.volume = S.vol;
+      el.play().then(function () { playing = true; ui(); }).catch(function () { playing = false; ui(); });
+      clearInterval(tickT); tickT = setInterval(tick, 100);
+      mark(true); ui(); SO.set('so.last', { s: it[0], a: it[1] }); pre();
+    }
     // GAP1: load the next ayah while this one plays, so there is no wait between ayahs
     function nextKey() { if (S.repeat === 'ayah' || !q[qi] || full()) return null; if (qi + 1 < q.length) return q[qi + 1]; if (S.repeat === 'surah') return q[0];
       var cs = q[qi][0]; return !pageMode && cs < 114 && elFor((cs + 1) + ':1') ? [cs + 1, 1] : null; }
-    function pre() { var k = nextKey(); if (!k) return; var u = url(k[0], k[1]); if (nx.src !== u) { nx.src = u; try { nx.load(); } catch (e) {} } }
-    function unlock() { if (unlocked) return; unlocked = true; if (!nx.src) return; nx.muted = true; // iPhone: allow the second player once, during the tap
+    function pre() { var k = nextKey(); if (!k) return; var u;
+      if (curT) { if (k[0] === q[qi][0] && S.repeat !== 'surah') { if (q[qi][1] < curT.t.length) return; } prep(k[0]); var T2 = tget(k[0]); if (!T2 || T2.u === el.src) return; u = T2.u; }
+      else u = url(k[0], k[1]);
+      if (nx.src !== u) { nx.src = u; try { nx.load(); } catch (e) {} } }
+    var SIL = 'data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA/+M4wAAAAAAAAAAAAEluZm8AAAAPAAAAAwAAAbAAqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV////////////////////////////////////////////AAAAAExhdmM2MC4zMQAAAAAAAAAAAAAAACQC8AAAAAAAAAGw9wruFgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/+MYxAAAAANIAAAAAExBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV/+MYxDsAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV/+MYxHYAAANIAAAAAFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV'; // 50 ms of silence, used once to allow the second player on iPhone
+    function unlock() { if (unlocked) return; unlocked = true; if (!nx.src) nx.src = SIL; nx.muted = true; // iPhone: allow the second player once, during the tap
       var pr = nx.play(); if (pr && pr.then) pr.then(function () { nx.pause(); try { nx.currentTime = 0; } catch (e) {} nx.muted = false; }).catch(function () { nx.muted = false; }); else nx.muted = false; }
     function onEnd() {
       if (S.repeat === 'ayah') return play(qi);
@@ -519,10 +550,13 @@
     }
     [el, nx].forEach(function (x) {
       x.addEventListener('ended', function () { if (x === el) onEnd(); });
-      x.addEventListener('error', function () { if (x === el && qi >= 0) { playing = false; ui(); $('ab-rec').textContent = 'Audio could not be loaded'; } });
+      x.addEventListener('loadedmetadata', function () { if (x._seek) { try { x.currentTime = x._seek; } catch (e) {} x._seek = 0; } });
+      x.addEventListener('error', function () { if (x !== el || qi < 0) return;
+        if (curT) { bad[S.reciter] = true; curT = null; clearInterval(tickT); return play(qi); } // surah file failed: one file per ayah instead
+        playing = false; ui(); $('ab-rec').textContent = 'Audio could not be loaded'; });
     });
     function start(s, a) { q = queue(pageMode ? 0 : s); var i = 0; q.forEach(function (it, k) { if (it[0] === s && (it[1] === a || !it[1])) i = k; }); play(i); unlock(); }
-    function stop() { el.pause(); nx.pause(); playing = false; qi = -1; mark(false); ui(); }
+    function stop() { el.pause(); nx.pause(); clearInterval(tickT); curT = null; playing = false; qi = -1; mark(false); ui(); }
     function toggle() { if (qi < 0) { var t = topAyah(); return start(t[0], t[1]); } // PLAY1: start from the ayah you are reading
       if (playing) { el.pause(); playing = false; ui(); } else el.play().then(function () { playing = true; ui(); }).catch(function () {}); }
     function word(s, a, w) { wordEl.src = 'https://audio.qurancdn.com/wbw/' + [s, a, w].map(function (x) { return ('00' + x).slice(-3); }).join('_') + '.mp3'; wordEl.volume = S.vol; wordEl.play().catch(function () {}); }
@@ -531,7 +565,8 @@
     $('ab-next').onclick = function () { if (qi + 1 < q.length) play(qi + 1); };
     $('ab-speed').onclick = function () { var R = [0.75, 1, 1.25, 1.5, 2, 0.5]; S.rate = R[(R.indexOf(S.rate) + 1) % R.length] || 1; el.playbackRate = S.rate; save(); apply(false); ui(); };
     $('ab-repeat').onclick = function () { var R = ['off', 'ayah', 'surah']; S.repeat = R[(R.indexOf(S.repeat) + 1) % 3]; save(); apply(false); ui(); };
-    return { start: start, stop: stop, toggle: toggle, word: word, live: function () { el.playbackRate = S.rate; el.volume = S.vol; ui(); }, auto: function () { if (qs.get('play') === '1') setTimeout(function () { start(pageMode ? idx.page[P - 1][0] : n, pageMode ? idx.page[P - 1][1] : 1); }, 300); } };
+    prep(n);
+    return { start: start, stop: stop, toggle: toggle, word: word, prep: prep, live: function () { el.playbackRate = S.rate; el.volume = S.vol; ui(); }, auto: function () { if (qs.get('play') === '1') setTimeout(function () { start(pageMode ? idx.page[P - 1][0] : n, pageMode ? idx.page[P - 1][1] : 1); }, 300); } };
   })();
   function reloadText() { CACHE = {}; TJD = {}; loadScript().then(function () { apply(false); render(); }); }
   // switch between page-by-page and scrolling (different URLs)
