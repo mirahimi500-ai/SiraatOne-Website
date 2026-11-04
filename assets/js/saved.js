@@ -14,13 +14,13 @@
     if (Array.isArray(v)) v = v.filter(function (x) { return x !== k; }); else delete v[k]; SO.set(key, v); }
   function draw() {
     var d = data(), ks = keys(tab, d), q = $('sv2-q').value.trim().toLowerCase();
-    document.querySelectorAll('#sv2-pill [data-t]').forEach(function (b) { b.setAttribute('aria-selected', b.dataset.t === tab); b.textContent = T[b.dataset.t] + ' (' + keys(b.dataset.t, d).length + ')'; });
+    document.querySelectorAll('#sv2-pill [data-t]').forEach(function (b) { b.setAttribute('aria-selected', b.dataset.t === tab); var n = keys(b.dataset.t, d).length; b.textContent = T[b.dataset.t] + (n ? ' ' + n : ''); });
     $('sv2-sum').innerHTML = Object.keys(T).map(function (t) { return '<div><small>' + T[t] + '</small><b>' + keys(t, d).length + '</b></div>'; }).join('');
     var per = {}; ks.forEach(function (k) { var s = +k.split(':')[0]; per[s] = (per[s] || 0) + 1; });
     $('sv2-surahs').innerHTML = Object.keys(per).sort(function (a, b) { return a - b; }).map(function (s) { return '<li><button type="button" data-s="' + s + '" aria-pressed="' + (+s === filt) + '"><span>' + s + '. ' + esc(ch[s - 1].name_simple) + '</span><b>' + per[s] + '</b></button></li>'; }).join('') || '<li class="hint">Nothing here yet.</li>';
     if (filt && !per[filt]) filt = 0;
     var list = ks.filter(function (k) { return !filt || +k.split(':')[0] === filt; });
-    var last = list[0]; $('sv2-hero').innerHTML = '<div class="cl-hd"><small>' + T[tab] + '</small><b>' + list.length + (list.length === 1 ? ' ayah' : ' ayahs') + '</b><span>' + (filt ? 'in ' + esc(ch[filt - 1].name_simple) : 'in ' + Object.keys(per).length + ' surahs') + '</span></div>' +
+    var last = list[0]; $('sv2-hero').innerHTML = '<div class="cl-hd"><small>' + T[tab] + '</small><b>' + (list.length ? list.length + (list.length === 1 ? ' ayah' : ' ayahs') : 'None yet') + '</b><span>' + (!list.length ? 'Open any ayah and tap the icon to save it.' : filt ? 'in ' + esc(ch[filt - 1].name_simple) : 'in ' + Object.keys(per).length + (Object.keys(per).length === 1 ? ' surah' : ' surahs')) + '</span></div>' +
       '<div class="cl-hn"><small>' + (O.sort === 'mushaf' ? 'First in Mushaf order' : 'Most recent') + '</small><b>' + (last ? esc(ch[last.split(':')[0] - 1].name_simple) + ' ' + last : '—') + '</b><span>' + (last ? '<a href="../sura/?n=' + last.split(':')[0] + '#' + last.split(':')[1] + '">Open in the reader →</a>' : 'Save ayahs from the reader: tap an ayah → ' + T[tab].replace(/s$/, '')) + '</span></div>';
     if (!list.length) { $('sv2-list').innerHTML = '<li class="empty">' + (tab === 'notes' ? 'No notes yet. Open any ayah in the reader and write a note.' : 'Nothing saved yet. Open any ayah in the reader and tap ' + T[tab].replace(/s$/, '').replace('Highlight', 'a highlight colour') + '.') + '</li>'; return; }
     var need = {}; list.forEach(function (k) { need[k.split(':')[0]] = 1; });

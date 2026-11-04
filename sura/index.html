@@ -18,8 +18,8 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261105h">
+<script>try{var d=document.documentElement,t=localStorage.getItem('theme'),L=localStorage.getItem('so.lang');if(L&&L!=='en'){d.lang=L;if(/^(ar|ur|fa|ps)$/.test(L))d.dir='rtl';d.classList.add('i18n-wait');setTimeout(function(){d.classList.remove('i18n-wait')},1500)}if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
+<link rel="stylesheet" href="../assets/css/style.css?v=20261105q">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -71,6 +71,7 @@
       <button type="button" class="as-b as-x" id="as-close" aria-label="Turn off auto scroll"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
     <a class="bb-btn" href="../read/" aria-label="All suras"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></a>
+    </div>
     <div class="bb-mid"><a id="prev" class="bb-btn" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></a>
       <button type="button" id="bb-name" class="bb-name" lang="ar" dir="rtl" aria-label="Surah list"></button>
       <a id="next" class="bb-btn" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></a></div>
@@ -206,7 +207,7 @@
             <label class="sl">Volume <b data-out="vol"></b><input type="range" min="0" max="1" step="0.05" data-set="vol"></label>
             <label class="tg">Follow the recitation (scroll + highlight)<input type="checkbox" data-set="follow"></label>
             <label class="tg">Continue to the next surah<input type="checkbox" data-set="autoNext"></label>
-            <label class="tg">Tap a word to hear it (word by word)<input type="checkbox" data-set="tapWord"></label>
+            <label class="tg"><span>Tap a word to hear it (word by word)<small class="hint tg-h">In Clean Mushaf, tap the ayah number or press and hold an ayah for its options.</small></span><input type="checkbox" data-set="tapWord"></label>
           </section>
           <section data-pane="behave" hidden>
             <h3>Navigation</h3>
@@ -232,9 +233,10 @@
   </div>
 </main>
 
-<script src="../assets/js/site.js?v=20261105h" defer></script>
+<script src="../assets/js/i18n.js?v=20261105c" defer></script>
+<script src="../assets/js/site.js?v=20261105i" defer></script>
 <script src="../assets/js/lib.js?v=20261105h" defer></script>
 <script src="../assets/js/tajweed.js?v=20261105h" defer></script>
-<script src="../assets/js/reader.js?v=20261105h" defer></script>
+<script src="../assets/js/reader.js?v=20261105m" defer></script>
 </body>
 </html>

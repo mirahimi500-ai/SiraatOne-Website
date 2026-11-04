@@ -18,8 +18,8 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261105h">
+<script>try{var d=document.documentElement,t=localStorage.getItem('theme'),L=localStorage.getItem('so.lang');if(L&&L!=='en'){d.lang=L;if(/^(ar|ur|fa|ps)$/.test(L))d.dir='rtl';d.classList.add('i18n-wait');setTimeout(function(){d.classList.remove('i18n-wait')},1500)}if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
+<link rel="stylesheet" href="../assets/css/style.css?v=20261105q">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -53,7 +53,7 @@
   </div>
   <section class="cl-hero">
     <div class="cl-hd"><small>SiraatOne</small><b>Your data stays with you</b><span>No accounts, no ads, no analytics. Settings and saved items stay on your device or in your browser.</span><em>Developer: SiraatOne · Effective date: 26 October 2026</em></div>
-    <div class="cl-hn"><small>Questions</small><b><a href="mailto:siraatone1@gmail.com">siraatone1@gmail.com</a></b><span><a href="../terms/">Terms &amp; Credits →</a></span></div>
+    <div class="cl-hn"><small>Questions</small><b><a href="mailto:support@zaibatech.com">support@zaibatech.com</a></b><span>or <a href="mailto:siraatone1@gmail.com">siraatone1@gmail.com</a></span><span><a href="../terms/">Terms &amp; Credits →</a></span></div>
   </section>
   <div class="tb-mode cl-viewpill" id="pv-pill"><button type="button" data-p="quran">SiraatOne Quran</button><button type="button" data-p="azan">SiraatOne Azan</button><button type="button" data-p="website">This website</button></div>
   <div class="cl-cols">
@@ -134,8 +134,9 @@
 
 </section>
       <a id="website"></a><section class="ts-card pv-sec doc" id="pv-website"><h2>This website</h2>
-  <p class="muted">Website section last updated: 2 November 2026</p>
-  <p>siraatone.com has no accounts, forms, cookies, ads or analytics. It remembers your reading settings, last position, bookmarks, highlights and notes only in your own browser (never sent to us). A backup file you export is saved only where you choose. When you press play, recitation audio streams from the Quran Foundation recitation sources (verses.quran.foundation, audio.qurancdn.com, mirrors.quranicaudio.com), which receives your IP address like any web request. If you choose a full-surah reciter, the audio streams from MP3Quran.net in the same way. When you open a tafsir, it loads from jsDelivr (cdn.jsdelivr.net, the spa5k/tafsir_api files). The Hadith page loads hadiths live from HadeethEnc.com in the same way. The site is hosted on GitHub Pages; like any web host, it receives your IP address and basic request information.</p>
+  <p class="muted">Website section last updated: 3 November 2026</p>
+  <p>siraatone.com has no accounts, cookies, ads or analytics. It remembers your reading settings, last position, bookmarks, highlights and notes only in your own browser (never sent to us). A backup file you export is saved only where you choose. When you press play, recitation audio streams from the Quran Foundation recitation sources (verses.quran.foundation, audio.qurancdn.com, mirrors.quranicaudio.com), which receives your IP address like any web request. If you choose a full-surah reciter, the audio streams from MP3Quran.net in the same way. When you open a tafsir, it loads from jsDelivr (cdn.jsdelivr.net, the spa5k/tafsir_api files). The Hadith page loads hadiths live from HadeethEnc.com in the same way. The site is hosted on GitHub Pages; like any web host, it receives your IP address and basic request information.</p>
+  <p><b>Support form.</b> If you send a message with the form on the Support page, the details you enter (name, email, optional mobile number and device, app, topic, subject and message) are sent through Web3Forms (web3forms.com), a form delivery service, to our support mailbox so we can reply to you. We use them only to answer your message and never sell or share them. Nothing is sent until you press Send. You can ask us to delete your messages at any time.</p>
   <p><b>Prayer Times.</b> Prayer times and the Qibla direction are calculated in your browser. If you tap "Use my location", your browser asks for permission and the coordinates are kept only in your browser; they are never sent to us or to anyone else. If you search for a city instead, only the text you type is sent to Open-Meteo's geocoding service (geocoding-api.open-meteo.com) to find the place. Notifications appear only if you allow them in your browser, and only while the page is open. You can clear the saved location at any time by clearing this site's data in your browser.</p>
 
   </section>
@@ -146,13 +147,14 @@
 
   </div>
       <div class="ts-card doc" id="contact"><h2>Contact</h2>
-  <p>Questions about this policy: <a href="mailto:siraatone1@gmail.com">siraatone1@gmail.com</a></p>
+  <p>Questions about this policy: <a href="mailto:support@zaibatech.com">support@zaibatech.com</a> or <a href="mailto:siraatone1@gmail.com">siraatone1@gmail.com</a></p>
 </div>
     </aside>
   </div>
 </main>
 
-<script src="../assets/js/site.js?v=20261105h" defer></script>
+<script src="../assets/js/i18n.js?v=20261105c" defer></script>
+<script src="../assets/js/site.js?v=20261105i" defer></script>
 <script>
 (function(){var pill=document.getElementById('pv-pill'),K=['quran','azan','website'];
 function show(x){K.forEach(function(k){document.getElementById('pv-'+k).hidden=k!==x});pill.querySelectorAll('[data-p]').forEach(function(b){b.setAttribute('aria-selected',b.dataset.p===x)})}

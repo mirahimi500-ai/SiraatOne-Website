@@ -194,7 +194,7 @@
   function deps() {
     var m = S.mode, on = {
       paging: m === 'clean', tlay: m === 'verse', showAr: m === 'verse', showTr: m === 'verse', tfInline: m !== 'clean',
-      wgap: m !== 'clean' && S.showWbw, showWbw: m !== 'clean', tapWord: m === 'plus' || (m === 'verse' && S.showWbw), numsRight: m !== 'clean' && S.nums,
+      wgap: m !== 'clean' && S.showWbw, showWbw: m !== 'clean', tapWord: m === 'plus' || m === 'clean' || (m === 'verse' && S.showWbw), numsRight: m !== 'clean' && S.nums,
       tajweed: true, legend: !!S.tajweed, nav: !(m === 'clean' && S.paging === 'page'),
       speed: S.auto, asNext: S.auto, asResume: S.auto, asEta: S.auto };
     var wl = $('wbw-lang'); if (wl) { wl.disabled = !on.wgap; wl.closest('.sl').classList.toggle('dis', !on.wgap); }
@@ -381,10 +381,27 @@
 
   // ---------- ayah action sheet ----------
   var cur = null;
-  $('body').addEventListener('click', function (e) {
-    var w = e.target.closest('.w');
-    if (w && S.tapWord) { AUD.word(n, +w.getAttribute('data-wa'), +w.getAttribute('data-w')); return; }
-    var t = e.target.closest('.more, .aya'); if (!t) return;
+  // WBW1 Clean Mushaf: tap a word to hear it (words are not separate elements there, so the tapped word is found from the tap point).
+  // Tap the ayah number, or press and hold an ayah, for the ayah options.
+  var LET = /[ء-يٮ-ۓۺ-ۿ-]/, lpT = null, lpDone = false;
+  function tapClean() { return S.mode === 'clean' && S.tapWord; }
+  function caretAt(x, y) { if (document.caretRangeFromPoint) return document.caretRangeFromPoint(x, y);
+    var p = document.caretPositionFromPoint && document.caretPositionFromPoint(x, y); if (!p) return null; var r = document.createRange(); r.setStart(p.offsetNode, p.offset); return r; }
+  function textRange(el, from, to) { var tw = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), nd, pos = 0, r = document.createRange(), st = false;
+    while ((nd = tw.nextNode())) { var L = nd.nodeValue.length;
+      if (!st && from <= pos + L) { r.setStart(nd, from - pos); st = true; }
+      if (st && to <= pos + L) { r.setEnd(nd, to - pos); return r; } pos += L; } return null; }
+  function wordAt(aya, x, y) {
+    var r = caretAt(x, y); if (!r || !aya.contains(r.startContainer)) return null;
+    var el = r.startContainer.nodeType === 3 ? r.startContainer.parentNode : r.startContainer; if (el.closest && el.closest('.end, .end-own')) return null;
+    var pre = document.createRange(); pre.setStart(aya, 0); pre.setEnd(r.startContainer, r.startOffset);
+    var before = pre.toString(), full = aya.textContent, head = before.match(/\S*$/)[0], rest = full.slice(before.length).match(/^\S*/)[0], tok = head + rest;
+    if (!LET.test(tok)) return null;
+    var idx = (before.slice(0, before.length - head.length).split(/\s+/).filter(function (t) { return LET.test(t); })).length + 1, st = before.length - head.length;
+    return { i: idx, r: textRange(aya, st, st + tok.length) };
+  }
+  function flashWord(r) { try { if (!r || !window.CSS || !CSS.highlights || !window.Highlight) return; CSS.highlights.set('so-word', new Highlight(r)); clearTimeout(flashWord.t); flashWord.t = setTimeout(function () { CSS.highlights.delete('so-word'); }, 900); } catch (e) {} }
+  function openSheet(t) {
     cur = (t.getAttribute('data-s') || n) + ':' + t.getAttribute('data-a');
     $('sh-key').textContent = ch[+cur.split(':')[0] - 1].name_simple + ' ' + cur;
     $('sheet').querySelector('[data-a="bm"]').setAttribute('aria-pressed', SO.has('so.bm', cur));
@@ -392,6 +409,21 @@
     $('sh-note').value = SO.get('so.notes', {})[cur] || '';
     var hc = SO.get('so.hl', {})[cur] || ''; document.querySelectorAll('#sh-hl button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-c') === hc); });
     winShow($('sheet'));
+  }
+  $('body').addEventListener('pointerdown', function (e) {
+    var a = e.target.closest('.aya'); lpDone = false; if (!a || !tapClean() || e.button) return; var x = e.clientX, y = e.clientY;
+    var stop = function (ev) { if (ev && ev.type === 'pointermove' && Math.abs(ev.clientX - x) + Math.abs(ev.clientY - y) < 12) return; clearTimeout(lpT); ['pointerup', 'pointercancel', 'pointermove'].forEach(function (k) { removeEventListener(k, stop); }); };
+    lpT = setTimeout(function () { lpDone = true; stop(); if (navigator.vibrate) navigator.vibrate(15); openSheet(a); }, 550);
+    ['pointerup', 'pointercancel', 'pointermove'].forEach(function (k) { addEventListener(k, stop); });
+  });
+  $('body').addEventListener('contextmenu', function (e) { if (tapClean() && e.target.closest('.aya')) e.preventDefault(); });
+  $('body').addEventListener('click', function (e) {
+    if (lpDone) { lpDone = false; return; }
+    var w = e.target.closest('.w');
+    if (w && S.tapWord) { AUD.word(n, +w.getAttribute('data-wa'), +w.getAttribute('data-w')); return; }
+    var t = e.target.closest('.more, .aya'); if (!t) return;
+    if (tapClean() && t.classList.contains('aya')) { var hit = wordAt(t, e.clientX, e.clientY); if (hit) { flashWord(hit.r); AUD.word(+(t.getAttribute('data-s') || n), +t.getAttribute('data-a'), hit.i); return; } }
+    openSheet(t);
   });
   $('sheet').addEventListener('click', function (e) {
     if (e.target === $('sheet') || e.target.closest('[data-close]')) { closeSheet(); return; }
@@ -427,7 +459,7 @@
 
   // ---------- audio (same sources as the app: Quran Foundation ayah CDN + word audio) ----------
   var AUD = (function () {
-    var el = new Audio(), wordEl = new Audio(), q = [], qi = -1, playing = false;
+    var el = new Audio(), nx = new Audio(), wordEl = new Audio(), q = [], qi = -1, playing = false, unlocked = false; el.preload = nx.preload = 'auto'; // GAP1: nx = next ayah, preloaded
     // official URLs from the Quran Foundation API (recitation 7 Alafasy, recitation 6 Husary)
     var BASE = { Alafasy: 'https://verses.quran.foundation/Alafasy/mp3/', Husary: 'https://mirrors.quranicaudio.com/everyayah/Husary_64kbps/' };
     var names = { Alafasy: 'Mishary Rashid Alafasy', Husary: 'Mahmoud Khalil Al-Hussary' };
@@ -441,10 +473,10 @@
       sel.value = full() ? S.reciter : '';
       sel.onchange = function () { if (!this.value) return; S.reciter = this.value; save(); apply(false); if (qi >= 0) start(q[qi][0], q[qi][1] || 1); };
     }).catch(function () {});
-    function queue() {
-      if (full()) { if (!pageMode) return [[n, 0]]; var u = []; document.querySelectorAll('#body .aya').forEach(function (x) { if (u.indexOf(+x.dataset.s) < 0) u.push(+x.dataset.s); }); return u.map(function (s) { return [s, 0]; }); }
+    function queue(sn) { sn = sn || n; // PLAY1: queue for the sura being played (continuous Mushaf can show several suras)
+      if (full()) { if (!pageMode) return [[sn, 0]]; var u = []; document.querySelectorAll('#body .aya').forEach(function (x) { if (u.indexOf(+x.dataset.s) < 0) u.push(+x.dataset.s); }); return u.map(function (s) { return [s, 0]; }); }
       if (pageMode) return Array.prototype.map.call(document.querySelectorAll('#body .aya'), function (x) { return [+x.dataset.s, +x.dataset.a]; });
-      var out = []; for (var a = 1; a <= ch[n - 1].verses; a++) out.push([n, a]); return out;
+      var out = []; for (var a = 1; a <= ch[sn - 1].verses; a++) out.push([sn, a]); return out;
     }
     function mark(on) {
       document.querySelectorAll('.playing').forEach(function (x) { x.classList.remove('playing'); });
@@ -461,22 +493,37 @@
     }
     function play(i) {
       if (i < 0 || i >= q.length) return stop();
-      qi = i; el.src = url(q[i][0], q[i][1]); el.playbackRate = S.rate; el.volume = S.vol;
+      qi = i; var u = url(q[i][0], q[i][1]);
+      if (nx.src === u && !nx.error) { var t = el; el = nx; nx = t; nx.pause(); } else { nx.pause(); el.src = u; } // GAP1: the preloaded next ayah starts at once
+      try { el.currentTime = 0; } catch (e) {}
+      el.playbackRate = S.rate; el.volume = S.vol;
       el.play().then(function () { playing = true; ui(); }).catch(function () { playing = false; ui(); });
       mark(true); ui(); if (q[i][1]) SO.set('so.last', { s: q[i][0], a: q[i][1] });
+      pre();
     }
-    el.addEventListener('ended', function () {
+    // GAP1: load the next ayah while this one plays, so there is no wait between ayahs
+    function nextKey() { if (S.repeat === 'ayah' || !q[qi] || full()) return null; if (qi + 1 < q.length) return q[qi + 1]; if (S.repeat === 'surah') return q[0];
+      var cs = q[qi][0]; return !pageMode && cs < 114 && elFor((cs + 1) + ':1') ? [cs + 1, 1] : null; }
+    function pre() { var k = nextKey(); if (!k) return; var u = url(k[0], k[1]); if (nx.src !== u) { nx.src = u; try { nx.load(); } catch (e) {} } }
+    function unlock() { if (unlocked) return; unlocked = true; if (!nx.src) return; nx.muted = true; // iPhone: allow the second player once, during the tap
+      var pr = nx.play(); if (pr && pr.then) pr.then(function () { nx.pause(); try { nx.currentTime = 0; } catch (e) {} nx.muted = false; }).catch(function () { nx.muted = false; }); else nx.muted = false; }
+    function onEnd() {
       if (S.repeat === 'ayah') return play(qi);
       if (qi + 1 < q.length) return play(qi + 1);
       if (S.repeat === 'surah') return play(0);
       if (pageMode && P < 604) { location.href = '?p=' + (P + 1) + '&play=1'; return; }
-      if (!pageMode && S.autoNext && n < 114) { location.href = '?n=' + (n + 1) + '&play=1'; return; }
+      var cs = q[qi] ? q[qi][0] : n;
+      if (!pageMode && cs < 114 && elFor((cs + 1) + ':1')) return start(cs + 1, 1); // next sura already on screen (continuous Mushaf)
+      if (!pageMode && S.autoNext && cs < 114) { location.href = '?n=' + (cs + 1) + '&play=1'; return; }
       stop();
+    }
+    [el, nx].forEach(function (x) {
+      x.addEventListener('ended', function () { if (x === el) onEnd(); });
+      x.addEventListener('error', function () { if (x === el && qi >= 0) { playing = false; ui(); $('ab-rec').textContent = 'Audio could not be loaded'; } });
     });
-    el.addEventListener('error', function () { playing = false; ui(); $('ab-rec').textContent = 'Audio could not be loaded'; });
-    function start(s, a) { q = queue(); var i = 0; q.forEach(function (it, k) { if (it[0] === s && (it[1] === a || !it[1])) i = k; }); play(i); }
-    function stop() { el.pause(); playing = false; qi = -1; mark(false); ui(); }
-    function toggle() { if (qi < 0) { var l = SO.get('so.last', null); return start(l && (pageMode || l.s === n) ? l.s : n, l && (pageMode || l.s === n) ? l.a : 1); }
+    function start(s, a) { q = queue(pageMode ? 0 : s); var i = 0; q.forEach(function (it, k) { if (it[0] === s && (it[1] === a || !it[1])) i = k; }); play(i); unlock(); }
+    function stop() { el.pause(); nx.pause(); playing = false; qi = -1; mark(false); ui(); }
+    function toggle() { if (qi < 0) { var t = topAyah(); return start(t[0], t[1]); } // PLAY1: start from the ayah you are reading
       if (playing) { el.pause(); playing = false; ui(); } else el.play().then(function () { playing = true; ui(); }).catch(function () {}); }
     function word(s, a, w) { wordEl.src = 'https://audio.qurancdn.com/wbw/' + [s, a, w].map(function (x) { return ('00' + x).slice(-3); }).join('_') + '.mp3'; wordEl.volume = S.vol; wordEl.play().catch(function () {}); }
     $('play').onclick = toggle; $('ab-toggle').onclick = toggle; $('ab-close').onclick = stop;

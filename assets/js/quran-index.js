@@ -10,8 +10,8 @@
     return '<li><a class="row" href="' + href + '">' + (num === '' ? '' : '<span class="num"><span>' + num + '</span></span>') + '<span class="en"><b>' + title + '</b><span>' + sub + '</span></span>' + (right || '') + '</a></li>';
   }
   function surahs(f) {
-    var v = (f || '').trim(), n = v.toLowerCase().replace(/[-'’ ]/g, '');
-    var items = ch.filter(function (c) { return SL.only === 'all' || c.place === SL.only; }).filter(function (c) { return !v || String(c.id) === v || c.name_simple.toLowerCase().replace(/[-'’ ]/g, '').indexOf(n) > -1 || c.meaning.toLowerCase().indexOf(n) > -1 || c.name_arabic.indexOf(v) > -1; });
+    var v = (f || '').trim(), n = nkey(v);
+    var items = ch.filter(function (c) { return SL.only === 'all' || c.place === SL.only; }).filter(function (c) { return !v || String(c.id) === v || (n && nkey(c.name_simple).indexOf(n) > -1) || (v.length > 3 && QS.nameScore(c.name_simple, v) > 0) || (n && nkey(c.meaning).indexOf(n) > -1) || plain(c.name_arabic).indexOf(plain(v)) > -1; });
     if (SL.sort !== 'mushaf') items = items.slice().sort(function (a, b) { return SL.sort === 'short' ? a.verses - b.verses || a.id - b.id : b.verses - a.verses || a.id - b.id; });
     return items.length ? '<ol class="list two sv-' + SL.view + ' fs-' + SL.fs + '">' + items.map(function (c) {
       return row(link(c.id, 1), SL.nums ? c.id : '', esc(c.name_simple), [SL.meaning ? esc(c.meaning) : '', SL.ayahs ? c.verses + ' ayahs' : '', SL.place ? (c.place === 'makkah' ? 'Makki' : 'Madani') : ''].filter(Boolean).join(' · '),
@@ -40,23 +40,38 @@
     });
   }
   var plain = function (s) { return s.replace(/[ؐ-ًؚ-ٰٟۖ-ۭـ]/g, '').replace(/[أإآٱ]/g, 'ا').replace(/ى/g, 'ي').replace(/ة/g, 'ه'); };
+  // Latin: ignore accents (Allāh = allah), case, hyphens; common spellings (yaseen = yasin).
+  var loose = function (s) { return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); };
+  var nkey = function (s) { return loose(s).replace(/[^a-z0-9]/g, '').replace(/ee/g, 'i').replace(/oo|ou/g, 'u').replace(/aa/g, 'a'); };
   var allText = null;
-  function loadAll() { if (!allText) { var a = []; for (var i = 1; i <= 114; i++) a.push(SO.j('../assets/data/sura/' + i + '.json')); allText = Promise.all(a); } return allText; }
+  function loadAll() { if (!allText) { var a = []; for (var i = 1; i <= 114; i++) a.push(SO.j('../assets/data/sura/' + i + '.json').catch(function () { return null; }));
+    allText = Promise.all(a).then(function (all) { return all.filter(Boolean).map(function (d) { return { n: d.n, en: d.en, ar: d.ar, p: d.ar.map(plain), l: d.en.map(loose) }; }); }); } return allText; }
+  // All ayah results, shown in steps (Show more) with matched words highlighted.
+  var QR = null, QR_STEP = 50;
+  function qrRows(n) { var from = QR.shown, to = Math.min(QR.hits.length, from + n); QR.shown = to;
+    return QR.hits.slice(from, to).map(function (x) { return row(link(x[0], x[1]), x[0] + ':' + x[1], esc(name(x[0])), QR.ar ? '<span lang="ar" dir="rtl" class="qr-ar">' + esc(x[2]) + '</span>' : QS.mark(x[2], QR.T, esc)); }).join(''); }
+  function qrMore() { var left = QR.hits.length - QR.shown; return left > 0 ? '<button type="button" class="qr-more" id="qr-more">Show ' + Math.min(left, 100) + ' more · ' + left.toLocaleString() + ' left</button>' : ''; }
+  panel.addEventListener('click', function (e) { if (!e.target.closest('#qr-more') || !QR) return; var b = document.getElementById('qr-more');
+    document.getElementById('qr-list').insertAdjacentHTML('beforeend', qrRows(100)); b.insertAdjacentHTML('afterend', qrMore()); b.remove(); });
   function search(q) {
     q = q.trim();
-    if (q.length < 3) return Promise.resolve(q ? empty('Type at least 3 letters.') : empty('Search sura names, English words, or Arabic words.'));
-    var isAr = /[؀-ۿ]/.test(q), nq = isAr ? plain(q) : q.toLowerCase();
-    var names = ch.filter(function (c) { return c.name_simple.toLowerCase().indexOf(nq) > -1 || c.meaning.toLowerCase().indexOf(nq) > -1 || plain(c.name_arabic).indexOf(nq) > -1; });
+    var ref = q.match(/^(\d{1,3})\s*(?:[:.\s]\s*(\d{1,3}))?$/), go = '';
+    if (ref && +ref[1] >= 1 && +ref[1] <= 114) { var c0 = ch[ref[1] - 1], a0 = Math.min(+ref[2] || 1, c0.verses);
+      go = '<h3 class="sub-h">Go to</h3><ol class="list two">' + row(link(c0.id, a0), ref[2] ? c0.id + ':' + a0 : c0.id, esc(c0.name_simple), ref[2] ? 'Ayah ' + a0 : esc(c0.meaning)) + '</ol>'; }
+    if (go && !ref[2]) return Promise.resolve(go);
+    if (go) q = '';
+    if (q.length < 3) return Promise.resolve(go || (q ? empty('Type at least 3 letters.') : empty('Search sura names, English words, Arabic words, or a reference like 2:255.')));
+    var T = QS.terms(q), isAr = T.ar; // smart matching: stop words, word forms, synonyms, close spellings (qs.js)
+    var names = ch.filter(function (c) { return isAr ? plain(c.name_arabic).indexOf(T.phrase) > -1 : QS.nameScore(c.name_simple, q) > 0 || QS.test(loose(c.meaning), T); });
     panel.innerHTML = empty('Searching…');
     return loadAll().then(function (all) {
-      var hits = [], total = 0;
-      all.forEach(function (d) { for (var i = 0; i < d.ar.length; i++) {
-        var t = isAr ? plain(d.ar[i]) : d.en[i].toLowerCase();
-        if (t.indexOf(nq) > -1) { total++; if (hits.length < 100) hits.push([d.n, i + 1, d.en[i]]); } } });
+      var hits = [], sur = {};
+      all.forEach(function (d) { var src = isAr ? d.p : d.l; for (var i = 0; i < src.length; i++) if (QS.test(src[i], T)) { hits.push([d.n, i + 1, isAr ? d.ar[i] : d.en[i]]); sur[d.n] = 1; } });
+      QR = { hits: hits, T: T, ar: isAr, shown: 0 };
       var h = names.length ? '<h3 class="sub-h">Suras</h3><ol class="list two">' + names.map(function (c) { return row(link(c.id, 1), c.id, esc(c.name_simple), esc(c.meaning)); }).join('') + '</ol>' : '';
-      h += '<h3 class="sub-h">Ayahs <small>' + total + ' found' + (total > 100 ? ' · showing 100' : '') + '</small></h3>';
-      return h + (hits.length ? '<ol class="list">' + hits.map(function (x) { return row(link(x[0], x[1]), x[0] + ':' + x[1], esc(name(x[0])), esc(x[2])); }).join('') + '</ol>' : empty('No ayah found.'));
-    });
+      h += '<h3 class="sub-h">Ayahs <small>' + hits.length.toLocaleString() + ' found' + (hits.length ? ' in ' + Object.keys(sur).length + ' suras' : '') + '</small></h3>';
+      return h + (hits.length ? '<ol class="list qr-list" id="qr-list">' + qrRows(QR_STEP) + '</ol>' + qrMore() : empty('No ayah found. Try another word or a sura name.'));
+    }, function () { return empty('Search could not load. Check your connection and try again.'); });
   }
   var tab = 'surah';
   function show(t, push) {
@@ -65,7 +80,7 @@
     if (push) history.replaceState(null, '', '#' + t);
     tools.innerHTML = ''; var out; tools.classList.toggle('pop', t === 'surah'); tools.classList.remove('open'); document.getElementById('qx-menu').hidden = t !== 'surah'; document.getElementById('qx-title').textContent = t === 'surah' ? 'The Holy Quran' : { juz: 'Juz', hizb: 'Hizb', page: 'Page', search: 'Search', bookmarks: 'Bookmarks', highlights: 'Highlights', favorites: 'Favorites', notes: 'Notes' }[t] || ''; document.getElementById('qx-sub').hidden = t !== 'surah';
     if (t === 'surah' || t === 'search') {
-      tools.innerHTML = '<input class="search" id="f" type="search" autocomplete="off" placeholder="' + (t === 'surah' ? 'Filter by name, meaning or number' : 'Search the Quran (English or Arabic)') + '">';
+      tools.innerHTML = '<input class="search" id="f" type="search" autocomplete="off" placeholder="' + (t === 'surah' ? 'Filter by name, meaning or number' : 'Search suras and ayahs (English or Arabic)') + '">';
       if (t === 'surah') tools.innerHTML += '<div class="sl-opts">' +
         '<select id="sl-view" aria-label="View"><option value="list">List</option><option value="small">Small icons</option><option value="cards">Large cards</option></select>' +
         '<select id="sl-fs" aria-label="Font size"><option value="small">Small</option><option value="current">Normal</option><option value="large">Large</option><option value="xl">Extra large</option></select>' +

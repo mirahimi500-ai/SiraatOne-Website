@@ -50,3 +50,5 @@
     IT.forEach(function (t) { if (!t[1]) return; document.querySelectorAll('.tiles a[href="' + base + t[1] + '"]').forEach(function (x) { x.classList.add('in-bar'); }); });
   }
 })();
+// SG1: ?set=1 opens this page's settings panel (used by the Home search).
+if (/[?&]set=1/.test(location.search)) window.addEventListener('load', function () { setTimeout(function () { var b = document.querySelector('#open-set,#pt-menu,#cl-menu,#d-menu,#nm-menu,#sv2-menu,#tb-menu'); if (b) b.click(); }, 400); });

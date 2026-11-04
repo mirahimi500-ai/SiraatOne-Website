@@ -38,7 +38,8 @@
   function render() {
     document.querySelectorAll('#d-tabs button').forEach(function (b) { b.setAttribute('aria-selected', b.dataset.t === O.tab); });
     $('d-cat').hidden = true;
-    var q = $('d-q').value.trim().toLowerCase(), list = ids().map(function (id) { return D.entries[id]; }).filter(function (e) { return !q || (e.title + ' ' + (e.meaningEn || '') + ' ' + (e.category || '')).toLowerCase().indexOf(q) > -1; });
+    var q = $('d-q').value.trim().toLowerCase(), list = ids().map(function (id) { return D.entries[id]; }).filter(function (e) { if (!q) return true; if (!window.QS) return (e.title + ' ' + (e.meaningEn || '') + ' ' + (e.category || '')).toLowerCase().indexOf(q) > -1; var T = QS.terms(q);
+      return T.ar ? QS.plain(e.arabic).indexOf(T.phrase) > -1 : QS.test(QS.loose([e.title, e.category, e.whenToSayEn, e.purposeEn, e.meaningEn, e.transliteration].join(' ')), T); });
     document.body.dataset.dfont = O.font; document.documentElement.style.setProperty('--d-size', O.size);
     if (!list.length) { $('d-list').innerHTML = '<li class="empty">' + (O.tab === 'saved' ? 'Nothing saved yet. Tap ♡ on any dua.' : 'No dua found.') + '</li>'; return; }
     Promise.all(list.map(function (e) { return e.quran ? quranText(e.quran) : null; })).then(function (qs) { $('d-list').innerHTML = list.map(function (e, i) { return card(e, i, qs[i]); }).join(''); });
@@ -103,6 +104,7 @@
   SO.j('../assets/data/duas.json').then(function (d) {
     D = d; $('d-note').textContent = d.note; landing();
     $('d-font').value = O.font; $('d-size').value = String(O.size); $('d-tr').checked = O.tr; $('d-mean').checked = O.mean; $('d-num').checked = O.num; ['virtue', 'when', 'prac', 'src', 'cnt'].forEach(function (k) { $('d-' + k).checked = O[k]; });
+    var pq = new URLSearchParams(location.search).get('q'); if (pq) $('d-q').value = pq; // from Home search
     route();
   }).catch(function () { $('d-list').innerHTML = '<li class="empty">Could not load. Please refresh.</li>'; });
   $('d-tabs').onclick = function (e) { var b = e.target.closest('button'); if (!b) return; O.tab = b.dataset.t; save(); render(); hero(false); };
