@@ -4,7 +4,7 @@
 (function () {
   var LANGS = [['en', 'English'], ['ar', 'العربية'], ['ur', 'اردو'], ['fa', 'فارسی'], ['ps', 'پښتو'], ['tr', 'Türkçe'], ['id', 'Bahasa Indonesia'], ['ms', 'Bahasa Melayu'],
     ['bn', 'বাংলা'], ['hi', 'हिन्दी'], ['ta', 'தமிழ்'], ['so', 'Soomaali'], ['sw', 'Kiswahili'], ['fr', 'Français'], ['es', 'Español'], ['de', 'Deutsch'], ['ru', 'Русский']];
-  var RTL = { ar: 1, ur: 1, fa: 1, ps: 1 }, V = '20261105c';
+  var RTL = { ar: 1, ur: 1, fa: 1, ps: 1 }, V = '20261105d';
   var root = document.documentElement, L = 'en', D = null, P = [], TK = [];
   try { L = localStorage.getItem('so.lang') || 'en'; } catch (e) {}
   if (!LANGS.some(function (x) { return x[0] === L; })) L = 'en';
