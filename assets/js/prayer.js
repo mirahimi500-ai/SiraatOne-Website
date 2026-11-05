@@ -22,8 +22,8 @@
   function tz() { return (L && L.tz) || Intl.DateTimeFormat().resolvedOptions().timeZone; }
   function ymd(d) { var o = {}; new Intl.DateTimeFormat('en-US', { timeZone: tz(), year: 'numeric', month: 'numeric', day: 'numeric' }).formatToParts(d).forEach(function (x) { o[x.type] = +x.value; }); return o; }
   function times(y, m, d) { return new A.PrayerTimes(new A.Coordinates(L.lat, L.lng), new Date(y, m - 1, d), params()); }
-  function tFmt(d) { return new Intl.DateTimeFormat('en-US', { timeZone: tz(), hour: 'numeric', minute: '2-digit', hour12: S.f === '12' }).format(d); }
-  function dFmt(y, m, d, o) { return new Intl.DateTimeFormat('en-GB', Object.assign({ timeZone: 'UTC' }, o)).format(new Date(Date.UTC(y, m - 1, d))); }
+  function tFmt(d) { return new Intl.DateTimeFormat((window.SOI18N && SOI18N.lang !== 'en' ? SOI18N.lang + '-u-nu-latn' : 'en-US'), { timeZone: tz(), hour: 'numeric', minute: '2-digit', hour12: S.f === '12' }).format(d); }
+  function dFmt(y, m, d, o) { return new Intl.DateTimeFormat((window.SOI18N && SOI18N.lang !== 'en' ? SOI18N.lang + '-u-nu-latn' : 'en-GB'), Object.assign({ timeZone: 'UTC' }, o)).format(new Date(Date.UTC(y, m - 1, d))); }
   function hijri(y, m, d) {
     var adj = (SO.get('so.cal2', {}) || {}).adj || 0, o = {};
     new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', { timeZone: 'UTC', day: 'numeric', month: 'numeric', year: 'numeric' }).formatToParts(new Date(Date.UTC(y, m - 1, d + adj)))
@@ -107,7 +107,7 @@
       if (d >= 0 && d < 60000 && !fired[id]) {
         fired[id] = 1; if (!S.on[k]) return;
         play(k);
-        if (window.Notification && Notification.permission === 'granted') try { new Notification(label(k, t.year, t.month, t.day) + ' — ' + tFmt(at), { body: 'It is time for ' + label(k, t.year, t.month, t.day) + ' prayer · ' + L.name, icon: '../assets/img/logo.png', tag: id }); } catch (e) {}
+        if (window.Notification && Notification.permission === 'granted') try { var T = window.SOI18N ? SOI18N.t : function (x) { return x; }, nm = T(label(k, t.year, t.month, t.day)); new Notification(nm + ' — ' + tFmt(at), { body: T('It is time for {x} prayer').replace('{x}', nm) + ' · ' + L.name, icon: '../assets/img/logo.png', tag: id }); } catch (e) {}
       }
     });
   }

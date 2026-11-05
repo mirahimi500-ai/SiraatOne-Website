@@ -4,7 +4,7 @@
 (function () {
   var LANGS = [['en', 'English'], ['ar', 'العربية'], ['ur', 'اردو'], ['fa', 'فارسی'], ['ps', 'پښتو'], ['tr', 'Türkçe'], ['id', 'Bahasa Indonesia'], ['ms', 'Bahasa Melayu'],
     ['bn', 'বাংলা'], ['hi', 'हिन्दी'], ['ta', 'தமிழ்'], ['so', 'Soomaali'], ['sw', 'Kiswahili'], ['fr', 'Français'], ['es', 'Español'], ['de', 'Deutsch'], ['ru', 'Русский']];
-  var RTL = { ar: 1, ur: 1, fa: 1, ps: 1 }, V = '20261105d';
+  var RTL = { ar: 1, ur: 1, fa: 1, ps: 1 }, V = '20261106a';
   var root = document.documentElement, L = 'en', D = null, P = [], TK = [];
   try { L = localStorage.getItem('so.lang') || 'en'; } catch (e) {}
   if (!LANGS.some(function (x) { return x[0] === L; })) L = 'en';
@@ -15,8 +15,9 @@
   // ---------- translate ----------
   // exact phrase, then number patterns ("{n} ayahs"), then parts split by " · ", then known words (dictionary keys starting with "~")
   function pat(k) { for (var i = 0; i < P.length; i++) { var m = k.match(P[i][0]); if (m) { var j = 1; return P[i][1].replace(/\{[nx]\}/g, function (g) { var v = m[j++]; return g === '{x}' ? (D[v] || tok(v) || v) : v; }); } } return null; }
-  function tok(k) { if (!TK.length || !/[A-Za-z]/.test(k)) return null; var s = k; for (var i = 0; i < TK.length; i++) s = s.replace(TK[i][0], TK[i][1]);
-    return s !== k && !/[A-Za-z]/.test(s.replace(/SiraatOne/g, '')) ? s : null; }
+  function tok(k) { if (!TK.length || !/[A-Za-z]/.test(k)) return null; var s = k, m = k; // m marks what was replaced, so Latin-script results can be checked too
+    for (var i = 0; i < TK.length; i++) { s = s.replace(TK[i][0], TK[i][1]); m = m.replace(TK[i][0], '$1\u0001'); }
+    return s !== k && !/[A-Za-z]/.test(m.replace(/SiraatOne/g, '')) ? s : null; }
   function seg(k) { if (k.indexOf(' · ') < 0) return null; var ok = false, out = k.split(' · ').map(function (p) { var v = D[p] || pat(p) || tok(p); if (v) ok = true; return v || p; }); return ok ? out.join(' · ') : null; }
   function full(k) { return D[k] || pat(k) || seg(k) || tok(k); }
   function tr(s) { var k = s.replace(/\s+/g, ' ').trim(); if (!k || !/[A-Za-z]/.test(k)) return null; var v = full(k); if (!v) return null;

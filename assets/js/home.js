@@ -53,7 +53,7 @@
     var n = new Date(), t = new Date(Date.UTC(n.getFullYear(), n.getMonth(), n.getDate())), h = H(t);
     $('hm-hijri').textContent = Number(h.d).toLocaleString('ar-EG') + ' ' + HM_AR[h.m - 1] + ' ' + Number(h.y).toLocaleString('ar-EG', { useGrouping: false }) + ' هـ';
     $('hm-hijri-en').textContent = h.d + ' ' + HM_EN[h.m - 1] + ' ' + h.y + ' AH';
-    $('hm-greg').textContent = t.toLocaleDateString(undefined, { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    $('hm-greg').textContent = t.toLocaleDateString((window.SOI18N && SOI18N.lang !== 'en' ? SOI18N.lang + '-u-nu-latn' : undefined), { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     for (var i = 0; i < 400; i++) { var d = new Date(t.getTime() + i * 864e5), x = H(d), e = EV.filter(function (v) { return v[0] === x.m && v[1] === x.d; })[0];
       if (e) { $('hm-next').textContent = e[2]; $('hm-next-d').innerHTML = (i === 0 ? 'Today' : 'in ' + i + (i === 1 ? ' day' : ' days')) + ' · ' + x.d + ' ' + HM_EN[x.m - 1] + ' · <a href="calendar/">Calendar →</a>'; break; } }
   } catch (e) {}

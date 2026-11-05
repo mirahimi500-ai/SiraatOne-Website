@@ -23,7 +23,7 @@ var PT = (function () {
   function tz(L) { return (L && L.tz) || Intl.DateTimeFormat().resolvedOptions().timeZone; }
   function ymd(L, d) { var o = {}; new Intl.DateTimeFormat('en-US', { timeZone: tz(L), year: 'numeric', month: 'numeric', day: 'numeric' }).formatToParts(d).forEach(function (x) { o[x.type] = +x.value; }); return o; }
   function times(S, L, y, m, d) { return new A.PrayerTimes(new A.Coordinates(L.lat, L.lng), new Date(y, m - 1, d), params(S, L)); }
-  function fmt(S, L, d) { return new Intl.DateTimeFormat('en-US', { timeZone: tz(L), hour: 'numeric', minute: '2-digit', hour12: S.f === '12' }).format(d); }
+  function fmt(S, L, d) { return new Intl.DateTimeFormat((window.SOI18N && SOI18N.lang !== 'en' ? SOI18N.lang + '-u-nu-latn' : 'en-US'), { timeZone: tz(L), hour: 'numeric', minute: '2-digit', hour12: S.f === '12' }).format(d); }
   function isFri(y, m, d) { return new Date(Date.UTC(y, m - 1, d)).getUTCDay() === 5; }
   function label(k, y, m, d) { return k === 'dhuhr' && isFri(y, m, d) ? 'Jumuʿah' : NAME[k]; }
   function next(S, L, now) { // next of the five prayers (today, or tomorrow's Fajr)

@@ -44,7 +44,7 @@
     return null;
   }
   function num(n) { return S.arn ? Number(n).toLocaleString('ar-EG', { useGrouping: false }) : String(n); }
-  function gStr(d, o) { return d.toLocaleDateString(undefined, Object.assign({ timeZone: 'UTC' }, o || { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })); }
+  function gStr(d, o) { return d.toLocaleDateString((window.SOI18N && SOI18N.lang !== 'en' ? SOI18N.lang + '-u-nu-latn' : undefined), Object.assign({ timeZone: 'UTC' }, o || { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })); }
   function hStr(h) { return h.d + ' ' + HM_EN[h.m - 1] + ' ' + h.y + ' AH'; }
   function hAr(h) { return num(h.d) + ' ' + HM_AR[h.m - 1] + ' ' + num(h.y) + ' هـ'; }
   function events(d, h) {
