@@ -247,7 +247,7 @@
       var b1 = all[all.length - 1].ar[0], h = '';
       segs.forEach(function (g, i) {
         var s = g[0], d = all[i];
-        if (g[1] === 1) h += mpill(s, 1) + frameHtml(s, b1);
+        if (g[1] === 1) h += mpill(s, 1) + frameHtml(s, b1) + (s !== n ? ibtn(s) : '');
         else if (jzStart(s, g[1])) h += mpill(s, g[1]);
         h += flowHtml(s, d.ar, g[1], g[2], function (a) { return 'a' + s + '_' + a; });
       });
@@ -318,7 +318,7 @@
     Promise.all([getSura(s), getTj(s), bism ? null : getSura(1)]).then(function (x) {
       busy = false; if (tail !== s - 1 || S.mode !== 'clean') return;
       var d = x[0].ar, b1 = (x[2] || {}).ar ? x[2].ar[0] : BI, sec = document.createElement('section'); sec.className = 'sura-next'; sec.setAttribute('data-sura', s);
-      sec.innerHTML = mpill(s, 1) + frameHtml(s, b1) + flowHtml(s, d, 1, d.length, function (a) { return 'a' + s + '_' + a; });
+      sec.innerHTML = mpill(s, 1) + frameHtml(s, b1) + ibtn(s) + flowHtml(s, d, 1, d.length, function (a) { return 'a' + s + '_' + a; });
       $('body').appendChild(sec); tail = s; if (AUD.prep) AUD.prep(s);
       if (io) sec.querySelectorAll('[data-a]').forEach(function (el) { io.observe(el); });
       more();
@@ -759,7 +759,9 @@
   // Same content as the app (quran_surah_info.dart): curated overview for 1-2 (copied unchanged), structural overview for the rest
   // built only from the app's verified metadata (assets/data/surah-info.json, scripts/export-surah-info.ps1).
   var CUR = {"1": {"meaning": "The Opening", "revelationPlace": "Makkah", "nameNote": "Al-Fatihah means “The Opening.” It opens the Quran and gathers central themes of praise, worship, reliance on Allah, and guidance.", "summary": "A concise prayer of praise and worship that affirms reliance on Allah and asks Him for guidance to the Straight Path.", "sourceLabel": "Curated SiraatOne overview; chapter metadata verified against Quran Foundation and the installed full-Quran metadata."}, "2": {"meaning": "The Cow", "revelationPlace": "Madinah", "nameNote": "Al-Baqarah is named after the story of the cow mentioned in verses 67–73. The name does not mean the Surah is only about that story.", "summary": "A Madinan Surah centered on divine guidance. It addresses faith, worship, community life and law, lessons from Bani Isra’il, and the responsibilities of a believing community.", "sourceLabel": "Curated SiraatOne overview; chapter metadata verified against Quran Foundation and the installed full-Quran metadata."}};
-  $('s-info').onclick = function () {
+  // INFO2: every surah shown on the page has its own i button (continuous Mushaf and Mushaf pages), not only the first one
+  function ibtn(s) { return '<div class="info-row"><button type="button" class="info-btn" data-sinfo="' + s + '" aria-label="Surah information">i</button></div>'; }
+  function openInfo(n) {
     SO.j('../assets/data/surah-info.json').then(function (d) {
       var m = d.surahs[n - 1]; if (!m || m.number !== n) throw 0;
       var rt = (m.revelation_type || '').trim(), rl = rt.toLowerCase(), place = ['makkah', 'mecca', 'makki', 'meccan'].indexOf(rl) > -1 ? 'Makkah' : ['madinah', 'medina', 'madani', 'medinan'].indexOf(rl) > -1 ? 'Madinah' : rt || 'Not specified'; // same mapping as the app
@@ -779,7 +781,9 @@
       h += '<p class="hint">' + esc($('src-tr').parentNode.textContent) + '</p>';
       $('si-title').textContent = ''; $('si-body').innerHTML = h; winShow($('sinfo'));
     }).catch(function () { $('si-title').textContent = ''; $('si-body').innerHTML = '<p class="hint">Surah information could not be loaded. Please refresh.</p>'; winShow($('sinfo')); });
-  };
+  }
+  $('s-info').onclick = function () { openInfo(n); };
+  document.addEventListener('click', function (e) { var b = e.target.closest('[data-sinfo]'); if (b) openInfo(+b.getAttribute('data-sinfo')); });
   $('sinfo').addEventListener('click', function (e) { if (e.target === $('sinfo') || e.target.closest('[data-close]')) winHide($('sinfo')); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('sinfo').hidden = true; });
   // volume in the audio bar (saved with reader settings)
