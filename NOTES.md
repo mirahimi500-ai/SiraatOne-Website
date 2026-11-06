@@ -239,3 +239,9 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - UPD1 Privacy: privacy@zaibatech.com for privacy questions (hero + Contact), support@ / siraatone1@ for other help. iPhone/Android home-screen: app title "SiraatOne", standalone launch, status bar meta on all 17 pages. Email forwarding for siraatone.com dropped (Forward Email never delivered); remove its 3 DNS records.
 - siraatone1@gmail.com removed from the website (Privacy, Terms); contacts: privacy@ and support@zaibatech.com.
 - INFO2 Every surah in continuous Mushaf / Mushaf pages gets its own i button (opens that surah info); before only the first surah had one.
+
+
+## QS1 — Quick Summary in the surah information (i) window (2026-11-06)
+- New `assets/data/surah-summary.json`: Topic + Summary for all 114 surahs (English), from the reviewed document "SiraatOne Quick Summaries — Topic and Summary".
+- `reader.js` openInfo: the Overview section is replaced by **Quick Summary** (Topic + Summary); all other fields unchanged. If the file cannot load, the old overview is shown. Summary text is marked translate="no" (English only for now).
+- Labels "Quick Summary" and "Topic:" added to the 16 interface dictionaries. `sura/index.html`: reader.js?v=20261106b.
