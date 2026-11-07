@@ -245,3 +245,13 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - New `assets/data/surah-summary.json`: Topic + Summary for all 114 surahs (English), from the reviewed document "SiraatOne Quick Summaries — Topic and Summary".
 - `reader.js` openInfo: the Overview section is replaced by **Quick Summary** (Topic + Summary); all other fields unchanged. If the file cannot load, the old overview is shown. Summary text is marked translate="no" (English only for now).
 - Labels "Quick Summary" and "Topic:" added to the 16 interface dictionaries. `sura/index.html`: reader.js?v=20261106b.
+
+
+## MOB2 — tighter phone sizes (2026-11-07)
+- Phone audit (Playwright, 360px and 390px, 17 pages + menu, settings and language pop-ups): no horizontal overflow; oversized controls on Library, Duas, Surah list, Privacy/Terms tabs, Support, reader bottom bar and Quran Settings.
+- New CSS block MOB2 at the end of style.css (max-width:600px), after MOB1: base font 15px, smaller icons, list rows, Duas folders, pills, chips, bottom-bar name and settings buttons. Desktop unchanged.
+- Result at 360px: Surah list rows 73→60px, Duas folders 119→93px, Library tiles 121→103px, Privacy tabs 67→40px, reader name 62→46px. style.css?v=20261107a on all 17 pages.
+
+## SPF3 — Support page text and Apply button (2026-11-07)
+- Bug: the dialog label rule `.sp-sec` (small uppercase) also hit the page sections (`section.sp-sec`), so FAQ/Tester text showed tiny uppercase and "Apply to join" was a full-width bar. Fix: rule scoped to `.sp-dlg .sp-sec`; `.sp-sec > .btn` is a normal-size button (141x46px at 360/390/820/1280px).
+- Privacy tabs on phones wrap to 2 rows (no cut-off text), checked at 320–430px.

@@ -1150,7 +1150,7 @@ button.btn{border:0;font:inherit;font-weight:600;cursor:pointer}button.btn-ghost
 .sp-bi{flex:none;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--brand) 15%,transparent);color:var(--brand)}
 .sp-bi svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .sp-db{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;padding:16px 22px;overflow:auto}.sp-db.one{grid-template-columns:1fr}
-.sp-sec{margin:4px 0 -4px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}.sp-sec.full,.sp-f.full{grid-column:1/-1}
+.sp-dlg .sp-sec{margin:4px 0 -4px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}.sp-dlg .sp-sec.full,.sp-f.full{grid-column:1/-1}
 .sp-f{display:flex;flex-direction:column;gap:6px;min-width:0}
 .sp-f label,.sp-lb{font-size:.82rem;font-weight:600}.sp-f label i{font-style:normal;font-weight:400;color:var(--muted)}
 .sp-f input,.sp-f select,.sp-f textarea{width:100%;padding:11px 13px;border:1px solid var(--border);border-radius:12px;background:var(--bg);color:var(--text);font:inherit}
@@ -1212,3 +1212,34 @@ html[dir=rtl] .sg{text-align:right}
 html[dir=rtl] #prev svg,html[dir=rtl] #next svg,html[dir=rtl] .bottombar>a.bb-btn svg{transform:scaleX(-1)}
 @media (max-width:600px){html[dir=rtl] .home2 .search-big .s-ico{left:auto;right:14px}html[dir=rtl] .home2 .search-big input{padding:10px 40px 10px 14px}}
 html[dir=rtl] .skip{left:auto;right:-999px}html[dir=rtl] .skip:focus{right:16px}
+
+/* ===== MOB2: tighter phone sizes after the 360/390px audit (<=600px). Same look, smaller and tidier controls; no zoom changes ===== */
+@media (max-width:600px){
+  html{font-size:15px}
+  /* home & library icons */
+  .tiles{gap:14px 6px}
+  .tile .ico{width:28px;height:28px}
+  .tile b{font-size:.8rem}
+  .lib-add,.lib2 .tile .lib-add{padding:4px 10px;font-size:.72rem}
+  /* surah list rows */
+  .row{padding:8px 4px;gap:10px}
+  .row .num{flex-basis:34px;height:34px}
+  .row .ar .g{font-size:1.6rem}
+  .row .en span{font-size:.78rem}
+  /* duas folders */
+  .d-tile{padding:.4rem .1rem;gap:.3rem}
+  .d-ic{width:46px;height:46px;border-radius:12px}.d-ic .ico{width:24px;height:24px}
+  /* pills, chips, small round buttons */
+  .cl-viewpill{flex-wrap:wrap;row-gap:2px;border-radius:18px}
+  .cl-viewpill button{flex:1 1 auto;padding:6px 8px;font-size:.78rem;white-space:nowrap}
+  .ts-chip{padding:6px 12px}
+  .info-btn{width:34px;height:34px}
+  /* reader bottom bar and Quran settings */
+  .bb-name{padding:2px 8px;line-height:1.25}
+  .mtabs button{padding:6px 4px;font-size:.8rem}
+  .seg button{padding:7px 6px;font-size:.8rem}
+  .modal-card{padding:12px 14px}
+}
+
+/* SPF3: page sections on Support use normal text; the Apply button is a normal-size button (not a full-width bar) */
+.sp-sec > .btn{display:inline-block;width:auto;justify-self:start;align-self:flex-start;margin:.6rem 0 .3rem;padding:10px 22px}
