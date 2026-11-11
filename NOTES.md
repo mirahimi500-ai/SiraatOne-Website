@@ -325,3 +325,10 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - Settings → Page background now colours only the Quran page: body background + the Quran area (.rd-wrap) surfaces (page card, verse cards). Site header, status pill, bottom bar, Settings and other pages keep the site colours.
 - Quran text keeps the normal site text colour: light-theme text (#2B2620) on the 6 light backgrounds, dark-theme text (#ECE5D6) on the 4 dark backgrounds (needed to stay readable); no more per-background tinted text/brand colours.
 - Test PASS: 7 combinations (light/dark theme × light/dark backgrounds, Clean/Verse List/Page by Page): header, status, bar, Settings unchanged; 0 JS errors. style.css ?v=20261111l (sura page).
+
+## APPINFO — privacy, screenshots (Nov 11, from the Quran app agent)
+- Privacy → SiraatOne Quran (now "Android and iOS"): summary no longer says "does not access your location"; new Location section = the app's exact text; stored-on-device list adds prayer settings/location/Azan choices; permissions = Android list (internet, location optional, notifications, exact alarms + boot, media foreground service) and iOS (location while open only, background audio + refresh); no camera/microphone/contacts/motion, Qibla compass only; file picker/share menu wording made platform-neutral; "Quran app section updated: 11 November 2026".
+- Quran app page: Screenshots strip (swipe) with 5 app screenshots (WebP 540 px, 13–66 KB): Clean Mushaf, Surah list, Duas & Adhkar, Tasbih, Themes (assets/img/app/). Not used: 01_home (it is the Android launcher, not the app), 04_prayer_times and 05_qibla (show the owner's town "Yardley, Pennsylvania" — privacy) → retake requested.
+- Tasbih page: "Tap to count" restored (the app still shows it; only the Azkar counter dropped it in 1.0.6) + i18n key back in 16 languages; "Screenshots" key added.
+- Names meanings / APP Dua translations: app agent confirms not cleared → stay off the website.
+- Test PASS: 360/768/1280 px no overflow, 5 images load, strip swipes; privacy + tasbih render; 0 JS errors. style.css ?v=20261111m (quran page).
