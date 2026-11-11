@@ -235,16 +235,19 @@
       sura = r[1]; var c = ch[n - 1];
       if (sura.ar.length !== c.verses || sura.en.length !== c.verses) throw 0;
       if (r[2]) bism = r[2].ar[0]; // Bismillah = verse 1:1 from source data
-      document.title = c.name_simple + ' — SiraatOne';
-      $('s-ar').innerHTML = SO.sname(n, 'سورة ' + c.name_arabic);
-      $('s-en').textContent = c.name_simple;
-      var m = c.meaning + ' · ' + c.verses + ' ayahs · ' + (c.place === 'makkah' ? 'Makki' : 'Madani');
-      if (idx) { var p = SO.pos(idx, n, 1); m += ' · Juz ' + p.juz + ' · Page ' + p.page; }
-      $('s-meta').textContent = m;
-      $('bb-name').innerHTML = arNum(n) + ' - ' + SO.sname(n, c.name_arabic);
+      head();
       loadScript().then(function () { apply(false); render(); setTimeout(AUD.auto, 400); });
     })
     .catch(function (e) { if (e !== 'redirect') $('s-en').textContent = 'This sura could not be loaded. Please refresh.'; });
+
+  function head() { var c = ch[n - 1];
+    document.title = c.name_simple + ' — SiraatOne';
+    $('s-ar').innerHTML = SO.sname(n, 'سورة ' + c.name_arabic);
+    $('s-en').textContent = c.name_simple;
+    var m = c.meaning + ' · ' + c.verses + ' ayahs · ' + (c.place === 'makkah' ? 'Makki' : 'Madani');
+    if (idx) { var p = SO.pos(idx, n, 1); m += ' · Juz ' + p.juz + ' · Page ' + p.page; }
+    $('s-meta').textContent = m;
+    $('bb-name').innerHTML = arNum(n) + ' - ' + SO.sname(n, c.name_arabic); }
 
   var LEG = [['maddNormal', 'Madd — Normal'], ['qalqalah', 'Qalqalah'], ['ikhfa', 'Ikhfa'], ['idghamWithGhunnah', 'Idgham with Ghunnah'], ['iqlab', 'Iqlab'], ['ghunnah', 'Ghunnah']]; // labels from the app
   function legend() { return S.tajweed && S.legend && document.body.dataset.tj === '1' ? '<div class="tj-legend">' + LEG.map(function (l) { return '<span class="tj-' + l[0] + '">' + l[1] + '</span>'; }).join('') + '</div>' : ''; }
@@ -266,7 +269,7 @@
       var kp = KEEP; KEEP = null;
       $('body').innerHTML = kf('<div class="mpage">' + h + '<div class="pg-num">' + arNum(P) + '</div></div>'); hold(kp);
       $('bb-name').textContent = 'صفحة ' + arNum(P);
-      var pr = $('prev'), nx = $('next');
+      var pr = $('prev'), nx = $('next'); pr.onclick = nx.onclick = null;
       pr.href = P > 1 ? '?p=' + (P - 1) : '#'; pr.classList.toggle('off', P === 1); pr.title = P > 1 ? 'Page ' + (P - 1) : '';
       nx.href = P < 604 ? '?p=' + (P + 1) : '#'; nx.classList.toggle('off', P === 604); nx.title = P < 604 ? 'Page ' + (P + 1) : '';
       document.title = 'Page ' + P + ' — SiraatOne';
@@ -596,11 +599,24 @@
   function route() {
     var want = S.mode === 'clean' && S.paging === 'page';
     if (!idx || want === pageMode) return false;
-    try { var tb = document.querySelector('.mtabs [aria-selected=true]'); sessionStorage.setItem('so.reopen', tb ? tb.getAttribute('data-p') : 'reading'); } catch (e) {} // keep Settings open after the page switch
-    var kp = anchor();
-    if (want) { var l = kp && kp.s ? kp : SO.get('so.last', { s: n, a: 1 }); location.href = '?p=' + SO.pos(idx, l.s, l.a).page; }
-    else { var st = kp && kp.s ? [kp.s, kp.a] : idx.page[P - 1]; location.href = '?n=' + st[0] + '#' + st[1]; }
+    switchPaging(want, anchor());
     return true;
+  }
+  // Continuous <-> Page by Page in place (no page reload): same ayah, Settings stay open
+  function switchPaging(want, kp) {
+    var to = kp && kp.s ? [kp.s, kp.a] : pageMode ? idx.page[P - 1] : [n, 1];
+    if (AUD.stop) AUD.stop();
+    pageMode = want; document.body.classList.toggle('pg-mode', pageMode);
+    var nn = to[0];
+    if (pageMode) { P = SO.pos(idx, to[0], to[1]).page; nn = idx.page[P - 1][0]; history.replaceState(null, '', '?p=' + P); }
+    else history.replaceState(null, '', '?n=' + to[0] + '#' + to[1]);
+    if (io) io.disconnect(); tail = 0; visS = 0; KEEP = null;
+    var same = nn === n; n = nn; if (!same) wbw = null;
+    (same ? Promise.resolve(null) : Promise.all([SO.j('../assets/data/sura/' + n + '.json'), n === 1 || n === 9 ? null : getSura(1)])).then(function (x) {
+      if (x) { sura = x[0]; bism = x[1] ? x[1].base[0] : null; }
+      head(); return loadScript();
+    }).then(function () { apply(false); render(); if (pageMode) scrollTo(0, 0); })
+      .catch(function () { location.href = pageMode ? '?p=' + P : '?n=' + to[0] + '#' + to[1]; }); // fallback: normal page load
   }
   document.addEventListener('keydown', function (e) {
     if (!pageMode || !$('settings').hidden || !$('sheet').hidden || /input|textarea/i.test(e.target.tagName)) return;
