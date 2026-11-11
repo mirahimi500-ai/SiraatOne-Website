@@ -10,7 +10,7 @@
   // one-time move to the new defaults (Nov 2026) for browsers that saved older settings
   if ((S.dv || 0) < 2) { S.mode = 'clean'; S.paging = 'scroll'; S.tajweed = true; S.script = 'uthmani'; S.reciter = 'Alafasy'; S.dv = 2; SO.set('so.rs', S); }
   if (S.dv < 3) { S.meaning = false; S.dv = 3; SO.set('so.rs', S); } // the meaning line under the frame starts off (details are in the i button)
-  S.bg = { cream: 'classic', sepia: 'sand', night: 'forest' }[S.bg] || S.bg; // old values -> app backgrounds
+  S.bg = { cream: 'classic', sepia: 'sand', night: 'forest', whitegreen: 'app' }[S.bg] || S.bg; // old values -> app backgrounds
   var HL = { yellow: '#FDE047', amber: '#FBBF24', orange: '#FB923C', red: '#F87171', pink: '#F472B6', purple: '#C084FC', indigo: '#818CF8', blue: '#60A5FA', teal: '#2DD4BF', green: '#4ADE80' };
   function hl(k) { var c = SO.get('so.hl', {})[k]; return c && HL[c] ? ' style="--hl:' + HL[c] + '" data-hl="' + c + '"' : ''; }
   var ch, sura, idx, wbw = null, bism = null, AR = null, BI = null, CACHE = {};

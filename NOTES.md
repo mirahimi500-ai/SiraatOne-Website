@@ -309,3 +309,8 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 ## QINK — Quran text colour (Nov 11, owner)
 - Owner: themes/backgrounds must colour only the page, not the Quran text. Quran Arabic (.flow, Verse List .ar, Mushaf+ words, own ayah-end signs, plain Bismillah) = black on light pages, white on dark pages (--q-ink), whatever the theme or Quran background. Tajweed colours, frame and translations unchanged.
 - Test PASS: 8 theme/background combinations (black on light, white on dark), 0 JS errors. style.css ?v=20261111h (sura page).
+
+## Revert themes/colours (Nov 11, owner: "make it simple as yesterday")
+- Removed: E1 15 themes (theme menu back to System / Light / Dark / OLED; inline head script back on 17 pages; THEME15 CSS), QINK (Quran text colour back to the page text colour), White Green reader background (swatch + CSS; saved value -> App Theme). Saved Nov 11 theme values reset to System.
+- Kept: alignment, Bold, dotted-circle fix, prayer card, sounds, Azkar counter, restore defaults, Rub al-Hizb fix; Quran app page text about the app's themes.
+- Test PASS: System light = cream/#2E7D32, System dark = #11130F/#66BB6A, OLED black, menu 4 choices, reader 11 backgrounds, 0 JS errors. style.css/site.js/reader.js ?v=20261111i.
