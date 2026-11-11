@@ -1272,3 +1272,10 @@ body[data-align="right"] .flow{text-align:justify;text-align-last:right}
 body[data-align="center"] .flow{text-align:center;text-align-last:center}
 body.q-bold :is(.flow,.card-a .ar,.wa,.words .end-own,.bismillah){-webkit-text-stroke-width:.024em;paint-order:stroke fill}
 body[data-bg="whitegreen"]{--bg:#DCEEE2;--surface:#E9F5EE;--text:#15281E;--muted:#4F6458;--brand:#166A4B;--link:#166A4B;--border:color-mix(in srgb,#8DB3A0 45%,transparent);--brand-ink:#fff;color-scheme:light}
+/* PC1 (Nov 11): prayer icons, current prayer (none from sunrise to Dhuhr), time since the Azan, countdown on the right (as the apps) */
+.p-ic{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.pw-next>div{flex-wrap:wrap;align-items:center}.pw-nm{display:flex;align-items:baseline;gap:10px;min-width:0}.pw-next .pw-left{margin-inline-start:auto;font-weight:600;color:var(--text)}
+.pw-n{display:flex;align-items:center;gap:8px}.pw-list li .pw-n>span{display:flex;flex-direction:column;line-height:1.2}.pw-list li .p-ic{color:var(--brand)}.pw-list li.now .p-ic{color:var(--brand-ink)}
+.pw-since{font-size:.72rem;font-variant-numeric:tabular-nums;opacity:.9}.pw-since[hidden]{display:none}
+.pt-row .pt-n{align-items:center}.pt-row .p-ic{width:20px;height:20px;color:var(--brand);align-self:center}.pt-row.now .p-ic{color:var(--brand-ink)}
+@media (max-width:600px){.pw-list li .pw-n{flex-direction:column;gap:2px}.pw-list li .pw-n>span{align-items:center}}

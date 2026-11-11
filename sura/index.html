@@ -228,9 +228,10 @@
             <p class="hint">Controls appear in the bottom toolbar. Keys: S start/pause · − / + speed · Esc stop.</p>
             <h3>Backup &amp; reset</h3>
             <p class="hint">Save your bookmarks, favorites, highlights, notes, tasbih, settings and other data from this browser to a file, or restore them from a file.</p>
-            <div class="bk-row"><button type="button" class="btn btn-ghost" id="bk-export">Export backup</button><label class="btn btn-ghost" for="bk-file">Import backup</label><input type="file" id="bk-file" accept=".json,application/json" hidden></div>
+            <div class="bk-row"><button type="button" class="btn btn-ghost" id="bk-export">Export backup</button><label class="btn btn-ghost" for="bk-file">Restore from backup file</label><input type="file" id="bk-file" accept=".json,application/json" hidden></div>
             <p class="hint" id="bk-msg" role="status"></p>
-            <button type="button" class="btn btn-ghost" id="reset">Reset settings</button>
+            <div class="bk-row"><button type="button" class="btn btn-ghost" id="reset">Reset Quran settings</button><button type="button" class="btn btn-ghost" id="bk-defaults">Restore default settings</button></div>
+            <p class="hint">Restore default settings resets the settings of every page to the defaults. Bookmarks, favorites, highlights, notes, saved items, tasbih counts, location and language are kept.</p>
           </section>
         </div>
       </div>
@@ -242,7 +243,7 @@
 <script src="../assets/js/site.js?v=20261105i" defer></script>
 <script src="../assets/js/lib.js?v=20261111c" defer></script>
 <script src="../assets/js/tajweed.js?v=20261105h" defer></script>
-<script src="../assets/js/reader.js?v=20261111d" defer></script>
+<script src="../assets/js/reader.js?v=20261111e" defer></script>
 <!-- Cloudflare Web Analytics (no cookies; see Privacy Policy) --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "08e433ad07454343bf9d6a63c6a650de"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

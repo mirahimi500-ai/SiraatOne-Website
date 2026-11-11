@@ -5,9 +5,9 @@
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
   var esc = SO.esc, A = window.adhan;
-  var DEF = { m: 'ISNA', a: 'Shafi', h: 'auto', f: '12', view: 'day', snd: 'short', vol: 0.8, on: { fajr: true, dhuhr: true, asr: true, maghrib: true, isha: true },
+  var DEF = { m: 'ISNA', a: 'Shafi', h: 'auto', f: '12', view: 'day', snd: 'notif', vol: 0.8, on: { fajr: true, dhuhr: true, asr: true, maghrib: true, isha: true },
     adj: { fajr: 0, sunrise: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 } };
-  var S = Object.assign({}, DEF, SO.get('so.pt', {})); S.on = Object.assign({}, DEF.on, S.on); S.adj = Object.assign({}, DEF.adj, S.adj); if (S.snd === 'complete') S.snd = 'short';
+  var S = Object.assign({}, DEF, SO.get('so.pt', {})); S.on = Object.assign({}, DEF.on, S.on); S.adj = Object.assign({}, DEF.adj, S.adj); if (S.snd === 'complete' || S.snd === 'short') S.snd = 'notif'; // no Azan recordings (no licence), as in the apps
   var L = SO.get('so.ploc', null); // { lat, lng, name, tz }
   function save() { SO.set('so.pt', S); }
   var P = ['fajr', 'sunrise', 'dhuhr', 'asr', 'maghrib', 'isha'], FIVE = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
@@ -56,13 +56,13 @@
     drawDay(); drawMonth(); drawExtra(); tick();
   }
   function drawDay() {
-    var pt = times(day.year, day.month, day.day), nx = next(new Date()), today = ymd(new Date());
+    var pt = times(day.year, day.month, day.day), c = PT.curOf(times, ymd, new Date()), today = ymd(new Date());
     var isToday = day.year === today.year && day.month === today.month && day.day === today.day;
     $('pt-d1').textContent = dFmt(day.year, day.month, day.day, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     $('pt-d2').textContent = hijri(day.year, day.month, day.day) + (isToday ? ' · Today' : '');
     $('pt-list').innerHTML = P.map(function (k) {
-      var cur = isToday && nx.k === k && nx.d === day.day, five = FIVE.indexOf(k) > -1;
-      return '<li class="pt-row' + (cur ? ' now' : '') + (k === 'sunrise' ? ' sun' : '') + '"><span class="pt-n"><b>' + label(k, day.year, day.month, day.day) + '</b><small lang="ar" dir="rtl">' + AR[k] + '</small></span>' +
+      var cur = isToday && c && c.k === k, five = FIVE.indexOf(k) > -1;
+      return '<li class="pt-row' + (cur ? ' now' : '') + (k === 'sunrise' ? ' sun' : '') + '"><span class="pt-n">' + PT.icon(k) + '<b>' + label(k, day.year, day.month, day.day) + '</b><small lang="ar" dir="rtl">' + AR[k] + '</small></span>' +
         '<time>' + tFmt(pt[k]) + '</time>' + (five ? '<button type="button" class="pt-bell' + (S.on[k] ? ' on' : '') + '" data-bell="' + k + '" aria-pressed="' + !!S.on[k] + '" aria-label="Azan for ' + NAME[k] + '">' +
         '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/>' + (S.on[k] ? '' : '<path d="M4 4l16 16"/>') + '</svg></button>' : '<span class="pt-bell-x"></span>') + '</li>';
     }).join('');
@@ -89,7 +89,8 @@
   function tick() {
     if (!L) return;
     var now = new Date(), nx = next(now), t = ymd(now);
-    if (nx.k + nx.d !== lastK) { lastK = nx.k + nx.d; if (S.view === 'day' && day && day.day === t.day && day.month === t.month) drawDay(); }
+    var ck = nx.k + nx.d + ((PT.curOf(times, ymd, now) || {}).k || '-');
+    if (ck !== lastK) { lastK = ck; if (S.view === 'day' && day && day.day === t.day && day.month === t.month) drawDay(); }
     $('pt-hero').innerHTML = '<div class="cl-hd"><small>Next prayer</small><b>' + label(nx.k, nx.y, nx.m, nx.d) + ' <span lang="ar" dir="rtl">' + AR[nx.k] + '</span></b><span>at ' + tFmt(nx.at) + ' · in ' + left(nx.at - now) + '</span></div>' +
       '<div class="cl-hn"><b>' + esc(L.name) + '</b><span>' + dFmt(t.year, t.month, t.day, { weekday: 'long', day: 'numeric', month: 'long' }) + '</span><span>' + hijri(t.year, t.month, t.day) + '</span><span>' + esc(methodName()) + '</span></div>';
     azanCheck(now);
@@ -97,9 +98,17 @@
   function methodName() { var o = $('ps-m').querySelector('option[value="' + S.m + '"]'); return (o ? o.textContent.split(' — ')[0] : S.m) + ' · ' + (S.a === 'Hanafi' ? 'Hanafi Asr' : 'Standard Asr'); }
 
   // ---------- Azan (while this page is open) ----------
-  var au = new Audio(), fired = {};
-  function src(k) { return '../assets/audio/azan/' + (S.snd === 'beep' ? 'beep' : 'short') + '/' + k + '.mp3'; }
-  function play(k) { if (S.snd === 'off') return; au.pause(); au.src = src(k); au.volume = S.vol; au.play().catch(function () {}); }
+  // Sounds as in the apps, which no longer include Azan recordings (there is no licence for them): the device's
+  // notification sound, a short beep made here in the browser (no audio file), or silent.
+  var AC = null, fired = {};
+  function actx() { try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); } catch (e) { AC = null; } return AC; }
+  document.addEventListener('pointerdown', function () { if (S.snd === 'beep') actx(); }, { once: true }); // browsers allow sound only after a tap
+  function beep() { var c = actx(); if (!c) return; var t0 = c.currentTime + 0.05;
+    for (var i = 0; i < 3; i++) { var o = c.createOscillator(), g = c.createGain(), s = t0 + i * 0.45; o.type = 'sine'; o.frequency.value = 880; o.connect(g); g.connect(c.destination);
+      g.gain.setValueAtTime(0, s); g.gain.linearRampToValueAtTime(0.5 * S.vol, s + 0.02); g.gain.setValueAtTime(0.5 * S.vol, s + 0.24); g.gain.linearRampToValueAtTime(0, s + 0.3); o.start(s); o.stop(s + 0.32); } }
+  function play(k) { if (S.snd === 'beep') beep(); }
+  function notify(k, at, y, m, d, tag) { if (!window.Notification || Notification.permission !== 'granted') return;
+    try { var T = window.SOI18N ? SOI18N.t : function (x) { return x; }, nm = T(label(k, y, m, d)); new Notification(nm + ' — ' + tFmt(at), { body: T('It is time for {x} prayer').replace('{x}', nm) + ' · ' + L.name, icon: '../assets/img/logo.png', tag: tag, silent: S.snd !== 'notif' }); } catch (e) {} }
   function azanCheck(now) {
     var t = ymd(now), pt = times(t.year, t.month, t.day);
     FIVE.forEach(function (k) {
@@ -107,7 +116,7 @@
       if (d >= 0 && d < 60000 && !fired[id]) {
         fired[id] = 1; if (!S.on[k]) return;
         play(k);
-        if (window.Notification && Notification.permission === 'granted') try { var T = window.SOI18N ? SOI18N.t : function (x) { return x; }, nm = T(label(k, t.year, t.month, t.day)); new Notification(nm + ' — ' + tFmt(at), { body: T('It is time for {x} prayer').replace('{x}', nm) + ' · ' + L.name, icon: '../assets/img/logo.png', tag: id }); } catch (e) {}
+        notify(k, at, t.year, t.month, t.day, id);
       }
     });
   }
@@ -117,8 +126,10 @@
     b.disabled = Notification.permission !== 'default';
   }
   $('pa-notif').onclick = function () { if (window.Notification) Notification.requestPermission().then(notifUi); };
-  $('pa-test').onclick = function () { if (au.paused || !au.src) { var k = L ? next(new Date()).k : 'dhuhr'; if (S.snd === 'off') return; play(k); this.textContent = '■ Stop'; } else { au.pause(); this.textContent = '▶ Test'; } };
-  au.onended = au.onpause = function () { $('pa-test').textContent = '▶ Test'; };
+  $('pa-test').onclick = function () { var now = new Date(), x = L ? next(now) : { k: 'dhuhr', at: now, y: 0, m: 0, d: 0 };
+    if (S.snd === 'beep') beep();
+    if (window.Notification && Notification.permission === 'default') Notification.requestPermission().then(function () { notifUi(); if (L) notify(x.k, x.at, x.y, x.m, x.d, 'test'); });
+    else if (L) notify(x.k, x.at, x.y, x.m, x.d, 'test'); };
 
   // ---------- location ----------
   function setLoc(l) { L = l; SO.set('so.ploc', L); day = mon = null; lastK = ''; draw(); }
@@ -155,8 +166,8 @@
     $('ps-m').value = S.m; $('ps-a').value = S.a; $('ps-h').value = S.h; $('ps-f').value = S.f; $('pa-s').value = S.snd; $('pa-v').value = S.vol; $('pa-vo').textContent = Math.round(S.vol * 100) + '%';
     document.querySelectorAll('[data-adj]').forEach(function (s) { s.value = S.adj[s.dataset.adj]; });
   }
-  [['ps-m', 'm'], ['ps-a', 'a'], ['ps-h', 'h'], ['ps-f', 'f'], ['pa-s', 'snd']].forEach(function (x) { $(x[0]).onchange = function () { S[x[1]] = this.value; save(); lastK = ''; draw(); }; });
-  $('pa-v').oninput = function () { S.vol = +this.value; au.volume = S.vol; $('pa-vo').textContent = Math.round(S.vol * 100) + '%'; save(); };
+  [['ps-m', 'm'], ['ps-a', 'a'], ['ps-h', 'h'], ['ps-f', 'f'], ['pa-s', 'snd']].forEach(function (x) { $(x[0]).onchange = function () { S[x[1]] = this.value; save(); if (S.snd === 'beep') actx(); lastK = ''; draw(); }; });
+  $('pa-v').oninput = function () { S.vol = +this.value; $('pa-vo').textContent = Math.round(S.vol * 100) + '%'; save(); };
   document.querySelectorAll('[data-adj]').forEach(function (s) { s.onchange = function () { S.adj[s.dataset.adj] = +s.value; save(); lastK = ''; draw(); }; });
   $('ps-reset').onclick = function () { var v = S.view; S = JSON.parse(JSON.stringify(DEF)); S.view = v; save(); form(); lastK = ''; draw(); };
   $('pt-menu').onclick = function (e) { e.stopPropagation(); this.setAttribute('aria-expanded', $('pt-pop').classList.toggle('open')); };

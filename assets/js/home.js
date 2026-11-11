@@ -69,21 +69,22 @@
   }
   function draw() {
     if (!L) { empty(); return; }
-    var now = new Date(), nx = PT.next(S, L, now), t = PT.ymd(L, now), pt = PT.times(S, L, t.year, t.month, t.day);
-    var key = nx.k + nx.d;
+    var now = new Date(), nx = PT.next(S, L, now), c = PT.cur(S, L, now), t = PT.ymd(L, now), pt = PT.times(S, L, t.year, t.month, t.day);
+    var key = nx.k + nx.d + (c ? c.k : '-');
     if (key !== last) {
       last = key;
-      body.innerHTML = '<div class="pw-next"><small>' + esc(L.name) + ' · next prayer</small><div><b>' + PT.label(nx.k, nx.y, nx.m, nx.d) + '</b><span class="pw-at">' + PT.fmt(S, L, nx.at) + '</span></div>' +
-        '<span class="pw-left" id="pw-left"></span></div>' +
+      body.innerHTML = '<div class="pw-next"><small>' + esc(L.name) + ' · next prayer</small><div><span class="pw-nm"><b>' + PT.label(nx.k, nx.y, nx.m, nx.d) + '</b><span class="pw-at">' + PT.fmt(S, L, nx.at) + '</span></span>' +
+        '<span class="pw-left" id="pw-left"></span></div></div>' +
         '<ol class="pw-list">' + PT.P.map(function (k) {
-          var cls = (k === nx.k && nx.d === t.day ? 'now' : pt[k] < now ? 'past' : '') + (k === 'sunrise' ? ' sun' : '');
-          return '<li class="' + cls + '"><span>' + PT.label(k, t.year, t.month, t.day) + '</span><b>' + PT.fmt(S, L, pt[k]) + '</b></li>';
+          var on = c && c.k === k, cls = (on ? 'now' : pt[k] < now ? 'past' : '') + (k === 'sunrise' ? ' sun' : '');
+          return '<li class="' + cls + '"><span class="pw-n">' + PT.icon(k) + '<span>' + PT.label(k, t.year, t.month, t.day) + (on ? '<small class="pw-since" id="pw-since"></small>' : '') + '</span></span><b>' + PT.fmt(S, L, pt[k]) + '</b></li>';
         }).join('') + '</ol>';
       var ex = PT.extras(S, L, t.year, t.month, t.day);
       body.innerHTML += '<div class="pw-ex"><div><small>Ishraq / Duha</small><b>' + PT.fmt(S, L, ex.ishraq) + '</b></div><div><small>Midnight</small><b>' + PT.fmt(S, L, ex.midnight) + '</b></div>' +
         '<div><small>Qiyam (last third)</small><b>' + PT.fmt(S, L, ex.qiyam) + '</b></div></div>';
     }
     var el = document.getElementById('pw-left'); if (el) el.textContent = 'in ' + PT.left(nx.at - now);
+    var sc = document.getElementById('pw-since'); if (sc) { var e = c ? now - c.at : 1e9; sc.hidden = e > 90 * 60000; sc.textContent = PT.since(e); }
   }
   draw(); setInterval(draw, 1000);
   addEventListener('storage', function (e) { if (e.key === 'so.ploc' || e.key === 'so.pt') { S = PT.settings(); L = SO.get('so.ploc', null); last = ''; draw(); } });

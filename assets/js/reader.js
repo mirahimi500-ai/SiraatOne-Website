@@ -751,6 +751,12 @@
     document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
     $('bk-msg').textContent = 'Backup saved (' + Object.keys(data).length + ' items).';
   };
+  // Restore default settings (as the app): settings only; bookmarks, favorites, highlights, notes, saved items, tasbih counts, location and language stay
+  $('bk-defaults').onclick = function () {
+    var T = window.SOI18N ? SOI18N.t : function (x) { return x; };
+    if (!confirm(T('Restore default settings? Bookmarks, favorites, highlights, notes, saved items, tasbih counts, location and language are kept.'))) return;
+    ['so.rs', 'so.pt', 'so.dopt', 'so.hopt', 'so.nm', 'so.svopt', 'so.sl', 'so.tafsir', 'so.qa', 'so.cal2', 'theme', 'rm'].forEach(function (k) { try { localStorage.removeItem(k); } catch (e) {} });
+    location.reload(); };
   $('bk-file').onchange = function () {
     var f = this.files[0]; this.value = ''; if (!f) return;
     var r = new FileReader();

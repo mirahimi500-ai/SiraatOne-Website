@@ -283,3 +283,12 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - Page background White Green (#DCEEE2, brand #166A4B), sampled from the app's reader_bg_11_white_green.jpg.
 - Uthmani (King Fahd font) only: display maps U+06E3→U+06DC (52:37) and U+06EB→U+06EC (12:11) so the Tajweed and Mushaf+ text no longer shows dotted circles. Checked: the KFGQPC text (assets/data/qpc) already uses U+06DC and U+06EC there; stored and copied text unchanged.
 - Labels in 16 languages. Files: sura/index.html, reader.js, style.css (?v=20261111d), i18n/*.json.
+
+## C1 — prayer card, sounds, Azkar counter, restore defaults, Quran page (Nov 11)
+- Current prayer rule as the apps (S1_NO_CURRENT_PRAYER_AFTER_SUNRISE_V1), shared PT.curOf in prayer-core.js: Fajr until sunrise, none sunrise→Dhuhr, Isha current until Fajr. Home card + Prayer page highlight the CURRENT prayer (before: the next one).
+- Home prayer card: icon per prayer (PT.icon), "−h:mm:ss" under the current prayer for 90 min after its Azan, countdown on the right of the next-prayer line.
+- Prayer page sounds: Azan recordings removed (no licence, as the apps). Choices: Notification sound (default; old short/complete migrate) / Beep (Web Audio tone, no file) / Silent (silent notification). Folder assets/audio/azan/ no longer used → git rm.
+- Azkar: counter shows "0 / 3" ("tap to count" removed); 100× dhikr: three taps within 0.7 s → Done ✓. Tasbih page: "Tap to count" label removed.
+- Quran reader Backup & reset: "Restore from backup file" (renamed), "Reset Quran settings", new "Restore default settings" (clears so.rs, so.pt, so.dopt, so.hopt, so.nm, so.svopt, so.sl, so.tafsir, so.qa, so.cal2, theme, rm; keeps bookmarks, favorites, highlights, notes, saved, tasbih, location, language).
+- Quran app page: features Prayer times and Azan, Qibla; "Private by design" no longer says internet-only; What's new line added. Privacy page Location section for the Quran app: waiting for the app agent's text/permissions.
+- Test PASS (fake clock): morning none, Asr+10 min "−0:10:05", Dhuhr+100 min hidden, before Fajr = Isha; prayer page current = Asr, 3 sound options; Azkar 0 / 3 and triple tap Done ✓; restore keeps bookmarks/location/lang; 360 px no overflow; 0 JS errors.

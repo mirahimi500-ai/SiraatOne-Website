@@ -2,6 +2,7 @@
 // Quranic duas: Arabic is resolved from the verified Quran text (like the app), meaning from the site's verified translation.
 (function () {
   var $ = function (id) { return document.getElementById(id); }, esc = SO.esc;
+  var TAPS = {};
   var O = Object.assign({ tab: 'morning', font: 'uthmani', size: 1, tr: true, mean: true, num: true, virtue: true, when: true, prac: true, src: true, cnt: true, cat: '' }, SO.get('so.dopt', {}));
   var D, CH, saved = SO.get('so.duafav', []), counts = {};
   function save() { SO.set('so.dopt', O); }
@@ -31,7 +32,7 @@
       (ar ? '<p class="d-ar" lang="ar" dir="rtl">' + esc(ar).replace(/[\u060C\u061B\u061F]/g, '<span class="ar-p">$&</span>') + '</p>' : '') +
       (O.tr && tl ? '<p class="d-tl">' + esc(tl) + '</p>' : '') + (O.mean && me ? '<p class="d-me">' + esc(me) + '</p>' : '') +
       (O.virtue && pu ? '<p class="d-meta"><b>Virtue:</b> ' + esc(pu) + '</p>' : '') + (O.when && e.whenToSayEn ? '<p class="d-meta"><b>When:</b> ' + esc(e.whenToSayEn) + '</p>' : '') + (O.prac && e.practiceEn ? '<p class="d-meta"><b>Practice:</b> ' + esc(e.practiceEn) + '</p>' : '') +
-      (O.cnt && rep ? '<button type="button" class="d-count' + (done >= rep ? ' done' : '') + '" data-k="' + key + '" data-max="' + rep + '">' + (done >= rep ? 'Done ✓' : done + ' / ' + rep + ' — tap to count') + '</button>' : '') +
+      (O.cnt && rep ? '<button type="button" class="d-count' + (done >= rep ? ' done' : '') + '" data-k="' + key + '" data-max="' + rep + '">' + (done >= rep ? 'Done ✓' : done + ' / ' + rep) + '</button>' : '') +
       (O.src ? '<details class="d-src"><summary>Source' + (e.quran ? ' · Quran ' + e.quran[0] + ':' + e.quran[1] + (e.quran[2] > e.quran[1] ? '-' + e.quran[2] : '') : '') + '</summary>' +
       e.sources.map(function (s) { return '<p><b>' + esc(s[0]) + '</b><br>' + esc(s[1]) + '</p>'; }).join('') + '</details>' : '') + '</li>';
   }
@@ -117,9 +118,10 @@
     var f = e.target.closest('.d-fav');
     if (f) { var id = f.closest('.dua').dataset.id, i = saved.indexOf(id); if (i > -1) saved.splice(i, 1); else saved.unshift(id); SO.set('so.duafav', saved); f.setAttribute('aria-pressed', i < 0); return; }
     var c = e.target.closest('.d-count');
-    if (c) { var k = c.dataset.k, mx = +c.dataset.max; counts[k] = Math.min(mx, (counts[k] || 0) + 1);
+    if (c) { var k = c.dataset.k, mx = +c.dataset.max, tn = Date.now(), tp = TAPS[k] = (TAPS[k] || []).filter(function (x) { return tn - x < 700; }).concat(tn);
+      counts[k] = mx >= 100 && tp.length >= 3 ? mx : Math.min(mx, (counts[k] || 0) + 1); // as the app: three taps within 0.7 s finish a 100x dhikr
       if (navigator.vibrate) navigator.vibrate(counts[k] >= mx ? [40, 40, 80] : 10);
-      c.classList.toggle('done', counts[k] >= mx); c.textContent = counts[k] >= mx ? 'Done ✓' : counts[k] + ' / ' + mx + ' — tap to count'; }
+      c.classList.toggle('done', counts[k] >= mx); c.textContent = counts[k] >= mx ? 'Done ✓' : counts[k] + ' / ' + mx; }
   };
   // settings menu (☰): search, font, size, transliteration, meaning, numbers
   $('d-menu').onclick = function (e) { e.stopPropagation(); var t = $('d-tools'), o = t.classList.toggle('open'); this.setAttribute('aria-expanded', o); };
