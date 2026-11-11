@@ -332,3 +332,4 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - Tasbih page: "Tap to count" restored (the app still shows it; only the Azkar counter dropped it in 1.0.6) + i18n key back in 16 languages; "Screenshots" key added.
 - Names meanings / APP Dua translations: app agent confirms not cleared → stay off the website.
 - Test PASS: 360/768/1280 px no overflow, 5 images load, strip swipes; privacy + tasbih render; 0 JS errors. style.css ?v=20261111m (quran page).
+- APPINFO 2: retaken 01_home (app Home), 04_prayer_times and 05_qibla (London) checked — no personal data; Screenshots strip now 8: Home, Clean Mushaf, Surah list, Prayer times, Qibla, Duas & Adhkar, Tasbih, Themes. What's new: Version 1.0.7 (19) list (from the app agent) on top, 1.0.6 (18) list kept below (.ap-prev); 16 languages. Test PASS: 360/1280 px, Arabic, 8 images, no overflow, 0 JS errors. style.css ?v=20261111n (quran page).

@@ -1291,3 +1291,4 @@ body.q-bold :is(.flow,.card-a .ar,.wa,.words .end-own,.bismillah){-webkit-text-s
 .ap-shots-row figure{flex:0 0 auto;width:min(44vw,190px);margin:0;scroll-snap-align:start;text-align:center}
 .ap-shots-row img{display:block;width:100%;height:auto;border-radius:18px;border:1px solid var(--border);box-shadow:0 6px 18px rgba(0,0,0,.08);background:var(--surface)}
 .ap-shots-row figcaption{font-size:.82rem;color:var(--muted);margin-top:6px}
+.ap-prev{font-size:.9rem;color:var(--muted);margin:.9rem 0 .3rem;font-weight:600}
