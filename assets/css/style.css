@@ -1301,3 +1301,9 @@ body[data-bg="whitegreen"]{--bg:#DCEEE2;--surface:#E9F5EE;--text:#15281E;--muted
 .theme-pop{max-height:min(78vh,620px);overflow:auto}.theme-pop b+b,.theme-pop button+b{margin-top:6px}
 .theme-pop button i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-inline-end:8px;vertical-align:-1px;border:1px solid var(--border)}
 html[dir=rtl] .theme-pop button{text-align:right}
+/* QINK (Nov 11, owner): themes and page backgrounds colour only the page, never the Quran text.
+   Quran Arabic is black on light pages and white on dark pages (Tajweed colours unchanged). */
+body{--q-ink:#000}
+:root[data-theme="dark"] body:not([data-bg]),:root[data-theme="dark"] body[data-bg="app"],body[data-bg="blue"],body[data-bg="forest"],body[data-bg="warmdark"],body[data-bg="royal"]{--q-ink:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme]) body:not([data-bg]),:root:not([data-theme]) body[data-bg="app"]{--q-ink:#fff}}
+.flow,.card-a .ar,.wa,.words .end-own,.bismillah{color:var(--q-ink)}

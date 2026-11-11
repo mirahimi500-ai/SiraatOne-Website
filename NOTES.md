@@ -305,3 +305,7 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - html data-theme = light/dark base; data-qt = colour theme (same colours as the Quran page backgrounds). Inline head script on all 17 pages sets both before paint (no flash).
 - System = White Green when the device is light, OLED (black, neutral grey) when dark. Light/Dark/OLED = neutral grey. White Green = the original green look; Quran pages mint (#DCEEE2) in White Green / System-light ("App Theme" background follows the site theme).
 - style.css + site.js ?v=20261111g on all 17 pages. Test PASS: 12 theme/scheme combinations (bg + brand), popup 15 choices fits 360 px, saves/resets, 0 JS errors.
+
+## QINK — Quran text colour (Nov 11, owner)
+- Owner: themes/backgrounds must colour only the page, not the Quran text. Quran Arabic (.flow, Verse List .ar, Mushaf+ words, own ayah-end signs, plain Bismillah) = black on light pages, white on dark pages (--q-ink), whatever the theme or Quran background. Tajweed colours, frame and translations unchanged.
+- Test PASS: 8 theme/background combinations (black on light, white on dark), 0 JS errors. style.css ?v=20261111h (sura page).
