@@ -350,16 +350,21 @@ body{--frame-c:var(--brand)!important}
 .fimg{background-color:var(--frame-c);-webkit-mask-position:center;mask-position:center;-webkit-mask-mode:alpha;mask-mode:alpha}
 .fimg.raw{background-color:transparent;background-size:100% 100%;background-repeat:no-repeat}
 /* ===== Stage A1: app page backgrounds (11), spacing, layouts, highlights ===== */
-body[data-bg="classic"]{--bg:#F6F0E2;--surface:#F9F5EB;--text:#1E2A22;--muted:#5D655F;--brand:#2F6B53;--link:#2F6B53;--border:color-mix(in srgb,#9AA79F 45%,transparent);--brand-ink:#fff;color-scheme:light}
-body[data-bg="ivory"]{--bg:#F3EFDE;--surface:#F8F4E6;--text:#212820;--muted:#62685E;--brand:#47664D;--link:#47664D;--border:color-mix(in srgb,#A0A493 45%,transparent);--brand-ink:#fff;color-scheme:light}
-body[data-bg="fiber"]{--bg:#ECE0C5;--surface:#F2E7D0;--text:#312B22;--muted:#6B604F;--brand:#6D5B3F;--link:#6D5B3F;--border:color-mix(in srgb,#A99573 45%,transparent);--brand-ink:#fff;color-scheme:light}
-body[data-bg="green"]{--bg:#F0F2E4;--surface:#F3F6EA;--text:#203128;--muted:#5D6D64;--brand:#3C6A53;--link:#3C6A53;--border:color-mix(in srgb,#91A396 45%,transparent);--brand-ink:#fff;color-scheme:light}
-body[data-bg="sand"]{--bg:#E5CC9F;--surface:#EBD7B4;--text:#332A20;--muted:#6F604E;--brand:#7A5D37;--link:#7A5D37;--border:color-mix(in srgb,#B69A72 45%,transparent);--brand-ink:#fff;color-scheme:light}
-body[data-bg="charcoal"]{--bg:#CCB29B;--surface:#D8C2AD;--text:#35271F;--muted:#6F594A;--brand:#5A4036;--link:#5A4036;--border:color-mix(in srgb,#5A4036 45%,transparent);--brand-ink:#fff;color-scheme:light}
-body[data-bg="blue"]{--bg:#121A2A;--surface:#0B2747;--text:#F2EEE6;--muted:#B7BFCA;--brand:#86BFF0;--link:#86BFF0;--border:color-mix(in srgb,#86BFF0 45%,transparent);--brand-ink:#102018;color-scheme:dark}
-body[data-bg="forest"]{--bg:#14261F;--surface:#263A2F;--text:#F4EFE4;--muted:#B6C2BA;--brand:#9BC8A6;--link:#9BC8A6;--border:color-mix(in srgb,#9BC8A6 45%,transparent);--brand-ink:#102018;color-scheme:dark}
-body[data-bg="warmdark"]{--bg:#2A201A;--surface:#493A28;--text:#F4EBDD;--muted:#C5B7A9;--brand:#D8B47B;--link:#D8B47B;--border:color-mix(in srgb,#D8B47B 45%,transparent);--brand-ink:#102018;color-scheme:dark}
-body[data-bg="royal"]{--bg:#1C182A;--surface:#2D283B;--text:#F2EDF7;--muted:#BCB5C8;--brand:#BCA9DE;--link:#BCA9DE;--border:color-mix(in srgb,#BCA9DE 45%,transparent);--brand-ink:#102018;color-scheme:dark}
+/* Quran page background (owner, Nov 11): the chosen background colours only the Quran page (page + Quran area surfaces).
+   The site header, toolbars, Settings and the Quran text keep the normal site colours: the light-theme text on light
+   backgrounds and the dark-theme text on dark backgrounds, so the Quran text always stays readable. */
+body[data-bg="classic"]{background-color:#F6F0E2}body[data-bg="classic"] .rd-wrap{--bg:#F6F0E2;--surface:#F9F5EB}
+body[data-bg="ivory"]{background-color:#F3EFDE}body[data-bg="ivory"] .rd-wrap{--bg:#F3EFDE;--surface:#F8F4E6}
+body[data-bg="fiber"]{background-color:#ECE0C5}body[data-bg="fiber"] .rd-wrap{--bg:#ECE0C5;--surface:#F2E7D0}
+body[data-bg="green"]{background-color:#F0F2E4}body[data-bg="green"] .rd-wrap{--bg:#F0F2E4;--surface:#F3F6EA}
+body[data-bg="sand"]{background-color:#E5CC9F}body[data-bg="sand"] .rd-wrap{--bg:#E5CC9F;--surface:#EBD7B4}
+body[data-bg="charcoal"]{background-color:#CCB29B}body[data-bg="charcoal"] .rd-wrap{--bg:#CCB29B;--surface:#D8C2AD}
+body[data-bg="blue"]{background-color:#121A2A}body[data-bg="blue"] .rd-wrap{--bg:#121A2A;--surface:#0B2747}
+body[data-bg="forest"]{background-color:#14261F}body[data-bg="forest"] .rd-wrap{--bg:#14261F;--surface:#263A2F}
+body[data-bg="warmdark"]{background-color:#2A201A}body[data-bg="warmdark"] .rd-wrap{--bg:#2A201A;--surface:#493A28}
+body[data-bg="royal"]{background-color:#1C182A}body[data-bg="royal"] .rd-wrap{--bg:#1C182A;--surface:#2D283B}
+body[data-bg="classic"] .rd-wrap,body[data-bg="ivory"] .rd-wrap,body[data-bg="fiber"] .rd-wrap,body[data-bg="green"] .rd-wrap,body[data-bg="sand"] .rd-wrap,body[data-bg="charcoal"] .rd-wrap{--text:#2B2620;--muted:#7A7166;--border:#E9E1D2;--brand:#2E7D32;--link:#2E7D32;--brand-ink:#FFFFFF;--frame-c:var(--brand);color-scheme:light;color:var(--text)}
+body[data-bg="blue"] .rd-wrap,body[data-bg="forest"] .rd-wrap,body[data-bg="warmdark"] .rd-wrap,body[data-bg="royal"] .rd-wrap{--text:#ECE5D6;--muted:#A79F91;--border:#2A2E25;--brand:#66BB6A;--link:#81C784;--brand-ink:#0E1412;--frame-c:#D4A25B;color-scheme:dark;color:var(--text)}
 body[data-bg="app"]{}
 .rd-wrap{padding-left:var(--pad,48px);padding-right:var(--pad,48px)}
 .flow{line-height:var(--lh,2.4)}
