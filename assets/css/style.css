@@ -403,7 +403,7 @@ body[data-bg="app"]{}
 :root{--tj-grey:#757575;--tj-blue:#1976D2;--tj-indigo:#303F9F;--tj-red:#D32F2F;--tj-purple:#7B1FA2;--tj-green:#388E3C;--tj-cyan:#00838F;--tj-orange:#EF6C00}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--tj-grey:#BDBDBD;--tj-blue:#90CAF9;--tj-indigo:#9FA8DA;--tj-red:#E57373;--tj-purple:#CE93D8;--tj-green:#81C784;--tj-cyan:#80DEEA;--tj-orange:#FFB74D}}
 :root[data-theme="dark"],body[data-bg="blue"],body[data-bg="forest"],body[data-bg="warmdark"],body[data-bg="royal"]{--tj-grey:#BDBDBD;--tj-blue:#90CAF9;--tj-indigo:#9FA8DA;--tj-red:#E57373;--tj-purple:#CE93D8;--tj-green:#81C784;--tj-cyan:#80DEEA;--tj-orange:#FFB74D}
-body[data-bg="classic"],body[data-bg="ivory"],body[data-bg="fiber"],body[data-bg="green"],body[data-bg="sand"],body[data-bg="charcoal"]{--tj-grey:#757575;--tj-blue:#1976D2;--tj-indigo:#303F9F;--tj-red:#D32F2F;--tj-purple:#7B1FA2;--tj-green:#388E3C;--tj-cyan:#00838F;--tj-orange:#EF6C00}
+body[data-bg="whitegreen"],body[data-bg="classic"],body[data-bg="ivory"],body[data-bg="fiber"],body[data-bg="green"],body[data-bg="sand"],body[data-bg="charcoal"]{--tj-grey:#757575;--tj-blue:#1976D2;--tj-indigo:#303F9F;--tj-red:#D32F2F;--tj-purple:#7B1FA2;--tj-green:#388E3C;--tj-cyan:#00838F;--tj-orange:#EF6C00}
 .tj-hamzatWasl,.tj-lamShamsiyyah,.tj-silent{color:var(--tj-grey)}.tj-maddNormal{color:var(--tj-blue)}
 .tj-maddPermissible,.tj-maddNecessary,.tj-maddObligatory{color:var(--tj-indigo)}.tj-qalqalah{color:var(--tj-red)}
 .tj-ikhfa,.tj-ikhfaShafawi{color:var(--tj-purple)}.tj-idghamShafawi,.tj-idghamWithGhunnah,.tj-idghamWithoutGhunnah,.tj-idghamMutajanisayn,.tj-idghamMutaqaribayn{color:var(--tj-green)}
@@ -499,7 +499,7 @@ body[data-dfont="naskh"] .d-ar{font-family:"Amiri Quran","Amiri",serif}
 /* frame is invisible from the first paint until its image has loaded (no dark block) */
 .fimg{visibility:hidden}.fimg.ready{visibility:visible}
 /* Tajweed: more vivid / brighter palette (user request) */
-:root,body[data-bg="classic"],body[data-bg="ivory"],body[data-bg="fiber"],body[data-bg="green"],body[data-bg="sand"],body[data-bg="charcoal"]{--tj-grey:#8E8E8E;--tj-blue:#0A84FF;--tj-indigo:#5856D6;--tj-red:#FF1744;--tj-purple:#D500F9;--tj-green:#00C853;--tj-cyan:#00B8D4;--tj-orange:#FF6D00}
+:root,body[data-bg="whitegreen"],body[data-bg="classic"],body[data-bg="ivory"],body[data-bg="fiber"],body[data-bg="green"],body[data-bg="sand"],body[data-bg="charcoal"]{--tj-grey:#8E8E8E;--tj-blue:#0A84FF;--tj-indigo:#5856D6;--tj-red:#FF1744;--tj-purple:#D500F9;--tj-green:#00C853;--tj-cyan:#00B8D4;--tj-orange:#FF6D00}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--tj-grey:#C7C7C7;--tj-blue:#40C4FF;--tj-indigo:#8C9EFF;--tj-red:#FF5252;--tj-purple:#EA80FC;--tj-green:#69F0AE;--tj-cyan:#18FFFF;--tj-orange:#FFAB40}}
 :root[data-theme="dark"],body[data-bg="blue"],body[data-bg="forest"],body[data-bg="warmdark"],body[data-bg="royal"]{--tj-grey:#C7C7C7;--tj-blue:#40C4FF;--tj-indigo:#8C9EFF;--tj-red:#FF5252;--tj-purple:#EA80FC;--tj-green:#69F0AE;--tj-cyan:#18FFFF;--tj-orange:#FFAB40}
 
@@ -1267,3 +1267,8 @@ html[dir=rtl] .skip{left:auto;right:-999px}html[dir=rtl] .skip:focus{right:16px}
 .bism-img{display:block;width:min(56%,400px);aspect-ratio:2589/756;margin:0 auto 12px;background:var(--frame-c,var(--brand));-webkit-mask:url(../img/surah-basmalah.png) center/contain no-repeat;mask:url(../img/surah-basmalah.png) center/contain no-repeat}
 .bism-img[hidden],.pg-mode #s-bimg{display:none}
 @media (max-width:600px){.row .ar .g{font-size:1rem}}
+/* B1 (Nov 11): Clean Mushaf text alignment, bold Quran text, White Green page background (as the app) */
+body[data-align="right"] .flow{text-align:justify;text-align-last:right}
+body[data-align="center"] .flow{text-align:center;text-align-last:center}
+body.q-bold :is(.flow,.card-a .ar,.wa,.words .end-own,.bismillah){-webkit-text-stroke-width:.024em;paint-order:stroke fill}
+body[data-bg="whitegreen"]{--bg:#DCEEE2;--surface:#E9F5EE;--text:#15281E;--muted:#4F6458;--brand:#166A4B;--link:#166A4B;--border:color-mix(in srgb,#8DB3A0 45%,transparent);--brand-ink:#fff;color-scheme:light}

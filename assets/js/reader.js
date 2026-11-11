@@ -5,7 +5,7 @@
   if (!(n >= 1) && P >= 1 && P <= 604) n = 1; // set from the page index below
   var $ = function (id) { return document.getElementById(id); }, esc = SO.esc, root = document.documentElement;
   if (!(n >= 1 && n <= 114)) { location.replace('../read/'); return; }
-  var DEF = { mode: 'clean', script: 'uthmani', ar: 1.9, tr: 1, header: true, meaning: true, deco: true, bg: 'app', nav: 'surah', hide: true, awake: false, auto: false, speed: 3, paging: 'scroll', tajweed: true, legend: true, reciter: 'Alafasy', repeat: 'off', autoNext: true, follow: true, tapWord: true, rate: 1, vol: 1, lh: 2.3, pad: 48, tlay: 'ayah', nums: true, numsRight: false, showAr: true, showTr: true, showWbw: true, trid: 20, tfInline: false, asNext: true, asResume: true, asEta: true, wgap: 8 };
+  var DEF = { mode: 'clean', script: 'uthmani', ar: 1.9, tr: 1, header: true, meaning: true, deco: true, bg: 'app', nav: 'surah', hide: true, awake: false, auto: false, speed: 3, paging: 'scroll', tajweed: true, legend: true, reciter: 'Alafasy', repeat: 'off', autoNext: true, follow: true, tapWord: true, rate: 1, vol: 1, lh: 2.3, pad: 48, tlay: 'ayah', nums: true, numsRight: false, showAr: true, showTr: true, showWbw: true, trid: 20, tfInline: false, asNext: true, asResume: true, asEta: true, wgap: 8, align: 'right', bold: false };
   var S = Object.assign({}, DEF, SO.get('so.rs', {}));
   // one-time move to the new defaults (Nov 2026) for browsers that saved older settings
   if ((S.dv || 0) < 2) { S.mode = 'clean'; S.paging = 'scroll'; S.tajweed = true; S.script = 'uthmani'; S.reciter = 'Alafasy'; S.dv = 2; SO.set('so.rs', S); }
@@ -127,6 +127,9 @@
   function arNum(i) { return Number(i).toLocaleString('ar-EG'); }
   // QPC Hafs (Arabic-Indic digits) / IndoPak (font glyph in Private Use Area U+E000-F8FF) texts already end with their own ayah-number glyph: never add a second one
   // Bismillah above a sura = text of 1:1 without its ayah-number glyph (it is not an ayah of that sura)
+  // King Fahd (UthmanicHafs) font only: it draws the small low seen (52:37) at U+06DC and the ishmam sign (12:11) at U+06EC;
+  // the standard code points show a dotted circle. Display only, same as the app: the stored and copied text is unchanged.
+  function kf(h) { return document.body.dataset.script === 'uthmani' ? h.replace(/\u06E3/g, '\u06DC').replace(/\u06EB/g, '\u06EC') : h; }
   function noNum(a) { return (a || '').replace(/\s*([\u06DD]?[\u0660-\u0669\u06F0-\u06F9]+|[\uE000-\uF8FF]+)\s*$/, ''); }
   function hasNum(a) { return /([\u0660-\u0669\u06F0-\u06F9]|[\uE000-\uF8FF])\s*$/.test(a || ''); }
   // narrow info pill placed inside the Mushaf at the start of every sura and every Juz
@@ -167,7 +170,7 @@
     S.title = !S.header ? 'off' : S.deco ? 'frame' : 'plain'; S.meaning = false;
     root.style.setProperty('--ar-size', S.ar + 'rem'); root.style.setProperty('--tr-size', S.tr + 'rem'); root.style.setProperty('--lh', S.lh); root.style.setProperty('--pad', S.pad + 'px'); root.style.setProperty('--wgap', (S.wgap === undefined ? 8 : S.wgap) + 'px');
     document.body.classList.toggle('nums-right', !!S.numsRight); document.body.classList.toggle('no-wbw', !S.showWbw);
-    document.body.dataset.bg = S.bg;
+    document.body.dataset.bg = S.bg; document.body.dataset.align = S.align === 'center' ? 'center' : 'right'; document.body.classList.toggle('q-bold', !!S.bold);
     $('head').hidden = !S.header; $('s-meta').hidden = !S.meaning; $('s-meta').classList.toggle('sr', !S.meaning); $('s-meta').classList.toggle('s-mean', !!S.meaning);
     var useImg = S.header && S.deco;
     $('frame').classList.toggle('plain', !useImg); $('frame').classList.remove('bism');
@@ -200,7 +203,7 @@
   // grey out options that do not apply to the selected reading mode (they work again when that mode is chosen)
   function deps() {
     var m = S.mode, on = {
-      paging: m === 'clean', tlay: m === 'verse', showAr: m === 'verse', showTr: m === 'verse', tfInline: m !== 'clean',
+      paging: m === 'clean', align: m === 'clean', tlay: m === 'verse', showAr: m === 'verse', showTr: m === 'verse', tfInline: m !== 'clean',
       wgap: m !== 'clean' && S.showWbw, showWbw: m !== 'clean', tapWord: m === 'plus' || m === 'clean' || (m === 'verse' && S.showWbw), numsRight: m !== 'clean' && S.nums,
       tajweed: true, legend: !!S.tajweed, nav: !(m === 'clean' && S.paging === 'page'),
       speed: S.auto, asNext: S.auto, asResume: S.auto, asEta: S.auto };
@@ -258,7 +261,7 @@
         else if (jzStart(s, g[1])) h += mpill(s, g[1]);
         h += flowHtml(s, d.ar, g[1], g[2], function (a) { return 'a' + s + '_' + a; });
       });
-      $('body').innerHTML = '<div class="mpage">' + h + '<div class="pg-num">' + arNum(P) + '</div></div>';
+      $('body').innerHTML = kf('<div class="mpage">' + h + '<div class="pg-num">' + arNum(P) + '</div></div>');
       $('bb-name').textContent = 'صفحة ' + arNum(P);
       var pr = $('prev'), nx = $('next');
       pr.href = P > 1 ? '?p=' + (P - 1) : '#'; pr.classList.toggle('off', P === 1); pr.title = P > 1 ? 'Page ' + (P - 1) : '';
@@ -295,7 +298,7 @@
       }
       if (S.tfInline && mode !== 'clean') setTimeout(tfFill, 0);
       if (S.mode === 'plus' && wbw === false) h = '<p class="empty">Word-by-word is not available yet. Showing Verse List.</p>' + h;
-      $('body').innerHTML = h;
+      $('body').innerHTML = kf(h);
       var t = parseInt(location.hash.slice(1), 10);
       if (t > 1 && $(String(t))) jumpTo($(String(t))); else scrollTo(0, 0);
       SO.set('so.last', { s: n, a: t > 0 && t <= c.verses ? t : 1 });
@@ -325,7 +328,7 @@
     Promise.all([getSura(s), getTj(s), bism ? null : getSura(1)]).then(function (x) {
       busy = false; if (tail !== s - 1 || S.mode !== 'clean') return;
       var d = x[0].ar, b1 = (x[2] || {}).ar ? x[2].ar[0] : BI, sec = document.createElement('section'); sec.className = 'sura-next'; sec.setAttribute('data-sura', s);
-      sec.innerHTML = mpill(s, 1) + frameHtml(s) + ibtn(s) + bismHtml(s, b1) + flowHtml(s, d, 1, d.length, function (a) { return 'a' + s + '_' + a; });
+      sec.innerHTML = kf(mpill(s, 1) + frameHtml(s) + ibtn(s) + bismHtml(s, b1) + flowHtml(s, d, 1, d.length, function (a) { return 'a' + s + '_' + a; }));
       $('body').appendChild(sec); tail = s; if (AUD.prep) AUD.prep(s);
       if (io) sec.querySelectorAll('[data-a]').forEach(function (el) { io.observe(el); });
       more();

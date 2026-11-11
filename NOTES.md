@@ -276,3 +276,10 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - New Surah frame = the app's surah_header_v3_frame_only.png (assets/img/surah-frame.png, lossless re-save). Bismillah = the owner's Thuluth artwork (assets/img/surah-basmalah.png) as a mask in the frame colour, under the (i) button; not on Surah 1 or 9; plain title mode keeps the Quran-text Bismillah.
 - Removed from use: Surah Name V2 font (unlicensed), frame.png and frame-bism.png (old artwork with built-in Bismillah). Credits updated on Terms & Credits.
 - style.css/lib.js ?v=20261111c on all pages; reader.js ?v=20261111c.
+
+## B1 — reader options from the app (Nov 11)
+- Clean Mushaf text alignment (Settings → Reading): Right (default: justified, last line right) or Centered. Clean Mushaf only; included in Reset.
+- Bold Quran text (Settings → Text): crisp stroke (~medium weight), works with Tajweed colours; off by default.
+- Page background White Green (#DCEEE2, brand #166A4B), sampled from the app's reader_bg_11_white_green.jpg.
+- Uthmani (King Fahd font) only: display maps U+06E3→U+06DC (52:37) and U+06EB→U+06EC (12:11) so the Tajweed and Mushaf+ text no longer shows dotted circles. Checked: the KFGQPC text (assets/data/qpc) already uses U+06DC and U+06EC there; stored and copied text unchanged.
+- Labels in 16 languages. Files: sura/index.html, reader.js, style.css (?v=20261111d), i18n/*.json.
