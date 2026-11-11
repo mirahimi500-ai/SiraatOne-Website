@@ -299,3 +299,9 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - Tasbih: dhikr choices already in Arabic (TB4). No change.
 - Rub al-Hizb (۞): Mushaf+ Tajweed words now keep the sign with the next word (as the word-by-word data and the app), so those ayahs keep their Tajweed colours (before: word count mismatch → plain). Surah 2: 19/19 ayahs with ۞ coloured, 0 JS errors. reader.js ?v=20261111f.
 - Not on the website yet (app has them): Names meanings and Duas/Adhkar text in the app languages (ar bn es fa fr id ms tr ur).
+
+## E1 — 15 themes as the app (Nov 11)
+- Theme menu (site.js): App themes System, Light, Dark, OLED, White Green + Quran themes Classic Paper, Warm Sand, Natural Fiber, Geometric Ivory, Subtle Green, Deep Blue, Royal Night, Night Charcoal, Warm Dark, Forest Dark.
+- html data-theme = light/dark base; data-qt = colour theme (same colours as the Quran page backgrounds). Inline head script on all 17 pages sets both before paint (no flash).
+- System = White Green when the device is light, OLED (black, neutral grey) when dark. Light/Dark/OLED = neutral grey. White Green = the original green look; Quran pages mint (#DCEEE2) in White Green / System-light ("App Theme" background follows the site theme).
+- style.css + site.js ?v=20261111g on all 17 pages. Test PASS: 12 theme/scheme combinations (bg + brand), popup 15 choices fits 360 px, saves/resets, 0 JS errors.

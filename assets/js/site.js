@@ -1,22 +1,28 @@
 // SiraatOne — theme toggle + mobile menu. No tracking, no third-party code.
 (function () {
   var root = document.documentElement;
-  // Theme (System / Light / Dark / OLED, as in the app) + Reduce motion. Saved in this browser only.
+  // Theme: the app's 15 themes (System, Light, Dark, OLED, White Green + 10 Quran themes) + Reduce motion. Saved in this browser only.
   var t = document.getElementById('theme-toggle');
   function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function set(k, v) { try { if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} }
+  var APP = [['system', 'System'], ['light', 'Light'], ['dark', 'Dark'], ['oled', 'OLED'], ['whitegreen', 'White Green', '#2E7D32']],
+    QUR = [['classic', 'Classic Paper', '#F6F0E2'], ['sand', 'Warm Sand', '#E5CC9F'], ['fiber', 'Natural Fiber', '#ECE0C5'], ['ivory', 'Geometric Ivory', '#F3EFDE'], ['green', 'Subtle Green', '#F0F2E4'],
+      ['blue', 'Deep Blue', '#121A2A'], ['royal', 'Royal Night', '#1C182A'], ['charcoal', 'Night Charcoal', '#CCB29B'], ['warmdark', 'Warm Dark', '#2A201A'], ['forest', 'Forest Dark', '#14261F']],
+    QT = { whitegreen: 'light', classic: 'light', ivory: 'light', fiber: 'light', green: 'light', sand: 'light', charcoal: 'light', blue: 'dark', forest: 'dark', warmdark: 'dark', royal: 'dark' };
   function applyTheme(v) {
     root.classList.toggle('oled', v === 'oled');
     if (v === 'light' || v === 'dark') root.setAttribute('data-theme', v);
     else if (v === 'oled') root.setAttribute('data-theme', 'dark');
+    else if (QT[v]) root.setAttribute('data-theme', QT[v]);
     else root.removeAttribute('data-theme');
-    if (t) { t.textContent = { light: '\u2600', dark: '\u263E', oled: '\u25CF' }[v] || 'A'; t.setAttribute('aria-label', 'Theme: ' + (v || 'system')); }
+    if (QT[v]) root.setAttribute('data-qt', v); else root.removeAttribute('data-qt');
+    if (t) { t.textContent = { light: '\u2600', dark: '\u263E', oled: '\u25CF' }[v] || (QT[v] ? '\u25D1' : 'A'); t.setAttribute('aria-label', 'Theme: ' + (v || 'system')); }
   }
   applyTheme(get('theme') || 'system');
   if (t) {
     var pop = document.createElement('div'); pop.className = 'theme-pop'; pop.hidden = true;
-    pop.innerHTML = '<b>Theme</b>' + ['system', 'light', 'dark', 'oled'].map(function (v) {
-      return '<button type="button" data-th="' + v + '">' + { system: 'System', light: 'Light', dark: 'Dark', oled: 'OLED (pure black)' }[v] + '</button>'; }).join('') +
+    var btn = function (x) { return '<button type="button" data-th="' + x[0] + '">' + (x[2] ? '<i style="background:' + x[2] + '"></i>' : '') + x[1] + '</button>'; };
+    pop.innerHTML = '<b>App themes</b>' + APP.map(btn).join('') + '<b>Quran themes</b>' + QUR.map(btn).join('') +
       '<label><input type="checkbox" id="rm-box"> Reduce motion</label>';
     t.parentNode.style.position = 'relative'; t.parentNode.appendChild(pop);
     var mark = function () { var c = get('theme') || 'system'; pop.querySelectorAll('[data-th]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-th') === c); }); pop.querySelector('#rm-box').checked = root.classList.contains('rm'); };
