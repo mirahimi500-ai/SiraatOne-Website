@@ -180,8 +180,9 @@
       var u = 'url(../assets/img/surah-frame.png)';
       var canMask = window.CSS && (CSS.supports('mask-image', u) || CSS.supports('-webkit-mask-image', u));
       // Show the frame only after its image has loaded; before that the coloured box would show as a dark block.
-      im.classList.remove('ready');
-      if (canMask) { im.classList.remove('raw'); var pre = new Image();
+      if (im.classList.contains('ready') && (im.style.maskImage || im.style.webkitMaskImage || im.style.backgroundImage)) canMask = null; // already shown: no blink
+      else im.classList.remove('ready');
+      if (canMask === null) {} else if (canMask) { im.classList.remove('raw'); var pre = new Image();
         pre.onload = function () { im.style.webkitMaskImage = u; im.style.maskImage = u; im.classList.add('ready'); };
         pre.src = u.slice(4, -1); }
       else { im.style.backgroundImage = u; im.classList.add('raw', 'ready'); } // old browsers: original colours
@@ -262,7 +263,8 @@
         else if (jzStart(s, g[1])) h += mpill(s, g[1]);
         h += flowHtml(s, d.ar, g[1], g[2], function (a) { return 'a' + s + '_' + a; });
       });
-      $('body').innerHTML = kf('<div class="mpage">' + h + '<div class="pg-num">' + arNum(P) + '</div></div>');
+      var kp = KEEP; KEEP = null;
+      $('body').innerHTML = kf('<div class="mpage">' + h + '<div class="pg-num">' + arNum(P) + '</div></div>'); hold(kp);
       $('bb-name').textContent = 'صفحة ' + arNum(P);
       var pr = $('prev'), nx = $('next');
       pr.href = P > 1 ? '?p=' + (P - 1) : '#'; pr.classList.toggle('off', P === 1); pr.title = P > 1 ? 'Page ' + (P - 1) : '';
@@ -299,9 +301,11 @@
       }
       if (S.tfInline && mode !== 'clean') setTimeout(tfFill, 0);
       if (S.mode === 'plus' && wbw === false) h = '<p class="empty">Word-by-word is not available yet. Showing Verse List.</p>' + h;
+      var kp = KEEP; KEEP = null;
+      if (kp && kp.s && kp.s !== n) { location.replace('?n=' + kp.s + '#' + kp.a); return; } // was reading a later Surah of the continuous Mushaf
       $('body').innerHTML = kf(h);
-      var t = parseInt(location.hash.slice(1), 10);
-      if (t > 1 && $(String(t))) jumpTo($(String(t))); else scrollTo(0, 0);
+      var t = kp ? kp.a : parseInt(location.hash.slice(1), 10);
+      if (kp) hold(kp); else if (t > 1 && $(String(t))) jumpTo($(String(t))); else scrollTo(0, 0);
       SO.set('so.last', { s: n, a: t > 0 && t <= c.verses ? t : 1 });
       tail = n; observe(); more();
     });
@@ -456,6 +460,14 @@
     b.setAttribute('aria-pressed', SO.toggle(a === 'bm' ? 'so.bm' : 'so.fav', cur));
   });
   // windows (Settings, ayah menu, tafsir, translation, info, panel) open and close with a smooth slide
+  // keep the reading position when a setting changes the layout or re-draws the page (no jump):
+  // the first ayah at the top of the screen stays at the same place on the screen
+  var KEEP = null;
+  function anchor() { var els = document.querySelectorAll('#body [data-a][id]'), top = 120;
+    for (var i = 0; i < els.length; i++) { var r = els[i].getBoundingClientRect(); if (r.bottom > top) return { s: +els[i].getAttribute('data-s') || (pageMode ? 0 : n), id: els[i].id, a: +els[i].getAttribute('data-a'), off: r.top }; }
+    return null; }
+  function restore(k) { var el = k && document.getElementById(k.id); if (el) scrollTo(0, Math.max(0, el.getBoundingClientRect().top + scrollY - k.off)); }
+  function hold(k) { if (!k) return; restore(k); requestAnimationFrame(function () { restore(k); }); setTimeout(function () { restore(k); }, 150); }
   function winShow(el) { clearTimeout(el._ht); el.classList.remove('closing'); el.hidden = false; }
   function winHide(el) { if (el.hidden || el.classList.contains('closing')) return;
     if (document.documentElement.classList.contains('rm')) { el.hidden = true; return; }
@@ -585,8 +597,9 @@
     var want = S.mode === 'clean' && S.paging === 'page';
     if (!idx || want === pageMode) return false;
     try { var tb = document.querySelector('.mtabs [aria-selected=true]'); sessionStorage.setItem('so.reopen', tb ? tb.getAttribute('data-p') : 'reading'); } catch (e) {} // keep Settings open after the page switch
-    if (want) { var l = SO.get('so.last', { s: n, a: 1 }); location.href = '?p=' + SO.pos(idx, l.s, l.a).page; }
-    else { var st = idx.page[P - 1]; location.href = '?n=' + st[0] + '#' + st[1]; }
+    var kp = anchor();
+    if (want) { var l = kp && kp.s ? kp : SO.get('so.last', { s: n, a: 1 }); location.href = '?p=' + SO.pos(idx, l.s, l.a).page; }
+    else { var st = kp && kp.s ? [kp.s, kp.a] : idx.page[P - 1]; location.href = '?n=' + st[0] + '#' + st[1]; }
     return true;
   }
   document.addEventListener('keydown', function (e) {
@@ -603,16 +616,17 @@
       document.querySelectorAll('.mtabs button').forEach(function (b) { b.setAttribute('aria-selected', b === tab); });
       document.querySelectorAll('[data-pane]').forEach(function (s) { s.hidden = s.getAttribute('data-pane') !== p; }); var mp = document.querySelector('#settings .mpanes'); if (mp) mp.scrollTop = 0; return; }
     var seg = e.target.closest('.seg button');
-    if (seg) { var k = seg.parentNode.getAttribute('data-set'); S[k] = seg.getAttribute('data-v'); if (k === 'title') { S.header = S.title !== 'off'; S.deco = S.title === 'frame'; } save(); if (k === 'reciter' && $('rec-full')) $('rec-full').value = ''; if (route()) return; if (k === 'script') reloadText(); else apply(k === 'mode' || k === 'tlay'); return; }
-    if (e.target.id === 'reset') { S = Object.assign({}, DEF); save(); apply(true); }
+    if (seg) { var k = seg.parentNode.getAttribute('data-set'); S[k] = seg.getAttribute('data-v'); if (k === 'title') { S.header = S.title !== 'off'; S.deco = S.title === 'frame'; } save(); if (k === 'reciter' && $('rec-full')) $('rec-full').value = ''; if (route()) return; var kp = anchor(); if (k === 'script') { KEEP = kp; reloadText(); } else { var rr = k === 'mode' || k === 'tlay'; KEEP = rr ? kp : null; apply(rr); if (!rr) hold(kp); } return; }
+    if (e.target.id === 'reset') { S = Object.assign({}, DEF); save(); if (!route()) { KEEP = anchor(); apply(true); } }
   });
   $('settings').addEventListener('input', function (e) {
     var k = e.target.getAttribute('data-set'); if (!k) return;
     S[k] = e.target.type === 'checkbox' ? e.target.checked : parseFloat(e.target.value); save();
-    if (k === 'tajweed') { reloadText(); return; }
-    if (k === 'showWbw') { apply(false); render(); return; } // word by word: Mushaf+ and Verse List
+    var kp = anchor();
+    if (k === 'tajweed') { KEEP = kp; reloadText(); return; }
+    if (k === 'showWbw') { KEEP = kp; apply(false); render(); return; } // word by word: Mushaf+ and Verse List
     if (k === 'rate' || k === 'vol') AUD.live();
-    apply(['nums', 'showAr', 'showTr', 'legend', 'tfInline'].indexOf(k) > -1);
+    var rr = ['nums', 'showAr', 'showTr', 'legend', 'tfInline'].indexOf(k) > -1; KEEP = rr ? kp : null; apply(rr); if (!rr) hold(kp);
   });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { if (!$('sheet').hidden) closeSheet(); winHide($('settings')); } });
 
@@ -860,7 +874,7 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('qpanel').hidden = true; });
   // reopen Settings (same tab) after switching between page-by-page and scrolling
   (function () { var t = null; try { t = sessionStorage.getItem('so.reopen'); sessionStorage.removeItem('so.reopen'); } catch (e) {}
-    if (!t) return; winShow($('settings')); var b = document.querySelector('.mtabs [data-p="' + t + '"]'); if (b) b.click(); })();
+    if (!t) return; var m = $('settings'); m.classList.add('instant'); setTimeout(function () { m.classList.remove('instant'); }, 600); winShow(m); var b = document.querySelector('.mtabs [data-p="' + t + '"]'); if (b) b.click(); })();
   // tafsir under each ayah (app setting "show tafsir in translation"): the tafsir chosen in Settings > Text, whole surah in one file
   function tfFill() {
     var slug = SO.get('so.tafsir', null) || 'en-tafisr-ibn-kathir', boxes = document.querySelectorAll('.tf-inl'); if (!boxes.length) return;

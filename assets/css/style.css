@@ -1278,3 +1278,5 @@ body.q-bold :is(.flow,.card-a .ar,.wa,.words .end-own,.bismillah){-webkit-text-s
 .pw-since{font-size:.72rem;font-variant-numeric:tabular-nums;opacity:.9}.pw-since[hidden]{display:none}
 .pt-row .pt-n{align-items:center}.pt-row .p-ic{width:20px;height:20px;color:var(--brand);align-self:center}.pt-row.now .p-ic{color:var(--brand-ink)}
 @media (max-width:600px){.pw-list li .pw-n{flex-direction:column;gap:2px}.pw-list li .pw-n>span{align-items:center}}
+/* Settings reopened after Continuous <-> Page by Page: no open animation */
+.modal.instant,.modal.instant>.modal-card{animation:none}
