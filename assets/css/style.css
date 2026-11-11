@@ -1292,3 +1292,15 @@ body.q-bold :is(.flow,.card-a .ar,.wa,.words .end-own,.bismillah){-webkit-text-s
 .ap-shots-row img{display:block;width:100%;height:auto;border-radius:18px;border:1px solid var(--border);box-shadow:0 6px 18px rgba(0,0,0,.08);background:var(--surface)}
 .ap-shots-row figcaption{font-size:.82rem;color:var(--muted);margin-top:6px}
 .ap-prev{font-size:.9rem;color:var(--muted);margin:.9rem 0 .3rem;font-weight:600}
+/* 99 Names: explanation of each Name (English, from the app: S1_NAMES_EXPLANATIONS_V1) */
+.nm-exp{text-align:start;margin-top:.8rem;border-top:1px solid var(--border);padding-top:.4rem}
+.nx-tl{margin:-.2rem 0 .4rem;color:var(--muted);font-style:italic}
+.nx-about{background:color-mix(in srgb,var(--brand) 8%,var(--surface));border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin:.6rem 0}
+.nx-about p{margin:.3rem 0 0}
+.nx-sec h3{font-size:1rem;margin:1rem 0 .4rem;color:var(--brand)}
+.nx-sec p{margin:.3rem 0;line-height:1.6}
+.nx-sec .nx-ref{font-size:.82rem;color:var(--muted);margin:.1rem 0 .8rem}
+.nx-ar{font-family:"Amiri Quran","UthmanicHafs",serif;font-size:1.35rem;line-height:2.1;text-align:right}
+.nx-sec ul{margin:.3rem 0;padding-inline-start:1.2rem}.nx-src li{margin:.3rem 0;font-size:.88rem;overflow-wrap:anywhere}
+/* Duas: source line under a translation (as the app) */
+.d-cred,.d-foot{font-size:.78rem;color:var(--muted);margin:.1rem 0 .5rem;line-height:1.5}

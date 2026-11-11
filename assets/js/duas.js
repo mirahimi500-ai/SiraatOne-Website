@@ -6,6 +6,16 @@
   var O = Object.assign({ tab: 'morning', font: 'uthmani', size: 1, tr: true, mean: true, num: true, virtue: true, when: true, prac: true, src: true, cnt: true, cat: '' }, SO.get('so.dopt', {}));
   var D, CH, saved = SO.get('so.duafav', []), counts = {};
   function save() { SO.set('so.dopt', O); }
+  // The app's Dua translations for the page language (S1_DUAS_OWN_TRANSLATIONS_V1): SiraatOne translation from the Arabic original;
+  // Quran verses quoted word for word from QuranEnc.com, with the app's own source lines. English stays as before.
+  var DL = (window.SOI18N && SOI18N.lang) || 'en', LT = null;
+  function pt(ps) { return ps ? ps.map(function (p) { return p[1]; }).join('\n') : ''; }
+  function lf(e, f) { var x = LT && LT.e[e.id]; return x && x[f] && x[f].length ? x[f] : null; }
+  function vref(v) { if (!v || !v.length) return ''; var a = v[0].split(':'), b = v[v.length - 1].split(':'); return a[0] === b[0] ? (v.length > 1 ? a[0] + ':' + a[1] + '–' + b[1] : v[0]) : v.join(', '); }
+  function qcred(verses) { var s = LT.str; return (LT.q.version ? s.quranEncSource.replace('{version}', LT.q.version) : s.quranEncSourceNoVersion).replace('{title}', LT.q.title).replace('{verses}', verses); }
+  function cred(ps) { var a = []; (ps || []).forEach(function (p) { var t = p[0] === 'Q' ? qcred(vref(p[2])) : LT.str.appTranslationSource; if (a.indexOf(t) < 0) a.push(t); }); return a.length ? '<p class="d-cred" translate="no">' + a.map(esc).join('<br>') + '</p>' : ''; }
+  function foot(ps) { var f = []; (ps || []).forEach(function (p) { if (p[3]) f = f.concat(p[3]); }); return f.length ? '<p class="d-foot" translate="no">' + esc(f.join('\n')).replace(/\n/g, '<br>') + '</p>' : ''; }
+  function br(t) { return esc(t).replace(/\n/g, '<br>'); }
   function arNum(i) { return Number(i).toLocaleString('ar-EG'); }
   function quranText(q) { // [surah, from, to] -> Promise {ar, en}
     var dir = O.font === 'uthmani' ? 'qpc' : O.font === 'indopak' ? 'indopak' : 'sura';
@@ -26,21 +36,28 @@
   function card(e, i, qt) {
     var ev = O.tab === 'evening', ar = qt ? qt.ar : (ev && e.eveningArabic) || e.arabic, me = qt ? (qt.en + ' (Saheeh International)') : (ev && e.eveningMeaningEn) || e.meaningEn;
     var tl = (ev && e.eveningTransliteration) || e.transliteration, pu = (ev && e.eveningPurposeEn) || e.purposeEn;
+    var X = LT && LT.e[e.id], mx = '', ti = e.title, sr = e.sources;
+    if (X) { var mp = (ev && lf(e, 'evening_meaning')) || lf(e, 'meaning');
+      if (qt && e.quran && LT.qv) { var vs = []; for (var va = e.quran[1]; va <= e.quran[2]; va++) vs.push(LT.qv[e.quran[0] + ':' + va]); if (vs.every(Boolean)) mp = [['Q', vs.join(' '), [e.quran[0] + ':' + e.quran[1], e.quran[0] + ':' + e.quran[2]]]]; }
+      if (mp) { me = pt(mp); mx = cred(mp) + foot(mp); } else if (qt && DL === 'ar') me = '';
+      ti = pt(lf(e, 'title')) || ti; pu = pt((ev && lf(e, 'evening_purpose')) || lf(e, 'purpose')) || pu;
+      if (lf(e, 'source_reference')) sr = [[pt(lf(e, 'source_reference')), pt(lf(e, 'source_assessment'))]]; }
+    var wh = X ? pt(lf(e, 'when_to_say')) || e.whenToSayEn : e.whenToSayEn, pr = X ? pt(lf(e, 'practice')) || e.practiceEn : e.practiceEn;
     var rep = O.tab === 'morning' ? e.morningRepetitions : O.tab === 'evening' ? e.eveningRepetitions : null, key = e.id + ':' + O.tab, done = counts[key] || 0;
-    return '<li class="dua" data-id="' + e.id + '"><div class="d-top">' + (O.num ? '<span class="c-num">' + (i + 1) + '</span>' : '') + '<b>' + esc(e.title) + '</b>' +
+    return '<li class="dua" data-id="' + e.id + '"><div class="d-top">' + (O.num ? '<span class="c-num">' + (i + 1) + '</span>' : '') + '<b' + (X ? ' translate="no"' : '') + '>' + esc(ti) + '</b>' +
       '<button type="button" class="act d-fav" aria-pressed="' + (saved.indexOf(e.id) > -1) + '" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></button></div>' +
       (ar ? '<p class="d-ar" lang="ar" dir="rtl">' + esc(ar).replace(/[\u060C\u061B\u061F]/g, '<span class="ar-p">$&</span>') + '</p>' : '') +
-      (O.tr && tl ? '<p class="d-tl">' + esc(tl) + '</p>' : '') + (O.mean && me ? '<p class="d-me">' + esc(me) + '</p>' : '') +
-      (O.virtue && pu ? '<p class="d-meta"><b>Virtue:</b> ' + esc(pu) + '</p>' : '') + (O.when && e.whenToSayEn ? '<p class="d-meta"><b>When:</b> ' + esc(e.whenToSayEn) + '</p>' : '') + (O.prac && e.practiceEn ? '<p class="d-meta"><b>Practice:</b> ' + esc(e.practiceEn) + '</p>' : '') +
+      (O.tr && tl ? '<p class="d-tl">' + esc(tl) + '</p>' : '') + (O.mean && me ? '<p class="d-me"' + (X ? ' translate="no"' : '') + '>' + br(me) + '</p>' + mx : '') +
+      (O.virtue && pu ? '<p class="d-meta"><b>Virtue:</b> <span translate="no">' + br(pu) + '</span></p>' : '') + (O.when && wh ? '<p class="d-meta"><b>When:</b> <span translate="no">' + br(wh) + '</span></p>' : '') + (O.prac && pr ? '<p class="d-meta"><b>Practice:</b> <span translate="no">' + br(pr) + '</span></p>' : '') +
       (O.cnt && rep ? '<button type="button" class="d-count' + (done >= rep ? ' done' : '') + '" data-k="' + key + '" data-max="' + rep + '">' + (done >= rep ? 'Done ✓' : done + ' / ' + rep) + '</button>' : '') +
       (O.src ? '<details class="d-src"><summary>Source' + (e.quran ? ' · Quran ' + e.quran[0] + ':' + e.quran[1] + (e.quran[2] > e.quran[1] ? '-' + e.quran[2] : '') : '') + '</summary>' +
-      e.sources.map(function (s) { return '<p><b>' + esc(s[0]) + '</b><br>' + esc(s[1]) + '</p>'; }).join('') + '</details>' : '') + '</li>';
+      sr.map(function (s) { return '<p translate="no"><b>' + esc(s[0]) + '</b><br>' + br(s[1] || '') + '</p>'; }).join('') + '</details>' : '') + '</li>';
   }
   function render() {
     document.querySelectorAll('#d-tabs button').forEach(function (b) { b.setAttribute('aria-selected', b.dataset.t === O.tab); });
     $('d-cat').hidden = true;
-    var q = $('d-q').value.trim().toLowerCase(), list = ids().map(function (id) { return D.entries[id]; }).filter(function (e) { if (!q) return true; if (!window.QS) return (e.title + ' ' + (e.meaningEn || '') + ' ' + (e.category || '')).toLowerCase().indexOf(q) > -1; var T = QS.terms(q);
-      return T.ar ? QS.plain(e.arabic).indexOf(T.phrase) > -1 : QS.test(QS.loose([e.title, e.category, e.whenToSayEn, e.purposeEn, e.meaningEn, e.transliteration].join(' ')), T); });
+    var q = $('d-q').value.trim().toLowerCase(), list = ids().map(function (id) { return D.entries[id]; }).filter(function (e) { if (!q) return true; if (!window.QS) return (e.title + ' ' + (e.meaningEn || '') + ' ' + (e.category || '') + ' ' + pt(lf(e, 'title')) + ' ' + pt(lf(e, 'meaning'))).toLowerCase().indexOf(q) > -1; var T = QS.terms(q);
+      return T.ar ? QS.plain(e.arabic).indexOf(T.phrase) > -1 : QS.test(QS.loose([e.title, e.category, e.whenToSayEn, e.purposeEn, e.meaningEn, e.transliteration, pt(lf(e, 'title')), pt(lf(e, 'meaning'))].join(' ')), T); });
     document.body.dataset.dfont = O.font; document.documentElement.style.setProperty('--d-size', O.size);
     if (!list.length) { $('d-list').innerHTML = '<li class="empty">' + (O.tab === 'saved' ? 'Nothing saved yet. Tap ♡ on any dua.' : 'No dua found.') + '</li>'; return; }
     Promise.all(list.map(function (e) { return e.quran ? quranText(e.quran) : null; })).then(function (qs) { $('d-list').innerHTML = list.map(function (e, i) { return card(e, i, qs[i]); }).join(''); });
@@ -102,8 +119,10 @@
     $('d-hero').innerHTML = '<div class="cl-hd"><small>' + (O.tab === 'topic' ? 'Browse topic' : O.tab === 'saved' ? 'Your list' : O.tab === 'all' ? 'Search' : 'Collection') + '</small><b>' + esc(t) + '</b><span>' + n + (n === 1 ? ' dua' : ' duas') + (O.tab === 'morning' || O.tab === 'evening' ? ' · ' + (O.tab === 'morning' ? 'Morning' : 'Evening') : '') + '</span></div><div class="cl-hn"><small>All duas</small><b>' + total + '</b><span><a href="#">All collections →</a></span></div>';
   }
   $('d-hq').onkeydown = function (e) { if (e.key === 'Enter' && this.value.trim()) { $('d-q').value = this.value.trim(); location.hash = 'search'; } };
-  SO.j('../assets/data/duas.json').then(function (d) {
-    D = d; $('d-note').textContent = d.note; landing();
+  var DLS = ['ar', 'ur', 'fa', 'tr', 'id', 'ms', 'bn', 'fr', 'es'];
+  Promise.all([SO.j('../assets/data/duas.json'), DLS.indexOf(DL) > -1 ? SO.j('../assets/data/duas-' + DL + '.json?v=20261111').catch(function () { return null; }) : null]).then(function (r) {
+    var d = r[0]; LT = r[1] && r[1].e ? r[1] : null;
+    D = d; $('d-note').textContent = LT ? LT.str.notesTranslatedNote : d.note; if (LT) $('d-note').setAttribute('translate', 'no'); landing();
     $('d-font').value = O.font; $('d-size').value = String(O.size); $('d-tr').checked = O.tr; $('d-mean').checked = O.mean; $('d-num').checked = O.num; ['virtue', 'when', 'prac', 'src', 'cnt'].forEach(function (k) { $('d-' + k).checked = O[k]; });
     var pq = new URLSearchParams(location.search).get('q'); if (pq) $('d-q').value = pq; // from Home search
     route();

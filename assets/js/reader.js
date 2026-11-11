@@ -808,8 +808,16 @@
   var CUR = {"1": {"meaning": "The Opening", "revelationPlace": "Makkah", "nameNote": "Al-Fatihah means “The Opening.” It opens the Quran and gathers central themes of praise, worship, reliance on Allah, and guidance.", "summary": "A concise prayer of praise and worship that affirms reliance on Allah and asks Him for guidance to the Straight Path.", "sourceLabel": "Curated SiraatOne overview; chapter metadata verified against Quran Foundation and the installed full-Quran metadata."}, "2": {"meaning": "The Cow", "revelationPlace": "Madinah", "nameNote": "Al-Baqarah is named after the story of the cow mentioned in verses 67–73. The name does not mean the Surah is only about that story.", "summary": "A Madinan Surah centered on divine guidance. It addresses faith, worship, community life and law, lessons from Bani Isra’il, and the responsibilities of a believing community.", "sourceLabel": "Curated SiraatOne overview; chapter metadata verified against Quran Foundation and the installed full-Quran metadata."}};
   // INFO2: every surah shown on the page has its own i button (continuous Mushaf and Mushaf pages), not only the first one
   function ibtn(s) { return '<div class="info-row"><button type="button" class="info-btn" data-sinfo="' + s + '" aria-label="Surah information">i</button></div>'; }
+  // Quick Summary in the page language (the app's files surah_summary_{lang}.json, S1_SURAH_SUMMARY_9_LANGUAGES_V1); English fallback.
+  var QSL = SO_QSL(), QS_TOPIC = { en: 'Topic:', ar: 'الموضوع:', ur: 'موضوع:', fa: 'موضوع:', tr: 'Konu:', id: 'Topik:', ms: 'Topik:', bn: 'বিষয়:', fr: 'Thème :', es: 'Tema:' },
+    QS_SRC = { en: 'Quick Summary from SiraatOne.', ar: 'الملخص السريع من SiraatOne. نصوص الآيات من Quran.com.', ur: 'فوری خلاصہ: SiraatOne۔ آیات کا ترجمہ: QuranEnc.com۔', fa: 'خلاصهٔ سریع از SiraatOne. ترجمهٔ آیات: QuranEnc.com.',
+      tr: 'Kısa Özet: SiraatOne. Âyet mealleri: QuranEnc.com.', id: 'Ringkasan Singkat dari SiraatOne. Kutipan ayat: QuranEnc.com.', ms: 'Ringkasan Ringkas daripada SiraatOne. Petikan ayat: QuranEnc.com.',
+      bn: 'সংক্ষিপ্ত সারাংশ: SiraatOne। আয়াতের অনুবাদ: QuranEnc.com।', fr: 'Résumé rapide : SiraatOne. Citations coraniques : QuranEnc.com.', es: 'Resumen rápido de SiraatOne. Citas coránicas: QuranEnc.com.' };
+  function SO_QSL() { var l = (window.SOI18N && SOI18N.lang) || 'en'; return ['ar', 'ur', 'fa', 'tr', 'id', 'ms', 'bn', 'fr', 'es'].indexOf(l) > -1 ? l : 'en'; }
+  function qsum() { var en = function () { return SO.j('../assets/data/surah-summary.json').catch(function () { return null; }); };
+    return QSL === 'en' ? en() : SO.j('../assets/data/surah-summary-' + QSL + '.json?v=20261111').catch(function () { QSL = 'en'; return en(); }); }
   function openInfo(n) {
-    Promise.all([SO.j('../assets/data/surah-info.json'), SO.j('../assets/data/surah-summary.json').catch(function () { return null; })]).then(function (r) {
+    Promise.all([SO.j('../assets/data/surah-info.json'), qsum()]).then(function (r) {
       var d = r[0], q = r[1] && r[1].s && r[1].s[n - 1]; // QS1: Quick Summary (Topic + Summary) from assets/data/surah-summary.json
       var m = d.surahs[n - 1]; if (!m || m.number !== n) throw 0;
       var rt = (m.revelation_type || '').trim(), rl = rt.toLowerCase(), place = ['makkah', 'mecca', 'makki', 'meccan'].indexOf(rl) > -1 ? 'Makkah' : ['madinah', 'medina', 'madani', 'medinan'].indexOf(rl) > -1 ? 'Madinah' : rt || 'Not specified'; // same mapping as the app
@@ -824,7 +832,7 @@
       if (m.revelation_order > 0) rows.push(['Revelation order', m.revelation_order]);
       if (m.ruku_count > 0) rows.push(['Rukus', m.ruku_count]);
       var h = '<p class="si-ar" lang="ar" dir="rtl">' + SO.sname(n, esc(m.name_ar)) + '</p><h2 class="si-en">' + esc(m.name_en) + '</h2><p class="si-mean">' + esc(cu ? cu.meaning : mean) + '</p><div class="si-stats">' + rows.map(function (r) { return '<div><small>' + r[0] + '</small><b>' + esc(String(r[1])) + '</b></div>'; }).join('') + '</div>' +
-        '<h3>About the name</h3><p>' + esc(note) + '</p>' + (q ? '<h3>Quick Summary</h3><p><b>Topic:</b> <span translate="no">' + esc(q[0]) + '</span></p><p translate="no">' + esc(q[1]) + '</p>'
+        '<h3>About the name</h3><p>' + esc(note) + '</p>' + (q ? '<h3>Quick Summary</h3><div class="si-qs" translate="no" lang="' + QSL + '" dir="' + (/^(ar|ur|fa)$/.test(QSL) ? 'rtl' : 'ltr') + '"><p><b>' + QS_TOPIC[QSL] + '</b> ' + esc(q[0]) + '</p><p>' + esc(q[1]) + '</p><p class="hint">' + QS_SRC[QSL] + '</p></div>'
           : '<h3>Overview</h3><p>' + esc(sum) + '</p><p class="hint">' + esc(src) + '</p>');
       h += '<h3>Tajweed colours</h3>' + (S.tajweed && S.legend && document.body.dataset.tj === '1' ? '<div class="tj-legend">' + LEG.map(function (l) { return '<span class="tj-' + l[0] + '">' + l[1] + '</span>'; }).join('') + '</div>' : '<p class="hint">Tajweed colouring is off. Turn it on in Settings → Text.</p>');
       h += '<p class="hint">' + esc($('src-tr').parentNode.textContent) + '</p>';
