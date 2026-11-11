@@ -292,3 +292,10 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - Quran reader Backup & reset: "Restore from backup file" (renamed), "Reset Quran settings", new "Restore default settings" (clears so.rs, so.pt, so.dopt, so.hopt, so.nm, so.svopt, so.sl, so.tafsir, so.qa, so.cal2, theme, rm; keeps bookmarks, favorites, highlights, notes, saved, tasbih, location, language).
 - Quran app page: features Prayer times and Azan, Qibla; "Private by design" no longer says internet-only; What's new line added. Privacy page Location section for the Quran app: waiting for the app agent's text/permissions.
 - Test PASS (fake clock): morning none, Asr+10 min "−0:10:05", Dhuhr+100 min hidden, before Fajr = Isha; prayer page current = Asr, 3 sound options; Azkar 0 / 3 and triple tap Done ✓; restore keeps bookmarks/location/lang; 360 px no overflow; 0 JS errors.
+
+## D1 — content check against the app (Nov 11)
+- 99 Names: assets/data/names99.json is byte-identical to the app's names_of_allah_99.json (Ar-Rahman first, Al-Ahad after Al-Wahid, 1–99). No change.
+- Duas & Adhkar: app duas_adhkar_catalog.dart sha256 42a027b61264 = the one duas.json was generated from (includes Hisn al-Muslim 92 in Morning & Evening and the corrected sources/gradings). No change.
+- Tasbih: dhikr choices already in Arabic (TB4). No change.
+- Rub al-Hizb (۞): Mushaf+ Tajweed words now keep the sign with the next word (as the word-by-word data and the app), so those ayahs keep their Tajweed colours (before: word count mismatch → plain). Surah 2: 19/19 ayahs with ۞ coloured, 0 JS errors. reader.js ?v=20261111f.
+- Not on the website yet (app has them): Names meanings and Duas/Adhkar text in the app languages (ar bn es fa fr id ms tr ur).

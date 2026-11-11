@@ -67,13 +67,14 @@
   }
   // Mushaf+: the same Tajweed colours word by word. Used only when the word count matches the word-by-word data exactly
   // (otherwise that ayah stays plain: fail-closed, never a wrong split).
+  // the Rub al-Hizb sign (۞) is not a word: it stays with the next word, as in the word-by-word data and the app
   function tjWords(s, i, count) {
     var m = tjMarkup(s, i), segs = m && tjSegs(m); if (!segs) return null;
     var out = [], cur = '';
     segs.forEach(function (g) {
       if (g.rule === 'endMarker') return;
       var cls = g.rule && g.rule !== 'unknown' ? g.rule : null, t = g.text;
-      t.split(/(\s+)/).forEach(function (p) { if (!p) return; if (/^\s+$/.test(p)) { if (cur) { out.push(cur); cur = ''; } return; } cur += cls ? '<span class="tj-' + cls + '">' + esc(p) + '</span>' : esc(p); });
+      t.split(/(\s+)/).forEach(function (p) { if (!p) return; if (/^\s+$/.test(p)) { if (cur && cur.replace(/<[^>]+>/g, '') === '\u06DE') cur += ' '; else if (cur) { out.push(cur); cur = ''; } return; } cur += cls ? '<span class="tj-' + cls + '">' + esc(p) + '</span>' : esc(p); });
     });
     if (cur) out.push(cur);
     return out.length === count ? out : null;
