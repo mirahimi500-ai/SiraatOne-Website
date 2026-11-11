@@ -10,9 +10,10 @@ var SO = (function () {
   function pos(idx, s, a) { return { page: find(idx.page, s, a), juz: find(idx.juz, s, a), hizb: find(idx.hizb, s, a) }; }
   function toggle(k, key) { var l = get(k, []), i = l.indexOf(key); if (i > -1) l.splice(i, 1); else l.unshift(key); set(k, l); return i === -1; }
   function has(k, key) { return get(k, []).indexOf(key) > -1; }
-  // Surah name font v2 (QUL): ligature "surahNNN". Falls back to plain Arabic text if the font is unavailable.
-  function sname(n, text) { var p = ('00' + n).slice(-3);
-    return '<span class="sname"><span class="g" aria-hidden="true">surah' + p + '</span><span class="t">' + esc(text) + '</span></span>'; }
-  if (document.fonts && document.fonts.load) document.fonts.load('1em SurahNameV2', 'surah001').then(function (f) { if (f.length) document.documentElement.classList.add('sn-ok'); }).catch(function () {});
+  // SN1: official Surah names, King Fahd Complex font QCF4_QBSML (used unmodified): Surah n = one character U+F100 + n - 1.
+  // Screen readers read "سورة <name>". Falls back to plain Arabic text until the font has loaded.
+  function sname(n, text) { var t = String(text || ''), lab = /^سورة/.test(t) ? t : 'سورة ' + t;
+    return '<span class="sname" role="img" aria-label="' + esc(lab) + '"><span class="g" aria-hidden="true">' + String.fromCharCode(0xF100 + n - 1) + '</span><span class="t" aria-hidden="true">' + esc(t) + '</span></span>'; }
+  if (document.fonts && document.fonts.load) document.fonts.load('1em KfgqpcSurahNames', '\uF100').then(function (f) { if (f.length) document.documentElement.classList.add('sn-ok'); }).catch(function () {});
   return { sname: sname, get: get, set: set, j: j, esc: esc, pos: pos, toggle: toggle, has: has };
 })();

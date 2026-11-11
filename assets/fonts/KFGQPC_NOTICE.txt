@@ -1,0 +1,10 @@
+QCF4_QBSML - Surah names of the Madina Mushaf
+Copyright (c) King Fahd Glorious Qur'an Printing Complex (KFGQPC),
+Madinah, Saudi Arabia. All rights reserved.
+
+SiraatOne Quran uses this font unmodified, under the Complex's free terms
+of use: it may be used, copied and distributed free of charge for personal,
+commercial, government and civil purposes. It may not be sold, modified,
+reprogrammed, or attributed to anyone other than the Complex.
+
+Source: King Fahd Glorious Qur'an Printing Complex, fonts.qurancomplex.gov.sa

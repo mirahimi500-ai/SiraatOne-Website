@@ -321,8 +321,8 @@ body.hdr-hid .status,body.hdr-hid .tabs{top:0}
 .frame.plain{max-width:none}
 .frame.plain .frame-name{position:static;display:block;font-size:clamp(1.6rem,5vw,2.4rem);padding:6px 0}
 /* ===== Surah name font v2 (QUL) + gear icon ===== */
-@font-face{font-family:"SurahNameV2";src:url("../fonts/surah-name-v2.ttf") format("truetype");font-display:block}
-.sname .g{display:none;font-family:"SurahNameV2";font-weight:normal;line-height:1}
+@font-face{font-family:"KfgqpcSurahNames";src:url("../fonts/QCF4_QBSML.ttf") format("truetype");font-display:block}
+.sname .g{display:none;font-family:"KfgqpcSurahNames";font-weight:normal;line-height:1}
 .sn-ok .sname .g{display:inline}
 .sn-ok .sname .t{display:none}
 .row .ar .g{font-size:1.9rem}
@@ -1243,3 +1243,27 @@ html[dir=rtl] .skip{left:auto;right:-999px}html[dir=rtl] .skip:focus{right:16px}
 
 /* SPF3: page sections on Support use normal text; the Apply button is a normal-size button (not a full-width bar) */
 .sp-sec > .btn{display:inline-block;width:auto;justify-self:start;align-self:flex-start;margin:.6rem 0 .3rem;padding:10px 22px}
+/* app release notes (What's new) */
+.ap-new{max-width:none;margin:0;text-align:start}
+.ap-ver{color:var(--muted);font-size:.85rem;font-weight:600}
+.ap-list{display:grid;gap:7px;margin:8px 0 0;padding-inline-start:20px}
+.ap-list li{line-height:1.5}
+.ap-list li::marker{color:var(--brand)}
+
+/* THEMES1: theme list on the Quran app page */
+.ap-themes h3{font-size:.95rem;margin:.7rem 0 .3rem}
+.ap-chips{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:0 0 .4rem}
+.ap-chips li{padding:5px 12px;border-radius:999px;font-size:.85rem;background:color-mix(in srgb,var(--muted) 14%,transparent)}
+
+/* SN1: official King Fahd Surah names (QCF4_QBSML, one size, centred by the letters), new Surah frame, owner's Bismillah under the (i) */
+.sn-ok .sname .g{display:inline-block;transform:translateY(-.1em)}
+.frame-name .g{font-size:1.45em}
+.row .ar .g{font-size:1.2rem}
+.bb-mid .g{font-size:1.19rem}
+.qp-ar .g{font-size:1.375rem}
+#si-body .si-ar{font-size:min(4.2rem,19vw);line-height:1.3}
+.fimg,.frame.bism .fimg{aspect-ratio:2172/745}
+.frame.bism .frame-name{height:100%}
+.bism-img{display:block;width:min(56%,400px);aspect-ratio:2589/756;margin:0 auto 12px;background:var(--frame-c,var(--brand));-webkit-mask:url(../img/surah-basmalah.png) center/contain no-repeat;mask:url(../img/surah-basmalah.png) center/contain no-repeat}
+.bism-img[hidden],.pg-mode #s-bimg{display:none}
+@media (max-width:600px){.row .ar .g{font-size:1rem}}

@@ -5,9 +5,9 @@
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
   var esc = SO.esc, A = window.adhan;
-  var DEF = { m: 'ISNA', a: 'Shafi', h: 'auto', f: '12', view: 'day', snd: 'complete', vol: 0.8, on: { fajr: true, dhuhr: true, asr: true, maghrib: true, isha: true },
+  var DEF = { m: 'ISNA', a: 'Shafi', h: 'auto', f: '12', view: 'day', snd: 'short', vol: 0.8, on: { fajr: true, dhuhr: true, asr: true, maghrib: true, isha: true },
     adj: { fajr: 0, sunrise: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 } };
-  var S = Object.assign({}, DEF, SO.get('so.pt', {})); S.on = Object.assign({}, DEF.on, S.on); S.adj = Object.assign({}, DEF.adj, S.adj);
+  var S = Object.assign({}, DEF, SO.get('so.pt', {})); S.on = Object.assign({}, DEF.on, S.on); S.adj = Object.assign({}, DEF.adj, S.adj); if (S.snd === 'complete') S.snd = 'short';
   var L = SO.get('so.ploc', null); // { lat, lng, name, tz }
   function save() { SO.set('so.pt', S); }
   var P = ['fajr', 'sunrise', 'dhuhr', 'asr', 'maghrib', 'isha'], FIVE = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
@@ -98,7 +98,7 @@
 
   // ---------- Azan (while this page is open) ----------
   var au = new Audio(), fired = {};
-  function src(k) { return '../assets/audio/azan/' + (S.snd === 'beep' ? 'beep' : S.snd === 'short' ? 'short' : 'complete') + '/' + k + '.mp3'; }
+  function src(k) { return '../assets/audio/azan/' + (S.snd === 'beep' ? 'beep' : 'short') + '/' + k + '.mp3'; }
   function play(k) { if (S.snd === 'off') return; au.pause(); au.src = src(k); au.volume = S.vol; au.play().catch(function () {}); }
   function azanCheck(now) {
     var t = ymd(now), pt = times(t.year, t.month, t.day);

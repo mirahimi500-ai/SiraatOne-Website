@@ -255,3 +255,24 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 ## SPF3 — Support page text and Apply button (2026-11-07)
 - Bug: the dialog label rule `.sp-sec` (small uppercase) also hit the page sections (`section.sp-sec`), so FAQ/Tester text showed tiny uppercase and "Apply to join" was a full-width bar. Fix: rule scoped to `.sp-dlg .sp-sec`; `.sp-sec > .btn` is a normal-size button (141x46px at 360/390/820/1280px).
 - Privacy tabs on phones wrap to 2 rows (no cut-off text), checked at 320–430px.
+
+## 2026-11-11 · App release update (website only)
+- Quran app page: "What's new · Version 1.0.6 (18)" card (9 items). Azan app page: "What's new · Version 0.1.6 (13)" card (6 items).
+- Azan "Phones" text (Azan page + Support FAQ): phones now open straight in landscape (no "Open anyway" notice).
+- Prayer page: "Complete Azan" sound removed; menu = Short Azan / Beep / Off, default Short Azan; old saved "complete" setting migrates to Short Azan. "Complete Azan" key removed from all 16 translation files.
+- 19 new strings translated into all 16 languages; i18n V=20261111a; style.css adds .ap-new/.ap-list (?v=20261111a on Quran/Azan pages); prayer.js ?v=20261111a.
+- Islamic content unchanged. assets/audio/azan/complete/ no longer used (removed with git rm).
+- Tests: en/ar/ps/ta/fr/ur pages render, RTL ok, no overflow at 390/1280, 0 JS errors; translations applied; prayer menu + migration ok.
+
+
+
+## THEMES1 — theme list on the Quran app page (2026-11-11)
+- What's new: "11 colour themes" corrected to 15 themes (System, Light, Dark, OLED, White Green + 10 Quran themes).
+- New "Themes" card after What's new: App themes (5) and Quran themes (10) as chips; text translated into all 16 languages; CSS block THEMES1; quran/index.html style.css?v=20261111b.
+
+
+## SN1 — official Surah names, new frame, owner's Bismillah (2026-11-11)
+- Same as the Quran app (commits 9368de9, 6b7b01e, e3dddd5, 5f381bd): Surah names use the King Fahd Complex font QCF4_QBSML, unmodified (assets/fonts/QCF4_QBSML.ttf + KFGQPC_NOTICE.txt); Surah n = U+F100 + n - 1; aria-label "سورة <name>". Used in the Surah list, reader frame, bottom bar, info pop-up and side list.
+- New Surah frame = the app's surah_header_v3_frame_only.png (assets/img/surah-frame.png, lossless re-save). Bismillah = the owner's Thuluth artwork (assets/img/surah-basmalah.png) as a mask in the frame colour, under the (i) button; not on Surah 1 or 9; plain title mode keeps the Quran-text Bismillah.
+- Removed from use: Surah Name V2 font (unlicensed), frame.png and frame-bism.png (old artwork with built-in Bismillah). Credits updated on Terms & Credits.
+- style.css/lib.js ?v=20261111c on all pages; reader.js ?v=20261111c.

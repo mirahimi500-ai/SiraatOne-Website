@@ -134,12 +134,19 @@
   function mpill(s, a) { var c = ch[s - 1], p = idx ? SO.pos(idx, s, a) : null;
     return '<div class="mpill" role="note"><span>' + s + ' · ' + esc(c.name_simple) + (p ? ' · Juz ' + p.juz + ' · Page ' + p.page : '') + '</span><span lang="ar" dir="rtl">' + arNum(s) + ' · ' + c.name_arabic + (p ? ' · الجزء ' + arNum(p.juz) + ' · صفحة ' + arNum(p.page) : '') + '</span></div>'; }
   // the same decorated frame (large name inside, Bismillah drawn in the frame) for every sura start, as at the top
-  function frameHtml(s, b1) {
-    var useImg = S.header && S.deco, withB = useImg && s !== 1 && s !== 9, nm = '<span class="frame-name" lang="ar" dir="rtl">' + SO.sname(s, 'سورة ' + ch[s - 1].name_arabic) + '</span>', h;
-    if (useImg) { var u = 'url(../assets/img/' + (withB ? 'frame-bism.png' : 'frame.png') + ')';
-      h = '<div class="frame' + (withB ? ' bism' : '') + '" aria-hidden="true"><div class="fimg ready" style="-webkit-mask-image:' + u + ';mask-image:' + u + '"></div>' + nm + '</div>'; }
+  function frameHtml(s) {
+    var useImg = S.header && S.deco, nm = '<span class="frame-name" lang="ar" dir="rtl">' + SO.sname(s, 'سورة ' + ch[s - 1].name_arabic) + '</span>', h;
+    if (useImg) { var u = 'url(../assets/img/surah-frame.png)';
+      h = '<div class="frame" aria-hidden="true"><div class="fimg ready" style="-webkit-mask-image:' + u + ';mask-image:' + u + '"></div>' + nm + '</div>'; }
     else h = '<div class="frame plain" aria-hidden="true">' + nm + '</div>';
-    return '<header class="sura-head">' + h + '</header>' + (!withB && s !== 1 && s !== 9 && b1 ? '<p class="bismillah" lang="ar" dir="rtl">' + fmt(noNum(b1), 1, 0, true) + '</p>' : '');
+    return '<header class="sura-head">' + h + '</header>';
+  }
+  // SN1: Bismillah under the (i) button: the owner's Thuluth artwork (tinted with the frame colour) with the frame, the Quran text otherwise; none for Surah 1 and 9
+  var BIS_TXT = 'بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ';
+  function bismHtml(s, b1) {
+    if (s === 1 || s === 9) return '';
+    if (S.header && S.deco) return '<div class="bism-img" role="img" lang="ar" aria-label="' + BIS_TXT + '"></div>';
+    return b1 ? '<p class="bismillah" lang="ar" dir="rtl">' + fmt(noNum(b1), 1, 0, true) + '</p>' : '';
   }
   // clean flow for ayahs a1..a2 of sura s, split by a pill at each Juz start
   function flowHtml(s, d, a1, a2, idf) {
@@ -162,11 +169,11 @@
     document.body.classList.toggle('nums-right', !!S.numsRight); document.body.classList.toggle('no-wbw', !S.showWbw);
     document.body.dataset.bg = S.bg;
     $('head').hidden = !S.header; $('s-meta').hidden = !S.meaning; $('s-meta').classList.toggle('sr', !S.meaning); $('s-meta').classList.toggle('s-mean', !!S.meaning);
-    var useImg = S.header && S.deco, withB = useImg && !!bism;
-    $('frame').classList.toggle('plain', !useImg); $('frame').classList.toggle('bism', withB);
+    var useImg = S.header && S.deco;
+    $('frame').classList.toggle('plain', !useImg); $('frame').classList.remove('bism');
     var im = $('frame-img'); im.hidden = !useImg;
     if (useImg) {
-      var u = 'url(../assets/img/' + (withB ? 'frame-bism.png' : 'frame.png') + ')';
+      var u = 'url(../assets/img/surah-frame.png)';
       var canMask = window.CSS && (CSS.supports('mask-image', u) || CSS.supports('-webkit-mask-image', u));
       // Show the frame only after its image has loaded; before that the coloured box would show as a dark block.
       im.classList.remove('ready');
@@ -175,7 +182,7 @@
         pre.src = u.slice(4, -1); }
       else { im.style.backgroundImage = u; im.classList.add('raw', 'ready'); } // old browsers: original colours
     }
-    $('s-bism').hidden = !bism || withB;
+    $('s-bism').hidden = !bism || useImg; $('s-bimg').hidden = !bism || !useImg;
     $('status').hidden = false; document.body.classList.add('has-status'); // the info pill is part of every Mushaf
     wake(); autoScroll();
     document.querySelectorAll('[data-set]').forEach(function (el) {
@@ -247,7 +254,7 @@
       var b1 = all[all.length - 1].ar[0], h = '';
       segs.forEach(function (g, i) {
         var s = g[0], d = all[i];
-        if (g[1] === 1) h += mpill(s, 1) + frameHtml(s, b1) + (s !== n ? ibtn(s) : '');
+        if (g[1] === 1) h += mpill(s, 1) + frameHtml(s) + (s !== n ? ibtn(s) : '') + bismHtml(s, b1);
         else if (jzStart(s, g[1])) h += mpill(s, g[1]);
         h += flowHtml(s, d.ar, g[1], g[2], function (a) { return 'a' + s + '_' + a; });
       });
@@ -318,7 +325,7 @@
     Promise.all([getSura(s), getTj(s), bism ? null : getSura(1)]).then(function (x) {
       busy = false; if (tail !== s - 1 || S.mode !== 'clean') return;
       var d = x[0].ar, b1 = (x[2] || {}).ar ? x[2].ar[0] : BI, sec = document.createElement('section'); sec.className = 'sura-next'; sec.setAttribute('data-sura', s);
-      sec.innerHTML = mpill(s, 1) + frameHtml(s, b1) + ibtn(s) + flowHtml(s, d, 1, d.length, function (a) { return 'a' + s + '_' + a; });
+      sec.innerHTML = mpill(s, 1) + frameHtml(s) + ibtn(s) + bismHtml(s, b1) + flowHtml(s, d, 1, d.length, function (a) { return 'a' + s + '_' + a; });
       $('body').appendChild(sec); tail = s; if (AUD.prep) AUD.prep(s);
       if (io) sec.querySelectorAll('[data-a]').forEach(function (el) { io.observe(el); });
       more();
