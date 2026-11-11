@@ -10,6 +10,22 @@
   var LANG = (window.SOI18N && SOI18N.lang) || 'en', LM = null, EXP = null, EXPP = null;
   function mean(x) { return (LM && LM.m[x.id - 1]) || x.meaning_en || ''; }
   function explain() { if (LANG !== 'en') return Promise.resolve(null); if (!EXPP) EXPP = SO.j('../assets/data/names99-explain-en.json?v=20261111').then(function (d) { EXP = d; return d; }).catch(function () { return null; }); return EXPP; }
+  function short(t) { var m = String(t || '').match(/^[\s\S]*?[.!?](?=\s|$)/); t = m ? m[0] : String(t || ''); return t.length > 200 ? t.slice(0, 197).replace(/\s+\S*$/, '') + '…' : t; }
+  // Full explanation in a pop-up in the middle of the screen (side card "More details" or the ⓘ on each Name)
+  var pop = null, popId = 0;
+  function popUp(id) {
+    explain().then(function (d) { var e = d && d.names[id - 1], x = all[id - 1]; if (!e || !x) return; popId = id;
+      if (!pop) { pop = document.createElement('div'); pop.className = 'modal nx-modal'; pop.id = 'nm-pop'; pop.hidden = true; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-modal', 'true'); pop.setAttribute('aria-labelledby', 'nx-title'); pop.setAttribute('translate', 'no');
+        pop.innerHTML = '<div class="modal-card nx-card"><div class="nx-top"><button type="button" class="ts-rb" data-nxgo="-1" aria-label="Previous name">‹</button><b id="nx-title"></b><button type="button" class="ts-rb" data-nxgo="1" aria-label="Next name">›</button><button type="button" class="icon-btn nx-x" data-nxclose aria-label="Close">✕</button></div><div class="nx-body" id="nx-body"></div></div>';
+        document.body.appendChild(pop);
+        pop.addEventListener('click', function (ev) { var g = ev.target.closest('[data-nxgo]'); if (g) { var n = popId + +g.getAttribute('data-nxgo'); popUp(n < 1 ? 99 : n > 99 ? 1 : n); return; } if (ev.target === pop || ev.target.closest('[data-nxclose]')) closePop(); });
+        document.addEventListener('keydown', function (ev) { if (!pop.hidden && ev.key === 'Escape') closePop(); }); }
+      $('nx-title').textContent = 'Name ' + id + ' of 99';
+      $('nx-body').innerHTML = '<div class="nx-hd"><p class="nm-dar nf-' + O.font + '" lang="ar" dir="rtl">' + esc(x.arabic) + '</p><p class="nx-tl">' + esc(e.transliteration) + '</p><p class="nm-dmean">' + esc(mean(x)) + '</p></div>' + expHtml(e);
+      $('nx-body').scrollTop = 0; if (pop.hidden) { pop.hidden = false; document.documentElement.classList.add('nx-open'); pop.querySelector('[data-nxclose]').focus(); }
+    }); }
+  function closePop() { if (!pop) return; pop.hidden = true; document.documentElement.classList.remove('nx-open'); }
+  document.addEventListener('click', function (ev) { var b = ev.target.closest('.nx-more'); if (b) popUp(+b.getAttribute('data-nx')); });
   function expHtml(e) {
     var sec = function (t, b) { return '<section class="nx-sec"><h3>' + t + '</h3>' + b + '</section>'; }, ref = function (t) { return '<p class="nx-ref">' + esc(t) + '</p>'; }, h = '', src = {};
     e.scholars.forEach(function (x) { if (x.url) src[x.scholar + ': ' + x.book] = x.url; }); e.hadith.forEach(function (x) { if (x.url) src[x.ref] = x.url; });
@@ -36,7 +52,8 @@
     var x = all.filter(function (n) { return n.id === selId; })[0] || all[0]; if (!x) return;
     $('nm-detail').innerHTML = '<div class="ts-hh"><b>Name ' + x.id + ' of 99</b><small>' + arNum(x.id) + '</small></div><p class="nm-dar nf-' + O.font + '" lang="ar" dir="rtl">' + esc(x.arabic) + '</p><p class="nm-dmean">' + esc(mean(x)) + '</p>' + (LANG === 'en' ? '<p class="nx-tl" id="nm-tl"></p>' : '') +
       '<div class="ts-ctl"><button type="button" class="ts-rb" id="nm-prev" aria-label="Previous name">‹</button>' + (window.speechSynthesis ? '<button type="button" class="btn btn-ghost sm" id="nm-say">🔈 Pronounce</button>' : '') + '<button type="button" class="ts-rb" id="nm-next" aria-label="Next name">›</button></div>' + (LANG === 'en' ? '<div class="nm-exp" id="nm-exp" translate="no"></div>' : '');
-    if (LANG === 'en') explain().then(function (d) { var e = d && d.names[x.id - 1]; if (!e || selId !== x.id || !$('nm-exp')) return; $('nm-tl').textContent = e.transliteration; $('nm-exp').innerHTML = expHtml(e); });
+    if (LANG === 'en') explain().then(function (d) { var e = d && d.names[x.id - 1]; if (!e || selId !== x.id || !$('nm-exp')) return; $('nm-tl').textContent = e.transliteration;
+      $('nm-exp').innerHTML = '<p class="nx-short">' + esc(short(e.summary)) + '</p><button type="button" class="btn btn-ghost sm nx-more" data-nx="' + x.id + '">More details ›</button>'; });
     $('nm-prev').onclick = function () { pick(x.id === 1 ? 99 : x.id - 1); }; $('nm-next').onclick = function () { pick(x.id === 99 ? 1 : x.id + 1); };
     if ($('nm-say')) $('nm-say').onclick = function () { var o = O.tts; O.tts = true; speak(x.arabic); O.tts = o; };
     $('nm-hero').innerHTML = '<div class="cl-hd"><small>' + esc($('n-title').textContent) + '</small><b lang="ar" dir="rtl">' + esc(x.arabic) + '</b><span>' + esc(mean(x)) + '</span><em>Name ' + x.id + ' of 99</em></div><div class="cl-hn"><small>Al-Asma al-Husna</small><b lang="ar" dir="rtl" class="nm-ht">' + esc(window.NM_AR || '') + '</b><span>99 names · tap a name to see it here</span></div>';
@@ -46,10 +63,10 @@
   function render() {
     var f = $('nf').value.trim(), v = f.toLowerCase();
     var items = all.filter(function (x) { return !v || String(x.id) === v || (mean(x).toLowerCase().indexOf(v) > -1 || (x.meaning_en || '').toLowerCase().indexOf(v) > -1) || x.arabic.indexOf(f) > -1; });
-    $('names').innerHTML = items.length ? items.map(function (x) { return '<li class="name-card' + (x.id === selId ? ' sel' : '') + '" data-id="' + x.id + '" tabindex="0"><span class="nn">' + x.id + '</span><span class="na" lang="ar" dir="rtl">' + esc(x.arabic) + '</span><span class="nm">' + esc(mean(x)) + '</span></li>'; }).join('') : '<li class="empty">No name found.</li>';
+    $('names').innerHTML = items.length ? items.map(function (x) { return '<li class="name-card' + (x.id === selId ? ' sel' : '') + '" data-id="' + x.id + '" tabindex="0"><span class="nn">' + x.id + '</span><span class="na" lang="ar" dir="rtl">' + esc(x.arabic) + '</span><span class="nm">' + esc(mean(x)) + '</span>' + (LANG === 'en' ? '<button type="button" class="nm-i" data-nx="' + x.id + '" aria-label="More about this Name">i</button>' : '') + '</li>'; }).join('') : '<li class="empty">No name found.</li>';
   }
-  $('names').addEventListener('click', function (e) { var c = e.target.closest('.name-card'); if (!c) return; selId = +c.dataset.id; detail(); speak(c.querySelector('.na').textContent);
-    if (LANG === 'en' && innerWidth < 900) $('nm-detail').scrollIntoView({ behavior: 'smooth', block: 'start' }); }); // phone: the explanation opens like the app's Name page
+  $('names').addEventListener('click', function (e) { var c = e.target.closest('.name-card'); if (!c) return; selId = +c.dataset.id; detail();
+    var i = e.target.closest('.nm-i'); if (i) { popUp(selId); return; } speak(c.querySelector('.na').textContent); });
   $('names').addEventListener('keydown', function (e) { var c = e.target.closest('.name-card'); if (c && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); c.click(); } });
   var MLS = ['ar', 'ur', 'fa', 'tr', 'id', 'ms', 'bn', 'fr', 'es'];
   Promise.all([SO.j('../assets/data/names99.json?v=20261111'), MLS.indexOf(LANG) > -1 ? SO.j('../assets/data/names99-' + LANG + '.json?v=20261111').catch(function () { return null; }) : null]).then(function (r) {

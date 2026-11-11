@@ -1304,3 +1304,14 @@ body.q-bold :is(.flow,.card-a .ar,.wa,.words .end-own,.bismillah){-webkit-text-s
 .nx-sec ul{margin:.3rem 0;padding-inline-start:1.2rem}.nx-src li{margin:.3rem 0;font-size:.88rem;overflow-wrap:anywhere}
 /* Duas: source line under a translation (as the app) */
 .d-cred,.d-foot{font-size:.78rem;color:var(--muted);margin:.1rem 0 .5rem;line-height:1.5}
+/* 99 Names: short explanation in the side card, ⓘ on each Name, full explanation in a centred pop-up */
+.nx-short{text-align:start;margin:.4rem 0 .6rem;line-height:1.55}.nm-exp .nx-more{margin:0 auto .2rem}
+.name-card .nm-i{position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--brand);font:italic 700 .8rem/1 Georgia,serif;display:grid;place-items:center;cursor:pointer;padding:0}
+.name-card .nm-i:hover,.name-card .nm-i:focus-visible{background:var(--brand);color:var(--brand-ink)}
+.nx-modal{align-items:center!important;padding:16px}
+.nx-modal .nx-card{max-width:680px;max-height:86vh;border-radius:18px;padding:0;display:flex;flex-direction:column;overflow:hidden}
+.nx-top{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--border)}.nx-top b{flex:1;text-align:center}.nx-top .nx-x{margin-inline-start:4px}
+.nx-body{overflow:auto;padding:4px 18px 18px;overscroll-behavior:contain}.nx-hd{text-align:center}.nx-hd .nm-dar{margin:.2rem 0 0}
+html.nx-open{overflow:hidden}
+.name-grid:not(.nv-list):not(.nv-small) .name-card{padding-top:34px}.name-grid.nv-small .name-card{padding-top:26px}.name-grid.nv-small .nm-i{width:20px;height:20px;top:3px;right:3px;font-size:.72rem}
+.name-grid.nv-list .nm-i{position:static;order:4;flex:none;margin-inline-start:10px}
