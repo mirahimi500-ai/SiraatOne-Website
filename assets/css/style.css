@@ -1315,3 +1315,4 @@ body.q-bold :is(.flow,.card-a .ar,.wa,.words .end-own,.bismillah){-webkit-text-s
 html.nx-open{overflow:hidden}
 .name-grid:not(.nv-list):not(.nv-small) .name-card{padding-top:34px}.name-grid.nv-small .name-card{padding-top:26px}.name-grid.nv-small .nm-i{width:20px;height:20px;top:3px;right:3px;font-size:.72rem}
 .name-grid.nv-list .nm-i{position:static;order:4;flex:none;margin-inline-start:10px}
+.nx-modal .nx-card{max-width:min(1040px,94vw);width:100%}
