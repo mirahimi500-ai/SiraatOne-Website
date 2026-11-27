@@ -1316,3 +1316,7 @@ html.nx-open{overflow:hidden}
 .name-grid:not(.nv-list):not(.nv-small) .name-card{padding-top:34px}.name-grid.nv-small .name-card{padding-top:26px}.name-grid.nv-small .nm-i{width:20px;height:20px;top:3px;right:3px;font-size:.72rem}
 .name-grid.nv-list .nm-i{position:static;order:4;flex:none;margin-inline-start:10px}
 .nx-modal .nx-card{max-width:min(1040px,94vw);width:100%}
+/* Site footer (developer + legal links) */
+.site-footer{margin-top:28px;border-top:1px solid var(--border);padding:14px 0 18px;font-size:.82rem;color:var(--muted)}
+.site-footer .wrap{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between}
+.site-footer nav{display:flex;flex-wrap:wrap;gap:4px 14px}.site-footer a{color:var(--muted);text-decoration:none}.site-footer a:hover,.site-footer a:focus-visible{color:var(--brand);text-decoration:underline}

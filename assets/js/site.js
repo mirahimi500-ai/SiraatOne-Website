@@ -51,5 +51,13 @@
     IT.forEach(function (t) { if (!t[1]) return; document.querySelectorAll('.tiles a[href="' + base + t[1] + '"]').forEach(function (x) { x.classList.add('in-bar'); }); });
   }
 })();
+// Site footer: developer and legal links (every page except the Quran reader)
+(function () {
+  if (document.querySelector('.rd-wrap') || document.querySelector('.site-footer')) return;
+  var lg = document.querySelector('.logo'), b = lg ? lg.getAttribute('href') : '';
+  var f = document.createElement('footer'); f.className = 'site-footer';
+  f.innerHTML = '<div class="wrap"><span translate="no">© ' + new Date().getFullYear() + ' Zaiba Technologies, LLC · Pennsylvania, USA</span><nav aria-label="Legal"><a href="' + b + 'privacy/">Privacy</a><a href="' + b + 'terms/">Terms &amp; Credits</a><a href="' + b + 'delete-account/">Delete account</a><a href="' + b + 'support/">Support</a></nav></div>';
+  var m = document.querySelector('main'); if (m && m.parentNode) m.parentNode.insertBefore(f, m.nextSibling); else document.body.appendChild(f);
+})();
 // SG1: ?set=1 opens this page's settings panel (used by the Home search).
 if (/[?&]set=1/.test(location.search)) window.addEventListener('load', function () { setTimeout(function () { var b = document.querySelector('#open-set,#pt-menu,#cl-menu,#d-menu,#nm-menu,#sv2-menu,#tb-menu'); if (b) b.click(); }, 400); });

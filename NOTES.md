@@ -355,3 +355,9 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 - Quran app page "Private by design": "No ads or tracking. An account is optional and only syncs your own data. …" (16 languages).
 - Windows part of the privacy page still says "No account" (Windows facts of Nov 12) — update if the Windows app gets sign-in.
 - Test PASS: delete-account en/ar (RTL)/360 px, privacy en/fr, quran page, all delete-account links 200, no overflow, 0 JS errors.
+
+## ADDON — footer, developer, features (Nov 27, from the Quran app agent)
+- Site footer (site.js, every page except the Quran reader): "© {year} Zaiba Technologies, LLC · Pennsylvania, USA" + Privacy · Terms & Credits · Delete account · Support (translated); sits above the taskbar.
+- Quran app page features: "Zakat calculator" (live gold/silver prices, Nisab 85 g gold / 595 g silver, worn-jewellery option as in the Hanafi school) and "Sign in & Sync" (optional, Google/Apple, bookmarks, notes, favourites, settings on all devices); 16 languages. Play links unchanged (com.siraatone.quran, com.siraatone.azan).
+- Not done yet — waiting for the owner's OK (big visual change): app UI look on the website (compact glass Dock without labels = the website taskbar, deep iOS-style icon tiles with colourful symbols, golden prayer icons, glass widgets).
+- Test PASS: footer on 6 pages (en/ar/fr, 360/1280 px), not on the reader, not covered by the taskbar, no overflow, 0 JS errors. style.css + site.js ?v=20261127a on all 18 pages.
