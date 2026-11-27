@@ -38,7 +38,7 @@ var PT = (function () {
     asr: '<circle cx="12" cy="13" r="4"/><path d="M12 5v2M5 13h2M17 13h2M7 8l1.4 1.4M17 8l-1.4 1.4"/><path d="M3 20h18"/>',
     maghrib: '<path d="M3 19h18"/><path d="M7 19a5 5 0 0 1 10 0"/><path d="M12 5v5M9.5 7.5 12 10l2.5-2.5"/>',
     isha: '<path d="M19.5 14.5A8 8 0 1 1 9.5 4.5a6.3 6.3 0 0 0 10 10z"/><path d="M17 4v3M15.5 5.5h3"/>' };
-  function icon(k) { return '<svg class="p-ic" viewBox="0 0 24 24" aria-hidden="true">' + (IC[k] || '') + '</svg>'; }
+  function icon(k) { return '<svg class="p-ic p-' + k + '" viewBox="0 0 24 24" aria-hidden="true">' + (IC[k] || '') + '</svg>'; }
   function isFri(y, m, d) { return new Date(Date.UTC(y, m - 1, d)).getUTCDay() === 5; }
   function label(k, y, m, d) { return k === 'dhuhr' && isFri(y, m, d) ? 'Jumuʿah' : NAME[k]; }
   function next(S, L, now) { // next of the five prayers (today, or tomorrow's Fajr)

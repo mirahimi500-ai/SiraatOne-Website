@@ -359,5 +359,14 @@ AS3: auto scroll controls (− ▶ + speed/time left) now inside the bottom tool
 ## ADDON — footer, developer, features (Nov 27, from the Quran app agent)
 - Site footer (site.js, every page except the Quran reader): "© {year} Zaiba Technologies, LLC · Pennsylvania, USA" + Privacy · Terms & Credits · Delete account · Support (translated); sits above the taskbar.
 - Quran app page features: "Zakat calculator" (live gold/silver prices, Nisab 85 g gold / 595 g silver, worn-jewellery option as in the Hanafi school) and "Sign in & Sync" (optional, Google/Apple, bookmarks, notes, favourites, settings on all devices); 16 languages. Play links unchanged (com.siraatone.quran, com.siraatone.azan).
-- Not done yet — waiting for the owner's OK (big visual change): app UI look on the website (compact glass Dock without labels = the website taskbar, deep iOS-style icon tiles with colourful symbols, golden prayer icons, glass widgets).
+- App UI look: done in APPUI1 below (owner OK Nov 27).
 - Test PASS: footer on 6 pages (en/ar/fr, 360/1280 px), not on the reader, not covered by the taskbar, no overflow, 0 JS errors. style.css + site.js ?v=20261127a on all 18 pages.
+
+## APPUI1 — the app's iOS look on Home (Nov 27, owner: "bring same ui to website")
+- Source: app change log S1_ICON_DEEP_V1–V3, S1_DOCK_COMPACT_V1, S1_PRAYER_ICON_GOLD_V1/V2, S1_PRAYER_HEADER_ICON_V1, S1_WIDGET_GLASS_V1; colours from the app's s1_ios_style.dart (colorFor / darkVariant).
+- Deep icon tiles (Home + App Library): light FFFFFF/FAFAFA/ECEEED, dark 38383B/242426/161618, OLED 2A2A2C/151516/070708; top light edge, dark sheen, lift + contact shadow; 56 px (phone 52). Symbols in each feature's colour (12% deeper on white): Quran/Continue green, Favorites pink, Bookmarks orange, Highlights purple, Notes yellow, 99 Names indigo, Tasbih mint, Calendar red, Hadith brown, Duas teal, Prayer blue.
+- Bottom taskbar = compact glass Dock: hugs its 5 icons, centred, corner 22, gap 8, blur glass (light 0.68 / dark 0.60), same deep tiles; no names (shown on mouse hover, still read by screen readers); small dot under the current page. site.js adds class d-<id> to each Dock link.
+- Home prayer card: golden icons (Fajr/Sunrise/Dhuhr B7860B light · FFC94A dark; Asr C96F1C · F4A340; Maghrib C9502C · E8743B; Isha moon in text colour); the current prayer keeps its gold, shade by pill brightness; next-prayer header shows the same icon, larger (24 px). prayer-core.js icon() adds class p-<prayer>.
+- Home widgets (prayer card, mini cards): glass body 0.96, rim, top light, soft shadow. Hero colours, Quran pages and layout unchanged.
+- Test PASS: 360/390/1280 px, light/dark/OLED, Arabic RTL: no overflow, Dock centred, footer 14–16 px above the Dock, 0 JS errors. style.css + site.js ?v=20261127b on all 18 pages; home.js + prayer-core.js ?v=20261127b.
+

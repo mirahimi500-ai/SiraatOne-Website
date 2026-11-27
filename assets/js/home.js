@@ -73,7 +73,7 @@
     var key = nx.k + nx.d + (c ? c.k : '-');
     if (key !== last) {
       last = key;
-      body.innerHTML = '<div class="pw-next"><small>' + esc(L.name) + ' · next prayer</small><div><span class="pw-nm"><b>' + PT.label(nx.k, nx.y, nx.m, nx.d) + '</b><span class="pw-at">' + PT.fmt(S, L, nx.at) + '</span></span>' +
+      body.innerHTML = '<div class="pw-next"><small>' + esc(L.name) + ' · next prayer</small><div><span class="pw-nm">' + PT.icon(nx.k) + '<b>' + PT.label(nx.k, nx.y, nx.m, nx.d) + '</b><span class="pw-at">' + PT.fmt(S, L, nx.at) + '</span></span>' +
         '<span class="pw-left" id="pw-left"></span></div></div>' +
         '<ol class="pw-list">' + PT.P.map(function (k) {
           var on = c && c.k === k, cls = (on ? 'now' : pt[k] < now ? 'past' : '') + (k === 'sunrise' ? ' sun' : '');

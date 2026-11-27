@@ -1320,3 +1320,46 @@ html.nx-open{overflow:hidden}
 .site-footer{margin-top:28px;border-top:1px solid var(--border);padding:14px 0 18px;font-size:.82rem;color:var(--muted)}
 .site-footer .wrap{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between}
 .site-footer nav{display:flex;flex-wrap:wrap;gap:4px 14px}.site-footer a{color:var(--muted);text-decoration:none}.site-footer a:hover,.site-footer a:focus-visible{color:var(--brand);text-decoration:underline}
+/* APPUI1 (Nov 27): the app's iOS look on Home — deep icon tiles with colourful symbols, compact glass Dock, golden prayer icons, glass widgets */
+.tile[data-id=read],.tile[data-id=continue],.tabbar .d-quran{--tc:#1F9D5C;--td:#32D17F}
+.tile[data-id=favorites]{--tc:#FF2D55;--td:#FF375F}.tile[data-id=bookmarks]{--tc:#FF9500;--td:#FF9F0A}
+.tile[data-id=highlights]{--tc:#AF52DE;--td:#BF5AF2}.tile[data-id=notes]{--tc:#FFB800;--td:#FFD60A}
+.tile[data-id=names]{--tc:#5856D6;--td:#5E5CE6}.tile[data-id=tasbih]{--tc:#00B4A8;--td:#63E6E2}
+.tile[data-id=calendar]{--tc:#FF3B30;--td:#FF453A}.tile[data-id=hadith],.tabbar .d-hadith{--tc:#A2845E;--td:#AC8E68}
+.tile[data-id=duas],.tabbar .d-duas{--tc:#30B0C7;--td:#40CBE0}.tile[data-id=prayer],.tabbar .d-home{--tc:#007AFF;--td:#0A84FF}
+.tabbar .d-apps{--tc:#5856D6;--td:#5E5CE6}
+.home2 .tile .ico,.lib2 .tile .ico,.tabbar a[href] svg{--tl:var(--tc,var(--brand));width:56px;height:56px;padding:14px;margin:0 0 4px;border-radius:13px;box-sizing:border-box;stroke-width:1.9;
+  color:color-mix(in srgb,var(--tl) 88%,#000);background:linear-gradient(180deg,#FFFFFF,#FAFAFA 45%,#ECEEED);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(0,0,0,.10),0 5px 14px rgba(0,0,0,.20),0 1px 3px rgba(0,0,0,.10)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) :is(.home2 .tile .ico,.lib2 .tile .ico,.tabbar a[href] svg){color:var(--td,var(--brand));
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,0) 50%),linear-gradient(180deg,#38383B,#242426 45%,#161618);box-shadow:inset 0 1px 0 rgba(255,255,255,.26),0 5px 14px rgba(0,0,0,.42),0 1px 3px rgba(0,0,0,.22)}}
+:root[data-theme="dark"] :is(.home2 .tile .ico,.lib2 .tile .ico,.tabbar a[href] svg){color:var(--td,var(--brand));
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,0) 50%),linear-gradient(180deg,#38383B,#242426 45%,#161618);box-shadow:inset 0 1px 0 rgba(255,255,255,.26),0 5px 14px rgba(0,0,0,.42),0 1px 3px rgba(0,0,0,.22)}
+:root.oled :is(.home2 .tile .ico,.lib2 .tile .ico,.tabbar a[href] svg){background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,0) 50%),linear-gradient(180deg,#2A2A2C,#151516 45%,#070708)}
+.home2 .tile:hover .ico,.lib2 .tile:hover .ico{transform:translateY(-2px)}.home2 .tile .ico,.lib2 .tile .ico{transition:transform .2s}
+/* compact glass Dock: hugs its icons, centred, corner 22, no names (the name shows on hover and is still read by screen readers) */
+.tabbar{left:50%;right:auto;width:auto;max-width:calc(100% - 24px);margin:0;transform:translateX(-50%);justify-content:center;gap:8px;padding:10px 12px;border-radius:22px;
+  bottom:calc(10px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--surface) 68%,transparent);-webkit-backdrop-filter:blur(24px) saturate(1.8);backdrop-filter:blur(24px) saturate(1.8);
+  border:1px solid rgba(255,255,255,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.36),0 10px 30px rgba(0,0,0,.16)}
+.tabbar a{position:relative;flex:none;max-width:none;padding:0;gap:0;overflow:visible}
+.tabbar a[href] svg{width:48px;height:48px;padding:12px;margin:0;border-radius:11px}
+.tabbar a span{position:absolute;bottom:calc(100% + 12px);left:50%;transform:translate(-50%,4px);opacity:0;pointer-events:none;white-space:nowrap;padding:3px 9px;border-radius:8px;background:var(--text);color:var(--bg);font-size:.75rem;font-weight:600;transition:opacity .15s,transform .15s}
+@media (hover:hover){.tabbar a:hover span,.tabbar a:focus-visible span{opacity:1;transform:translate(-50%,0)}}
+.tabbar a[aria-current=page]::after{content:"";position:absolute;left:50%;bottom:-6px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--muted)}
+.tabbar a:focus-visible{outline:none}.tabbar a:focus-visible svg{outline:2px solid var(--brand);outline-offset:2px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tabbar{background:color-mix(in srgb,var(--surface) 60%,transparent);border-color:rgba(255,255,255,.10);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 10px 30px rgba(0,0,0,.45)}}
+:root[data-theme="dark"] .tabbar{background:color-mix(in srgb,var(--surface) 60%,transparent);border-color:rgba(255,255,255,.10);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 10px 30px rgba(0,0,0,.45)}
+body.has-tabbar{padding-bottom:96px}
+/* golden prayer icons (Home prayer card); the current prayer keeps its gold, shade by the pill's brightness */
+.pw{--g1:#B7860B;--g2:#C96F1C;--g3:#C9502C;--n1:#FFC94A;--n2:#F4A340;--n3:#E8743B}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pw{--g1:#FFC94A;--g2:#F4A340;--g3:#E8743B;--n1:#B7860B;--n2:#C96F1C;--n3:#C9502C}}
+:root[data-theme="dark"] .pw{--g1:#FFC94A;--g2:#F4A340;--g3:#E8743B;--n1:#B7860B;--n2:#C96F1C;--n3:#C9502C}
+.pw .p-ic:is(.p-fajr,.p-sunrise,.p-dhuhr){color:var(--g1)}.pw .p-ic.p-asr{color:var(--g2)}.pw .p-ic.p-maghrib{color:var(--g3)}.pw .p-ic.p-isha{color:var(--text)}
+.pw li.now .p-ic:is(.p-fajr,.p-sunrise,.p-dhuhr){color:var(--n1)}.pw li.now .p-ic.p-asr{color:var(--n2)}.pw li.now .p-ic.p-maghrib{color:var(--n3)}.pw li.now .p-ic.p-isha{color:var(--brand-ink)}
+.pw .p-ic{stroke-width:1.9}.pw-next .p-ic{width:24px;height:24px;align-self:center}
+/* glass widgets: rim, top light and soft shadow; nearly solid on the plain page */
+.home2 :is(.ts-card,.mini){background:color-mix(in srgb,var(--surface) 96%,transparent);-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);
+  border-color:color-mix(in srgb,var(--border) 70%,transparent);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.07)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .home2 :is(.ts-card,.mini){border-color:rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 28px rgba(0,0,0,.35)}}
+:root[data-theme="dark"] .home2 :is(.ts-card,.mini){border-color:rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 28px rgba(0,0,0,.35)}
+@media (max-width:600px){.home2 .tile .ico,.lib2 .tile .ico{width:52px;height:52px;padding:13px;border-radius:12px}.tabbar{padding:8px 10px;gap:8px}.tabbar a[href] svg{width:46px;height:46px;padding:11px}body.has-tabbar{padding-bottom:88px}}
