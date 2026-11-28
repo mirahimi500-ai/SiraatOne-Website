@@ -962,7 +962,7 @@
     var site = (window.SOI18N && SOI18N.lang) || 'en', L0 = ['en', 'ar', 'ur', 'fa', 'tr', 'id', 'ms', 'bn', 'fr', 'es'];
     var L = lang || SIL || (L0.indexOf(site) > -1 ? site : 'en'); SIL = L;
     var sumF = function (l) { return SO.j('../assets/data/surah-summary' + (l === 'en' ? '' : '-' + l) + '.json' + (l === 'en' ? '' : '?v=20261111')).catch(function () { return null; }); };
-    Promise.all([SO.j('../assets/data/surah-info.json'), sumF(L), L === 'en' ? null : sumF('en'), SIX || SO.j('../assets/data/surah-info-i18n.json?v=20261127a')]).then(function (r) {
+    Promise.all([SO.j('../assets/data/surah-info.json'), sumF(L), L === 'en' ? null : sumF('en'), SIX || SO.j('../assets/data/surah-info-i18n.json?v=20261128a')]).then(function (r) {
       var d = r[0], X = SIX = r[3], m = d.surahs[n - 1]; if (!m || m.number !== n) throw 0;
       var U = Object.assign({}, X.ui.en, X.ui[L] || {}), T = X.text[L], rtl = /^(ar|ur|fa)$/.test(L);
       var q = r[1] && r[1].s && r[1].s[n - 1], qL = L, fellBack = false;

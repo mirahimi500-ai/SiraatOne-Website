@@ -107,8 +107,8 @@
     else if (t === 'notes') { var n = SO.get('so.notes', {}); out = ayahList(Object.keys(n), n); }
     Promise.resolve(out).then(function (h) { if (tab === t) panel.innerHTML = h; });
   }
-  var SLANG = (document.documentElement.lang || 'en').slice(0, 2), SLX = /^(fa|ur|tr|id|ms|bn|fr|es)$/.test(SLANG);
-  Promise.all([SO.j('../assets/data/chapters.json'), SO.j('../assets/data/index.json'), SLX ? SO.j('../assets/data/surah-info-i18n.json?v=20261127a').catch(function () { return null; }) : null]).then(function (r) {
+  var SLANG = (document.documentElement.lang || 'en').slice(0, 2), SLX = /^(fa|ur|tr|id|ms|bn|fr|es|ru)$/.test(SLANG); // ru: surah meanings from Quran.com
+  Promise.all([SO.j('../assets/data/chapters.json'), SO.j('../assets/data/index.json'), SLX ? SO.j('../assets/data/surah-info-i18n.json?v=20261128a').catch(function () { return null; }) : null]).then(function (r) {
     ch = r[0].chapters; idx = r[1];
     // S1_SURAH_FA_NAMES_V1: Persian Surah names and meanings (QuranEnc); sourced meanings in ur/tr/id/ms/bn/fr/es
     if (r[2]) ch.forEach(function (c, i) { if (SLANG === 'fa') { c.dname = r[2].faNames[i]; c.dmean = r[2].faMeanings[i]; } else if (r[2].meanings[SLANG]) c.dmean = r[2].meanings[SLANG][i]; });

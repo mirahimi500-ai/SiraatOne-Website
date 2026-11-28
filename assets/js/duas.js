@@ -167,7 +167,7 @@
     $('d-hero').innerHTML = '<div class="cl-hd"><small>' + (O.tab === 'topic' ? 'Browse topic' : O.tab === 'saved' ? 'Your list' : O.tab === 'all' ? 'Search' : 'Collection') + '</small><b>' + esc(t) + '</b><span>' + n + (n === 1 ? ' dua' : ' duas') + (O.tab === 'morning' || O.tab === 'evening' ? ' · ' + (O.tab === 'morning' ? 'Morning' : 'Evening') : '') + '</span></div><div class="cl-hn"><small>All duas</small><b>' + total + '</b><span><a href="#">All collections →</a></span></div>';
   }
   $('d-hq').onkeydown = function (e) { if (e.key === 'Enter' && this.value.trim()) { $('d-q').value = this.value.trim(); location.hash = 'search'; } };
-  var DLS = ['ar', 'ur', 'fa', 'tr', 'id', 'ms', 'bn', 'fr', 'es'];
+  var DLS = ['ar', 'ur', 'fa', 'tr', 'id', 'ms', 'bn', 'fr', 'es', 'de', 'hi', 'ps', 'ru', 'so', 'sw', 'ta']; // LANG7: the 7 extra site languages have the Quranic du'a verses from Quran.com; titles and notes stay English
   Promise.all([SO.j('../assets/data/duas.json'), DLS.indexOf(DL) > -1 ? SO.j('../assets/data/duas-' + DL + '.json?v=20261111').catch(function () { return null; }) : null, SO.j('../assets/data/duas-topics.json?v=20261127a').catch(function () { return null; })]).then(function (r) {
     var d = r[0]; LT = r[1] && r[1].e ? r[1] : null; TP = r[2];
     D = d; $('d-note').textContent = LT ? LT.str.notesTranslatedNote : d.note; if (LT) $('d-note').setAttribute('translate', 'no'); landing();
