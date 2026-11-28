@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Ibadah — SiraatOne</title>
+<meta name="description" content="My Ibadah from the SiraatOne app: your private checklist of the five prayers, adhkar, Al-Kahf, fasting and a daily Quran goal, saved only in your browser.">
+<meta name="theme-color" content="#2E7D32">
+<link rel="icon" href="../assets/img/logo.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="apple-touch-icon" href="../assets/img/icon-180.png">
+<meta name="apple-mobile-web-app-title" content="SiraatOne"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SiraatOne">
+<meta property="og:title" content="My Ibadah — SiraatOne">
+<meta property="og:description" content="My Ibadah from the SiraatOne app: your private checklist of the five prayers, adhkar, Al-Kahf, fasting and a daily Quran goal, saved only in your browser.">
+<meta property="og:url" content="https://www.siraatone.com/ibadah/">
+<meta property="og:image" content="https://www.siraatone.com/assets/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<script>try{var d=document.documentElement,t=localStorage.getItem('theme'),L=localStorage.getItem('so.lang');if(L&&L!=='en'){d.lang=L;if(/^(ar|ur|fa|ps)$/.test(L))d.dir='rtl';d.classList.add('i18n-wait');setTimeout(function(){d.classList.remove('i18n-wait')},1500)}if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm');else{var fk=parseInt(localStorage.getItem('fx'),10);if(fk===0)d.classList.add('rm');else if(fk>0&&fk!==100){d.classList.add('fxk');d.style.setProperty('--fxk',Math.min(fk,150)/100)}}}catch(e){}</script>
+<link rel="stylesheet" href="../assets/css/style.css?v=20261128c">
+</head>
+<body class="s1ui fx">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap">
+    <div class="bar">
+      <a class="logo" href="../"><img src="../assets/img/logo.png" alt="" width="36" height="36">SiraatOne</a>
+      <div class="bar-actions">
+        <button id="theme-toggle" class="icon-btn" type="button" aria-label="Switch theme">☾</button>
+        <button id="menu-btn" class="icon-btn menu-btn" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Menu">☰</button>
+      </div>
+    </div>
+    <nav id="site-nav" class="nav" aria-label="Main">
+      <a href="../">Home</a>
+      <a href="../read/">Quran</a>
+      <a href="../prayer/">Prayer Times</a>
+      <a href="../quran/">Quran app</a>
+      <a href="../azan/">Azan app</a>
+      <a href="../support/">Support</a>
+      <a href="../privacy/">Privacy</a>
+      <a href="../terms/">Terms &amp; Credits</a>
+      <a href="../delete-account/">Delete account</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap tool cal2 ib2">
+  <div class="tb-top">
+    <a class="btn btn-ghost sm" href="../" id="pg-back">← Back</a>
+    <h1 data-t="title" translate="no">My Ibadah</h1>
+    <button type="button" class="icon-btn" id="ib-menu-btn" aria-label="Settings" aria-expanded="false"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4z"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.4 7.4 0 0 0-1.7-1L15 3.5h-4l-.4 2.5a7.4 7.4 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.6 7.6 0 0 0 0 2l-2 1.6 2 3.4 2.4-1a7.4 7.4 0 0 0 1.7 1l.4 2.5h4l.4-2.5a7.4 7.4 0 0 0 1.7-1l2.4 1 2-3.4z"/></svg></button>
+    <div class="tb-pop" id="ib-pop" translate="no"><b data-t="settings">Settings</b>
+      <label class="pick"><span data-t="quranGoal">Quran daily goal</span><select id="ib-goal"></select></label>
+      <p class="hint" data-t="quranGoalNote"></p>
+      <h4 data-t="track">What to track</h4>
+      <label class="tg"><span data-t="trackAdhkar">Morning &amp; Evening adhkar</span><input type="checkbox" id="ib-t-adhkar"></label>
+      <label class="tg"><span data-t="trackKahf">Al-Kahf on Friday</span><input type="checkbox" id="ib-t-kahf"></label>
+      <label class="tg"><span data-t="trackFast">Sunnah fasts and Ramadan</span><input type="checkbox" id="ib-t-fast"></label>
+      <p class="hint">Reminders are in the SiraatOne apps; a website cannot remind you when it is closed.</p>
+    </div>
+  </div>
+  <section class="cl-hero">
+    <div class="cl-hd"><small>SiraatOne</small><b data-t="title" translate="no">My Ibadah</b><span data-t="entrySubtitle" translate="no"></span></div>
+    <div class="cl-hn"><small data-t="today" translate="no">Today</small><b id="ib-hero-n">0 / 5</b><span data-t="fard" translate="no">Fard</span></div>
+  </section>
+  <div id="ib" class="cl-cols" data-src="../assets/data/ibadah-ramadan.json?v=20261127a" translate="no">
+    <div class="cl-main">
+      <section class="ts-card ib-day" id="ib-day">
+        <div class="ib-dhead"><div><b id="ib-dt"></b><small id="ib-dh"></small></div><button type="button" class="btn btn-ghost sm" id="ib-today" data-t="today">Today</button></div>
+        <h3 class="ib-sec" data-t="fard">Fard</h3><div class="ib-fard" id="ib-fard"></div>
+        <p class="hint" data-t="tapPrayerHint"></p>
+        <h3 class="ib-sec" data-t="sunnah">Sunnah</h3><div class="ib-sunnah" id="ib-sunnah"></div>
+        <p class="ib-all" id="ib-all" hidden></p>
+        <div class="ib-menu" id="ib-menu" hidden role="menu"></div>
+      </section>
+      <section class="ts-card ib-sum" id="ib-sum"></section>
+    </div>
+    <aside class="cl-side">
+      <section class="ts-card ib-cal"><div class="ib-mh"><button type="button" class="ts-rb" id="ib-mprev" aria-label="Previous month">‹</button><b id="ib-mt"></b><button type="button" class="ts-rb" id="ib-mnext" aria-label="Next month">›</button></div>
+        <div class="ib-grid" id="ib-grid"></div><p class="hint" data-t="tapDay"></p>
+        <div class="ib-legend"><span><i class="s-done"></i><em data-t="prayed"></em></span><span><i class="s-qada"></i><em data-t="qada"></em></span><span><i class="s-excused"></i><em data-t="excused"></em></span><span><i></i><em data-t="notMarked"></em></span></div></section>
+      <section class="ts-card ib-hadith"><p data-t="hadith"></p><small data-t="hadithSource"></small></section>
+      <p class="hint ib-priv">Private: saved only in this browser. No points, no comparing.</p>
+    </aside>
+  </div>
+</main>
+
+<script src="../assets/js/i18n.js?v=20261128b" defer></script>
+<script src="../assets/js/site.js?v=20261128b" defer></script>
+<script src="../assets/js/lib.js?v=20261127s" defer></script>
+<script src="../assets/js/vendor/adhan.umd.min.js?v=4.4.3" defer></script>
+<script src="../assets/js/prayer-core.js?v=20261127t" defer></script>
+<script src="../assets/js/ibadah.js?v=20261127a" defer></script>
+<script>document.getElementById('pg-back').onclick=function(e){if(history.length>1&&document.referrer.indexOf(location.host)>-1){e.preventDefault();history.back()}};(function(){var b=document.getElementById('ib-menu-btn'),p=document.getElementById('ib-pop');if(!b||!p)return;b.onclick=function(e){e.stopPropagation();b.setAttribute('aria-expanded',p.classList.toggle('open'))};document.addEventListener('click',function(e){if(!e.target.closest('#ib-pop'))p.classList.remove('open')})})();</script>
+<!-- Cloudflare Web Analytics (no cookies; see Privacy Policy) --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "08e433ad07454343bf9d6a63c6a650de"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

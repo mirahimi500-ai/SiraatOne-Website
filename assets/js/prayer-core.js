@@ -32,12 +32,12 @@ var PT = (function () {
     return { k: k, at: pt[k] }; }
   function cur(S, L, now) { return curOf(function (y, m, d) { return times(S, L, y, m, d); }, function (d) { return ymd(L, d); }, now); }
   function since(ms) { var s = Math.max(0, Math.floor(ms / 1000)); return '\u2212' + Math.floor(s / 3600) + ':' + ('0' + Math.floor(s % 3600 / 60)).slice(-2) + ':' + ('0' + s % 60).slice(-2); } // "−h:mm:ss" (shown for 90 min after the Azan)
-  var IC = { fajr: '<path d="M3 19h18"/><path d="M15.5 15.5a5.5 5.5 0 1 1-5-9 4.4 4.4 0 0 0 5 9z"/>',
+  var IC = { fajr: '<path d="M3 17h18M6.5 20.5h11"/><path d="M7 17a5 5 0 0 1 10 0"/><path d="M12 3.5v6M9.5 6 12 3.5 14.5 6"/>', // S1_PRAYER_GLYPHS_V1: half sun rising over two horizon lines, arrow up
     sunrise: '<path d="M3 19h18"/><path d="M7 19a5 5 0 0 1 10 0"/><path d="M12 6V4M5.6 12.6 4.2 11.2M18.4 12.6l1.4-1.4"/>',
-    dhuhr: '<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/>',
-    asr: '<circle cx="12" cy="13" r="4"/><path d="M12 5v2M5 13h2M17 13h2M7 8l1.4 1.4M17 8l-1.4 1.4"/><path d="M3 20h18"/>',
-    maghrib: '<path d="M3 19h18"/><path d="M7 19a5 5 0 0 1 10 0"/><path d="M12 5v5M9.5 7.5 12 10l2.5-2.5"/>',
-    isha: '<path d="M19.5 14.5A8 8 0 1 1 9.5 4.5a6.3 6.3 0 0 0 10 10z"/><path d="M17 4v3M15.5 5.5h3"/>' };
+    dhuhr: '<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/>', // full sun, eight rays
+    asr: '<circle cx="12" cy="10" r="3.6"/><path d="M12 3.2v1.6M5.2 10h1.6M17.2 10h1.6M7.2 5.2l1.1 1.1M16.8 5.2l-1.1 1.1"/><path d="M3 17.5h18M7 20.5h10"/>', // afternoon sun above the horizon
+    maghrib: '<path d="M3 17h18M6.5 20.5h11"/><path d="M7 17a5 5 0 0 1 10 0"/><path d="M12 3.5v6M9.5 7 12 9.5 14.5 7"/>', // half sun setting, arrow down
+    isha: '<path d="M17.5 15.5A7 7 0 1 1 10.5 5a5.6 5.6 0 0 0 7 10.5z"/><path d="M18 3.5l.75 1.75 1.75.75-1.75.75L18 8.5l-.75-1.75L15.5 6l1.75-.75z"/>' }; // crescent and a star
   function icon(k) { return '<svg class="p-ic p-' + k + '" viewBox="0 0 24 24" aria-hidden="true">' + (IC[k] || '') + '</svg>'; }
   function isFri(y, m, d) { return new Date(Date.UTC(y, m - 1, d)).getUTCDay() === 5; }
   function label(k, y, m, d) { return k === 'dhuhr' && isFri(y, m, d) ? 'Jumuʿah' : NAME[k]; }

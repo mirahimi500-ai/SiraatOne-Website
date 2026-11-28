@@ -5,13 +5,14 @@
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
   var esc = SO.esc, A = window.adhan;
-  var DEF = { m: 'ISNA', a: 'Shafi', h: 'auto', f: '12', view: 'day', snd: 'notif', vol: 0.8, on: { fajr: true, dhuhr: true, asr: true, maghrib: true, isha: true },
+  var DEF = { style: 'ring', sky: true, m: 'ISNA', a: 'Shafi', h: 'auto', f: '12', view: 'day', snd: 'notif', vol: 0.8, on: { fajr: true, dhuhr: true, asr: true, maghrib: true, isha: true },
     adj: { fajr: 0, sunrise: 0, dhuhr: 0, asr: 0, maghrib: 0, isha: 0 } };
   var S = Object.assign({}, DEF, SO.get('so.pt', {})); S.on = Object.assign({}, DEF.on, S.on); S.adj = Object.assign({}, DEF.adj, S.adj); if (S.snd === 'complete' || S.snd === 'short') S.snd = 'notif'; // no Azan recordings (no licence), as in the apps
   var L = SO.get('so.ploc', null); // { lat, lng, name, tz }
   function save() { SO.set('so.pt', S); }
   var P = ['fajr', 'sunrise', 'dhuhr', 'asr', 'maghrib', 'isha'], FIVE = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
   var NAME = { fajr: 'Fajr', sunrise: 'Sunrise', dhuhr: 'Dhuhr', asr: 'Asr', maghrib: 'Maghrib', isha: 'Isha' };
+  var PC = { fajr: '#5856D6', sunrise: '#FF9500', dhuhr: '#32ADE6', asr: '#007AFF', maghrib: '#FF2D55', isha: '#AF52DE' }; // S1_IOS_PRAYER_TILES_V1: one colour per prayer, by the sky at its time
   var AR = { fajr: 'الفجر', sunrise: 'الشروق', dhuhr: 'الظهر', asr: 'العصر', maghrib: 'المغرب', isha: 'العشاء' };
   var HM = ['Muharram', 'Safar', "Rabi' al-Awwal", "Rabi' al-Akhir", 'Jumada al-Ula', 'Jumada al-Akhirah', 'Rajab', "Sha'ban", 'Ramadan', 'Shawwal', "Dhu al-Qa'dah", 'Dhu al-Hijjah'];
 
@@ -60,9 +61,14 @@
     var isToday = day.year === today.year && day.month === today.month && day.day === today.day;
     $('pt-d1').textContent = dFmt(day.year, day.month, day.day, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     $('pt-d2').textContent = hijri(day.year, day.month, day.day) + (isToday ? ' · Today' : '');
+    drawWeek(today);
+    var tiles = S.style === 'sun' || S.style === 'cards'; $('pt-list').hidden = tiles; $('pt-tiles').hidden = !tiles; $('pt-tiles').className = 'pt-tiles' + (S.style === 'sun' ? ' row' : '');
+    var bell = function (k) { return '<button type="button" class="pt-bell' + (S.on[k] ? ' on' : '') + '" data-bell="' + k + '" aria-pressed="' + !!S.on[k] + '" aria-label="Azan for ' + NAME[k] + '"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/>' + (S.on[k] ? '' : '<path d="M4 4l16 16"/>') + '</svg></button>'; };
+    $('pt-tiles').innerHTML = P.map(function (k) { var cur = isToday && c && c.k === k;
+      return '<div class="pt-tile' + (cur ? ' now' : '') + (k === 'sunrise' ? ' sun' : '') + '" style="--pc:' + PC[k] + '"><span class="pt-tic">' + PT.icon(k) + '</span><b>' + label(k, day.year, day.month, day.day) + '</b><time>' + tFmt(pt[k]) + '</time>' + (FIVE.indexOf(k) > -1 ? bell(k) : '<span class="pt-bell-x"></span>') + '</div>'; }).join('');
     $('pt-list').innerHTML = P.map(function (k) {
       var cur = isToday && c && c.k === k, five = FIVE.indexOf(k) > -1;
-      return '<li class="pt-row' + (cur ? ' now' : '') + (k === 'sunrise' ? ' sun' : '') + '"><span class="pt-n">' + PT.icon(k) + '<b>' + label(k, day.year, day.month, day.day) + '</b><small lang="ar" dir="rtl">' + AR[k] + '</small></span>' +
+      return '<li class="pt-row' + (cur ? ' now' : '') + (k === 'sunrise' ? ' sun' : '') + '" style="--pc:' + PC[k] + '"><span class="pt-n">' + PT.icon(k) + '<b>' + label(k, day.year, day.month, day.day) + '</b><small lang="ar" dir="rtl">' + AR[k] + '</small></span>' +
         '<time>' + tFmt(pt[k]) + '</time>' + (five ? '<button type="button" class="pt-bell' + (S.on[k] ? ' on' : '') + '" data-bell="' + k + '" aria-pressed="' + !!S.on[k] + '" aria-label="Azan for ' + NAME[k] + '">' +
         '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/>' + (S.on[k] ? '' : '<path d="M4 4l16 16"/>') + '</svg></button>' : '<span class="pt-bell-x"></span>') + '</li>';
     }).join('');
@@ -85,13 +91,53 @@
     $('pt-extra').innerHTML = '<li><span>Ishraq / Duha</span><b>' + tFmt(ex.ishraq) + ' – ' + tFmt(ex.duhaEnd) + '</b></li><li><span>Middle of the night</span><b>' + tFmt(sn.middleOfTheNight) + '</b></li><li><span>Qiyam al-Layl (last third)</span><b>' + tFmt(sn.lastThirdOfTheNight) + '</b></li>' +
       '<li><span>Qibla direction</span><b>' + q.toFixed(1) + '° ' + dirs[Math.round(q / 45) % 8] + '</b></li>';
   }
+  // ---------- S1_AZAN_STYLES_V1: Ring / Sun path / Cards; S1_AZAN_SKY_V1: sky by the prayer time ----------
+  function prevAt(now) { var t = ymd(now), pt = times(t.year, t.month, t.day), best = null;
+    P.forEach(function (k) { if (pt[k] <= now && (!best || pt[k] > best)) best = pt[k]; });
+    if (best) return best; var y = ymd(new Date(now.getTime() - 864e5)); return times(y.year, y.month, y.day).isha; }
+  function sky(now) { var b = document.body, on = !!(S.sky && L), c = PT.curOf(times, ymd, now), k = c ? c.k : 'sunrise';
+    P.forEach(function (x) { b.classList.toggle('sky-' + x, on && x === k); }); b.classList.toggle('sky', on); }
+  function sunPath(now) {
+    var t = ymd(now), pt = times(t.year, t.month, t.day), t0 = +pt.fajr, t1 = +pt.isha, sr = +pt.sunrise, mg = +pt.maghrib, W = 300, H = 120, hz = 78;
+    var X = function (ms) { return 14 + (W - 28) * Math.min(1, Math.max(0, (ms - t0) / (t1 - t0))); };
+    var Y = function (ms) { return ms >= sr && ms <= mg ? hz - 58 * Math.sin(Math.PI * (ms - sr) / (mg - sr)) : hz + 16 * (ms < sr ? (sr - ms) / (sr - t0) : (ms - mg) / (t1 - mg)); };
+    var pts = [], i, n = 60; for (i = 0; i <= n; i++) { var ms = t0 + (t1 - t0) * i / n; pts.push([X(ms), Y(ms), ms]); }
+    var pathOf = function (a) { return a.map(function (p, j) { return (j ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(''); };
+    var done = pts.filter(function (p) { return p[2] <= +now; }), rest = pts.filter(function (p) { return p[2] >= +now; });
+    var nowMs = Math.min(t1, Math.max(t0, +now)), sx = X(nowMs), sy = Y(nowMs), day = +now >= sr && +now <= mg;
+    var g = '<line x1="6" y1="' + hz + '" x2="' + (W - 6) + '" y2="' + hz + '" class="hz"/>' + (done.length > 1 ? '<path d="' + pathOf(done) + '" class="arc done"/>' : '') + (rest.length > 1 ? '<path d="' + pathOf(rest) + '" class="arc rest"/>' : '') +
+      P.map(function (k) { return '<circle cx="' + X(+pt[k]).toFixed(1) + '" cy="' + Y(+pt[k]).toFixed(1) + '" r="4.2" fill="' + PC[k] + '" class="dot"/>'; }).join('') +
+      (day ? '<circle cx="' + sx.toFixed(1) + '" cy="' + sy.toFixed(1) + '" r="13" class="glow"/><circle cx="' + sx.toFixed(1) + '" cy="' + sy.toFixed(1) + '" r="7.5" class="sunb"/>'
+        : '<path transform="translate(' + (sx - 8).toFixed(1) + ' ' + (sy - 9).toFixed(1) + ')" d="M12 2.5A7.5 7.5 0 1 0 15.5 16 6 6 0 0 1 12 2.5z" class="moon"/>');
+    var rtl = document.documentElement.dir === 'rtl';
+    return '<svg class="pt-path" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Sun path today"><g' + (rtl ? ' transform="translate(' + W + ' 0) scale(-1 1)"' : '') + '>' + g + '</g></svg>';
+  }
+  function timer(now, nx) {
+    var c = PT.curOf(times, ymd, now), pa = prevAt(now), fr = Math.min(1, Math.max(0, (now - pa) / (nx.at - pa))), nm = label(nx.k, nx.y, nx.m, nx.d);
+    var since = c ? '<small class="pt-since">' + label(c.k, nx.y, nx.m, nx.d) + ' Azan ' + left(now - c.at) + ' ago</small>' : '';
+    var cd = '<b class="pt-nm">' + nm + ' <span lang="ar" dir="rtl">' + AR[nx.k] + '</span></b><span class="pt-at">at ' + tFmt(nx.at) + ' · in ' + left(nx.at - now) + '</span>' + since;
+    if (S.style === 'sun') return '<div class="cl-hd pt-sunp"><small>Next prayer</small>' + sunPath(now) + cd + '</div>';
+    if (S.style === 'cards') return '<div class="cl-hd pt-big" style="--pc:' + PC[nx.k] + '"><span class="pt-tic big">' + PT.icon(nx.k) + '</span><div class="pt-bigt"><small>Next prayer</small>' + cd + '<div class="pt-prog" role="progressbar" aria-valuenow="' + Math.round(fr * 100) + '" aria-valuemin="0" aria-valuemax="100"><i style="width:' + (fr * 100).toFixed(1) + '%"></i></div></div></div>';
+    var R = 52, C = 2 * Math.PI * R;
+    return '<div class="cl-hd pt-ringw"><div class="pt-ring" style="--pc:' + PC[nx.k] + '"><svg viewBox="0 0 124 124" aria-hidden="true"><circle class="trk" cx="62" cy="62" r="' + R + '"/><circle class="val" cx="62" cy="62" r="' + R + '" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + (C * (1 - fr)).toFixed(1) + '" transform="rotate(-90 62 62)"/></svg><div class="pt-ring-in"><span class="pt-tic">' + PT.icon(nx.k) + '</span><b>' + left(nx.at - now) + '</b></div></div><div class="pt-ringt"><small>Next prayer</small>' + cd + '</div></div>';
+  }
+  // ---------- S1_AZAN_WEEK_STRIP_V1: a 7-day week strip; tap a day, arrows / swipe for the week; Hijri day under each ----------
+  function drawWeek(today) {
+    var d0 = new Date(Date.UTC(day.year, day.month - 1, day.day)), dow = d0.getUTCDay(), fd = 0;
+    try { var wi = new Intl.Locale(navigator.language || 'en-US'); fd = ((wi.weekInfo || (wi.getWeekInfo && wi.getWeekInfo()) || {}).firstDay || 7) % 7; } catch (e) {}
+    var start = new Date(d0.getTime() - ((dow - fd + 7) % 7) * 864e5), h = '';
+    for (var i = 0; i < 7; i++) { var x = new Date(start.getTime() + i * 864e5), y = x.getUTCFullYear(), m = x.getUTCMonth() + 1, d = x.getUTCDate();
+      var isT = y === today.year && m === today.month && d === today.day, isS = y === day.year && m === day.month && d === day.day, hd = parseInt(hijri(y, m, d), 10);
+      h += '<button type="button" class="pt-day' + (isT ? ' today' : '') + '" data-ymd="' + y + '-' + m + '-' + d + '" aria-pressed="' + isS + '"><small>' + dFmt(y, m, d, { weekday: 'narrow' }) + '</small><b>' + d + '</b><em>' + (isNaN(hd) ? '' : hd) + '</em></button>'; }
+    $('pt-days').innerHTML = h; $('pt-today').hidden = day.year === today.year && day.month === today.month && day.day === today.day;
+  }
   var lastK = '';
   function tick() {
     if (!L) return;
     var now = new Date(), nx = next(now), t = ymd(now);
     var ck = nx.k + nx.d + ((PT.curOf(times, ymd, now) || {}).k || '-');
     if (ck !== lastK) { lastK = ck; if (S.view === 'day' && day && day.day === t.day && day.month === t.month) drawDay(); }
-    $('pt-hero').innerHTML = '<div class="cl-hd"><small>Next prayer</small><b>' + label(nx.k, nx.y, nx.m, nx.d) + ' <span lang="ar" dir="rtl">' + AR[nx.k] + '</span></b><span>at ' + tFmt(nx.at) + ' · in ' + left(nx.at - now) + '</span></div>' +
+    sky(now); $('pt-hero').innerHTML = timer(now, nx) +
       '<div class="cl-hn"><b>' + esc(L.name) + '</b><span>' + dFmt(t.year, t.month, t.day, { weekday: 'long', day: 'numeric', month: 'long' }) + '</span><span>' + hijri(t.year, t.month, t.day) + '</span><span>' + esc(methodName()) + '</span></div>';
     azanCheck(now);
   }
@@ -157,15 +203,21 @@
   $('pt-sug').onclick = function (e) { var b = e.target.closest('[data-sug]'); if (!b) return; S.m = b.dataset.sug; save(); form(); lastK = ''; draw(); };
   // ---------- controls ----------
   $('pt-view').onclick = function (e) { var b = e.target.closest('[data-v]'); if (!b) return; S.view = b.dataset.v; save(); draw(); };
-  $('pt-list').onclick = function (e) { var b = e.target.closest('[data-bell]'); if (!b) return; var k = b.dataset.bell; S.on[k] = !S.on[k]; save(); drawDay(); };
+  $('pt-day').addEventListener('click', function (e) { var b = e.target.closest('[data-bell]'); if (b) { var k = b.dataset.bell; S.on[k] = !S.on[k]; save(); drawDay(); return; }
+    var dd = e.target.closest('[data-ymd]'); if (dd && L) { var q = dd.dataset.ymd.split('-'); day = { year: +q[0], month: +q[1], day: +q[2] }; drawDay(); } });
+  $('pt-today').onclick = function () { if (L) { day = ymd(new Date()); drawDay(); } };
+  (function () { var x0 = null; $('pt-days').addEventListener('pointerdown', function (e) { x0 = e.clientX; }); $('pt-days').addEventListener('pointerup', function (e) { if (x0 === null || !L) return; var dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 40) shiftDay((dx < 0) !== (document.documentElement.dir === 'rtl') ? 7 : -7); }); })();
   function shiftDay(n) { var x = new Date(Date.UTC(day.year, day.month - 1, day.day + n)); day = { year: x.getUTCFullYear(), month: x.getUTCMonth() + 1, day: x.getUTCDate() }; drawDay(); }
-  $('pt-dprev').onclick = function () { if (L) shiftDay(-1); }; $('pt-dnext').onclick = function () { if (L) shiftDay(1); };
+  $('pt-dprev').onclick = function () { if (L) shiftDay(-7); }; $('pt-dnext').onclick = function () { if (L) shiftDay(7); };
   function shiftMon(n) { var x = new Date(Date.UTC(mon.year, mon.month - 1 + n, 1)); mon = { year: x.getUTCFullYear(), month: x.getUTCMonth() + 1 }; drawMonth(); }
   $('pt-mprev').onclick = function () { if (L) shiftMon(-1); }; $('pt-mnext').onclick = function () { if (L) shiftMon(1); };
   function form() {
     $('ps-m').value = S.m; $('ps-a').value = S.a; $('ps-h').value = S.h; $('ps-f').value = S.f; $('pa-s').value = S.snd; $('pa-v').value = S.vol; $('pa-vo').textContent = Math.round(S.vol * 100) + '%';
     document.querySelectorAll('[data-adj]').forEach(function (s) { s.value = S.adj[s.dataset.adj]; });
+    $('ps-sky').checked = !!S.sky; document.querySelectorAll('#ps-st button').forEach(function (b) { b.setAttribute('aria-selected', b.dataset.v === S.style); });
   }
+  $('ps-st').onclick = function (e) { var b = e.target.closest('[data-v]'); if (!b) return; S.style = b.dataset.v; save(); form(); lastK = ''; draw(); };
+  $('ps-sky').onchange = function () { S.sky = this.checked; save(); draw(); if (!S.sky) sky(new Date()); };
   [['ps-m', 'm'], ['ps-a', 'a'], ['ps-h', 'h'], ['ps-f', 'f'], ['pa-s', 'snd']].forEach(function (x) { $(x[0]).onchange = function () { S[x[1]] = this.value; save(); if (S.snd === 'beep') actx(); lastK = ''; draw(); }; });
   $('pa-v').oninput = function () { S.vol = +this.value; $('pa-vo').textContent = Math.round(S.vol * 100) + '%'; save(); };
   document.querySelectorAll('[data-adj]').forEach(function (s) { s.onchange = function () { S.adj[s.dataset.adj] = +s.value; save(); lastK = ''; draw(); }; });

@@ -19,10 +19,10 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<script>try{var d=document.documentElement,t=localStorage.getItem('theme'),L=localStorage.getItem('so.lang');if(L&&L!=='en'){d.lang=L;if(/^(ar|ur|fa|ps)$/.test(L))d.dir='rtl';d.classList.add('i18n-wait');setTimeout(function(){d.classList.remove('i18n-wait')},1500)}if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261127b">
+<script>try{var d=document.documentElement,t=localStorage.getItem('theme'),L=localStorage.getItem('so.lang');if(L&&L!=='en'){d.lang=L;if(/^(ar|ur|fa|ps)$/.test(L))d.dir='rtl';d.classList.add('i18n-wait');setTimeout(function(){d.classList.remove('i18n-wait')},1500)}if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm');else{var fk=parseInt(localStorage.getItem('fx'),10);if(fk===0)d.classList.add('rm');else if(fk>0&&fk!==100){d.classList.add('fxk');d.style.setProperty('--fxk',Math.min(fk,150)/100)}}}catch(e){}</script>
+<link rel="stylesheet" href="../assets/css/style.css?v=20261128c">
 </head>
-<body>
+<body class="s1ui fx">
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="wrap">
@@ -57,6 +57,8 @@
       <label class="pick">Calculation method<select id="ps-m"><option value="ISNA">ISNA — North America</option><option value="MWL">Muslim World League</option><option value="UmmAlQura">Umm al-Qura — Makkah</option><option value="Egyptian">Egyptian General Authority</option><option value="Karachi">Karachi — Pakistan, India, Bangladesh</option><option value="Moonsighting">Moonsighting Committee</option><option value="Dubai">Dubai — UAE</option><option value="Kuwait">Kuwait</option><option value="Qatar">Qatar</option><option value="Singapore">Singapore — Malaysia, Indonesia</option><option value="Turkey">Turkey — Diyanet</option><option value="Tehran">Tehran — Institute of Geophysics</option></select></label>
       <label class="pick">Asr time<select id="ps-a"><option value="Shafi">Standard — Shafiʿi, Maliki, Hanbali</option><option value="Hanafi">Hanafi (later Asr)</option></select></label>
       <label class="pick">High latitudes<select id="ps-h"><option value="auto">Automatic</option><option value="middle">Middle of the night</option><option value="seventh">One seventh of the night</option><option value="angle">Angle based</option></select></label>
+      <span class="ps-lab">Style</span><div class="tb-mode ps-st" id="ps-st"><button type="button" data-v="ring">Ring</button><button type="button" data-v="sun">Sun path</button><button type="button" data-v="cards">Cards</button></div>
+      <label class="tg">Sky background<input type="checkbox" id="ps-sky"></label>
       <label class="pick">Time format<select id="ps-f"><option value="12">12-hour</option><option value="24">24-hour</option></select></label>
       <button type="button" class="btn btn-ghost sm" id="ps-adj">Adjust times (minutes)</button>
       <button type="button" class="btn btn-ghost sm" id="ps-about">About the methods</button>
@@ -70,8 +72,10 @@
     <div class="cl-main">
       <div class="tb-mode cl-viewpill" id="pt-view"><button type="button" data-v="day">Today</button><button type="button" data-v="month">Month</button></div>
       <div id="pt-day">
-        <div class="cl-bar"><button type="button" class="ts-rb" id="pt-dprev" aria-label="Previous day">‹</button><div class="cl-title"><b id="pt-d1"></b><small id="pt-d2"></small></div><button type="button" class="ts-rb" id="pt-dnext" aria-label="Next day">›</button></div>
+        <div class="pt-week"><button type="button" class="ts-rb" id="pt-dprev" aria-label="Previous week">‹</button><div class="pt-days" id="pt-days"></div><button type="button" class="ts-rb" id="pt-dnext" aria-label="Next week">›</button></div>
+        <div class="pt-dates"><div class="cl-title"><b id="pt-d1"></b><small id="pt-d2"></small></div><button type="button" class="btn btn-ghost sm" id="pt-today">Today</button></div>
         <ol class="pt-list" id="pt-list"></ol>
+        <div class="pt-tiles" id="pt-tiles" hidden></div>
         <p class="hint">Tap the bell to turn the Azan on or off for that prayer.</p>
       </div>
       <div id="pt-month" hidden>
@@ -111,12 +115,12 @@
   </div></div></div>
 </main>
 
-<script src="../assets/js/i18n.js?v=20261106a" defer></script>
-<script src="../assets/js/site.js?v=20261127b" defer></script>
-<script src="../assets/js/lib.js?v=20261111c" defer></script>
+<script src="../assets/js/i18n.js?v=20261128b" defer></script>
+<script src="../assets/js/site.js?v=20261128b" defer></script>
+<script src="../assets/js/lib.js?v=20261127s" defer></script>
 <script src="../assets/js/vendor/adhan.umd.min.js?v=4.4.3" defer></script>
-<script src="../assets/js/prayer-core.js?v=20261127b" defer></script>
-<script src="../assets/js/prayer.js?v=20261111e" defer></script>
+<script src="../assets/js/prayer-core.js?v=20261127t" defer></script>
+<script src="../assets/js/prayer.js?v=20261127t" defer></script>
 <!-- Cloudflare Web Analytics (no cookies; see Privacy Policy) --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "08e433ad07454343bf9d6a63c6a650de"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

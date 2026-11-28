@@ -12,6 +12,8 @@
   var all = Array.prototype.map.call(grid.querySelectorAll('.tile'), function (x) { return x.getAttribute('data-id'); });
   var order = SO.get('so.qa', null) || all.slice();
   order = order.filter(function (id) { return all.indexOf(id) > -1; });
+  if (SO.get('so.qa', null) && !SO.get('so.qa.zk1', false) && order.indexOf('zakat') < 0) { var zi = order.indexOf('prayer'); order.splice(zi > -1 ? zi + 1 : order.length, 0, 'zakat'); SO.set('so.qa', order); } SO.set('so.qa.zk1', true); // Zakat added once, as in the app
+  if (SO.get('so.qa', null) && !SO.get('so.qa.ib1', false)) { ['ibadah', 'ramadan'].forEach(function (id) { if (order.indexOf(id) < 0) { var zi = order.indexOf('zakat'); order.splice(zi > -1 ? zi + 1 + (id === 'ramadan' && order.indexOf('ibadah') > -1 ? 1 : 0) : order.length, 0, id); } }); SO.set('so.qa', order); } SO.set('so.qa.ib1', true); // My Ibadah and Ramadan Tools added once
   function draw() {
     var tiles = {}; grid.querySelectorAll('.tile').forEach(function (x) { tiles[x.getAttribute('data-id')] = x; });
     all.forEach(function (id) { tiles[id].hidden = order.indexOf(id) < 0; });
@@ -62,6 +64,8 @@
 // ---------- Prayer Times widget (same calculation and settings as the Prayer Times page) ----------
 (function () {
   var body = document.getElementById('pw-body'); if (!body) return;
+  var hb = document.querySelector('#pw .pw-top b'), hic = null; // S1_PRAYER_HEADER_ICON_V1: the current prayer's golden icon at the top left, as the app
+  if (hb) { hic = document.createElement('span'); hic.className = 'pw-hic'; hb.insertBefore(hic, hb.firstChild); }
   if (!window.PT || !PT.ok) { document.getElementById('pw').hidden = true; return; }
   var esc = SO.esc, S = PT.settings(), L = SO.get('so.ploc', null), last = '';
   function empty() {
@@ -73,6 +77,7 @@
     var key = nx.k + nx.d + (c ? c.k : '-');
     if (key !== last) {
       last = key;
+      if (hic) hic.innerHTML = PT.icon(c ? c.k : nx.k);
       body.innerHTML = '<div class="pw-next"><small>' + esc(L.name) + ' · next prayer</small><div><span class="pw-nm">' + PT.icon(nx.k) + '<b>' + PT.label(nx.k, nx.y, nx.m, nx.d) + '</b><span class="pw-at">' + PT.fmt(S, L, nx.at) + '</span></span>' +
         '<span class="pw-left" id="pw-left"></span></div></div>' +
         '<ol class="pw-list">' + PT.P.map(function (k) {
@@ -94,7 +99,7 @@
 (function () {
   var $ = function (id) { return document.getElementById(id); }; if (!$('mn-sv')) return;
   var n = function (k, arr) { var v = SO.get(k, arr ? [] : {}); return (Array.isArray(v) ? v : Object.keys(v)).length; };
-  $('mn-sv').textContent = n('so.bm', 1) + n('so.fav', 1) + n('so.hl') + n('so.notes');
+  $('mn-sv').textContent = n('so.bm', 1) + n('so.fav', 1) + n('so.hl') + n('so.notes') + n('so.hsaved', 1);
   var tb = SO.get('so.tb3', null), all = 0;
   if (tb && tb.dh && tb.dh.rows) Object.keys(tb.dh.rows).forEach(function (k) { all += tb.dh.rows[k].total || 0; });
   $('mn-tb').textContent = all.toLocaleString();

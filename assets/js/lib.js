@@ -15,5 +15,9 @@ var SO = (function () {
   function sname(n, text) { var t = String(text || ''), lab = /^سورة/.test(t) ? t : 'سورة ' + t;
     return '<span class="sname" role="img" aria-label="' + esc(lab) + '"><span class="g" aria-hidden="true">' + String.fromCharCode(0xF100 + n - 1) + '</span><span class="t" aria-hidden="true">' + esc(t) + '</span></span>'; }
   if (document.fonts && document.fonts.load) document.fonts.load('1em KfgqpcSurahNames', '\uF100').then(function (f) { if (f.length) document.documentElement.classList.add('sn-ok'); }).catch(function () {});
-  return { sname: sname, get: get, set: set, j: j, esc: esc, pos: pos, toggle: toggle, has: has };
+  // S1_SAVED_ITEM_META_V1: when an item was saved / a note edited (ms), kept beside the lists: so.ts = { 'bm:2:255': t, 'fav:…', 'hl:…', 'note:…', 'noteE:…' }
+  function stamp(kind, key, on, keep) { var t = get('so.ts', {}) || {}, k = kind + ':' + key; if (on) { if (!(keep && t[k])) t[k] = Date.now(); } else { delete t[k]; if (kind === 'note') delete t['noteE:' + key]; } set('so.ts', t); }
+  function when(ms) { var L = (window.SOI18N && SOI18N.lang) || undefined, d = new Date(ms); if (!ms || isNaN(d)) return '';
+    try { return d.toLocaleDateString(L === 'en' ? undefined : L, { month: 'short', day: 'numeric', year: 'numeric' }) + ' • ' + d.toLocaleTimeString(L === 'en' ? undefined : L, { hour: 'numeric', minute: '2-digit' }); } catch (e) { return d.toLocaleString(); } }
+  return { sname: sname, get: get, set: set, j: j, esc: esc, pos: pos, toggle: toggle, has: has, stamp: stamp, when: when };
 })();

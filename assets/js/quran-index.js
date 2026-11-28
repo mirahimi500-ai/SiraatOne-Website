@@ -14,7 +14,7 @@
     var items = ch.filter(function (c) { return SL.only === 'all' || c.place === SL.only; }).filter(function (c) { return !v || String(c.id) === v || (n && nkey(c.name_simple).indexOf(n) > -1) || (v.length > 3 && QS.nameScore(c.name_simple, v) > 0) || (n && nkey(c.meaning).indexOf(n) > -1) || plain(c.name_arabic).indexOf(plain(v)) > -1; });
     if (SL.sort !== 'mushaf') items = items.slice().sort(function (a, b) { return SL.sort === 'short' ? a.verses - b.verses || a.id - b.id : b.verses - a.verses || a.id - b.id; });
     return items.length ? '<ol class="list two sv-' + SL.view + ' fs-' + SL.fs + '">' + items.map(function (c) {
-      return row(link(c.id, 1), SL.nums ? c.id : '', esc(c.name_simple), [SL.meaning ? esc(c.meaning) : '', SL.ayahs ? c.verses + ' ayahs' : '', SL.place ? (c.place === 'makkah' ? 'Makki' : 'Madani') : ''].filter(Boolean).join(' · '),
+      return row(link(c.id, 1), SL.nums ? c.id : '', esc(c.dname || c.name_simple), [SL.meaning ? esc(c.dmean || c.meaning) : '', SL.ayahs ? c.verses + ' ayahs' : '', SL.place ? (c.place === 'makkah' ? 'Makki' : 'Madani') : ''].filter(Boolean).join(' · '),
         SL.ar ? '<span class="ar" lang="ar" dir="rtl">' + SO.sname(c.id, c.name_arabic) + '</span>' : '');
     }).join('') + '</ol>' : empty('No sura found.');
   }
@@ -107,8 +107,11 @@
     else if (t === 'notes') { var n = SO.get('so.notes', {}); out = ayahList(Object.keys(n), n); }
     Promise.resolve(out).then(function (h) { if (tab === t) panel.innerHTML = h; });
   }
-  Promise.all([SO.j('../assets/data/chapters.json'), SO.j('../assets/data/index.json')]).then(function (r) {
+  var SLANG = (document.documentElement.lang || 'en').slice(0, 2), SLX = /^(fa|ur|tr|id|ms|bn|fr|es)$/.test(SLANG);
+  Promise.all([SO.j('../assets/data/chapters.json'), SO.j('../assets/data/index.json'), SLX ? SO.j('../assets/data/surah-info-i18n.json?v=20261127a').catch(function () { return null; }) : null]).then(function (r) {
     ch = r[0].chapters; idx = r[1];
+    // S1_SURAH_FA_NAMES_V1: Persian Surah names and meanings (QuranEnc); sourced meanings in ur/tr/id/ms/bn/fr/es
+    if (r[2]) ch.forEach(function (c, i) { if (SLANG === 'fa') { c.dname = r[2].faNames[i]; c.dmean = r[2].faMeanings[i]; } else if (r[2].meanings[SLANG]) c.dmean = r[2].meanings[SLANG][i]; });
     document.getElementById('quick').innerHTML = QUICK.map(function (s) { return '<a class="chip" href="' + link(s, 1) + '">' + esc(name(s)) + '</a>'; }).join('');
     Array.prototype.forEach.call(document.querySelectorAll('[data-tab]'), function (b) { b.addEventListener('click', function () { show(b.getAttribute('data-tab'), true); }); });
     var start = params.get('tab') || location.hash.slice(1);

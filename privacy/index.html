@@ -19,10 +19,10 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<script>try{var d=document.documentElement,t=localStorage.getItem('theme'),L=localStorage.getItem('so.lang');if(L&&L!=='en'){d.lang=L;if(/^(ar|ur|fa|ps)$/.test(L))d.dir='rtl';d.classList.add('i18n-wait');setTimeout(function(){d.classList.remove('i18n-wait')},1500)}if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261127b">
+<script>try{var d=document.documentElement,t=localStorage.getItem('theme'),L=localStorage.getItem('so.lang');if(L&&L!=='en'){d.lang=L;if(/^(ar|ur|fa|ps)$/.test(L))d.dir='rtl';d.classList.add('i18n-wait');setTimeout(function(){d.classList.remove('i18n-wait')},1500)}if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm');else{var fk=parseInt(localStorage.getItem('fx'),10);if(fk===0)d.classList.add('rm');else if(fk>0&&fk!==100){d.classList.add('fxk');d.style.setProperty('--fxk',Math.min(fk,150)/100)}}}catch(e){}</script>
+<link rel="stylesheet" href="../assets/css/style.css?v=20261128c">
 </head>
-<body>
+<body class="s1ui fx">
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="wrap">
@@ -113,14 +113,16 @@
   <p>The app does not request camera, microphone, contacts or motion permissions. The Qibla uses the compass only: no image is taken, saved or sent.</p>
 
   <h3>Windows (Microsoft Store)</h3>
-  <p>SiraatOne Quran for Windows is distributed through the Microsoft Store (publisher: SiraatOne).</p>
+  <p>SiraatOne Quran for Windows is distributed through the Microsoft Store (publisher: SiraatOne; app updates come through the Store). Updated 27 November 2026.</p>
   <ul>
     <li><strong>Location:</strong> used only for prayer times and the Qibla, with your permission in the Windows location settings. To show the place name and for city search, the coordinates or the city you type are sent to OpenStreetMap Nominatim; nothing else is shared. Results are cached on your PC. Place data © <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap contributors</a>.</li>
     <li>OpenStreetMap also receives the app language and, as with any internet request, your IP address; the <a href="https://osmfoundation.org/wiki/Privacy_Policy" rel="noopener">OpenStreetMap Foundation's privacy policy</a> applies.</li>
+    <li><strong>Time zone:</strong> found offline on your PC; no service is used.</li>
     <li><strong>Prayer and Azan notifications:</strong> scheduled locally by Windows on your PC. No server is involved.</li>
     <li><strong>Backups:</strong> saved only to a file you pick on your own PC.</li>
-    <li><strong>Quran font (Uthmanic):</strong> downloaded from the Quran Foundation's official server, the same as on Android. Recitations and other online content come from the same sources as the Android app.</li>
-    <li>No account, no advertising or tracking, and no data is sold.</li>
+    <li><strong>Quran and Islamic content:</strong> downloaded from public content services only when you open or download it: Quran text and the Uthmanic font from Quran.com / the Quran Foundation (api.quran.com, verses.quran.foundation); recitation audio from audio.qurancdn.com, download.quranicaudio.com, everyayah.com and mp3quran.net; other content files from raw.githubusercontent.com, cdn.jsdelivr.net, huggingface.co, the-quran-project.github.io and hadeethenc.com; currency exchange rates (Zakat) from currency-api.pages.dev. These requests contain only what to download, no personal data; as with any internet request, the services see your PC's IP address.</li>
+    <li><strong>Links</strong> (Store pages, sunnah.com, Quran Flash, licence pages) open in your browser only when you tap them.</li>
+    <li>No account, no analytics, no crash-report library, no advertising or tracking, and no data is sold.</li>
     <li>Privacy questions: <a href="mailto:privacy@zaibatech.com">privacy@zaibatech.com</a>. Support: <a href="mailto:support@zaibatech.com">support@zaibatech.com</a>.</li>
   </ul>
 
@@ -171,35 +173,30 @@
   <p>No personal data is stored on our servers. To remove everything, clear the app's storage in Android Settings or uninstall the app.</p>
 
 </section>
-      <a id="windows"></a><section class="ts-card pv-sec doc" id="pv-windows"><h2>SiraatOne for Windows</h2>
-  <p class="muted">Windows section effective: 5 November 2026</p>
-  <p class="summary"><strong>In short:</strong> no account or sign-in; no advertising, analytics or crash-reporting libraries; your location is used only to calculate prayer times; your settings stay on your PC.</p>
+      <a id="windows"></a><section class="ts-card pv-sec doc" id="pv-windows"><h2>SiraatOne Azan for Windows</h2>
+  <p class="muted">Windows Azan app section updated: 27 November 2026 (Microsoft Store: SiraatOne Azan, 9PHZ87D2BW12). SiraatOne Quran for Windows is covered in the <a href="#quran">Quran app section</a>.</p>
+  <p class="summary"><strong>In short:</strong> no account or sign-in; no advertising, analytics or crash reports; your location is used only to calculate prayer times; your settings stay on your PC.</p>
 
   <h3>Information we collect</h3>
   <p>SiraatOne does not collect, sell or share personal information. The app has no user accounts and does not send your personal data to the developer.</p>
 
   <h3>Location</h3>
-  <p>To calculate prayer times, the app needs your location. You can either:</p>
+  <p>To calculate prayer times, the app uses your PC's location, only if you allow it in Windows (Windows Settings &rarr; Privacy &amp; security &rarr; Location). The app has no Qibla.</p>
+  <p>The coordinates are saved only on your PC. They are sent to these services, whose own privacy policies apply:</p>
   <ul>
-    <li>allow the app to use your PC's location (optional; you can turn it off in Windows Settings &rarr; Privacy &amp; security &rarr; Location), or</li>
-    <li>type a city or ZIP/postal code.</li>
+    <li>OpenStreetMap Nominatim (nominatim.openstreetmap.org): to show the name of your area.</li>
+    <li>Open-Meteo (api.open-meteo.com): to find the time zone of your location.</li>
   </ul>
-  <p>The coordinates are saved only on your PC. To find the place, its time zone and the name of your area, the app sends the city/ZIP text or the coordinates to these services, whose own privacy policies apply:</p>
-  <ul>
-    <li>Open-Meteo (geocoding-api.open-meteo.com and api.open-meteo.com): place search and time zone.</li>
-    <li>OpenStreetMap Nominatim (nominatim.openstreetmap.org): place search and the name of your area for your coordinates.</li>
-    <li>Zippopotam.us (api.zippopotam.us): US ZIP code lookup.</li>
-  </ul>
-  <p>With automatic location, the area name is refreshed about every 30 minutes while the app runs.</p>
+  <p>As with any internet request, these services also see your PC's IP address. Nothing else is shared.</p>
 
   <h3>Information stored on your PC</h3>
   <p>Prayer settings, location, Azan choices and volume, Iqama and Jumu'ah times, and widget, screensaver and display settings. This information stays on your PC and is removed when you uninstall the app.</p>
 
   <h3>Notifications, sound and power</h3>
-  <p>The app shows Windows notifications and plays the Azan at prayer times. If you turn on "Start with Windows", Windows starts the app when you sign in. If you turn on "Keep the PC awake", the app asks Windows not to go to sleep while it runs. Nothing is sent to us.</p>
+  <p>The Azan alerts are created on your PC by the app while it runs in the system tray; it starts with Windows (you can turn this off). No server is involved. The Azan sounds are inside the app, so no internet is used for audio. If you turn on "Keep the PC awake", the app asks Windows not to go to sleep while it runs. Nothing is sent to us.</p>
 
-  <h3>Screensaver</h3>
-  <p>While the app's screensaver is showing, the app checks for keyboard and mouse activity only to know when to close it. Keystrokes and mouse positions are not recorded, stored or sent anywhere.</p>
+  <h3>Screensaver mode</h3>
+  <p>The screensaver is a full-screen mode inside the app (not a Windows screensaver file). While it is showing, the app checks for keyboard and mouse activity only to know when to close it. Keystrokes and mouse positions are not recorded, stored or sent anywhere.</p>
 
   <h3>Permissions</h3>
   <p>Internet and location (optional). The app does not access your contacts, camera, microphone or personal files.</p>
@@ -208,15 +205,17 @@
   <p>The app is suitable for all ages. It does not knowingly collect personal information from anyone, including children.</p>
 
   <h3>Deleting your data</h3>
-  <p>No personal data is stored on our servers. To remove everything, uninstall the app (Windows Settings &rarr; Apps &rarr; Installed apps &rarr; SiraatOne &rarr; Uninstall).</p>
+  <p>No personal data is stored on our servers. To remove everything, uninstall the app (Windows Settings &rarr; Apps &rarr; Installed apps &rarr; SiraatOne Azan &rarr; Uninstall).</p>
 
 </section>
       <a id="website"></a><section class="ts-card pv-sec doc" id="pv-website"><h2>This website</h2>
-  <p class="muted">Website section last updated: 4 November 2026</p>
+  <p class="muted">Website section last updated: 27 November 2026</p>
   <p>siraatone.com has no accounts, cookies or ads. Visits are counted with Cloudflare Web Analytics (see Visitor statistics below). It remembers your reading settings, last position, bookmarks, highlights and notes only in your own browser (never sent to us). A backup file you export is saved only where you choose. When you press play, recitation audio streams from the Quran Foundation recitation sources (verses.quran.foundation, audio.qurancdn.com, mirrors.quranicaudio.com, download.quranicaudio.com), which receives your IP address like any web request. If you choose a full-surah reciter, the audio streams from MP3Quran.net in the same way. When you open a tafsir, it loads from jsDelivr (cdn.jsdelivr.net, the spa5k/tafsir_api files). The Hadith page loads hadiths live from HadeethEnc.com in the same way. The site is hosted on GitHub Pages; like any web host, it receives your IP address and basic request information.</p>
   <p><b>Visitor statistics.</b> To know how many people use this website, each page loads Cloudflare Web Analytics (static.cloudflareinsights.com). It uses no cookies and no browser storage and does not follow you across other websites. When a page opens it sends Cloudflare the page address, the page you came from, your browser and device type, and page-load timing; like any web request Cloudflare also receives your IP address, which it uses to show the visitor's country. We see only totals (for example visits per day, popular pages and countries), never who you are.</p>
   <p><b>Support form.</b> If you send a message with the form on the Support page, the details you enter (name, email, optional mobile number and device, app, topic, subject and message) are sent through Web3Forms (web3forms.com), a form delivery service, to our support mailbox so we can reply to you. We use them only to answer your message and never sell or share them. Nothing is sent until you press Send. You can ask us to delete your messages at any time.</p>
   <p><b>Prayer Times.</b> Prayer times and the Qibla direction are calculated in your browser. If you tap "Use my location", your browser asks for permission and the coordinates are kept only in your browser; they are never sent to us or to anyone else. If you search for a city instead, only the text you type is sent to Open-Meteo's geocoding service (geocoding-api.open-meteo.com) to find the place. Notifications appear only if you allow them in your browser, and only while the page is open. You can clear the saved location at any time by clearing this site's data in your browser.</p>
+  <p><b>Zakat calculator.</b> The amounts you enter on the Zakat page stay only in your browser. To fill in today's gold and silver prices, the page downloads a public price file from jsDelivr (cdn.jsdelivr.net) or, if that fails, from currency-api.pages.dev. The only thing in the request is the currency you chose (for example "usd"); like any web request, these services see your IP address. The prices are kept in your browser for 12 hours. You can type your own prices instead.</p>
+  <p><b>My Ibadah and Ramadan Tools.</b> What you mark on these pages (prayers, adhkar, Al-Kahf, fasts, Taraweeh nights, your Quran goal and fasts to make up) is saved only in your browser. Nothing is sent to us or to anyone else. Clearing your browser's site data removes it.</p>
 
   </section>
     </div>
@@ -232,8 +231,8 @@
   </div>
 </main>
 
-<script src="../assets/js/i18n.js?v=20261106a" defer></script>
-<script src="../assets/js/site.js?v=20261127b" defer></script>
+<script src="../assets/js/i18n.js?v=20261128b" defer></script>
+<script src="../assets/js/site.js?v=20261128b" defer></script>
 <script>
 (function(){var pill=document.getElementById('pv-pill'),K=['quran','azan','windows','website'];
 function show(x){K.forEach(function(k){document.getElementById('pv-'+k).hidden=k!==x});pill.querySelectorAll('[data-p]').forEach(function(b){b.setAttribute('aria-selected',b.dataset.p===x)})}

@@ -19,10 +19,10 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<script>try{var d=document.documentElement,t=localStorage.getItem('theme'),L=localStorage.getItem('so.lang');if(L&&L!=='en'){d.lang=L;if(/^(ar|ur|fa|ps)$/.test(L))d.dir='rtl';d.classList.add('i18n-wait');setTimeout(function(){d.classList.remove('i18n-wait')},1500)}if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm')}catch(e){}</script>
-<link rel="stylesheet" href="../assets/css/style.css?v=20261127b">
+<script>try{var d=document.documentElement,t=localStorage.getItem('theme'),L=localStorage.getItem('so.lang');if(L&&L!=='en'){d.lang=L;if(/^(ar|ur|fa|ps)$/.test(L))d.dir='rtl';d.classList.add('i18n-wait');setTimeout(function(){d.classList.remove('i18n-wait')},1500)}if(t==='oled'){d.setAttribute('data-theme','dark');d.classList.add('oled')}else if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(localStorage.getItem('rm')==='1')d.classList.add('rm');else{var fk=parseInt(localStorage.getItem('fx'),10);if(fk===0)d.classList.add('rm');else if(fk>0&&fk!==100){d.classList.add('fxk');d.style.setProperty('--fxk',Math.min(fk,150)/100)}}}catch(e){}</script>
+<link rel="stylesheet" href="../assets/css/style.css?v=20261128c">
 </head>
-<body>
+<body class="s1ui fx">
 <a class="skip" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="wrap">
@@ -107,6 +107,7 @@
   <ul>
     <li><b>KFGQPC Uthmanic Script Hafs</b>: King Fahd Glorious Quran Printing Complex. Free licence; used unmodified.</li>
     <li><b>Amiri</b> and <b>Amiri Quran</b>: Khaled Hosny, <a href="../assets/fonts/OFL-Amiri.txt">SIL Open Font License 1.1</a>.</li>
+    <li><b>Inter</b> and <b>Inter Display</b> (Home page text): The Inter Project Authors, <a href="../assets/fonts/OFL-Inter.txt">SIL Open Font License 1.1</a>.</li>
     <li><b>Surah names</b> (QCF4_QBSML): Surah names font © King Fahd Glorious Qur'an Printing Complex. Free terms of use; used unmodified (<a href="../assets/fonts/KFGQPC_NOTICE.txt">notice</a>).</li>
     <li><b>Bismillah calligraphy</b> under each Surah title: SiraatOne's own Thuluth artwork.</li>
     <li><b>IndoPak Nastaleeq</b>: from <a href="https://qul.tarteel.ai" rel="noopener">QUL (Tarteel)</a>, which publishes no copyright information for it; used unmodified.</li>
@@ -129,8 +130,8 @@
   </div>
 </main>
 
-<script src="../assets/js/i18n.js?v=20261106a" defer></script>
-<script src="../assets/js/site.js?v=20261127b" defer></script>
+<script src="../assets/js/i18n.js?v=20261128b" defer></script>
+<script src="../assets/js/site.js?v=20261128b" defer></script>
 <script>
 (function(){var pill=document.getElementById('tm-pill'),K=['terms','credits'];
 function show(x){K.forEach(function(k){document.getElementById('pv-'+k).hidden=k!==x});pill.querySelectorAll('[data-p]').forEach(function(b){b.setAttribute('aria-selected',b.dataset.p===x)})}
